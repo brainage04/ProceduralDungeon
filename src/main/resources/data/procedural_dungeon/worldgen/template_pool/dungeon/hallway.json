@@ -1,0 +1,32 @@
+{
+    "fallback": "minecraft:empty",
+    "elements": [
+        {
+            "weight": 1,
+            "element": {
+                "element_type": "minecraft:single_pool_element",
+                "location": "procedural_dungeon:dungeon/hallway/large",
+                "projection": "rigid",
+                "processors": "procedural_dungeon:dungeon/theme/overworld"
+            }
+        },
+        {
+            "weight": 1,
+            "element": {
+                "element_type": "minecraft:single_pool_element",
+                "location": "procedural_dungeon:dungeon/hallway/medium",
+                "projection": "rigid",
+                "processors": "procedural_dungeon:dungeon/theme/overworld"
+            }
+        },
+        {
+            "weight": 1,
+            "element": {
+                "element_type": "minecraft:single_pool_element",
+                "location": "procedural_dungeon:dungeon/hallway/small",
+                "projection": "rigid",
+                "processors": "procedural_dungeon:dungeon/theme/overworld"
+            }
+        }
+    ]
+}

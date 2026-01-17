@@ -1,6 +1,6 @@
 {
 	"schemaVersion": 1,
-	"id": "proceduraldungeon",
+	"id": "procedural_dungeon",
 	"version": "${version}",
 	"name": "ProceduralDungeon",
 	"description": "Adds a procedurally generated dungeon to Minecraft with many different themes and loot/difficulty tiers.",
@@ -16,11 +16,14 @@
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"com.github.brainage04.proceduraldungeon.ProceduralDungeon"
+			"com.github.brainage04.procedural_dungeon.ProceduralDungeon"
+		],
+		"fabric-datagen": [
+			"com.github.brainage04.procedural_dungeon.datagen.ModDataGenerator"
 		]
 	},
 	"mixins": [
-		"proceduraldungeon.mixins.json"
+		"procedural_dungeon.mixins.json"
 	],
 	"depends": {
 		"fabricloader": ">=0.18.1",
@@ -28,5 +31,5 @@
 		"java": ">=21",
 		"fabric-api": "*"
 	},
-    "accessWidener": "proceduraldungeon.accesswidener"
+    "accessWidener": "procedural_dungeon.accesswidener"
 }
