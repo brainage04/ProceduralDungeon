@@ -2,11 +2,13 @@ package com.github.brainage04.procedural_dungeon.datagen.processor_list;
 
 import com.github.brainage04.procedural_dungeon.ProceduralDungeon;
 import com.google.common.collect.ImmutableList;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricDynamicRegistryProvider;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
-import net.minecraft.registry.Registerable;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.structure.processor.*;
 import net.minecraft.structure.rule.AlwaysTrueRuleTest;
 import net.minecraft.structure.rule.RandomBlockMatchRuleTest;
@@ -14,9 +16,14 @@ import net.minecraft.structure.rule.RandomBlockMatchRuleTest;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Stream;
 
-public class DungeonProcessorLists {
+public class DungeonProcessorListProvider extends FabricDynamicRegistryProvider {
+    public DungeonProcessorListProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
+        super(output, registriesFuture);
+    }
+
     // dungeon-specific
     private static final RegistryKey<StructureProcessorList> DUNGEON_BOOKSHELF = create("dungeon/bookshelf");
     private static final RegistryKey<StructureProcessorList> DUNGEON_MINERALS = create("dungeon/minerals");
@@ -72,13 +79,13 @@ public class DungeonProcessorLists {
         return RegistryKey.of(RegistryKeys.PROCESSOR_LIST, ProceduralDungeon.of(name));
     }
 
-    private static void register(Registerable<StructureProcessorList> context, RegistryKey<StructureProcessorList> key, List<StructureProcessor> list) {
-        context.register(key, new StructureProcessorList(list));
+    private static void register(FabricDynamicRegistryProvider.Entries entries, RegistryKey<StructureProcessorList> key, List<StructureProcessor> list) {
+        entries.add(key, new StructureProcessorList(list));
     }
 
     private record BasicProcessorRule(Block input, float probability, Block output) {}
 
-    private static void registerBasic(Registerable<StructureProcessorList> context, RegistryKey<StructureProcessorList> key, List<BasicProcessorRule> rules) {
+    private static void registerBasic(FabricDynamicRegistryProvider.Entries entries, RegistryKey<StructureProcessorList> key, List<BasicProcessorRule> rules) {
         List<StructureProcessor> list = new ArrayList<>(rules.size());
 
         for (BasicProcessorRule rule : rules) {
@@ -91,25 +98,17 @@ public class DungeonProcessorLists {
             )));
         }
 
-        register(context, key, list);
+        register(entries, key, list);
     }
 
-    public static void bootstrap(Registerable<StructureProcessorList> context) {
-        registerDungeon(context);
-        registerGeneric(context);
-        registerOverworld(context);
-        registerNether(context);
-        registerEnd(context);
-    }
-
-    private static void registerDungeon(Registerable<StructureProcessorList> context) {
-        registerBasic(context, DUNGEON_BOOKSHELF, ImmutableList.of(
+    private static void registerDungeon(FabricDynamicRegistryProvider.Entries entries) {
+        registerBasic(entries, DUNGEON_BOOKSHELF, ImmutableList.of(
                 new BasicProcessorRule(Blocks.BOOKSHELF, 0.2f, Blocks.CHISELED_BOOKSHELF),
                 new BasicProcessorRule(Blocks.BOOKSHELF, 0.2f, Blocks.OAK_PLANKS),
                 new BasicProcessorRule(Blocks.OAK_LOG, 0.4f, Blocks.STRIPPED_OAK_LOG)
         ));
 
-        registerBasic(context, DUNGEON_MINERALS, ImmutableList.of(
+        registerBasic(entries, DUNGEON_MINERALS, ImmutableList.of(
                 new BasicProcessorRule(Blocks.COPPER_BLOCK, 0.1f, Blocks.RAW_COPPER_BLOCK),
                 new BasicProcessorRule(Blocks.COPPER_BLOCK, 0.1f, Blocks.COPPER_ORE),
                 new BasicProcessorRule(Blocks.COPPER_BLOCK, 0.1f, Blocks.DEEPSLATE_COPPER_ORE),
@@ -130,32 +129,32 @@ public class DungeonProcessorLists {
         ));
     }
 
-    private static void registerGeneric(Registerable<StructureProcessorList> context) {
-        registerBasic(context, GENERIC_AIR, ImmutableList.of(
+    private static void registerGeneric(FabricDynamicRegistryProvider.Entries entries) {
+        registerBasic(entries, GENERIC_AIR, ImmutableList.of(
                 new BasicProcessorRule(Blocks.AIR, 0.01f, Blocks.COBWEB)
         ));
 
-        register(context, GENERIC_DECAY, ImmutableList.of(
+        register(entries, GENERIC_DECAY, ImmutableList.of(
                 new BlockAgeStructureProcessor(0.4f),
                 new BlockRotStructureProcessor(0.98f)
         ));
     }
 
-    private static void registerOverworld(Registerable<StructureProcessorList> context) {
-        registerBasic(context, DUNGEON_THEME_OVERWORLD_COBBLESTONE, ImmutableList.of(
+    private static void registerOverworld(FabricDynamicRegistryProvider.Entries entries) {
+        registerBasic(entries, DUNGEON_THEME_OVERWORLD_COBBLESTONE, ImmutableList.of(
                 new BasicProcessorRule(Blocks.COBBLESTONE, 0.1f, Blocks.STONE_BRICKS),
                 new BasicProcessorRule(Blocks.COBBLESTONE, 0.1f, Blocks.CRACKED_STONE_BRICKS),
                 new BasicProcessorRule(Blocks.COBBLESTONE, 0.1f, Blocks.CHISELED_STONE_BRICKS)
         ));
 
-        registerBasic(context, DUNGEON_THEME_OVERWORLD_DEEPSLATE, ImmutableList.of(
+        registerBasic(entries, DUNGEON_THEME_OVERWORLD_DEEPSLATE, ImmutableList.of(
                 new BasicProcessorRule(Blocks.COBBLESTONE, 0.1f, Blocks.POLISHED_DEEPSLATE),
                 new BasicProcessorRule(Blocks.COBBLESTONE, 0.1f, Blocks.CRACKED_DEEPSLATE_BRICKS),
                 new BasicProcessorRule(Blocks.COBBLESTONE, 0.1f, Blocks.DEEPSLATE_BRICKS),
                 new BasicProcessorRule(Blocks.COBBLESTONE, 1f, Blocks.DEEPSLATE)
         ));
 
-        registerBasic(context, DUNGEON_THEME_OVERWORLD_SCULK, ImmutableList.of(
+        registerBasic(entries, DUNGEON_THEME_OVERWORLD_SCULK, ImmutableList.of(
                 new BasicProcessorRule(Blocks.COBBLESTONE, 0.001f, Blocks.SCULK_SHRIEKER),
                 new BasicProcessorRule(Blocks.COBBLESTONE, 0.001f, Blocks.REINFORCED_DEEPSLATE),
                 new BasicProcessorRule(Blocks.COBBLESTONE, 0.1f, Blocks.SCULK_SENSOR),
@@ -164,8 +163,8 @@ public class DungeonProcessorLists {
         ));
     }
 
-    private static void registerNether(Registerable<StructureProcessorList> context) {
-        registerBasic(context, DUNGEON_THEME_NETHER_NETHER_WASTES, ImmutableList.of(
+    private static void registerNether(FabricDynamicRegistryProvider.Entries entries) {
+        registerBasic(entries, DUNGEON_THEME_NETHER_NETHER_WASTES, ImmutableList.of(
                 new BasicProcessorRule(Blocks.COBBLESTONE, 0.001f, Blocks.ANCIENT_DEBRIS),
                 new BasicProcessorRule(Blocks.COBBLESTONE, 0.005f, Blocks.LAVA),
                 new BasicProcessorRule(Blocks.COBBLESTONE, 0.025f, Blocks.NETHER_GOLD_ORE),
@@ -173,39 +172,39 @@ public class DungeonProcessorLists {
                 new BasicProcessorRule(Blocks.COBBLESTONE, 1f, Blocks.NETHERRACK)
         ));
 
-        registerBasic(context, DUNGEON_THEME_NETHER_CRIMSON_FOREST, ImmutableList.of(
+        registerBasic(entries, DUNGEON_THEME_NETHER_CRIMSON_FOREST, ImmutableList.of(
                 new BasicProcessorRule(Blocks.COBBLESTONE, 0.1f, Blocks.CRIMSON_PLANKS),
                 new BasicProcessorRule(Blocks.COBBLESTONE, 0.1f, Blocks.CRIMSON_NYLIUM),
                 new BasicProcessorRule(Blocks.COBBLESTONE, 0.1f, Blocks.CRIMSON_HYPHAE),
                 new BasicProcessorRule(Blocks.COBBLESTONE, 1f, Blocks.NETHER_WART_BLOCK)
         ));
 
-        registerBasic(context, DUNGEON_THEME_NETHER_WARPED_FOREST, ImmutableList.of(
+        registerBasic(entries, DUNGEON_THEME_NETHER_WARPED_FOREST, ImmutableList.of(
                 new BasicProcessorRule(Blocks.COBBLESTONE, 0.1f, Blocks.WARPED_PLANKS),
                 new BasicProcessorRule(Blocks.COBBLESTONE, 0.1f, Blocks.WARPED_NYLIUM),
                 new BasicProcessorRule(Blocks.COBBLESTONE, 0.1f, Blocks.WARPED_HYPHAE),
                 new BasicProcessorRule(Blocks.COBBLESTONE, 1f, Blocks.WARPED_WART_BLOCK)
         ));
 
-        registerBasic(context, DUNGEON_THEME_NETHER_BASALT_DELTAS, ImmutableList.of(
+        registerBasic(entries, DUNGEON_THEME_NETHER_BASALT_DELTAS, ImmutableList.of(
                 new BasicProcessorRule(Blocks.COBBLESTONE, 0.1f, Blocks.POLISHED_BASALT),
                 new BasicProcessorRule(Blocks.COBBLESTONE, 0.1f, Blocks.SMOOTH_BASALT),
                 new BasicProcessorRule(Blocks.COBBLESTONE, 1f, Blocks.BASALT)
         ));
 
-        registerBasic(context, DUNGEON_THEME_NETHER_SOUL_SAND_VALLEY, ImmutableList.of(
+        registerBasic(entries, DUNGEON_THEME_NETHER_SOUL_SAND_VALLEY, ImmutableList.of(
                 new BasicProcessorRule(Blocks.COBBLESTONE, 0.1f, Blocks.SOUL_SAND),
                 new BasicProcessorRule(Blocks.COBBLESTONE, 1f, Blocks.SOUL_SOIL)
         ));
 
-        registerBasic(context, DUNGEON_THEME_NETHER_NETHER_FORTRESS, ImmutableList.of(
+        registerBasic(entries, DUNGEON_THEME_NETHER_NETHER_FORTRESS, ImmutableList.of(
                 new BasicProcessorRule(Blocks.COBBLESTONE, 0.1f, Blocks.RED_NETHER_BRICKS),
                 new BasicProcessorRule(Blocks.COBBLESTONE, 0.1f, Blocks.CHISELED_NETHER_BRICKS),
                 new BasicProcessorRule(Blocks.COBBLESTONE, 0.1f, Blocks.CRACKED_NETHER_BRICKS),
                 new BasicProcessorRule(Blocks.COBBLESTONE, 1f, Blocks.NETHER_BRICKS)
         ));
 
-        registerBasic(context, DUNGEON_THEME_NETHER_BASTION, ImmutableList.of(
+        registerBasic(entries, DUNGEON_THEME_NETHER_BASTION, ImmutableList.of(
                 new BasicProcessorRule(Blocks.COBBLESTONE, 0.01f, Blocks.GILDED_BLACKSTONE),
                 new BasicProcessorRule(Blocks.COBBLESTONE, 0.1f, Blocks.POLISHED_BLACKSTONE),
                 new BasicProcessorRule(Blocks.COBBLESTONE, 0.1f, Blocks.CHISELED_POLISHED_BLACKSTONE),
@@ -214,16 +213,30 @@ public class DungeonProcessorLists {
         ));
     }
 
-    private static void registerEnd(Registerable<StructureProcessorList> context) {
-        registerBasic(context, DUNGEON_THEME_END_END_STONE, ImmutableList.of(
+    private static void registerEnd(FabricDynamicRegistryProvider.Entries entries) {
+        registerBasic(entries, DUNGEON_THEME_END_END_STONE, ImmutableList.of(
                 new BasicProcessorRule(Blocks.COBBLESTONE, 0.1f, Blocks.END_STONE_BRICKS),
                 new BasicProcessorRule(Blocks.COBBLESTONE, 1f, Blocks.END_STONE)
         ));
 
-        registerBasic(context, DUNGEON_THEME_END_END_CITY, ImmutableList.of(
+        registerBasic(entries, DUNGEON_THEME_END_END_CITY, ImmutableList.of(
                 new BasicProcessorRule(Blocks.COBBLESTONE, 0.01f, Blocks.PURPLE_STAINED_GLASS),
                 new BasicProcessorRule(Blocks.COBBLESTONE, 0.1f, Blocks.PURPUR_PILLAR),
                 new BasicProcessorRule(Blocks.COBBLESTONE, 1f, Blocks.PURPUR_BLOCK)
         ));
+    }
+
+    @Override
+    protected void configure(RegistryWrapper.WrapperLookup registries, Entries entries) {
+        registerDungeon(entries);
+        registerGeneric(entries);
+        registerOverworld(entries);
+        registerNether(entries);
+        registerEnd(entries);
+    }
+
+    @Override
+    public String getName() {
+        return "Dungeon Processor Lists";
     }
 }
