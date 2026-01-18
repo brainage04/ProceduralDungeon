@@ -1,5 +1,6 @@
 package com.github.brainage04.procedural_dungeon.command.core;
 
+import com.github.brainage04.procedural_dungeon.datagen.common.DungeonTheme;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.suggestion.SuggestionProviders;

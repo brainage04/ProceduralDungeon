@@ -1,5 +1,5 @@
 tellraw @s {"text": "                                ","color": "gray","strikethrough": true}
-tellraw @s {"text": "brainage04's Procedural Structures | About","color": "gray"}
+tellraw @s {"text": "Procedural Dungeon | About","color": "gray"}
 tellraw @s {"text": "                                ","color": "gray","strikethrough": true}
 
 tellraw @s {"text": "No about section yet.","color": "gray"}

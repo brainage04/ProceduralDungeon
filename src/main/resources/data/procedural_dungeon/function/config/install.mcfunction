@@ -1,4 +1,4 @@
-tellraw @a [{"text":"brainage04's Procedural Structures ","color": "green"},{"text": "installed.","color": "green"}]
+tellraw @a [{"text":"Procedural Dungeon ","color": "green"},{"text": "installed.","color": "green"}]
 
 function procedural_dungeon:sounds/click
 
