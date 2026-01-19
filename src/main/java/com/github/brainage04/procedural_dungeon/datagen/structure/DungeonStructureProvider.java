@@ -41,11 +41,10 @@ public class DungeonStructureProvider extends FabricDynamicRegistryProvider {
         RegistryEntryLookup<StructurePool> templatePoolLookup = registries.getOrThrow(RegistryKeys.TEMPLATE_POOL);
 
         for (DungeonUtils.ThemeTierKeyPair themeTierKeyPair : DungeonUtils.THEME_TIER_KEY_COMBINATIONS) {
-            RegistryKey<Structure> key = create(themeTierKeyPair.key());
-
+            String start = "%s/start".formatted(themeTierKeyPair.key());
             register(
                     entries,
-                    key,
+                    create(start),
                     new JigsawStructure(
                             new Structure.Config.Builder(
                                     biomeLookup.getOrThrow(BiomeTags.STRONGHOLD_HAS_STRUCTURE)

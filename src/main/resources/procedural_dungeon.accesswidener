@@ -1,1 +1,3 @@
 accessWidener v2 named
+accessible method net/minecraft/structure/rule/blockentity/RuleBlockEntityModifierType register (Ljava/lang/String;Lcom/mojang/serialization/MapCodec;)Lnet/minecraft/structure/rule/blockentity/RuleBlockEntityModifierType;
+accessible method net/minecraft/structure/pool/SinglePoolElement <init> (Lcom/mojang/datafixers/util/Either;Lnet/minecraft/registry/entry/RegistryEntry;Lnet/minecraft/structure/pool/StructurePool$Projection;Ljava/util/Optional;)V

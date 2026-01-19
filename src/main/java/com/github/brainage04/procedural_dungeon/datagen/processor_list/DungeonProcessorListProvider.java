@@ -1,6 +1,9 @@
 package com.github.brainage04.procedural_dungeon.datagen.processor_list;
 
 import com.github.brainage04.procedural_dungeon.ProceduralDungeon;
+import com.github.brainage04.procedural_dungeon.datagen.common.DungeonTier;
+import com.github.brainage04.procedural_dungeon.datagen.core.ReplaceLootByOldTableModifier;
+import com.github.brainage04.procedural_dungeon.datagen.loot_table.DungeonLootTableProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricDynamicRegistryProvider;
 import net.minecraft.block.Block;
@@ -13,6 +16,7 @@ import net.minecraft.structure.rule.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 public class DungeonProcessorListProvider extends FabricDynamicRegistryProvider {
@@ -42,6 +46,14 @@ public class DungeonProcessorListProvider extends FabricDynamicRegistryProvider 
         return create(list);
     }
 
+    private static StructureProcessorRule getBasicRule(BasicProcessorRule rule) {
+        return new StructureProcessorRule(
+                new RandomBlockMatchRuleTest(rule.input, rule.probability),
+                AlwaysTrueRuleTest.INSTANCE,
+                rule.output.getDefaultState()
+        );
+    }
+
     private static void register(FabricDynamicRegistryProvider.Entries entries, RegistryKey<StructureProcessorList> key, List<StructureProcessor> list) {
         entries.add(key, new StructureProcessorList(list));
     }
@@ -51,11 +63,7 @@ public class DungeonProcessorListProvider extends FabricDynamicRegistryProvider 
 
         for (BasicProcessorRule rule : rules) {
             list.add(new RuleStructureProcessor(List.of(
-                    new StructureProcessorRule(
-                            new RandomBlockMatchRuleTest(rule.input, rule.probability),
-                            AlwaysTrueRuleTest.INSTANCE,
-                            rule.output.getDefaultState()
-                    )
+                    getBasicRule(rule)
             )));
         }
 
@@ -100,9 +108,42 @@ public class DungeonProcessorListProvider extends FabricDynamicRegistryProvider 
             new BlockRotStructureProcessor(0.98f)
     ));
 
-    // todo: implement custom rule test for NBT LootTable replacements (see pinned t3chat conversation)
-    private static final StructureProcessorList CHESTS = create(List.of(
-
+    // todo: generate this from tiers 1 to 5
+    private static final StructureProcessorList CHESTS_TIER_1 = create(List.of(
+            new RuleStructureProcessor(List.of(
+                    new StructureProcessorRule(
+                            new BlockMatchRuleTest(Blocks.CHEST),
+                            AlwaysTrueRuleTest.INSTANCE,
+                            AlwaysTruePosRuleTest.INSTANCE,
+                            Blocks.CHEST.getDefaultState(),
+                            new ReplaceLootByOldTableModifier(Map.ofEntries(
+                                    Map.entry(
+                                            DungeonLootTableProvider.getLootTableId("hallway_end"),
+                                            DungeonLootTableProvider.getLootTableId("hallway_end", DungeonTier.TIER_1)
+                                    ),
+                                    Map.entry(
+                                            DungeonLootTableProvider.getLootTableId("hallway_loot"),
+                                            DungeonLootTableProvider.getLootTableId("hallway_loot", DungeonTier.TIER_1)
+                                    ),
+                                    Map.entry(
+                                            DungeonLootTableProvider.getLootTableId("armorsmith"),
+                                            DungeonLootTableProvider.getLootTableId("armorsmith", DungeonTier.TIER_1)
+                                    ),
+                                    Map.entry(
+                                            DungeonLootTableProvider.getLootTableId("weaponsmith"),
+                                            DungeonLootTableProvider.getLootTableId("weaponsmith", DungeonTier.TIER_1)
+                                    ),
+                                    Map.entry(
+                                            DungeonLootTableProvider.getLootTableId("toolsmith"),
+                                            DungeonLootTableProvider.getLootTableId("toolsmith", DungeonTier.TIER_1)
+                                    ),
+                                    Map.entry(
+                                            DungeonLootTableProvider.getLootTableId("enchanter"),
+                                            DungeonLootTableProvider.getLootTableId("enchanter", DungeonTier.TIER_1)
+                                    )
+                            ))
+                    )
+            ))
     ));
 
     private static final StructureProcessorList COBBLESTONE = createBasic(List.of(

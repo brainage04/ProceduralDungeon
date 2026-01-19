@@ -25,13 +25,18 @@ public class DungeonLootTableProvider extends SimpleFabricLootTableProvider {
         this.registryLookup = registryLookup;
     }
 
+    public static Identifier getLootTableId(String tableName) {
+        return ProceduralDungeon.of(tableName);
+    }
+
+    public static Identifier getLootTableId(String tableName, DungeonTier tier) {
+        return ProceduralDungeon.of("%s/tier_%d".formatted(tableName, tier.tier));
+    }
+
     private static RegistryKey<LootTable> getLootTableRegistryKey(String tableName, DungeonTier tier) {
         return RegistryKey.of(
                 RegistryKeys.LOOT_TABLE,
-                Identifier.of(
-                        ProceduralDungeon.MOD_ID,
-                        "%s/tier_%d".formatted(tableName, tier.tier)
-                )
+                getLootTableId(tableName, tier)
         );
     }
 

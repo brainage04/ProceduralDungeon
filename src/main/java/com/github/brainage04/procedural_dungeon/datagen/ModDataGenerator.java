@@ -1,5 +1,6 @@
 package com.github.brainage04.procedural_dungeon.datagen;
 
+import com.github.brainage04.procedural_dungeon.datagen.core.ModRuleBlockEntityModifierTypes;
 import com.github.brainage04.procedural_dungeon.datagen.loot_table.DungeonLootTableProvider;
 import com.github.brainage04.procedural_dungeon.datagen.processor_list.DungeonProcessorListProvider;
 import com.github.brainage04.procedural_dungeon.datagen.structure.DungeonStructureProvider;
@@ -11,8 +12,12 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 public class ModDataGenerator implements DataGeneratorEntrypoint {
     @Override
     public void onInitializeDataGenerator(FabricDataGenerator gen) {
+        ModRuleBlockEntityModifierTypes.initialize();
+
         FabricDataGenerator.Pack pack = gen.createPack();
+
         pack.addProvider(DungeonLootTableProvider::new);
+
         pack.addProvider(DungeonProcessorListProvider::new);
         pack.addProvider(DungeonStructureProvider::new);
         pack.addProvider(DungeonStructureSetProvider::new);
