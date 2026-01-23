@@ -86,10 +86,10 @@ public class ProceduralDungeonProvider extends FabricDynamicRegistryProvider {
         ));
     }
 
-    private static Pair<StructurePoolElement, Integer> getWeightedSinglePoolElement(String hallway, RegistryEntry<StructureProcessorList> structureProcessorListEntry) {
+    private static Pair<StructurePoolElement, Integer> getWeightedSinglePoolElement(String name, RegistryEntry<StructureProcessorList> structureProcessorListEntry) {
         return Pair.of(
                 new SinglePoolElement(
-                        Either.left(ProceduralDungeon.of(hallway)),
+                        Either.left(ProceduralDungeon.of(name)),
                         structureProcessorListEntry,
                         StructurePool.Projection.RIGID,
                         Optional.of(StructureLiquidSettings.IGNORE_WATERLOGGING)
