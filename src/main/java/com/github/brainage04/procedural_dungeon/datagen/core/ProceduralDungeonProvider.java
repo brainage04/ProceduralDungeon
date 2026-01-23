@@ -37,7 +37,6 @@ import net.minecraft.world.gen.heightprovider.ConstantHeightProvider;
 import net.minecraft.world.gen.structure.DimensionPadding;
 import net.minecraft.world.gen.structure.JigsawStructure;
 import net.minecraft.world.gen.structure.Structure;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -87,7 +86,7 @@ public class ProceduralDungeonProvider extends FabricDynamicRegistryProvider {
         ));
     }
 
-    private static @NotNull Pair<StructurePoolElement, Integer> getWeightedSinglePoolElement(String hallway, RegistryEntry<StructureProcessorList> structureProcessorListEntry) {
+    private static Pair<StructurePoolElement, Integer> getWeightedSinglePoolElement(String hallway, RegistryEntry<StructureProcessorList> structureProcessorListEntry) {
         return Pair.of(
                 new SinglePoolElement(
                         Either.left(ProceduralDungeon.of(hallway)),
@@ -246,6 +245,7 @@ public class ProceduralDungeonProvider extends FabricDynamicRegistryProvider {
             for (DungeonTier tier : DungeonTier.values()) {
                 String key = RegistryKeyUtils.getKeyString(theme, tier);
 
+                // structure set -> structure -> structure pool -> processor list
                 StructureProcessorList processorList = generateProcessorList(entries, key, tier, theme);
                 StructurePool startPool = generateTemplatePools(entries, key, tier, theme, processorList);
                 Structure startStructure = generateStructure(entries, key, tier, theme, startPool);
@@ -279,7 +279,6 @@ public class ProceduralDungeonProvider extends FabricDynamicRegistryProvider {
     private static Structure generateStructure(Entries entries, String key, DungeonTier tier, DungeonTheme theme, StructurePool startPool) {
         RegistryEntryLookup<Biome> biomeLookup = entries.getLookup(RegistryKeys.BIOME);
 
-        String startKey = "%s/start".formatted(key);
         JigsawStructure startStructure = new JigsawStructure(
                 new Structure.Config.Builder(
                         biomeLookup.getOrThrow(BiomeTags.STRONGHOLD_HAS_STRUCTURE)
@@ -298,7 +297,7 @@ public class ProceduralDungeonProvider extends FabricDynamicRegistryProvider {
                 new DimensionPadding(0, 0),
                 StructureLiquidSettings.IGNORE_WATERLOGGING
         );
-        entries.add(RegistryKeyUtils.create(RegistryKeys.STRUCTURE, startKey), startStructure);
+        entries.add(RegistryKeyUtils.create(RegistryKeys.STRUCTURE, key), startStructure);
 
         return startStructure;
     }
