@@ -1,6 +1,7 @@
-package com.github.brainage04.procedural_dungeon.datagen.core;
+package com.github.brainage04.procedural_dungeon.datagen.processor_list;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.structure.rule.blockentity.RuleBlockEntityModifier;
@@ -12,8 +13,8 @@ import java.util.Map;
 
 public class ReplaceLootByOldTableModifier implements RuleBlockEntityModifier {
     // oldLootTable -> newLootTable
-    public static final Codec<ReplaceLootByOldTableModifier> CODEC =
-        RecordCodecBuilder.create(instance -> instance.group(
+    public static final MapCodec<ReplaceLootByOldTableModifier> CODEC =
+        RecordCodecBuilder.mapCodec(instance -> instance.group(
             Codec.unboundedMap(Identifier.CODEC, Identifier.CODEC)
                  .fieldOf("replacements")
                  .forGetter(mod -> mod.replacements)

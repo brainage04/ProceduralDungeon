@@ -9,7 +9,7 @@ import net.minecraft.registry.RegistryKey;
 public class RegistryKeyUtils {
     public static String getKeyString(DungeonTheme theme, DungeonTier tier) {
         return "dungeon/%s/%s/tier_%s".formatted(
-                theme.dimension,
+                theme.dimension.getValue().getPath(),
                 theme.asString(),
                 tier.tier
         );

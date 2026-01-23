@@ -34,10 +34,7 @@ public class DungeonLootTableProvider extends SimpleFabricLootTableProvider {
     }
 
     private static RegistryKey<LootTable> getLootTableRegistryKey(String tableName, DungeonTier tier) {
-        return RegistryKey.of(
-                RegistryKeys.LOOT_TABLE,
-                getLootTableId(tableName, tier)
-        );
+        return RegistryKey.of(RegistryKeys.LOOT_TABLE, getLootTableId(tableName, tier));
     }
 
     public static LootTable.Builder hallwayEnd(DungeonTier dungeonTier, CompletableFuture<RegistryWrapper.WrapperLookup> registryLookup) {
