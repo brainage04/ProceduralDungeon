@@ -42,8 +42,8 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Stream;
 
-public class ProceduralDungeonProvider extends FabricDynamicRegistryProvider {
-    public ProceduralDungeonProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
+public class ProceduralDungeonGenerator extends FabricDynamicRegistryProvider {
+    public ProceduralDungeonGenerator(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
         super(output, registriesFuture);
     }
 

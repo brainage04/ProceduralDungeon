@@ -1,6 +1,6 @@
 package com.github.brainage04.procedural_dungeon.datagen.common;
 
-import com.github.brainage04.procedural_dungeon.datagen.core.ProceduralDungeonProvider;
+import com.github.brainage04.procedural_dungeon.datagen.core.ProceduralDungeonGenerator;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.structure.processor.StructureProcessorList;
@@ -107,11 +107,11 @@ public enum DungeonTier {
 
     public StructureProcessorList getBaseProcessorList() {
         return switch (this) {
-            case TIER_1 -> ProceduralDungeonProvider.CHESTS_TIER_1;
-            case TIER_2 -> ProceduralDungeonProvider.CHESTS_TIER_2;
-            case TIER_3 -> ProceduralDungeonProvider.CHESTS_TIER_3;
-            case TIER_4 -> ProceduralDungeonProvider.CHESTS_TIER_4;
-            case TIER_5 -> ProceduralDungeonProvider.CHESTS_TIER_5;
+            case TIER_1 -> ProceduralDungeonGenerator.CHESTS_TIER_1;
+            case TIER_2 -> ProceduralDungeonGenerator.CHESTS_TIER_2;
+            case TIER_3 -> ProceduralDungeonGenerator.CHESTS_TIER_3;
+            case TIER_4 -> ProceduralDungeonGenerator.CHESTS_TIER_4;
+            case TIER_5 -> ProceduralDungeonGenerator.CHESTS_TIER_5;
         };
     }
 }
