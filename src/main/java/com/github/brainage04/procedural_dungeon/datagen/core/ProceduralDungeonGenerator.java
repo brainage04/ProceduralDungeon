@@ -7,37 +7,14 @@ import com.github.brainage04.procedural_dungeon.datagen.loot_table.DungeonLootTa
 import com.github.brainage04.procedural_dungeon.datagen.processor_list.ReplaceJigsawPoolProcessor;
 import com.github.brainage04.procedural_dungeon.datagen.processor_list.ReplaceLootByOldTableModifier;
 import com.github.brainage04.procedural_dungeon.util.RegistryKeyUtils;
-import com.mojang.datafixers.util.Either;
-import com.mojang.datafixers.util.Pair;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricDynamicRegistryProvider;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
-import net.minecraft.registry.RegistryEntryLookup;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.registry.tag.BiomeTags;
-import net.minecraft.structure.StructureLiquidSettings;
-import net.minecraft.structure.StructureSet;
-import net.minecraft.structure.pool.SinglePoolElement;
-import net.minecraft.structure.pool.StructurePool;
-import net.minecraft.structure.pool.StructurePoolElement;
-import net.minecraft.structure.pool.StructurePools;
 import net.minecraft.structure.processor.*;
 import net.minecraft.structure.rule.*;
-import net.minecraft.util.Identifier;
-import net.minecraft.world.Heightmap;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.GenerationStep;
-import net.minecraft.world.gen.StructureTerrainAdaptation;
-import net.minecraft.world.gen.YOffset;
-import net.minecraft.world.gen.chunk.placement.RandomSpreadStructurePlacement;
-import net.minecraft.world.gen.chunk.placement.SpreadType;
-import net.minecraft.world.gen.heightprovider.ConstantHeightProvider;
-import net.minecraft.world.gen.structure.DimensionPadding;
-import net.minecraft.world.gen.structure.JigsawStructure;
-import net.minecraft.world.gen.structure.Structure;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -85,17 +62,6 @@ public class ProceduralDungeonGenerator extends FabricDynamicRegistryProvider {
                         )
                 ))
         ));
-    }
-
-    private static Pair<StructurePoolElement, Integer> getWeightedSinglePoolElement(String name, RegistryEntry<StructureProcessorList> structureProcessorListEntry) {
-        return Pair.of(
-                new SinglePoolElement(
-                        Either.left(ProceduralDungeon.of(name)),
-                        structureProcessorListEntry,
-                        StructurePool.Projection.RIGID,
-                        Optional.of(StructureLiquidSettings.IGNORE_WATERLOGGING)
-                ), 1
-        );
     }
 
     private record BasicProcessorRule(Block input, float probability, Block output) {}
@@ -245,141 +211,9 @@ public class ProceduralDungeonGenerator extends FabricDynamicRegistryProvider {
         for (DungeonTheme theme : DungeonTheme.values()) {
             for (DungeonTier tier : DungeonTier.values()) {
                 String key = RegistryKeyUtils.getKeyString(theme, tier);
-
-                // structure set -> structure -> structure pool -> processor list
-                StructureProcessorList processorList = generateProcessorList(entries, key, tier, theme);
-                StructurePool startPool = generateTemplatePools(entries, key, processorList);
-                Structure startStructure = generateStructure(entries, key, tier, startPool);
-                generateStructureSet(entries, key, tier, theme, startStructure);
+                generateProcessorList(entries, key, tier, theme);
             }
         }
-    }
-
-    private static void generateStructureSet(Entries entries, String key, DungeonTier tier, DungeonTheme theme, Structure start) {
-        if (tier.spacing <= tier.separation) {
-            throw new IllegalArgumentException("Spacing (%d) must be larger than separation (%d)".formatted(tier.spacing, tier.separation));
-        }
-
-        Random random = new Random();
-
-        entries.add(
-                RegistryKeyUtils.create(RegistryKeys.STRUCTURE_SET, key),
-                new StructureSet(
-                        RegistryEntry.of(start),
-                        new RandomSpreadStructurePlacement(
-                                tier.spacing,
-                                tier.separation,
-                                SpreadType.LINEAR,
-                                random.nextInt(0, Integer.MAX_VALUE)
-                        )
-                )
-        );
-
-    }
-
-    private static Structure generateStructure(Entries entries, String key, DungeonTier tier, StructurePool startPool) {
-        RegistryEntryLookup<Biome> biomeLookup = entries.getLookup(RegistryKeys.BIOME);
-
-        JigsawStructure startStructure = new JigsawStructure(
-                new Structure.Config.Builder(
-                        biomeLookup.getOrThrow(BiomeTags.STRONGHOLD_HAS_STRUCTURE)
-                )
-                        .step(GenerationStep.Feature.UNDERGROUND_STRUCTURES)
-                        .terrainAdaptation(StructureTerrainAdaptation.BURY)
-                        .build(),
-                RegistryEntry.of(startPool),
-                Optional.of(Identifier.ofVanilla("start")),
-                tier.size,
-                ConstantHeightProvider.create(YOffset.fixed(0)),
-                true,
-                Optional.of(Heightmap.Type.WORLD_SURFACE_WG),
-                new JigsawStructure.MaxDistanceFromCenter(116),
-                List.of(),
-                new DimensionPadding(0, 0),
-                StructureLiquidSettings.IGNORE_WATERLOGGING
-        );
-        var structureKey = RegistryKeyUtils.create(RegistryKeys.STRUCTURE, key);
-        entries.add(structureKey, startStructure);
-
-        return startStructure;
-    }
-
-    private static StructurePool generateTemplatePools(Entries entries, String key, StructureProcessorList structureProcessorList) {
-        RegistryEntryLookup<StructurePool> structurePoolLookup =
-                entries.getLookup(RegistryKeys.TEMPLATE_POOL);
-        RegistryEntry<StructurePool> empty =
-                structurePoolLookup.getOrThrow(StructurePools.EMPTY);
-        RegistryEntry<StructureProcessorList> structureProcessorListEntry =
-                RegistryEntry.of(structureProcessorList);
-
-        String startKey = "%s/start".formatted(key);
-        StructurePool startStructure = new StructurePool(
-                empty,
-                List.of(
-                        getWeightedSinglePoolElement("dungeon/start", structureProcessorListEntry)
-                )
-        );
-        var startPoolKey = RegistryKeyUtils.create(RegistryKeys.TEMPLATE_POOL, startKey);
-        entries.add(startPoolKey, startStructure);
-
-        StructurePool hallway = new StructurePool(
-                empty,
-                List.of(
-                        getWeightedSinglePoolElement("dungeon/hallway/small", structureProcessorListEntry),
-                        getWeightedSinglePoolElement("dungeon/hallway/medium", structureProcessorListEntry),
-                        getWeightedSinglePoolElement("dungeon/hallway/large", structureProcessorListEntry)
-                )
-        );
-        entries.add(RegistryKeyUtils.create(RegistryKeys.TEMPLATE_POOL, "%s/hallway".formatted(key)), hallway);
-
-        StructurePool hallwayEnd = new StructurePool(
-                empty,
-                List.of(
-                        getWeightedSinglePoolElement("dungeon/hallway/end/small", structureProcessorListEntry),
-                        getWeightedSinglePoolElement("dungeon/hallway/end/medium", structureProcessorListEntry),
-                        getWeightedSinglePoolElement("dungeon/hallway/end/large", structureProcessorListEntry)
-                )
-        );
-        entries.add(RegistryKeyUtils.create(RegistryKeys.TEMPLATE_POOL, "%s/hallway/end".formatted(key)), hallwayEnd);
-
-        StructurePool hallwayLoot = new StructurePool(
-                empty,
-                List.of(
-                        getWeightedSinglePoolElement("dungeon/hallway/loot/small", structureProcessorListEntry),
-                        getWeightedSinglePoolElement("dungeon/hallway/loot/medium", structureProcessorListEntry),
-                        getWeightedSinglePoolElement("dungeon/hallway/loot/large", structureProcessorListEntry)
-                )
-        );
-        entries.add(RegistryKeyUtils.create(RegistryKeys.TEMPLATE_POOL, "%s/hallway/loot".formatted(key)), hallwayLoot);
-
-        StructurePool hallwayRoom = new StructurePool(
-                empty,
-                List.of(
-                        getWeightedSinglePoolElement("dungeon/hallway/room/armorsmith", structureProcessorListEntry),
-                        getWeightedSinglePoolElement("dungeon/hallway/room/enchanter", structureProcessorListEntry),
-                        getWeightedSinglePoolElement("dungeon/hallway/room/spawner_corridor", structureProcessorListEntry),
-                        getWeightedSinglePoolElement("dungeon/hallway/room/staircase_diagonal_down", structureProcessorListEntry),
-                        getWeightedSinglePoolElement("dungeon/hallway/room/staircase_diagonal_up", structureProcessorListEntry),
-                        getWeightedSinglePoolElement("dungeon/hallway/room/staircase_spiral_down", structureProcessorListEntry),
-                        getWeightedSinglePoolElement("dungeon/hallway/room/staircase_spiral_up", structureProcessorListEntry),
-                        getWeightedSinglePoolElement("dungeon/hallway/room/toolsmith", structureProcessorListEntry),
-                        getWeightedSinglePoolElement("dungeon/hallway/room/weaponsmith", structureProcessorListEntry)
-                )
-        );
-        entries.add(RegistryKeyUtils.create(RegistryKeys.TEMPLATE_POOL, "%s/hallway/room".formatted(key)), hallwayRoom);
-
-        StructurePool hallwayTrap = new StructurePool(
-                empty,
-                List.of(
-                        getWeightedSinglePoolElement("dungeon/hallway/trap/dripstone", structureProcessorListEntry),
-                        getWeightedSinglePoolElement("dungeon/hallway/trap/lava", structureProcessorListEntry),
-                        getWeightedSinglePoolElement("dungeon/hallway/trap/negative_potions", structureProcessorListEntry),
-                        getWeightedSinglePoolElement("dungeon/hallway/trap/spawners", structureProcessorListEntry)
-                )
-        );
-        entries.add(RegistryKeyUtils.create(RegistryKeys.TEMPLATE_POOL, "%s/hallway/trap".formatted(key)), hallwayTrap);
-
-        return startStructure;
     }
 
     private static StructureProcessorList generateProcessorList(Entries entries, String key, DungeonTier tier, DungeonTheme theme) {

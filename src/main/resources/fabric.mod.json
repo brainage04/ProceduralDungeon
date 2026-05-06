@@ -20,6 +20,9 @@
 		],
 		"fabric-datagen": [
 			"com.github.brainage04.procedural_dungeon.datagen.ModDataGenerator"
+		],
+		"fabric-gametest": [
+			"com.github.brainage04.procedural_dungeon.test.DungeonVariantGameTests"
 		]
 	},
 	"mixins": [

@@ -3,6 +3,7 @@ package com.github.brainage04.procedural_dungeon;
 import com.github.brainage04.procedural_dungeon.command.core.ModCommands;
 import com.github.brainage04.procedural_dungeon.datagen.processor_list.ModRuleBlockEntityModifierTypes;
 import com.github.brainage04.procedural_dungeon.datagen.processor_list.ModStructureProcessorTypes;
+import com.github.brainage04.procedural_dungeon.datagen.structure.ModStructurePoolElementTypes;
 import net.fabricmc.api.ModInitializer;
 
 import net.minecraft.util.Identifier;
@@ -25,6 +26,7 @@ public class ProceduralDungeon implements ModInitializer {
         // datagen
         ModRuleBlockEntityModifierTypes.initialize();
         ModStructureProcessorTypes.initialize();
+        ModStructurePoolElementTypes.initialize();
 
         ModCommands.initialize();
 
