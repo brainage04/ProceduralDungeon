@@ -11,6 +11,11 @@ base {
 }
 
 repositories {
+	// Loom / Minecraft / Fabric
+	mavenCentral()
+	mavenLocal()
+	maven { url "https://libraries.minecraft.net" }
+	maven { url "https://maven.fabricmc.net/" }
 
 }
 
@@ -21,22 +26,50 @@ dependencies {
 }
 
 processResources {
-	inputs.property "version", project.version
+	inputs.property "mod_id", project.properties.mod_id
+	inputs.property "mod_version", project.version
+	inputs.property "mod_name", project.properties.mod_name
+	inputs.property "loader_version", project.properties.loader_version
+	inputs.property "minecraft_version", project.properties.minecraft_version
+	inputs.property "java_version", project.properties.java_version
 
 	filesMatching("fabric.mod.json") {
-		expand "version": inputs.properties.version
+		expand([
+				"mod_id": inputs.properties.mod_id,
+				"mod_version": inputs.properties.mod_version,
+				"mod_name": inputs.properties.mod_name,
+				"loader_version": inputs.properties.loader_version,
+				"minecraft_version": inputs.properties.minecraft_version,
+				"java_version": inputs.properties.java_version,
+		])
+	}
+}
+
+loom {
+	mods {
+		procedural_dungeon {
+			sourceSet sourceSets.main
+		}
+	}
+
+	accessWidenerPath = file("src/main/resources/procedural_dungeon.accesswidener")
+}
+
+fabricApi {
+	configureDataGeneration() {
+		client = false
 	}
 }
 
 tasks.withType(JavaCompile).configureEach {
-	it.options.release = 25
+	it.options.release = project.java_version.toInteger()
 }
 
 java {
 	withSourcesJar()
 
-	sourceCompatibility = JavaVersion.VERSION_25
-	targetCompatibility = JavaVersion.VERSION_25
+	sourceCompatibility = JavaVersion.toVersion(project.java_version)
+	targetCompatibility = JavaVersion.toVersion(project.java_version)
 }
 
 jar {
@@ -47,12 +80,16 @@ jar {
 	}
 }
 
-fabricApi {
-	configureDataGeneration() {
-		client = false
+publishing {
+	publications {
+		create("mavenJava", MavenPublication) {
+			artifactId = project.archives_base_name
+			from components.java
+		}
 	}
 }
 
-loom {
-    accessWidenerPath = file("src/main/resources/procedural_dungeon.accesswidener")
+test {
+	useJUnitPlatform()
+	systemProperty "fabric.side", "server"
 }
