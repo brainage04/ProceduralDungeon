@@ -2,11 +2,10 @@ package com.github.brainage04.procedural_dungeon.datagen.structure;
 
 import com.github.brainage04.procedural_dungeon.ProceduralDungeon;
 import com.github.brainage04.procedural_dungeon.datagen.common.DungeonTier;
-import net.minecraft.util.Identifier;
-
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import net.minecraft.resources.Identifier;
 
 public final class DungeonJigsawPoolReplacements {
     private static final String DUNGEON_PREFIX = "dungeon/";
@@ -39,7 +38,7 @@ public final class DungeonJigsawPoolReplacements {
 
         String path = pool.getPath();
         if (path.equals(HALLWAY_PREFIX) || path.startsWith(HALLWAY_PREFIX + "/")) {
-            return Identifier.of(variant.getNamespace(), "%s/%s".formatted(variant.getPath(), path.substring(DUNGEON_PREFIX.length())));
+            return Identifier.fromNamespaceAndPath(variant.getNamespace(), "%s/%s".formatted(variant.getPath(), path.substring(DUNGEON_PREFIX.length())));
         }
 
         if (path.equals(BASE_SPAWNER_POOL)) {

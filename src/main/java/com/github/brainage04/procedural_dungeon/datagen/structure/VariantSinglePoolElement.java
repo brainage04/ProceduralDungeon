@@ -3,26 +3,25 @@ package com.github.brainage04.procedural_dungeon.datagen.structure;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.structure.StructureLiquidSettings;
-import net.minecraft.structure.StructureTemplate;
-import net.minecraft.structure.StructureTemplateManager;
-import net.minecraft.structure.pool.SinglePoolElement;
-import net.minecraft.structure.pool.StructurePool;
-import net.minecraft.structure.pool.StructurePoolElement;
-import net.minecraft.structure.pool.StructurePoolElementType;
-import net.minecraft.util.BlockRotation;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockBox;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3i;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.world.StructureWorldAccess;
-import net.minecraft.world.gen.StructureAccessor;
-import net.minecraft.world.gen.chunk.ChunkGenerator;
-
 import java.util.List;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Vec3i;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.Identifier;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.StructureManager;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.levelgen.structure.pools.SinglePoolElement;
+import net.minecraft.world.level.levelgen.structure.pools.StructurePoolElement;
+import net.minecraft.world.level.levelgen.structure.pools.StructurePoolElementType;
+import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
+import net.minecraft.world.level.levelgen.structure.templatesystem.LiquidSettings;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 
 public class VariantSinglePoolElement extends StructurePoolElement {
     public static final MapCodec<VariantSinglePoolElement> CODEC =
@@ -44,26 +43,26 @@ public class VariantSinglePoolElement extends StructurePoolElement {
     }
 
     @Override
-    public Vec3i getStart(StructureTemplateManager structureTemplateManager, BlockRotation rotation) {
-        return delegate.getStart(structureTemplateManager, rotation);
+    public Vec3i getSize(StructureTemplateManager structureTemplateManager, Rotation rotation) {
+        return delegate.getSize(structureTemplateManager, rotation);
     }
 
     @Override
-    public List<StructureTemplate.JigsawBlockInfo> getStructureBlockInfos(
+    public List<StructureTemplate.JigsawBlockInfo> getShuffledJigsawBlocks(
             StructureTemplateManager structureTemplateManager,
             BlockPos pos,
-            BlockRotation rotation,
-            Random random
+            Rotation rotation,
+            RandomSource random
     ) {
-        return delegate.getStructureBlockInfos(structureTemplateManager, pos, rotation, random)
+        return delegate.getShuffledJigsawBlocks(structureTemplateManager, pos, rotation, random)
                 .stream()
                 .map(this::replacePool)
                 .toList();
     }
 
     private StructureTemplate.JigsawBlockInfo replacePool(StructureTemplate.JigsawBlockInfo info) {
-        Identifier replacement = DungeonJigsawPoolReplacements.getReplacement(info.pool().getValue(), variant, spawnerTier);
-        if (replacement.equals(info.pool().getValue())) {
+        Identifier replacement = DungeonJigsawPoolReplacements.getReplacement(info.pool().identifier(), variant, spawnerTier);
+        if (replacement.equals(info.pool().identifier())) {
             return info;
         }
 
@@ -71,7 +70,7 @@ public class VariantSinglePoolElement extends StructurePoolElement {
                 info.info(),
                 info.jointType(),
                 info.name(),
-                RegistryKey.of(RegistryKeys.TEMPLATE_POOL, replacement),
+                ResourceKey.create(Registries.TEMPLATE_POOL, replacement),
                 info.target(),
                 info.placementPriority(),
                 info.selectionPriority()
@@ -79,29 +78,29 @@ public class VariantSinglePoolElement extends StructurePoolElement {
     }
 
     @Override
-    public BlockBox getBoundingBox(StructureTemplateManager structureTemplateManager, BlockPos pos, BlockRotation rotation) {
+    public BoundingBox getBoundingBox(StructureTemplateManager structureTemplateManager, BlockPos pos, Rotation rotation) {
         return delegate.getBoundingBox(structureTemplateManager, pos, rotation);
     }
 
     @Override
-    public boolean generate(
+    public boolean place(
             StructureTemplateManager structureTemplateManager,
-            StructureWorldAccess world,
-            StructureAccessor structureAccessor,
+            WorldGenLevel world,
+            StructureManager structureAccessor,
             ChunkGenerator chunkGenerator,
             BlockPos pos,
             BlockPos pivot,
-            BlockRotation rotation,
-            BlockBox box,
-            Random random,
-            StructureLiquidSettings liquidSettings,
+            Rotation rotation,
+            BoundingBox box,
+            RandomSource random,
+            LiquidSettings liquidSettings,
             boolean keepJigsaws
     ) {
-        return delegate.generate(structureTemplateManager, world, structureAccessor, chunkGenerator, pos, pivot, rotation, box, random, liquidSettings, keepJigsaws);
+        return delegate.place(structureTemplateManager, world, structureAccessor, chunkGenerator, pos, pivot, rotation, box, random, liquidSettings, keepJigsaws);
     }
 
     @Override
-    public StructurePoolElement setProjection(StructurePool.Projection projection) {
+    public StructurePoolElement setProjection(StructureTemplatePool.Projection projection) {
         delegate.setProjection(projection);
         return super.setProjection(projection);
     }

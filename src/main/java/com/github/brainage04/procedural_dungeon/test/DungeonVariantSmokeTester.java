@@ -4,20 +4,19 @@ import com.github.brainage04.procedural_dungeon.datagen.common.DungeonTheme;
 import com.github.brainage04.procedural_dungeon.datagen.common.DungeonTier;
 import com.github.brainage04.procedural_dungeon.util.RegistryKeyUtils;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.server.command.PlaceCommand;
-import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.gen.structure.Structure;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.commands.PlaceCommand;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.structure.Structure;
+import net.minecraft.world.phys.Vec3;
 
 public class DungeonVariantSmokeTester {
     public static final int DEFAULT_COUNT = 12;
@@ -26,13 +25,13 @@ public class DungeonVariantSmokeTester {
 
     public record Result(int attempted, List<String> variants) {}
 
-    public static Result placeRandomVariants(ServerCommandSource source, int count, int spacing, long seed)
+    public static Result placeRandomVariants(CommandSourceStack source, int count, int spacing, long seed)
             throws CommandSyntaxException {
-        BlockPos origin = BlockPos.ofFloored(source.getPosition());
+        BlockPos origin = BlockPos.containing(source.getPosition());
         return placeRandomVariants(source, origin, count, spacing, seed);
     }
 
-    public static Result placeRandomVariants(ServerCommandSource source, BlockPos origin, int count, int spacing, long seed)
+    public static Result placeRandomVariants(CommandSourceStack source, BlockPos origin, int count, int spacing, long seed)
             throws CommandSyntaxException {
         List<String> variants = new ArrayList<>(getVariantKeys());
         Collections.shuffle(variants, new Random(seed));
@@ -40,16 +39,16 @@ public class DungeonVariantSmokeTester {
         int attempts = Math.min(count, variants.size());
         int columns = (int) Math.ceil(Math.sqrt(attempts));
         List<String> placed = new ArrayList<>(attempts);
-        ServerWorld world = source.getWorld();
+        ServerLevel world = source.getLevel();
 
         for (int i = 0; i < attempts; i++) {
             String variant = variants.get(i);
-            BlockPos pos = origin.add((i % columns) * spacing, 0, (i / columns) * spacing);
+            BlockPos pos = origin.offset((i % columns) * spacing, 0, (i / columns) * spacing);
             loadNearbyChunks(world, pos, 8);
 
-            RegistryKey<Structure> key = RegistryKeyUtils.create(RegistryKeys.STRUCTURE, variant);
-            var structure = source.getRegistryManager().getOrThrow(RegistryKeys.STRUCTURE).getOrThrow(key);
-            PlaceCommand.executePlaceStructure(source.withPosition(Vec3d.ofBottomCenter(pos)), structure, pos);
+            ResourceKey<Structure> key = RegistryKeyUtils.create(Registries.STRUCTURE, variant);
+            var structure = source.registryAccess().lookupOrThrow(Registries.STRUCTURE).getOrThrow(key);
+            PlaceCommand.placeStructure(source.withPosition(Vec3.atBottomCenterOf(pos)), structure, pos);
             placed.add(variant);
         }
 
@@ -68,11 +67,11 @@ public class DungeonVariantSmokeTester {
         return variants;
     }
 
-    private static void loadNearbyChunks(ServerWorld world, BlockPos pos, int radius) {
-        ChunkPos center = new ChunkPos(pos);
+    private static void loadNearbyChunks(ServerLevel world, BlockPos pos, int radius) {
+        ChunkPos center = ChunkPos.containing(pos);
 
-        for (int x = center.x - radius; x <= center.x + radius; x++) {
-            for (int z = center.z - radius; z <= center.z + radius; z++) {
+        for (int x = center.x() - radius; x <= center.x() + radius; x++) {
+            for (int z = center.z() - radius; z <= center.z() + radius; z++) {
                 world.getChunk(x, z);
             }
         }

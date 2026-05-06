@@ -8,56 +8,57 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import net.minecraft.command.suggestion.SuggestionProviders;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.server.command.PlaceCommand;
-import net.minecraft.structure.pool.StructurePool;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
+import net.minecraft.commands.synchronization.SuggestionProviders;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.Identifier;
+import net.minecraft.server.commands.PlaceCommand;
+import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 
-import static net.minecraft.server.command.CommandManager.argument;
-import static net.minecraft.server.command.CommandManager.literal;
+import static net.minecraft.commands.Commands.argument;
+import static net.minecraft.commands.Commands.literal;
 
 public class GenerateDungeonCommand {
-    public static int execute(ServerCommandSource source, String themeString, int tierNumber, int depth) throws CommandSyntaxException {
+    public static int execute(CommandSourceStack source, String themeString, int tierNumber, int depth) throws CommandSyntaxException {
         DungeonTheme theme = getTheme(themeString);
         if (theme == null) {
-            source.sendError(Text.literal("Invalid dungeon theme!"));
+            source.sendFailure(Component.literal("Invalid dungeon theme!"));
             return 0;
         }
 
         DungeonTier tier = getTier(tierNumber);
         String key = RegistryKeyUtils.getKeyString(theme, tier);
-        RegistryKey<StructurePool> poolKey = RegistryKeyUtils.create(RegistryKeys.TEMPLATE_POOL, "%s/start".formatted(key));
-        var pool = source.getRegistryManager().getOrThrow(RegistryKeys.TEMPLATE_POOL).getOrThrow(poolKey);
-        BlockPos pos = BlockPos.ofFloored(source.getPosition());
+        ResourceKey<StructureTemplatePool> poolKey = RegistryKeyUtils.create(Registries.TEMPLATE_POOL, "%s/start".formatted(key));
+        var pool = source.registryAccess().lookupOrThrow(Registries.TEMPLATE_POOL).getOrThrow(poolKey);
+        BlockPos pos = BlockPos.containing(source.getPosition());
 
-        source.sendFeedback(() -> Text.literal(
+        source.sendSuccess(() -> Component.literal(
                 "Generating Tier %d %s dungeon at jigsaw depth %d..."
                         .formatted(tier.tier, theme.getName().getString(), depth)
         ), true);
 
-        PlaceCommand.executePlaceJigsaw(
-                source.withSilent(),
+        PlaceCommand.placeJigsaw(
+                source.withSuppressedOutput(),
                 pool,
-                Identifier.ofVanilla("start"),
+                Identifier.withDefaultNamespace("start"),
                 depth,
                 pos
         );
 
-        source.sendFeedback(() -> Text.literal(
+        source.sendSuccess(() -> Component.literal(
                 "Generated %s at %d %d %d.".formatted(key, pos.getX(), pos.getY(), pos.getZ())
         ), true);
 
         return depth;
     }
 
-    public static void initialize(CommandDispatcher<ServerCommandSource> dispatcher) {
+    public static void initialize(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(literal("generatedungeon")
-                .requires(source -> source.hasPermissionLevel(2))
+                .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                 .then(argument("theme", StringArgumentType.word())
                         .suggests(SuggestionProviders.cast(ModSuggestionProviders.DUNGEON_THEMES))
                         .then(argument("tier", IntegerArgumentType.integer(1, 5))
@@ -78,7 +79,7 @@ public class GenerateDungeonCommand {
 
     private static DungeonTheme getTheme(String value) {
         for (DungeonTheme theme : DungeonTheme.values()) {
-            if (theme.asString().equals(value) || theme.name().equalsIgnoreCase(value)) {
+            if (theme.getSerializedName().equals(value) || theme.name().equalsIgnoreCase(value)) {
                 return theme;
             }
         }

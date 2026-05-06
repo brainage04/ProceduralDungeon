@@ -1,9 +1,9 @@
 package com.github.brainage04.procedural_dungeon.datagen.common;
 
 import com.github.brainage04.procedural_dungeon.datagen.core.ProceduralDungeonGenerator;
-import net.minecraft.item.Item;
-import net.minecraft.item.Items;
-import net.minecraft.structure.processor.StructureProcessorList;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorList;
 
 public enum DungeonTier {
     TIER_1(1, 8, 32, 16,

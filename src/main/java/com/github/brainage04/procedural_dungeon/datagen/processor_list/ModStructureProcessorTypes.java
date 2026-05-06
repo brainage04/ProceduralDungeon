@@ -1,14 +1,14 @@
 package com.github.brainage04.procedural_dungeon.datagen.processor_list;
 
 import com.github.brainage04.procedural_dungeon.ProceduralDungeon;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.structure.processor.StructureProcessorType;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 
 public class ModStructureProcessorTypes {
     public static final StructureProcessorType<ReplaceJigsawPoolProcessor> REPLACE_JIGSAW_POOLS =
             Registry.register(
-                    Registries.STRUCTURE_PROCESSOR,
+                    BuiltInRegistries.STRUCTURE_PROCESSOR,
                     ProceduralDungeon.of("replace_jigsaw_pools"),
                     () -> ReplaceJigsawPoolProcessor.CODEC
             );

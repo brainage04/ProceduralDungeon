@@ -5,8 +5,7 @@ import com.github.brainage04.procedural_dungeon.datagen.processor_list.ModRuleBl
 import com.github.brainage04.procedural_dungeon.datagen.processor_list.ModStructureProcessorTypes;
 import com.github.brainage04.procedural_dungeon.datagen.structure.ModStructurePoolElementTypes;
 import net.fabricmc.api.ModInitializer;
-
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,7 +15,7 @@ public class ProceduralDungeon implements ModInitializer {
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_NAME);
 
     public static Identifier of(String namespace) {
-        return Identifier.of(MOD_ID, namespace);
+        return Identifier.fromNamespaceAndPath(MOD_ID, namespace);
     }
 
 	@Override

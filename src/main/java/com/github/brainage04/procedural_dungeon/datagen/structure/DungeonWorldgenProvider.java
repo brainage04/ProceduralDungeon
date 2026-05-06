@@ -6,13 +6,12 @@ import com.github.brainage04.procedural_dungeon.datagen.common.DungeonTier;
 import com.github.brainage04.procedural_dungeon.util.RegistryKeyUtils;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import net.minecraft.data.DataOutput;
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
+import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
-import net.minecraft.data.DataWriter;
-import net.minecraft.util.Identifier;
-import net.minecraft.world.World;
-
+import net.minecraft.data.PackOutput;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.level.Level;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -23,20 +22,20 @@ public class DungeonWorldgenProvider implements DataProvider {
     private static final int PLACEMENT_SPACING = DungeonTier.TIER_1.spacing;
     private static final int PLACEMENT_SEPARATION = DungeonTier.TIER_1.separation;
 
-    private final FabricDataOutput output;
-    private final DataOutput.PathResolver templatePoolResolver;
-    private final DataOutput.PathResolver structureResolver;
-    private final DataOutput.PathResolver structureSetResolver;
+    private final FabricPackOutput output;
+    private final PackOutput.PathProvider templatePoolResolver;
+    private final PackOutput.PathProvider structureResolver;
+    private final PackOutput.PathProvider structureSetResolver;
 
-    public DungeonWorldgenProvider(FabricDataOutput output) {
+    public DungeonWorldgenProvider(FabricPackOutput output) {
         this.output = output;
-        this.templatePoolResolver = output.getResolver(DataOutput.OutputType.DATA_PACK, "worldgen/template_pool");
-        this.structureResolver = output.getResolver(DataOutput.OutputType.DATA_PACK, "worldgen/structure");
-        this.structureSetResolver = output.getResolver(DataOutput.OutputType.DATA_PACK, "worldgen/structure_set");
+        this.templatePoolResolver = output.createPathProvider(PackOutput.Target.DATA_PACK, "worldgen/template_pool");
+        this.structureResolver = output.createPathProvider(PackOutput.Target.DATA_PACK, "worldgen/structure");
+        this.structureSetResolver = output.createPathProvider(PackOutput.Target.DATA_PACK, "worldgen/structure_set");
     }
 
     @Override
-    public CompletableFuture<?> run(DataWriter writer) {
+    public CompletableFuture<?> run(CachedOutput writer) {
         List<CompletableFuture<?>> futures = new ArrayList<>();
         Map<Identifier, List<WeightedStructure>> structureSets = new LinkedHashMap<>();
 
@@ -46,24 +45,24 @@ public class DungeonWorldgenProvider implements DataProvider {
                 Identifier id = ProceduralDungeon.of(key);
 
                 addTemplatePools(writer, futures, key, id);
-                futures.add(DataProvider.writeToPath(writer, createStructureJson(key, tier, theme), structureResolver.resolveJson(id)));
+                futures.add(DataProvider.saveStable(writer, createStructureJson(key, tier, theme), structureResolver.json(id)));
                 structureSets.computeIfAbsent(createStructureSetId(theme), ignored -> new ArrayList<>())
                         .add(new WeightedStructure(id, getTierWeight(tier)));
             }
         }
 
         for (Map.Entry<Identifier, List<WeightedStructure>> entry : structureSets.entrySet()) {
-            futures.add(DataProvider.writeToPath(
+            futures.add(DataProvider.saveStable(
                     writer,
                     createStructureSetJson(entry.getKey(), entry.getValue()),
-                    structureSetResolver.resolveJson(entry.getKey())
+                    structureSetResolver.json(entry.getKey())
             ));
         }
 
         return CompletableFuture.allOf(futures.toArray(CompletableFuture[]::new));
     }
 
-    private void addTemplatePools(DataWriter writer, List<CompletableFuture<?>> futures, String key, Identifier variantId) {
+    private void addTemplatePools(CachedOutput writer, List<CompletableFuture<?>> futures, String key, Identifier variantId) {
         addTemplatePool(writer, futures, "%s/start".formatted(key), List.of(
                 poolElement("dungeon/start", variantId)
         ));
@@ -106,7 +105,7 @@ public class DungeonWorldgenProvider implements DataProvider {
         ));
     }
 
-    private void addTemplatePool(DataWriter writer, List<CompletableFuture<?>> futures, String path, List<JsonObject> elements) {
+    private void addTemplatePool(CachedOutput writer, List<CompletableFuture<?>> futures, String path, List<JsonObject> elements) {
         JsonObject pool = new JsonObject();
         pool.addProperty("fallback", "minecraft:empty");
 
@@ -116,7 +115,7 @@ public class DungeonWorldgenProvider implements DataProvider {
         }
         pool.add("elements", array);
 
-        futures.add(DataProvider.writeToPath(writer, pool, templatePoolResolver.resolveJson(ProceduralDungeon.of(path))));
+        futures.add(DataProvider.saveStable(writer, pool, templatePoolResolver.json(ProceduralDungeon.of(path))));
     }
 
     private static JsonObject poolElement(String structure, Identifier variantId) {
@@ -164,11 +163,11 @@ public class DungeonWorldgenProvider implements DataProvider {
     }
 
     private static String getBiomeTag(DungeonTheme theme) {
-        if (theme.dimension.equals(World.NETHER)) {
+        if (theme.dimension.equals(Level.NETHER)) {
             return "#minecraft:is_nether";
         }
 
-        if (theme.dimension.equals(World.END)) {
+        if (theme.dimension.equals(Level.END)) {
             return "#minecraft:is_end";
         }
 
@@ -197,7 +196,7 @@ public class DungeonWorldgenProvider implements DataProvider {
     }
 
     private static Identifier createStructureSetId(DungeonTheme theme) {
-        return ProceduralDungeon.of("dungeon/%s".formatted(theme.dimension.getValue().getPath()));
+        return ProceduralDungeon.of("dungeon/%s".formatted(theme.dimension.identifier().getPath()));
     }
 
     private static int getTierWeight(DungeonTier tier) {

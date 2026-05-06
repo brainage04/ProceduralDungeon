@@ -3,13 +3,12 @@ package com.github.brainage04.procedural_dungeon.datagen.processor_list;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.structure.rule.blockentity.RuleBlockEntityModifier;
-import net.minecraft.structure.rule.blockentity.RuleBlockEntityModifierType;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.random.Random;
-
 import java.util.Map;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.Identifier;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.levelgen.structure.templatesystem.rule.blockentity.RuleBlockEntityModifier;
+import net.minecraft.world.level.levelgen.structure.templatesystem.rule.blockentity.RuleBlockEntityModifierType;
 
 public class ReplaceLootByOldTableModifier implements RuleBlockEntityModifier {
     // oldLootTable -> newLootTable
@@ -27,7 +26,7 @@ public class ReplaceLootByOldTableModifier implements RuleBlockEntityModifier {
     }
 
     @Override
-    public NbtCompound modifyBlockEntityNbt(Random random, NbtCompound nbt) {
+    public CompoundTag apply(RandomSource random, CompoundTag nbt) {
         if (nbt == null) return null;
 
         String oldLootTable = nbt.getString("LootTable").orElse(null);
@@ -39,7 +38,7 @@ public class ReplaceLootByOldTableModifier implements RuleBlockEntityModifier {
         Identifier newId = replacements.get(oldId);
         if (newId == null) return nbt;
 
-        NbtCompound copy = nbt.copy();
+        CompoundTag copy = nbt.copy();
         copy.putString("LootTable", newId.toString());
         copy.putLong("LootTableSeed", random.nextLong());
 

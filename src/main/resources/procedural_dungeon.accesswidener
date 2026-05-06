@@ -1,2 +1,2 @@
-accessWidener v2 named
-accessible method net/minecraft/structure/pool/SinglePoolElement <init> (Lcom/mojang/datafixers/util/Either;Lnet/minecraft/registry/entry/RegistryEntry;Lnet/minecraft/structure/pool/StructurePool$Projection;Ljava/util/Optional;)V
+accessWidener v2 official
+accessible method net/minecraft/world/level/levelgen/structure/pools/SinglePoolElement <init> (Lcom/mojang/datafixers/util/Either;Lnet/minecraft/core/Holder;Lnet/minecraft/world/level/levelgen/structure/pools/StructureTemplatePool$Projection;Ljava/util/Optional;)V

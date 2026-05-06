@@ -8,32 +8,39 @@ import com.github.brainage04.procedural_dungeon.datagen.processor_list.ReplaceJi
 import com.github.brainage04.procedural_dungeon.datagen.processor_list.ReplaceLootByOldTableModifier;
 import com.github.brainage04.procedural_dungeon.datagen.structure.DungeonJigsawPoolReplacements;
 import com.github.brainage04.procedural_dungeon.util.RegistryKeyUtils;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricDynamicRegistryProvider;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.structure.processor.*;
-import net.minecraft.structure.rule.*;
-
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.levelgen.structure.templatesystem.AlwaysTrueTest;
+import net.minecraft.world.level.levelgen.structure.templatesystem.BlockAgeProcessor;
+import net.minecraft.world.level.levelgen.structure.templatesystem.BlockMatchTest;
+import net.minecraft.world.level.levelgen.structure.templatesystem.BlockRotProcessor;
+import net.minecraft.world.level.levelgen.structure.templatesystem.PosAlwaysTrueTest;
+import net.minecraft.world.level.levelgen.structure.templatesystem.ProcessorRule;
+import net.minecraft.world.level.levelgen.structure.templatesystem.RandomBlockMatchTest;
+import net.minecraft.world.level.levelgen.structure.templatesystem.RuleProcessor;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorList;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Stream;
 
 public class ProceduralDungeonGenerator extends FabricDynamicRegistryProvider {
-    public ProceduralDungeonGenerator(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
+    public ProceduralDungeonGenerator(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(output, registriesFuture);
     }
 
     public static StructureProcessorList createLootTable(DungeonTier tier) {
         return create(List.of(
-                new RuleStructureProcessor(List.of(
-                        new StructureProcessorRule(
-                                new BlockMatchRuleTest(Blocks.CHEST),
-                                AlwaysTrueRuleTest.INSTANCE,
-                                AlwaysTruePosRuleTest.INSTANCE,
-                                Blocks.CHEST.getDefaultState(),
+                new RuleProcessor(List.of(
+                        new ProcessorRule(
+                                new BlockMatchTest(Blocks.CHEST),
+                                AlwaysTrueTest.INSTANCE,
+                                PosAlwaysTrueTest.INSTANCE,
+                                Blocks.CHEST.defaultBlockState(),
                                 new ReplaceLootByOldTableModifier(Map.ofEntries(
                                         Map.entry(
                                                 DungeonLootTableProvider.getLootTableId("hallway_end"),
@@ -75,11 +82,11 @@ public class ProceduralDungeonGenerator extends FabricDynamicRegistryProvider {
         List<StructureProcessor> list = new ArrayList<>(rules.size());
 
         for (BasicProcessorRule rule : rules) {
-            list.add(new RuleStructureProcessor(List.of(
-                    new StructureProcessorRule(
-                            new RandomBlockMatchRuleTest(rule.input, rule.probability),
-                            AlwaysTrueRuleTest.INSTANCE,
-                            rule.output.getDefaultState()
+            list.add(new RuleProcessor(List.of(
+                    new ProcessorRule(
+                            new RandomBlockMatchTest(rule.input, rule.probability),
+                            AlwaysTrueTest.INSTANCE,
+                            rule.output.defaultBlockState()
                     )
             )));
         }
@@ -117,8 +124,8 @@ public class ProceduralDungeonGenerator extends FabricDynamicRegistryProvider {
     ));
 
     private static final StructureProcessorList GENERIC_DECAY = create(List.of(
-            new BlockAgeStructureProcessor(0.4f),
-            new BlockRotStructureProcessor(0.98f)
+            new BlockAgeProcessor(0.4f),
+            new BlockRotProcessor(0.98f)
     ));
 
     public static final StructureProcessorList CHESTS_TIER_1 = createLootTable(DungeonTier.TIER_1);
@@ -208,7 +215,7 @@ public class ProceduralDungeonGenerator extends FabricDynamicRegistryProvider {
     ));
 
     @Override
-    protected void configure(RegistryWrapper.WrapperLookup registries, Entries entries) {
+    protected void configure(HolderLookup.Provider registries, Entries entries) {
         for (DungeonTheme theme : DungeonTheme.values()) {
             for (DungeonTier tier : DungeonTier.values()) {
                 String key = RegistryKeyUtils.getKeyString(theme, tier);
@@ -227,10 +234,10 @@ public class ProceduralDungeonGenerator extends FabricDynamicRegistryProvider {
                         tier.getBaseProcessorList(),
                         theme.baseProcessorList,
                         createJigsawPoolReplacements(key, tier)
-                ).flatMap(structureProcessorList1 -> structureProcessorList1.getList().stream()).toList()
+                ).flatMap(structureProcessorList1 -> structureProcessorList1.list().stream()).toList()
         );
 
-        var processorListKey = RegistryKeyUtils.create(RegistryKeys.PROCESSOR_LIST, key);
+        var processorListKey = RegistryKeyUtils.create(Registries.PROCESSOR_LIST, key);
         entries.add(processorListKey, structureProcessorList);
 
         return structureProcessorList;

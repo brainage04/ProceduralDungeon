@@ -5,30 +5,30 @@ import com.github.brainage04.procedural_dungeon.datagen.common.DungeonTheme;
 import com.github.brainage04.procedural_dungeon.datagen.common.DungeonTier;
 import com.github.brainage04.procedural_dungeon.util.RegistryKeyUtils;
 import com.mojang.datafixers.DataFixer;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricDynamicRegistryProvider;
-import net.minecraft.block.Block;
-import net.minecraft.datafixer.Schemas;
-import net.minecraft.nbt.NbtCompound;
+import net.minecraft.core.HolderGetter;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtAccounter;
 import net.minecraft.nbt.NbtIo;
-import net.minecraft.nbt.NbtSizeTracker;
-import net.minecraft.registry.RegistryEntryLookup;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.resource.ResourceManager;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.Main;
-import net.minecraft.structure.*;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.path.SymlinkValidationException;
-import net.minecraft.world.level.storage.LevelStorage;
-
+import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.util.datafix.DataFixers;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
+import net.minecraft.world.level.storage.LevelStorageSource;
+import net.minecraft.world.level.validation.ContentValidationException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.concurrent.CompletableFuture;
 
 public class StructureVariantGenerator extends FabricDynamicRegistryProvider {
-    public StructureVariantGenerator(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
+    public StructureVariantGenerator(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(output, registriesFuture);
     }
 
@@ -37,22 +37,22 @@ public class StructureVariantGenerator extends FabricDynamicRegistryProvider {
     }
 
     private StructureTemplateManager createStructureTemplateManager(
-            FabricDataOutput output,
-            RegistryWrapper.WrapperLookup registries
-    ) throws IOException, SymlinkValidationException {
+            FabricPackOutput output,
+            HolderLookup.Provider registries
+    ) throws IOException, ContentValidationException {
         ResourceManager resourceManager = null; /* get from datagen bootstrap or create a SimpleResourceManager */
-        Path root = output.getPath();
-        LevelStorage levelStorage = LevelStorage.create(root);
-        LevelStorage.Session session = levelStorage.createSession("datagen_world");
+        Path root = output.getOutputFolder();
+        LevelStorageSource levelStorage = LevelStorageSource.createDefault(root);
+        LevelStorageSource.LevelStorageAccess session = levelStorage.validateAndCreateAccess("datagen_world");
 
-        DataFixer dataFixer = Schemas.getFixer();
-        RegistryEntryLookup<Block> blockLookup = registries.getOrThrow(RegistryKeys.BLOCK);
+        DataFixer dataFixer = DataFixers.getDataFixer();
+        HolderGetter<Block> blockLookup = registries.lookupOrThrow(Registries.BLOCK);
 
         return new StructureTemplateManager(resourceManager, session, dataFixer, blockLookup);
     }
 
     @Override
-    protected void configure(RegistryWrapper.WrapperLookup registries, Entries entries) {
+    protected void configure(HolderLookup.Provider registries, Entries entries) {
         for (DungeonTheme theme : DungeonTheme.values()) {
             for (DungeonTier tier : DungeonTier.values()) {
                 try {
@@ -66,7 +66,7 @@ public class StructureVariantGenerator extends FabricDynamicRegistryProvider {
 
     private void processVariant(DungeonTheme theme, DungeonTier tier) throws IOException {
         Identifier baseId = ProceduralDungeon.of("dungeon/start");
-        NbtCompound baseNbt = loadStructureNbtFromResources(baseId);
+        CompoundTag baseNbt = loadStructureNbtFromResources(baseId);
         //NbtCompound transformed = applyTierThemeTransforms(baseNbt.copy(), theme, tier);
 
         String key = RegistryKeyUtils.getKeyString(theme, tier);
@@ -78,7 +78,7 @@ public class StructureVariantGenerator extends FabricDynamicRegistryProvider {
         //NbtIo.writeCompressed(transformed, target);
     }
 
-    private NbtCompound loadStructureNbtFromResources(Identifier id)
+    private CompoundTag loadStructureNbtFromResources(Identifier id)
             throws IOException {
         String path = "/data/" + id.getNamespace()
                 + "/structures/" + id.getPath() + ".nbt";
@@ -87,7 +87,7 @@ public class StructureVariantGenerator extends FabricDynamicRegistryProvider {
             if (in == null) {
                 throw new IOException("Missing structure resource: " + path);
             }
-            return NbtIo.readCompressed(in, NbtSizeTracker.ofUnlimitedBytes());
+            return NbtIo.readCompressed(in, NbtAccounter.unlimitedHeap());
         }
     }
 

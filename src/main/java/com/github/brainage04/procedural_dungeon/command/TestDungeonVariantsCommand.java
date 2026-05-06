@@ -5,22 +5,23 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.LongArgumentType;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.text.Text;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
+import net.minecraft.network.chat.Component;
 
-import static net.minecraft.server.command.CommandManager.argument;
-import static net.minecraft.server.command.CommandManager.literal;
+import static net.minecraft.commands.Commands.argument;
+import static net.minecraft.commands.Commands.literal;
 
 public class TestDungeonVariantsCommand {
-    public static int execute(ServerCommandSource source, int count, int spacing, long seed) throws CommandSyntaxException {
+    public static int execute(CommandSourceStack source, int count, int spacing, long seed) throws CommandSyntaxException {
         DungeonVariantSmokeTester.Result result = DungeonVariantSmokeTester.placeRandomVariants(
-                source.withSilent(),
+                source.withSuppressedOutput(),
                 count,
                 spacing,
                 seed
         );
 
-        source.sendFeedback(() -> Text.literal(
+        source.sendSuccess(() -> Component.literal(
                 "Placed %d procedural dungeon variant(s) with seed %d and spacing %d."
                         .formatted(result.attempted(), seed, spacing)
         ), true);
@@ -28,9 +29,9 @@ public class TestDungeonVariantsCommand {
         return result.attempted();
     }
 
-    public static void initialize(CommandDispatcher<ServerCommandSource> dispatcher) {
+    public static void initialize(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(literal("testdungeonvariants")
-                .requires(source -> source.hasPermissionLevel(2))
+                .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                 .executes(context -> execute(
                         context.getSource(),
                         DungeonVariantSmokeTester.DEFAULT_COUNT,

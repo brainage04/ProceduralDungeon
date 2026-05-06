@@ -3,17 +3,16 @@ package com.github.brainage04.procedural_dungeon.datagen.processor_list;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.block.Blocks;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.structure.StructurePlacementData;
-import net.minecraft.structure.StructureTemplate;
-import net.minecraft.structure.processor.StructureProcessor;
-import net.minecraft.structure.processor.StructureProcessorType;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.WorldView;
-
 import java.util.Map;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 
 public class ReplaceJigsawPoolProcessor extends StructureProcessor {
     public static final MapCodec<ReplaceJigsawPoolProcessor> CODEC =
@@ -30,19 +29,19 @@ public class ReplaceJigsawPoolProcessor extends StructureProcessor {
     }
 
     @Override
-    public StructureTemplate.StructureBlockInfo process(
-            WorldView world,
+    public StructureTemplate.StructureBlockInfo processBlock(
+            LevelReader world,
             BlockPos pos,
             BlockPos pivot,
             StructureTemplate.StructureBlockInfo originalBlockInfo,
             StructureTemplate.StructureBlockInfo currentBlockInfo,
-            StructurePlacementData data
+            StructurePlaceSettings data
     ) {
-        if (!currentBlockInfo.state().isOf(Blocks.JIGSAW) || currentBlockInfo.nbt() == null) {
+        if (!currentBlockInfo.state().is(Blocks.JIGSAW) || currentBlockInfo.nbt() == null) {
             return currentBlockInfo;
         }
 
-        NbtCompound copy = currentBlockInfo.nbt().copy();
+        CompoundTag copy = currentBlockInfo.nbt().copy();
         boolean changed = replacePool(copy, "pool");
         changed |= replacePool(copy, "target_pool");
 
@@ -53,7 +52,7 @@ public class ReplaceJigsawPoolProcessor extends StructureProcessor {
         return new StructureTemplate.StructureBlockInfo(currentBlockInfo.pos(), currentBlockInfo.state(), copy);
     }
 
-    private boolean replacePool(NbtCompound nbt, String key) {
+    private boolean replacePool(CompoundTag nbt, String key) {
         String oldPool = nbt.getString(key).orElse(null);
         if (oldPool == null) {
             return false;
