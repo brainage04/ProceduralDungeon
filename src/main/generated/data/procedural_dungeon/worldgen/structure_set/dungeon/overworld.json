@@ -1,0 +1,70 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 1492515622,
+    "separation": 16,
+    "spacing": 32
+  },
+  "structures": [
+    {
+      "structure": "procedural_dungeon:dungeon/overworld/cobblestone/tier_1",
+      "weight": 144
+    },
+    {
+      "structure": "procedural_dungeon:dungeon/overworld/cobblestone/tier_2",
+      "weight": 92
+    },
+    {
+      "structure": "procedural_dungeon:dungeon/overworld/cobblestone/tier_3",
+      "weight": 64
+    },
+    {
+      "structure": "procedural_dungeon:dungeon/overworld/cobblestone/tier_4",
+      "weight": 47
+    },
+    {
+      "structure": "procedural_dungeon:dungeon/overworld/cobblestone/tier_5",
+      "weight": 36
+    },
+    {
+      "structure": "procedural_dungeon:dungeon/overworld/deepslate/tier_1",
+      "weight": 144
+    },
+    {
+      "structure": "procedural_dungeon:dungeon/overworld/deepslate/tier_2",
+      "weight": 92
+    },
+    {
+      "structure": "procedural_dungeon:dungeon/overworld/deepslate/tier_3",
+      "weight": 64
+    },
+    {
+      "structure": "procedural_dungeon:dungeon/overworld/deepslate/tier_4",
+      "weight": 47
+    },
+    {
+      "structure": "procedural_dungeon:dungeon/overworld/deepslate/tier_5",
+      "weight": 36
+    },
+    {
+      "structure": "procedural_dungeon:dungeon/overworld/sculk/tier_1",
+      "weight": 144
+    },
+    {
+      "structure": "procedural_dungeon:dungeon/overworld/sculk/tier_2",
+      "weight": 92
+    },
+    {
+      "structure": "procedural_dungeon:dungeon/overworld/sculk/tier_3",
+      "weight": 64
+    },
+    {
+      "structure": "procedural_dungeon:dungeon/overworld/sculk/tier_4",
+      "weight": 47
+    },
+    {
+      "structure": "procedural_dungeon:dungeon/overworld/sculk/tier_5",
+      "weight": 36
+    }
+  ]
+}

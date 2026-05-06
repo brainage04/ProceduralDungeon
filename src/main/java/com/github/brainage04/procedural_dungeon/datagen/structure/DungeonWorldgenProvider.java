@@ -14,10 +14,15 @@ import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 public class DungeonWorldgenProvider implements DataProvider {
+    private static final int PLACEMENT_SPACING = DungeonTier.TIER_1.spacing;
+    private static final int PLACEMENT_SEPARATION = DungeonTier.TIER_1.separation;
+
     private final FabricDataOutput output;
     private final DataOutput.PathResolver templatePoolResolver;
     private final DataOutput.PathResolver structureResolver;
@@ -33,6 +38,7 @@ public class DungeonWorldgenProvider implements DataProvider {
     @Override
     public CompletableFuture<?> run(DataWriter writer) {
         List<CompletableFuture<?>> futures = new ArrayList<>();
+        Map<Identifier, List<WeightedStructure>> structureSets = new LinkedHashMap<>();
 
         for (DungeonTheme theme : DungeonTheme.values()) {
             for (DungeonTier tier : DungeonTier.values()) {
@@ -41,8 +47,17 @@ public class DungeonWorldgenProvider implements DataProvider {
 
                 addTemplatePools(writer, futures, key, id);
                 futures.add(DataProvider.writeToPath(writer, createStructureJson(key, tier, theme), structureResolver.resolveJson(id)));
-                futures.add(DataProvider.writeToPath(writer, createStructureSetJson(key, tier), structureSetResolver.resolveJson(id)));
+                structureSets.computeIfAbsent(createStructureSetId(theme), ignored -> new ArrayList<>())
+                        .add(new WeightedStructure(id, getTierWeight(tier)));
             }
+        }
+
+        for (Map.Entry<Identifier, List<WeightedStructure>> entry : structureSets.entrySet()) {
+            futures.add(DataProvider.writeToPath(
+                    writer,
+                    createStructureSetJson(entry.getKey(), entry.getValue()),
+                    structureSetResolver.resolveJson(entry.getKey())
+            ));
         }
 
         return CompletableFuture.allOf(futures.toArray(CompletableFuture[]::new));
@@ -160,24 +175,34 @@ public class DungeonWorldgenProvider implements DataProvider {
         return "#minecraft:is_overworld";
     }
 
-    private static JsonObject createStructureSetJson(String key, DungeonTier tier) {
-        JsonObject weightedStructure = new JsonObject();
-        weightedStructure.addProperty("structure", ProceduralDungeon.of(key).toString());
-        weightedStructure.addProperty("weight", 1);
-
+    private static JsonObject createStructureSetJson(Identifier id, List<WeightedStructure> weightedStructures) {
         JsonArray structures = new JsonArray();
-        structures.add(weightedStructure);
+        for (WeightedStructure structure : weightedStructures) {
+            JsonObject weightedStructure = new JsonObject();
+            weightedStructure.addProperty("structure", structure.id().toString());
+            weightedStructure.addProperty("weight", structure.weight());
+            structures.add(weightedStructure);
+        }
 
         JsonObject placement = new JsonObject();
         placement.addProperty("type", "minecraft:random_spread");
-        placement.addProperty("spacing", tier.spacing);
-        placement.addProperty("separation", tier.separation);
-        placement.addProperty("salt", deterministicSalt(key));
+        placement.addProperty("spacing", PLACEMENT_SPACING);
+        placement.addProperty("separation", PLACEMENT_SEPARATION);
+        placement.addProperty("salt", deterministicSalt(id.toString()));
 
         JsonObject structureSet = new JsonObject();
         structureSet.add("structures", structures);
         structureSet.add("placement", placement);
         return structureSet;
+    }
+
+    private static Identifier createStructureSetId(DungeonTheme theme) {
+        return ProceduralDungeon.of("dungeon/%s".formatted(theme.dimension.getValue().getPath()));
+    }
+
+    private static int getTierWeight(DungeonTier tier) {
+        double relativeFrequency = Math.pow((double) DungeonTier.TIER_1.spacing / tier.spacing, 2);
+        return Math.max(1, (int) Math.round(relativeFrequency * 144));
     }
 
     private static JsonObject absoluteHeight(int y) {
@@ -189,6 +214,8 @@ public class DungeonWorldgenProvider implements DataProvider {
     private static int deterministicSalt(String key) {
         return Math.floorMod(key.hashCode(), Integer.MAX_VALUE);
     }
+
+    private record WeightedStructure(Identifier id, int weight) {}
 
     @Override
     public String getName() {
