@@ -12,7 +12,7 @@
 		"sources": "https://github.com/brainage04/ProceduralDungeon"
 	},
 	"license": "MIT",
-	"icon": "assets/proceduraldungeon/icon.png",
+	"icon": "assets/procedural_dungeon/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [

@@ -1,8 +1,7 @@
 {
   "pack": {
-    "pack_format": 88.0,
-    "min_format": 88.0,
-    "max_format": 88.0,
+    "min_format": [101, 1],
+    "max_format": 101,
     "description": "Procedural Dungeon by brainage04"
   }
 }
