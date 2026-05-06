@@ -11,6 +11,7 @@ import net.minecraft.data.DataOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.DataWriter;
 import net.minecraft.util.Identifier;
+import net.minecraft.world.World;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +40,7 @@ public class DungeonWorldgenProvider implements DataProvider {
                 Identifier id = ProceduralDungeon.of(key);
 
                 addTemplatePools(writer, futures, key, id);
-                futures.add(DataProvider.writeToPath(writer, createStructureJson(key, tier), structureResolver.resolveJson(id)));
+                futures.add(DataProvider.writeToPath(writer, createStructureJson(key, tier, theme), structureResolver.resolveJson(id)));
                 futures.add(DataProvider.writeToPath(writer, createStructureSetJson(key, tier), structureSetResolver.resolveJson(id)));
             }
         }
@@ -129,10 +130,10 @@ public class DungeonWorldgenProvider implements DataProvider {
         return Integer.parseInt(path.substring(index + "tier_".length()));
     }
 
-    private static JsonObject createStructureJson(String key, DungeonTier tier) {
+    private static JsonObject createStructureJson(String key, DungeonTier tier, DungeonTheme theme) {
         JsonObject structure = new JsonObject();
         structure.addProperty("type", "minecraft:jigsaw");
-        structure.addProperty("biomes", "#minecraft:has_structure/stronghold");
+        structure.addProperty("biomes", getBiomeTag(theme));
         structure.addProperty("step", "underground_structures");
         structure.addProperty("terrain_adaptation", "bury");
         structure.addProperty("start_pool", ProceduralDungeon.of("%s/start".formatted(key)).toString());
@@ -145,6 +146,18 @@ public class DungeonWorldgenProvider implements DataProvider {
         structure.addProperty("liquid_settings", "ignore_waterlogging");
         structure.add("spawn_overrides", new JsonObject());
         return structure;
+    }
+
+    private static String getBiomeTag(DungeonTheme theme) {
+        if (theme.dimension.equals(World.NETHER)) {
+            return "#minecraft:is_nether";
+        }
+
+        if (theme.dimension.equals(World.END)) {
+            return "#minecraft:is_end";
+        }
+
+        return "#minecraft:is_overworld";
     }
 
     private static JsonObject createStructureSetJson(String key, DungeonTier tier) {

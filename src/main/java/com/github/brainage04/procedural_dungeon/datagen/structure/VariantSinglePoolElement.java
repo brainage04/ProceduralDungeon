@@ -1,6 +1,5 @@
 package com.github.brainage04.procedural_dungeon.datagen.structure;
 
-import com.github.brainage04.procedural_dungeon.ProceduralDungeon;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -33,10 +32,6 @@ public class VariantSinglePoolElement extends StructurePoolElement {
                     Codec.INT.fieldOf("spawner_tier").forGetter(element -> element.spawnerTier)
             ).apply(instance, VariantSinglePoolElement::new));
 
-    private static final String DUNGEON_PREFIX = "dungeon/";
-    private static final String HALLWAY_PREFIX = "dungeon/hallway";
-    private static final String BASE_SPAWNER_POOL = "dungeon/spawner/tier_1";
-
     private final SinglePoolElement delegate;
     private final Identifier variant;
     private final int spawnerTier;
@@ -67,8 +62,8 @@ public class VariantSinglePoolElement extends StructurePoolElement {
     }
 
     private StructureTemplate.JigsawBlockInfo replacePool(StructureTemplate.JigsawBlockInfo info) {
-        Identifier replacement = getReplacement(info.pool().getValue());
-        if (replacement == null) {
+        Identifier replacement = DungeonJigsawPoolReplacements.getReplacement(info.pool().getValue(), variant, spawnerTier);
+        if (replacement.equals(info.pool().getValue())) {
             return info;
         }
 
@@ -81,23 +76,6 @@ public class VariantSinglePoolElement extends StructurePoolElement {
                 info.placementPriority(),
                 info.selectionPriority()
         );
-    }
-
-    private Identifier getReplacement(Identifier pool) {
-        if (!pool.getNamespace().equals(ProceduralDungeon.MOD_ID)) {
-            return null;
-        }
-
-        String path = pool.getPath();
-        if (path.equals(HALLWAY_PREFIX) || path.startsWith(HALLWAY_PREFIX + "/")) {
-            return Identifier.of(variant.getNamespace(), "%s/%s".formatted(variant.getPath(), path.substring(DUNGEON_PREFIX.length())));
-        }
-
-        if (path.equals(BASE_SPAWNER_POOL)) {
-            return ProceduralDungeon.of("dungeon/spawner/tier_%d".formatted(spawnerTier));
-        }
-
-        return null;
     }
 
     @Override

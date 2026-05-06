@@ -6,6 +6,7 @@ import com.github.brainage04.procedural_dungeon.datagen.common.DungeonTier;
 import com.github.brainage04.procedural_dungeon.datagen.loot_table.DungeonLootTableProvider;
 import com.github.brainage04.procedural_dungeon.datagen.processor_list.ReplaceJigsawPoolProcessor;
 import com.github.brainage04.procedural_dungeon.datagen.processor_list.ReplaceLootByOldTableModifier;
+import com.github.brainage04.procedural_dungeon.datagen.structure.DungeonJigsawPoolReplacements;
 import com.github.brainage04.procedural_dungeon.util.RegistryKeyUtils;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricDynamicRegistryProvider;
@@ -236,14 +237,7 @@ public class ProceduralDungeonGenerator extends FabricDynamicRegistryProvider {
     }
 
     private static StructureProcessorList createJigsawPoolReplacements(String key, DungeonTier tier) {
-        return create(List.of(new ReplaceJigsawPoolProcessor(Map.ofEntries(
-                Map.entry(ProceduralDungeon.of("dungeon/hallway"), ProceduralDungeon.of("%s/hallway".formatted(key))),
-                Map.entry(ProceduralDungeon.of("dungeon/hallway/end"), ProceduralDungeon.of("%s/hallway/end".formatted(key))),
-                Map.entry(ProceduralDungeon.of("dungeon/hallway/loot"), ProceduralDungeon.of("%s/hallway/loot".formatted(key))),
-                Map.entry(ProceduralDungeon.of("dungeon/hallway/room"), ProceduralDungeon.of("%s/hallway/room".formatted(key))),
-                Map.entry(ProceduralDungeon.of("dungeon/hallway/trap"), ProceduralDungeon.of("%s/hallway/trap".formatted(key))),
-                Map.entry(ProceduralDungeon.of("dungeon/spawner/tier_1"), ProceduralDungeon.of("dungeon/spawner/tier_%d".formatted(tier.tier)))
-        ))));
+        return create(List.of(new ReplaceJigsawPoolProcessor(DungeonJigsawPoolReplacements.create(key, tier))));
     }
 
     @Override
