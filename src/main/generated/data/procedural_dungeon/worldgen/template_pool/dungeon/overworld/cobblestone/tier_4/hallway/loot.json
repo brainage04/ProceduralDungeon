@@ -3,7 +3,7 @@
     {
       "element": {
         "element_type": "minecraft:single_pool_element",
-        "location": "procedural_dungeon:dungeon/overworld/cobblestone/tier_4/hallway/loot/small",
+        "location": "procedural_dungeon:dungeon/hallway/loot/small",
         "override_liquid_settings": "ignore_waterlogging",
         "processors": {
           "processors": [
@@ -320,7 +320,7 @@
               "rules": [
                 {
                   "block_entity_modifier": {
-                    "type": "minecraft:replace_loot_by_old_table",
+                    "type": "procedural_dungeon:replace_loot_by_old_table",
                     "replacements": {
                       "procedural_dungeon:armorsmith": "procedural_dungeon:armorsmith/tier_4",
                       "procedural_dungeon:enchanter": "procedural_dungeon:enchanter/tier_4",
@@ -401,6 +401,17 @@
                   }
                 }
               ]
+            },
+            {
+              "processor_type": "procedural_dungeon:replace_jigsaw_pools",
+              "replacements": {
+                "procedural_dungeon:dungeon/hallway": "procedural_dungeon:dungeon/overworld/cobblestone/tier_4/hallway",
+                "procedural_dungeon:dungeon/hallway/end": "procedural_dungeon:dungeon/overworld/cobblestone/tier_4/hallway/end",
+                "procedural_dungeon:dungeon/hallway/loot": "procedural_dungeon:dungeon/overworld/cobblestone/tier_4/hallway/loot",
+                "procedural_dungeon:dungeon/hallway/room": "procedural_dungeon:dungeon/overworld/cobblestone/tier_4/hallway/room",
+                "procedural_dungeon:dungeon/hallway/trap": "procedural_dungeon:dungeon/overworld/cobblestone/tier_4/hallway/trap",
+                "procedural_dungeon:dungeon/spawner/tier_1": "procedural_dungeon:dungeon/spawner/tier_4"
+              }
             }
           ]
         },
@@ -411,7 +422,7 @@
     {
       "element": {
         "element_type": "minecraft:single_pool_element",
-        "location": "procedural_dungeon:dungeon/overworld/cobblestone/tier_4/hallway/loot/medium",
+        "location": "procedural_dungeon:dungeon/hallway/loot/medium",
         "override_liquid_settings": "ignore_waterlogging",
         "processors": {
           "processors": [
@@ -728,7 +739,7 @@
               "rules": [
                 {
                   "block_entity_modifier": {
-                    "type": "minecraft:replace_loot_by_old_table",
+                    "type": "procedural_dungeon:replace_loot_by_old_table",
                     "replacements": {
                       "procedural_dungeon:armorsmith": "procedural_dungeon:armorsmith/tier_4",
                       "procedural_dungeon:enchanter": "procedural_dungeon:enchanter/tier_4",
@@ -809,6 +820,17 @@
                   }
                 }
               ]
+            },
+            {
+              "processor_type": "procedural_dungeon:replace_jigsaw_pools",
+              "replacements": {
+                "procedural_dungeon:dungeon/hallway": "procedural_dungeon:dungeon/overworld/cobblestone/tier_4/hallway",
+                "procedural_dungeon:dungeon/hallway/end": "procedural_dungeon:dungeon/overworld/cobblestone/tier_4/hallway/end",
+                "procedural_dungeon:dungeon/hallway/loot": "procedural_dungeon:dungeon/overworld/cobblestone/tier_4/hallway/loot",
+                "procedural_dungeon:dungeon/hallway/room": "procedural_dungeon:dungeon/overworld/cobblestone/tier_4/hallway/room",
+                "procedural_dungeon:dungeon/hallway/trap": "procedural_dungeon:dungeon/overworld/cobblestone/tier_4/hallway/trap",
+                "procedural_dungeon:dungeon/spawner/tier_1": "procedural_dungeon:dungeon/spawner/tier_4"
+              }
             }
           ]
         },
@@ -819,7 +841,7 @@
     {
       "element": {
         "element_type": "minecraft:single_pool_element",
-        "location": "procedural_dungeon:dungeon/overworld/cobblestone/tier_4/hallway/loot/large",
+        "location": "procedural_dungeon:dungeon/hallway/loot/large",
         "override_liquid_settings": "ignore_waterlogging",
         "processors": {
           "processors": [
@@ -1136,7 +1158,7 @@
               "rules": [
                 {
                   "block_entity_modifier": {
-                    "type": "minecraft:replace_loot_by_old_table",
+                    "type": "procedural_dungeon:replace_loot_by_old_table",
                     "replacements": {
                       "procedural_dungeon:armorsmith": "procedural_dungeon:armorsmith/tier_4",
                       "procedural_dungeon:enchanter": "procedural_dungeon:enchanter/tier_4",
@@ -1217,6 +1239,17 @@
                   }
                 }
               ]
+            },
+            {
+              "processor_type": "procedural_dungeon:replace_jigsaw_pools",
+              "replacements": {
+                "procedural_dungeon:dungeon/hallway": "procedural_dungeon:dungeon/overworld/cobblestone/tier_4/hallway",
+                "procedural_dungeon:dungeon/hallway/end": "procedural_dungeon:dungeon/overworld/cobblestone/tier_4/hallway/end",
+                "procedural_dungeon:dungeon/hallway/loot": "procedural_dungeon:dungeon/overworld/cobblestone/tier_4/hallway/loot",
+                "procedural_dungeon:dungeon/hallway/room": "procedural_dungeon:dungeon/overworld/cobblestone/tier_4/hallway/room",
+                "procedural_dungeon:dungeon/hallway/trap": "procedural_dungeon:dungeon/overworld/cobblestone/tier_4/hallway/trap",
+                "procedural_dungeon:dungeon/spawner/tier_1": "procedural_dungeon:dungeon/spawner/tier_4"
+              }
             }
           ]
         },

@@ -3,7 +3,7 @@
     {
       "element": {
         "element_type": "minecraft:single_pool_element",
-        "location": "procedural_dungeon:dungeon/the_nether/bastion/tier_2/hallway/small",
+        "location": "procedural_dungeon:dungeon/hallway/small",
         "override_liquid_settings": "ignore_waterlogging",
         "processors": {
           "processors": [
@@ -320,7 +320,7 @@
               "rules": [
                 {
                   "block_entity_modifier": {
-                    "type": "minecraft:replace_loot_by_old_table",
+                    "type": "procedural_dungeon:replace_loot_by_old_table",
                     "replacements": {
                       "procedural_dungeon:armorsmith": "procedural_dungeon:armorsmith/tier_2",
                       "procedural_dungeon:enchanter": "procedural_dungeon:enchanter/tier_2",
@@ -437,6 +437,17 @@
                   }
                 }
               ]
+            },
+            {
+              "processor_type": "procedural_dungeon:replace_jigsaw_pools",
+              "replacements": {
+                "procedural_dungeon:dungeon/hallway": "procedural_dungeon:dungeon/the_nether/bastion/tier_2/hallway",
+                "procedural_dungeon:dungeon/hallway/end": "procedural_dungeon:dungeon/the_nether/bastion/tier_2/hallway/end",
+                "procedural_dungeon:dungeon/hallway/loot": "procedural_dungeon:dungeon/the_nether/bastion/tier_2/hallway/loot",
+                "procedural_dungeon:dungeon/hallway/room": "procedural_dungeon:dungeon/the_nether/bastion/tier_2/hallway/room",
+                "procedural_dungeon:dungeon/hallway/trap": "procedural_dungeon:dungeon/the_nether/bastion/tier_2/hallway/trap",
+                "procedural_dungeon:dungeon/spawner/tier_1": "procedural_dungeon:dungeon/spawner/tier_2"
+              }
             }
           ]
         },
@@ -447,7 +458,7 @@
     {
       "element": {
         "element_type": "minecraft:single_pool_element",
-        "location": "procedural_dungeon:dungeon/the_nether/bastion/tier_2/hallway/medium",
+        "location": "procedural_dungeon:dungeon/hallway/medium",
         "override_liquid_settings": "ignore_waterlogging",
         "processors": {
           "processors": [
@@ -764,7 +775,7 @@
               "rules": [
                 {
                   "block_entity_modifier": {
-                    "type": "minecraft:replace_loot_by_old_table",
+                    "type": "procedural_dungeon:replace_loot_by_old_table",
                     "replacements": {
                       "procedural_dungeon:armorsmith": "procedural_dungeon:armorsmith/tier_2",
                       "procedural_dungeon:enchanter": "procedural_dungeon:enchanter/tier_2",
@@ -881,6 +892,17 @@
                   }
                 }
               ]
+            },
+            {
+              "processor_type": "procedural_dungeon:replace_jigsaw_pools",
+              "replacements": {
+                "procedural_dungeon:dungeon/hallway": "procedural_dungeon:dungeon/the_nether/bastion/tier_2/hallway",
+                "procedural_dungeon:dungeon/hallway/end": "procedural_dungeon:dungeon/the_nether/bastion/tier_2/hallway/end",
+                "procedural_dungeon:dungeon/hallway/loot": "procedural_dungeon:dungeon/the_nether/bastion/tier_2/hallway/loot",
+                "procedural_dungeon:dungeon/hallway/room": "procedural_dungeon:dungeon/the_nether/bastion/tier_2/hallway/room",
+                "procedural_dungeon:dungeon/hallway/trap": "procedural_dungeon:dungeon/the_nether/bastion/tier_2/hallway/trap",
+                "procedural_dungeon:dungeon/spawner/tier_1": "procedural_dungeon:dungeon/spawner/tier_2"
+              }
             }
           ]
         },
@@ -891,7 +913,7 @@
     {
       "element": {
         "element_type": "minecraft:single_pool_element",
-        "location": "procedural_dungeon:dungeon/the_nether/bastion/tier_2/hallway/large",
+        "location": "procedural_dungeon:dungeon/hallway/large",
         "override_liquid_settings": "ignore_waterlogging",
         "processors": {
           "processors": [
@@ -1208,7 +1230,7 @@
               "rules": [
                 {
                   "block_entity_modifier": {
-                    "type": "minecraft:replace_loot_by_old_table",
+                    "type": "procedural_dungeon:replace_loot_by_old_table",
                     "replacements": {
                       "procedural_dungeon:armorsmith": "procedural_dungeon:armorsmith/tier_2",
                       "procedural_dungeon:enchanter": "procedural_dungeon:enchanter/tier_2",
@@ -1325,6 +1347,17 @@
                   }
                 }
               ]
+            },
+            {
+              "processor_type": "procedural_dungeon:replace_jigsaw_pools",
+              "replacements": {
+                "procedural_dungeon:dungeon/hallway": "procedural_dungeon:dungeon/the_nether/bastion/tier_2/hallway",
+                "procedural_dungeon:dungeon/hallway/end": "procedural_dungeon:dungeon/the_nether/bastion/tier_2/hallway/end",
+                "procedural_dungeon:dungeon/hallway/loot": "procedural_dungeon:dungeon/the_nether/bastion/tier_2/hallway/loot",
+                "procedural_dungeon:dungeon/hallway/room": "procedural_dungeon:dungeon/the_nether/bastion/tier_2/hallway/room",
+                "procedural_dungeon:dungeon/hallway/trap": "procedural_dungeon:dungeon/the_nether/bastion/tier_2/hallway/trap",
+                "procedural_dungeon:dungeon/spawner/tier_1": "procedural_dungeon:dungeon/spawner/tier_2"
+              }
             }
           ]
         },

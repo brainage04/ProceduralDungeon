@@ -3,7 +3,7 @@
     {
       "element": {
         "element_type": "minecraft:single_pool_element",
-        "location": "procedural_dungeon:dungeon/the_end/end_stone/tier_3/hallway/loot/small",
+        "location": "procedural_dungeon:dungeon/hallway/loot/small",
         "override_liquid_settings": "ignore_waterlogging",
         "processors": {
           "processors": [
@@ -320,7 +320,7 @@
               "rules": [
                 {
                   "block_entity_modifier": {
-                    "type": "minecraft:replace_loot_by_old_table",
+                    "type": "procedural_dungeon:replace_loot_by_old_table",
                     "replacements": {
                       "procedural_dungeon:armorsmith": "procedural_dungeon:armorsmith/tier_3",
                       "procedural_dungeon:enchanter": "procedural_dungeon:enchanter/tier_3",
@@ -383,6 +383,17 @@
                   }
                 }
               ]
+            },
+            {
+              "processor_type": "procedural_dungeon:replace_jigsaw_pools",
+              "replacements": {
+                "procedural_dungeon:dungeon/hallway": "procedural_dungeon:dungeon/the_end/end_stone/tier_3/hallway",
+                "procedural_dungeon:dungeon/hallway/end": "procedural_dungeon:dungeon/the_end/end_stone/tier_3/hallway/end",
+                "procedural_dungeon:dungeon/hallway/loot": "procedural_dungeon:dungeon/the_end/end_stone/tier_3/hallway/loot",
+                "procedural_dungeon:dungeon/hallway/room": "procedural_dungeon:dungeon/the_end/end_stone/tier_3/hallway/room",
+                "procedural_dungeon:dungeon/hallway/trap": "procedural_dungeon:dungeon/the_end/end_stone/tier_3/hallway/trap",
+                "procedural_dungeon:dungeon/spawner/tier_1": "procedural_dungeon:dungeon/spawner/tier_3"
+              }
             }
           ]
         },
@@ -393,7 +404,7 @@
     {
       "element": {
         "element_type": "minecraft:single_pool_element",
-        "location": "procedural_dungeon:dungeon/the_end/end_stone/tier_3/hallway/loot/medium",
+        "location": "procedural_dungeon:dungeon/hallway/loot/medium",
         "override_liquid_settings": "ignore_waterlogging",
         "processors": {
           "processors": [
@@ -710,7 +721,7 @@
               "rules": [
                 {
                   "block_entity_modifier": {
-                    "type": "minecraft:replace_loot_by_old_table",
+                    "type": "procedural_dungeon:replace_loot_by_old_table",
                     "replacements": {
                       "procedural_dungeon:armorsmith": "procedural_dungeon:armorsmith/tier_3",
                       "procedural_dungeon:enchanter": "procedural_dungeon:enchanter/tier_3",
@@ -773,6 +784,17 @@
                   }
                 }
               ]
+            },
+            {
+              "processor_type": "procedural_dungeon:replace_jigsaw_pools",
+              "replacements": {
+                "procedural_dungeon:dungeon/hallway": "procedural_dungeon:dungeon/the_end/end_stone/tier_3/hallway",
+                "procedural_dungeon:dungeon/hallway/end": "procedural_dungeon:dungeon/the_end/end_stone/tier_3/hallway/end",
+                "procedural_dungeon:dungeon/hallway/loot": "procedural_dungeon:dungeon/the_end/end_stone/tier_3/hallway/loot",
+                "procedural_dungeon:dungeon/hallway/room": "procedural_dungeon:dungeon/the_end/end_stone/tier_3/hallway/room",
+                "procedural_dungeon:dungeon/hallway/trap": "procedural_dungeon:dungeon/the_end/end_stone/tier_3/hallway/trap",
+                "procedural_dungeon:dungeon/spawner/tier_1": "procedural_dungeon:dungeon/spawner/tier_3"
+              }
             }
           ]
         },
@@ -783,7 +805,7 @@
     {
       "element": {
         "element_type": "minecraft:single_pool_element",
-        "location": "procedural_dungeon:dungeon/the_end/end_stone/tier_3/hallway/loot/large",
+        "location": "procedural_dungeon:dungeon/hallway/loot/large",
         "override_liquid_settings": "ignore_waterlogging",
         "processors": {
           "processors": [
@@ -1100,7 +1122,7 @@
               "rules": [
                 {
                   "block_entity_modifier": {
-                    "type": "minecraft:replace_loot_by_old_table",
+                    "type": "procedural_dungeon:replace_loot_by_old_table",
                     "replacements": {
                       "procedural_dungeon:armorsmith": "procedural_dungeon:armorsmith/tier_3",
                       "procedural_dungeon:enchanter": "procedural_dungeon:enchanter/tier_3",
@@ -1163,6 +1185,17 @@
                   }
                 }
               ]
+            },
+            {
+              "processor_type": "procedural_dungeon:replace_jigsaw_pools",
+              "replacements": {
+                "procedural_dungeon:dungeon/hallway": "procedural_dungeon:dungeon/the_end/end_stone/tier_3/hallway",
+                "procedural_dungeon:dungeon/hallway/end": "procedural_dungeon:dungeon/the_end/end_stone/tier_3/hallway/end",
+                "procedural_dungeon:dungeon/hallway/loot": "procedural_dungeon:dungeon/the_end/end_stone/tier_3/hallway/loot",
+                "procedural_dungeon:dungeon/hallway/room": "procedural_dungeon:dungeon/the_end/end_stone/tier_3/hallway/room",
+                "procedural_dungeon:dungeon/hallway/trap": "procedural_dungeon:dungeon/the_end/end_stone/tier_3/hallway/trap",
+                "procedural_dungeon:dungeon/spawner/tier_1": "procedural_dungeon:dungeon/spawner/tier_3"
+              }
             }
           ]
         },

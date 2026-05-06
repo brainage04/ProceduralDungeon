@@ -3,7 +3,7 @@
     {
       "element": {
         "element_type": "minecraft:single_pool_element",
-        "location": "procedural_dungeon:dungeon/overworld/sculk/tier_1/hallway/room/armorsmith",
+        "location": "procedural_dungeon:dungeon/hallway/room/armorsmith",
         "override_liquid_settings": "ignore_waterlogging",
         "processors": {
           "processors": [
@@ -320,7 +320,7 @@
               "rules": [
                 {
                   "block_entity_modifier": {
-                    "type": "minecraft:replace_loot_by_old_table",
+                    "type": "procedural_dungeon:replace_loot_by_old_table",
                     "replacements": {
                       "procedural_dungeon:armorsmith": "procedural_dungeon:armorsmith/tier_1",
                       "procedural_dungeon:enchanter": "procedural_dungeon:enchanter/tier_1",
@@ -450,6 +450,17 @@
                   }
                 }
               ]
+            },
+            {
+              "processor_type": "procedural_dungeon:replace_jigsaw_pools",
+              "replacements": {
+                "procedural_dungeon:dungeon/hallway": "procedural_dungeon:dungeon/overworld/sculk/tier_1/hallway",
+                "procedural_dungeon:dungeon/hallway/end": "procedural_dungeon:dungeon/overworld/sculk/tier_1/hallway/end",
+                "procedural_dungeon:dungeon/hallway/loot": "procedural_dungeon:dungeon/overworld/sculk/tier_1/hallway/loot",
+                "procedural_dungeon:dungeon/hallway/room": "procedural_dungeon:dungeon/overworld/sculk/tier_1/hallway/room",
+                "procedural_dungeon:dungeon/hallway/trap": "procedural_dungeon:dungeon/overworld/sculk/tier_1/hallway/trap",
+                "procedural_dungeon:dungeon/spawner/tier_1": "procedural_dungeon:dungeon/spawner/tier_1"
+              }
             }
           ]
         },
@@ -460,7 +471,7 @@
     {
       "element": {
         "element_type": "minecraft:single_pool_element",
-        "location": "procedural_dungeon:dungeon/overworld/sculk/tier_1/hallway/room/dropper",
+        "location": "procedural_dungeon:dungeon/hallway/room/enchanter",
         "override_liquid_settings": "ignore_waterlogging",
         "processors": {
           "processors": [
@@ -777,7 +788,7 @@
               "rules": [
                 {
                   "block_entity_modifier": {
-                    "type": "minecraft:replace_loot_by_old_table",
+                    "type": "procedural_dungeon:replace_loot_by_old_table",
                     "replacements": {
                       "procedural_dungeon:armorsmith": "procedural_dungeon:armorsmith/tier_1",
                       "procedural_dungeon:enchanter": "procedural_dungeon:enchanter/tier_1",
@@ -907,6 +918,17 @@
                   }
                 }
               ]
+            },
+            {
+              "processor_type": "procedural_dungeon:replace_jigsaw_pools",
+              "replacements": {
+                "procedural_dungeon:dungeon/hallway": "procedural_dungeon:dungeon/overworld/sculk/tier_1/hallway",
+                "procedural_dungeon:dungeon/hallway/end": "procedural_dungeon:dungeon/overworld/sculk/tier_1/hallway/end",
+                "procedural_dungeon:dungeon/hallway/loot": "procedural_dungeon:dungeon/overworld/sculk/tier_1/hallway/loot",
+                "procedural_dungeon:dungeon/hallway/room": "procedural_dungeon:dungeon/overworld/sculk/tier_1/hallway/room",
+                "procedural_dungeon:dungeon/hallway/trap": "procedural_dungeon:dungeon/overworld/sculk/tier_1/hallway/trap",
+                "procedural_dungeon:dungeon/spawner/tier_1": "procedural_dungeon:dungeon/spawner/tier_1"
+              }
             }
           ]
         },
@@ -917,7 +939,7 @@
     {
       "element": {
         "element_type": "minecraft:single_pool_element",
-        "location": "procedural_dungeon:dungeon/overworld/sculk/tier_1/hallway/room/enchanter",
+        "location": "procedural_dungeon:dungeon/hallway/room/spawner_corridor",
         "override_liquid_settings": "ignore_waterlogging",
         "processors": {
           "processors": [
@@ -1234,7 +1256,7 @@
               "rules": [
                 {
                   "block_entity_modifier": {
-                    "type": "minecraft:replace_loot_by_old_table",
+                    "type": "procedural_dungeon:replace_loot_by_old_table",
                     "replacements": {
                       "procedural_dungeon:armorsmith": "procedural_dungeon:armorsmith/tier_1",
                       "procedural_dungeon:enchanter": "procedural_dungeon:enchanter/tier_1",
@@ -1364,6 +1386,17 @@
                   }
                 }
               ]
+            },
+            {
+              "processor_type": "procedural_dungeon:replace_jigsaw_pools",
+              "replacements": {
+                "procedural_dungeon:dungeon/hallway": "procedural_dungeon:dungeon/overworld/sculk/tier_1/hallway",
+                "procedural_dungeon:dungeon/hallway/end": "procedural_dungeon:dungeon/overworld/sculk/tier_1/hallway/end",
+                "procedural_dungeon:dungeon/hallway/loot": "procedural_dungeon:dungeon/overworld/sculk/tier_1/hallway/loot",
+                "procedural_dungeon:dungeon/hallway/room": "procedural_dungeon:dungeon/overworld/sculk/tier_1/hallway/room",
+                "procedural_dungeon:dungeon/hallway/trap": "procedural_dungeon:dungeon/overworld/sculk/tier_1/hallway/trap",
+                "procedural_dungeon:dungeon/spawner/tier_1": "procedural_dungeon:dungeon/spawner/tier_1"
+              }
             }
           ]
         },
@@ -1374,7 +1407,7 @@
     {
       "element": {
         "element_type": "minecraft:single_pool_element",
-        "location": "procedural_dungeon:dungeon/overworld/sculk/tier_1/hallway/room/spawner_corridor",
+        "location": "procedural_dungeon:dungeon/hallway/room/staircase_diagonal_down",
         "override_liquid_settings": "ignore_waterlogging",
         "processors": {
           "processors": [
@@ -1691,7 +1724,7 @@
               "rules": [
                 {
                   "block_entity_modifier": {
-                    "type": "minecraft:replace_loot_by_old_table",
+                    "type": "procedural_dungeon:replace_loot_by_old_table",
                     "replacements": {
                       "procedural_dungeon:armorsmith": "procedural_dungeon:armorsmith/tier_1",
                       "procedural_dungeon:enchanter": "procedural_dungeon:enchanter/tier_1",
@@ -1821,6 +1854,17 @@
                   }
                 }
               ]
+            },
+            {
+              "processor_type": "procedural_dungeon:replace_jigsaw_pools",
+              "replacements": {
+                "procedural_dungeon:dungeon/hallway": "procedural_dungeon:dungeon/overworld/sculk/tier_1/hallway",
+                "procedural_dungeon:dungeon/hallway/end": "procedural_dungeon:dungeon/overworld/sculk/tier_1/hallway/end",
+                "procedural_dungeon:dungeon/hallway/loot": "procedural_dungeon:dungeon/overworld/sculk/tier_1/hallway/loot",
+                "procedural_dungeon:dungeon/hallway/room": "procedural_dungeon:dungeon/overworld/sculk/tier_1/hallway/room",
+                "procedural_dungeon:dungeon/hallway/trap": "procedural_dungeon:dungeon/overworld/sculk/tier_1/hallway/trap",
+                "procedural_dungeon:dungeon/spawner/tier_1": "procedural_dungeon:dungeon/spawner/tier_1"
+              }
             }
           ]
         },
@@ -1831,7 +1875,7 @@
     {
       "element": {
         "element_type": "minecraft:single_pool_element",
-        "location": "procedural_dungeon:dungeon/overworld/sculk/tier_1/hallway/room/staircase_diagonal_down",
+        "location": "procedural_dungeon:dungeon/hallway/room/staircase_diagonal_up",
         "override_liquid_settings": "ignore_waterlogging",
         "processors": {
           "processors": [
@@ -2148,7 +2192,7 @@
               "rules": [
                 {
                   "block_entity_modifier": {
-                    "type": "minecraft:replace_loot_by_old_table",
+                    "type": "procedural_dungeon:replace_loot_by_old_table",
                     "replacements": {
                       "procedural_dungeon:armorsmith": "procedural_dungeon:armorsmith/tier_1",
                       "procedural_dungeon:enchanter": "procedural_dungeon:enchanter/tier_1",
@@ -2278,6 +2322,17 @@
                   }
                 }
               ]
+            },
+            {
+              "processor_type": "procedural_dungeon:replace_jigsaw_pools",
+              "replacements": {
+                "procedural_dungeon:dungeon/hallway": "procedural_dungeon:dungeon/overworld/sculk/tier_1/hallway",
+                "procedural_dungeon:dungeon/hallway/end": "procedural_dungeon:dungeon/overworld/sculk/tier_1/hallway/end",
+                "procedural_dungeon:dungeon/hallway/loot": "procedural_dungeon:dungeon/overworld/sculk/tier_1/hallway/loot",
+                "procedural_dungeon:dungeon/hallway/room": "procedural_dungeon:dungeon/overworld/sculk/tier_1/hallway/room",
+                "procedural_dungeon:dungeon/hallway/trap": "procedural_dungeon:dungeon/overworld/sculk/tier_1/hallway/trap",
+                "procedural_dungeon:dungeon/spawner/tier_1": "procedural_dungeon:dungeon/spawner/tier_1"
+              }
             }
           ]
         },
@@ -2288,7 +2343,7 @@
     {
       "element": {
         "element_type": "minecraft:single_pool_element",
-        "location": "procedural_dungeon:dungeon/overworld/sculk/tier_1/hallway/room/staircase_diagonal_up",
+        "location": "procedural_dungeon:dungeon/hallway/room/staircase_spiral_down",
         "override_liquid_settings": "ignore_waterlogging",
         "processors": {
           "processors": [
@@ -2605,7 +2660,7 @@
               "rules": [
                 {
                   "block_entity_modifier": {
-                    "type": "minecraft:replace_loot_by_old_table",
+                    "type": "procedural_dungeon:replace_loot_by_old_table",
                     "replacements": {
                       "procedural_dungeon:armorsmith": "procedural_dungeon:armorsmith/tier_1",
                       "procedural_dungeon:enchanter": "procedural_dungeon:enchanter/tier_1",
@@ -2735,6 +2790,17 @@
                   }
                 }
               ]
+            },
+            {
+              "processor_type": "procedural_dungeon:replace_jigsaw_pools",
+              "replacements": {
+                "procedural_dungeon:dungeon/hallway": "procedural_dungeon:dungeon/overworld/sculk/tier_1/hallway",
+                "procedural_dungeon:dungeon/hallway/end": "procedural_dungeon:dungeon/overworld/sculk/tier_1/hallway/end",
+                "procedural_dungeon:dungeon/hallway/loot": "procedural_dungeon:dungeon/overworld/sculk/tier_1/hallway/loot",
+                "procedural_dungeon:dungeon/hallway/room": "procedural_dungeon:dungeon/overworld/sculk/tier_1/hallway/room",
+                "procedural_dungeon:dungeon/hallway/trap": "procedural_dungeon:dungeon/overworld/sculk/tier_1/hallway/trap",
+                "procedural_dungeon:dungeon/spawner/tier_1": "procedural_dungeon:dungeon/spawner/tier_1"
+              }
             }
           ]
         },
@@ -2745,7 +2811,7 @@
     {
       "element": {
         "element_type": "minecraft:single_pool_element",
-        "location": "procedural_dungeon:dungeon/overworld/sculk/tier_1/hallway/room/staircase_spiral_down",
+        "location": "procedural_dungeon:dungeon/hallway/room/staircase_spiral_up",
         "override_liquid_settings": "ignore_waterlogging",
         "processors": {
           "processors": [
@@ -3062,7 +3128,7 @@
               "rules": [
                 {
                   "block_entity_modifier": {
-                    "type": "minecraft:replace_loot_by_old_table",
+                    "type": "procedural_dungeon:replace_loot_by_old_table",
                     "replacements": {
                       "procedural_dungeon:armorsmith": "procedural_dungeon:armorsmith/tier_1",
                       "procedural_dungeon:enchanter": "procedural_dungeon:enchanter/tier_1",
@@ -3192,6 +3258,17 @@
                   }
                 }
               ]
+            },
+            {
+              "processor_type": "procedural_dungeon:replace_jigsaw_pools",
+              "replacements": {
+                "procedural_dungeon:dungeon/hallway": "procedural_dungeon:dungeon/overworld/sculk/tier_1/hallway",
+                "procedural_dungeon:dungeon/hallway/end": "procedural_dungeon:dungeon/overworld/sculk/tier_1/hallway/end",
+                "procedural_dungeon:dungeon/hallway/loot": "procedural_dungeon:dungeon/overworld/sculk/tier_1/hallway/loot",
+                "procedural_dungeon:dungeon/hallway/room": "procedural_dungeon:dungeon/overworld/sculk/tier_1/hallway/room",
+                "procedural_dungeon:dungeon/hallway/trap": "procedural_dungeon:dungeon/overworld/sculk/tier_1/hallway/trap",
+                "procedural_dungeon:dungeon/spawner/tier_1": "procedural_dungeon:dungeon/spawner/tier_1"
+              }
             }
           ]
         },
@@ -3202,7 +3279,7 @@
     {
       "element": {
         "element_type": "minecraft:single_pool_element",
-        "location": "procedural_dungeon:dungeon/overworld/sculk/tier_1/hallway/room/staircase_spiral_up",
+        "location": "procedural_dungeon:dungeon/hallway/room/toolsmith",
         "override_liquid_settings": "ignore_waterlogging",
         "processors": {
           "processors": [
@@ -3519,7 +3596,7 @@
               "rules": [
                 {
                   "block_entity_modifier": {
-                    "type": "minecraft:replace_loot_by_old_table",
+                    "type": "procedural_dungeon:replace_loot_by_old_table",
                     "replacements": {
                       "procedural_dungeon:armorsmith": "procedural_dungeon:armorsmith/tier_1",
                       "procedural_dungeon:enchanter": "procedural_dungeon:enchanter/tier_1",
@@ -3649,6 +3726,17 @@
                   }
                 }
               ]
+            },
+            {
+              "processor_type": "procedural_dungeon:replace_jigsaw_pools",
+              "replacements": {
+                "procedural_dungeon:dungeon/hallway": "procedural_dungeon:dungeon/overworld/sculk/tier_1/hallway",
+                "procedural_dungeon:dungeon/hallway/end": "procedural_dungeon:dungeon/overworld/sculk/tier_1/hallway/end",
+                "procedural_dungeon:dungeon/hallway/loot": "procedural_dungeon:dungeon/overworld/sculk/tier_1/hallway/loot",
+                "procedural_dungeon:dungeon/hallway/room": "procedural_dungeon:dungeon/overworld/sculk/tier_1/hallway/room",
+                "procedural_dungeon:dungeon/hallway/trap": "procedural_dungeon:dungeon/overworld/sculk/tier_1/hallway/trap",
+                "procedural_dungeon:dungeon/spawner/tier_1": "procedural_dungeon:dungeon/spawner/tier_1"
+              }
             }
           ]
         },
@@ -3659,7 +3747,7 @@
     {
       "element": {
         "element_type": "minecraft:single_pool_element",
-        "location": "procedural_dungeon:dungeon/overworld/sculk/tier_1/hallway/room/toolsmith",
+        "location": "procedural_dungeon:dungeon/hallway/room/weaponsmith",
         "override_liquid_settings": "ignore_waterlogging",
         "processors": {
           "processors": [
@@ -3976,7 +4064,7 @@
               "rules": [
                 {
                   "block_entity_modifier": {
-                    "type": "minecraft:replace_loot_by_old_table",
+                    "type": "procedural_dungeon:replace_loot_by_old_table",
                     "replacements": {
                       "procedural_dungeon:armorsmith": "procedural_dungeon:armorsmith/tier_1",
                       "procedural_dungeon:enchanter": "procedural_dungeon:enchanter/tier_1",
@@ -4106,463 +4194,17 @@
                   }
                 }
               ]
-            }
-          ]
-        },
-        "projection": "rigid"
-      },
-      "weight": 1
-    },
-    {
-      "element": {
-        "element_type": "minecraft:single_pool_element",
-        "location": "procedural_dungeon:dungeon/overworld/sculk/tier_1/hallway/room/weaponsmith",
-        "override_liquid_settings": "ignore_waterlogging",
-        "processors": {
-          "processors": [
-            {
-              "processor_type": "minecraft:rule",
-              "rules": [
-                {
-                  "input_predicate": {
-                    "block": "minecraft:bookshelf",
-                    "predicate_type": "minecraft:random_block_match",
-                    "probability": 0.3
-                  },
-                  "location_predicate": {
-                    "predicate_type": "minecraft:always_true"
-                  },
-                  "output_state": {
-                    "Name": "minecraft:chiseled_bookshelf",
-                    "Properties": {
-                      "facing": "north",
-                      "slot_0_occupied": "false",
-                      "slot_1_occupied": "false",
-                      "slot_2_occupied": "false",
-                      "slot_3_occupied": "false",
-                      "slot_4_occupied": "false",
-                      "slot_5_occupied": "false"
-                    }
-                  }
-                }
-              ]
             },
             {
-              "processor_type": "minecraft:rule",
-              "rules": [
-                {
-                  "input_predicate": {
-                    "block": "minecraft:oak_log",
-                    "predicate_type": "minecraft:random_block_match",
-                    "probability": 0.3
-                  },
-                  "location_predicate": {
-                    "predicate_type": "minecraft:always_true"
-                  },
-                  "output_state": {
-                    "Name": "minecraft:stripped_oak_log",
-                    "Properties": {
-                      "axis": "y"
-                    }
-                  }
-                }
-              ]
-            },
-            {
-              "processor_type": "minecraft:rule",
-              "rules": [
-                {
-                  "input_predicate": {
-                    "block": "minecraft:copper_block",
-                    "predicate_type": "minecraft:random_block_match",
-                    "probability": 0.1
-                  },
-                  "location_predicate": {
-                    "predicate_type": "minecraft:always_true"
-                  },
-                  "output_state": {
-                    "Name": "minecraft:raw_copper_block"
-                  }
-                }
-              ]
-            },
-            {
-              "processor_type": "minecraft:rule",
-              "rules": [
-                {
-                  "input_predicate": {
-                    "block": "minecraft:copper_block",
-                    "predicate_type": "minecraft:random_block_match",
-                    "probability": 0.1
-                  },
-                  "location_predicate": {
-                    "predicate_type": "minecraft:always_true"
-                  },
-                  "output_state": {
-                    "Name": "minecraft:copper_ore"
-                  }
-                }
-              ]
-            },
-            {
-              "processor_type": "minecraft:rule",
-              "rules": [
-                {
-                  "input_predicate": {
-                    "block": "minecraft:copper_block",
-                    "predicate_type": "minecraft:random_block_match",
-                    "probability": 0.1
-                  },
-                  "location_predicate": {
-                    "predicate_type": "minecraft:always_true"
-                  },
-                  "output_state": {
-                    "Name": "minecraft:deepslate_copper_ore"
-                  }
-                }
-              ]
-            },
-            {
-              "processor_type": "minecraft:rule",
-              "rules": [
-                {
-                  "input_predicate": {
-                    "block": "minecraft:iron_block",
-                    "predicate_type": "minecraft:random_block_match",
-                    "probability": 0.1
-                  },
-                  "location_predicate": {
-                    "predicate_type": "minecraft:always_true"
-                  },
-                  "output_state": {
-                    "Name": "minecraft:raw_iron_block"
-                  }
-                }
-              ]
-            },
-            {
-              "processor_type": "minecraft:rule",
-              "rules": [
-                {
-                  "input_predicate": {
-                    "block": "minecraft:iron_block",
-                    "predicate_type": "minecraft:random_block_match",
-                    "probability": 0.1
-                  },
-                  "location_predicate": {
-                    "predicate_type": "minecraft:always_true"
-                  },
-                  "output_state": {
-                    "Name": "minecraft:iron_ore"
-                  }
-                }
-              ]
-            },
-            {
-              "processor_type": "minecraft:rule",
-              "rules": [
-                {
-                  "input_predicate": {
-                    "block": "minecraft:iron_block",
-                    "predicate_type": "minecraft:random_block_match",
-                    "probability": 0.1
-                  },
-                  "location_predicate": {
-                    "predicate_type": "minecraft:always_true"
-                  },
-                  "output_state": {
-                    "Name": "minecraft:deepslate_iron_ore"
-                  }
-                }
-              ]
-            },
-            {
-              "processor_type": "minecraft:rule",
-              "rules": [
-                {
-                  "input_predicate": {
-                    "block": "minecraft:gold_block",
-                    "predicate_type": "minecraft:random_block_match",
-                    "probability": 0.1
-                  },
-                  "location_predicate": {
-                    "predicate_type": "minecraft:always_true"
-                  },
-                  "output_state": {
-                    "Name": "minecraft:raw_gold_block"
-                  }
-                }
-              ]
-            },
-            {
-              "processor_type": "minecraft:rule",
-              "rules": [
-                {
-                  "input_predicate": {
-                    "block": "minecraft:gold_block",
-                    "predicate_type": "minecraft:random_block_match",
-                    "probability": 0.1
-                  },
-                  "location_predicate": {
-                    "predicate_type": "minecraft:always_true"
-                  },
-                  "output_state": {
-                    "Name": "minecraft:gold_ore"
-                  }
-                }
-              ]
-            },
-            {
-              "processor_type": "minecraft:rule",
-              "rules": [
-                {
-                  "input_predicate": {
-                    "block": "minecraft:gold_block",
-                    "predicate_type": "minecraft:random_block_match",
-                    "probability": 0.1
-                  },
-                  "location_predicate": {
-                    "predicate_type": "minecraft:always_true"
-                  },
-                  "output_state": {
-                    "Name": "minecraft:deepslate_gold_ore"
-                  }
-                }
-              ]
-            },
-            {
-              "processor_type": "minecraft:rule",
-              "rules": [
-                {
-                  "input_predicate": {
-                    "block": "minecraft:diamond_block",
-                    "predicate_type": "minecraft:random_block_match",
-                    "probability": 0.15
-                  },
-                  "location_predicate": {
-                    "predicate_type": "minecraft:always_true"
-                  },
-                  "output_state": {
-                    "Name": "minecraft:diamond_ore"
-                  }
-                }
-              ]
-            },
-            {
-              "processor_type": "minecraft:rule",
-              "rules": [
-                {
-                  "input_predicate": {
-                    "block": "minecraft:diamond_block",
-                    "predicate_type": "minecraft:random_block_match",
-                    "probability": 0.15
-                  },
-                  "location_predicate": {
-                    "predicate_type": "minecraft:always_true"
-                  },
-                  "output_state": {
-                    "Name": "minecraft:deepslate_diamond_ore"
-                  }
-                }
-              ]
-            },
-            {
-              "processor_type": "minecraft:rule",
-              "rules": [
-                {
-                  "input_predicate": {
-                    "block": "minecraft:lapis_block",
-                    "predicate_type": "minecraft:random_block_match",
-                    "probability": 0.15
-                  },
-                  "location_predicate": {
-                    "predicate_type": "minecraft:always_true"
-                  },
-                  "output_state": {
-                    "Name": "minecraft:lapis_ore"
-                  }
-                }
-              ]
-            },
-            {
-              "processor_type": "minecraft:rule",
-              "rules": [
-                {
-                  "input_predicate": {
-                    "block": "minecraft:lapis_block",
-                    "predicate_type": "minecraft:random_block_match",
-                    "probability": 0.15
-                  },
-                  "location_predicate": {
-                    "predicate_type": "minecraft:always_true"
-                  },
-                  "output_state": {
-                    "Name": "minecraft:deepslate_lapis_ore"
-                  }
-                }
-              ]
-            },
-            {
-              "processor_type": "minecraft:rule",
-              "rules": [
-                {
-                  "input_predicate": {
-                    "block": "minecraft:air",
-                    "predicate_type": "minecraft:random_block_match",
-                    "probability": 0.01
-                  },
-                  "location_predicate": {
-                    "predicate_type": "minecraft:always_true"
-                  },
-                  "output_state": {
-                    "Name": "minecraft:cobweb"
-                  }
-                }
-              ]
-            },
-            {
-              "mossiness": 0.4,
-              "processor_type": "minecraft:block_age"
-            },
-            {
-              "integrity": 0.98,
-              "processor_type": "minecraft:block_rot"
-            },
-            {
-              "processor_type": "minecraft:rule",
-              "rules": [
-                {
-                  "block_entity_modifier": {
-                    "type": "minecraft:replace_loot_by_old_table",
-                    "replacements": {
-                      "procedural_dungeon:armorsmith": "procedural_dungeon:armorsmith/tier_1",
-                      "procedural_dungeon:enchanter": "procedural_dungeon:enchanter/tier_1",
-                      "procedural_dungeon:hallway_end": "procedural_dungeon:hallway_end/tier_1",
-                      "procedural_dungeon:hallway_loot": "procedural_dungeon:hallway_loot/tier_1",
-                      "procedural_dungeon:toolsmith": "procedural_dungeon:toolsmith/tier_1",
-                      "procedural_dungeon:weaponsmith": "procedural_dungeon:weaponsmith/tier_1"
-                    }
-                  },
-                  "input_predicate": {
-                    "block": "minecraft:chest",
-                    "predicate_type": "minecraft:block_match"
-                  },
-                  "location_predicate": {
-                    "predicate_type": "minecraft:always_true"
-                  },
-                  "output_state": {
-                    "Name": "minecraft:chest",
-                    "Properties": {
-                      "type": "single",
-                      "facing": "north",
-                      "waterlogged": "false"
-                    }
-                  }
-                }
-              ]
-            },
-            {
-              "processor_type": "minecraft:rule",
-              "rules": [
-                {
-                  "input_predicate": {
-                    "block": "minecraft:cobblestone",
-                    "predicate_type": "minecraft:random_block_match",
-                    "probability": 0.001
-                  },
-                  "location_predicate": {
-                    "predicate_type": "minecraft:always_true"
-                  },
-                  "output_state": {
-                    "Name": "minecraft:sculk_shrieker",
-                    "Properties": {
-                      "can_summon": "false",
-                      "shrieking": "false",
-                      "waterlogged": "false"
-                    }
-                  }
-                }
-              ]
-            },
-            {
-              "processor_type": "minecraft:rule",
-              "rules": [
-                {
-                  "input_predicate": {
-                    "block": "minecraft:cobblestone",
-                    "predicate_type": "minecraft:random_block_match",
-                    "probability": 0.001
-                  },
-                  "location_predicate": {
-                    "predicate_type": "minecraft:always_true"
-                  },
-                  "output_state": {
-                    "Name": "minecraft:reinforced_deepslate"
-                  }
-                }
-              ]
-            },
-            {
-              "processor_type": "minecraft:rule",
-              "rules": [
-                {
-                  "input_predicate": {
-                    "block": "minecraft:cobblestone",
-                    "predicate_type": "minecraft:random_block_match",
-                    "probability": 0.1
-                  },
-                  "location_predicate": {
-                    "predicate_type": "minecraft:always_true"
-                  },
-                  "output_state": {
-                    "Name": "minecraft:sculk_sensor",
-                    "Properties": {
-                      "power": "0",
-                      "sculk_sensor_phase": "inactive",
-                      "waterlogged": "false"
-                    }
-                  }
-                }
-              ]
-            },
-            {
-              "processor_type": "minecraft:rule",
-              "rules": [
-                {
-                  "input_predicate": {
-                    "block": "minecraft:cobblestone",
-                    "predicate_type": "minecraft:random_block_match",
-                    "probability": 0.1
-                  },
-                  "location_predicate": {
-                    "predicate_type": "minecraft:always_true"
-                  },
-                  "output_state": {
-                    "Name": "minecraft:sculk_catalyst",
-                    "Properties": {
-                      "bloom": "false"
-                    }
-                  }
-                }
-              ]
-            },
-            {
-              "processor_type": "minecraft:rule",
-              "rules": [
-                {
-                  "input_predicate": {
-                    "block": "minecraft:cobblestone",
-                    "predicate_type": "minecraft:random_block_match",
-                    "probability": 1.0
-                  },
-                  "location_predicate": {
-                    "predicate_type": "minecraft:always_true"
-                  },
-                  "output_state": {
-                    "Name": "minecraft:sculk"
-                  }
-                }
-              ]
+              "processor_type": "procedural_dungeon:replace_jigsaw_pools",
+              "replacements": {
+                "procedural_dungeon:dungeon/hallway": "procedural_dungeon:dungeon/overworld/sculk/tier_1/hallway",
+                "procedural_dungeon:dungeon/hallway/end": "procedural_dungeon:dungeon/overworld/sculk/tier_1/hallway/end",
+                "procedural_dungeon:dungeon/hallway/loot": "procedural_dungeon:dungeon/overworld/sculk/tier_1/hallway/loot",
+                "procedural_dungeon:dungeon/hallway/room": "procedural_dungeon:dungeon/overworld/sculk/tier_1/hallway/room",
+                "procedural_dungeon:dungeon/hallway/trap": "procedural_dungeon:dungeon/overworld/sculk/tier_1/hallway/trap",
+                "procedural_dungeon:dungeon/spawner/tier_1": "procedural_dungeon:dungeon/spawner/tier_1"
+              }
             }
           ]
         },

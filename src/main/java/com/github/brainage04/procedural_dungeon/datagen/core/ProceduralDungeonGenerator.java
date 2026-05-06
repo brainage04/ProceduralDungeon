@@ -4,6 +4,7 @@ import com.github.brainage04.procedural_dungeon.ProceduralDungeon;
 import com.github.brainage04.procedural_dungeon.datagen.common.DungeonTheme;
 import com.github.brainage04.procedural_dungeon.datagen.common.DungeonTier;
 import com.github.brainage04.procedural_dungeon.datagen.loot_table.DungeonLootTableProvider;
+import com.github.brainage04.procedural_dungeon.datagen.processor_list.ReplaceJigsawPoolProcessor;
 import com.github.brainage04.procedural_dungeon.datagen.processor_list.ReplaceLootByOldTableModifier;
 import com.github.brainage04.procedural_dungeon.util.RegistryKeyUtils;
 import com.mojang.datafixers.util.Either;
@@ -247,8 +248,8 @@ public class ProceduralDungeonGenerator extends FabricDynamicRegistryProvider {
 
                 // structure set -> structure -> structure pool -> processor list
                 StructureProcessorList processorList = generateProcessorList(entries, key, tier, theme);
-                StructurePool startPool = generateTemplatePools(entries, key, tier, theme, processorList);
-                Structure startStructure = generateStructure(entries, key, tier, theme, startPool);
+                StructurePool startPool = generateTemplatePools(entries, key, processorList);
+                Structure startStructure = generateStructure(entries, key, tier, startPool);
                 generateStructureSet(entries, key, tier, theme, startStructure);
             }
         }
@@ -276,7 +277,7 @@ public class ProceduralDungeonGenerator extends FabricDynamicRegistryProvider {
 
     }
 
-    private static Structure generateStructure(Entries entries, String key, DungeonTier tier, DungeonTheme theme, StructurePool startPool) {
+    private static Structure generateStructure(Entries entries, String key, DungeonTier tier, StructurePool startPool) {
         RegistryEntryLookup<Biome> biomeLookup = entries.getLookup(RegistryKeys.BIOME);
 
         JigsawStructure startStructure = new JigsawStructure(
@@ -297,17 +298,17 @@ public class ProceduralDungeonGenerator extends FabricDynamicRegistryProvider {
                 new DimensionPadding(0, 0),
                 StructureLiquidSettings.IGNORE_WATERLOGGING
         );
-        entries.add(RegistryKeyUtils.create(RegistryKeys.STRUCTURE, key), startStructure);
+        var structureKey = RegistryKeyUtils.create(RegistryKeys.STRUCTURE, key);
+        entries.add(structureKey, startStructure);
 
         return startStructure;
     }
 
-    private static StructurePool generateTemplatePools(Entries entries, String key, DungeonTier tier, DungeonTheme theme, StructureProcessorList structureProcessorList) {
+    private static StructurePool generateTemplatePools(Entries entries, String key, StructureProcessorList structureProcessorList) {
         RegistryEntryLookup<StructurePool> structurePoolLookup =
                 entries.getLookup(RegistryKeys.TEMPLATE_POOL);
         RegistryEntry<StructurePool> empty =
                 structurePoolLookup.getOrThrow(StructurePools.EMPTY);
-
         RegistryEntry<StructureProcessorList> structureProcessorListEntry =
                 RegistryEntry.of(structureProcessorList);
 
@@ -315,17 +316,18 @@ public class ProceduralDungeonGenerator extends FabricDynamicRegistryProvider {
         StructurePool startStructure = new StructurePool(
                 empty,
                 List.of(
-                        getWeightedSinglePoolElement(startKey, structureProcessorListEntry)
+                        getWeightedSinglePoolElement("dungeon/start", structureProcessorListEntry)
                 )
         );
-        entries.add(RegistryKeyUtils.create(RegistryKeys.TEMPLATE_POOL, startKey), startStructure);
+        var startPoolKey = RegistryKeyUtils.create(RegistryKeys.TEMPLATE_POOL, startKey);
+        entries.add(startPoolKey, startStructure);
 
         StructurePool hallway = new StructurePool(
                 empty,
                 List.of(
-                        getWeightedSinglePoolElement("%s/hallway/small".formatted(key), structureProcessorListEntry),
-                        getWeightedSinglePoolElement("%s/hallway/medium".formatted(key), structureProcessorListEntry),
-                        getWeightedSinglePoolElement("%s/hallway/large".formatted(key), structureProcessorListEntry)
+                        getWeightedSinglePoolElement("dungeon/hallway/small", structureProcessorListEntry),
+                        getWeightedSinglePoolElement("dungeon/hallway/medium", structureProcessorListEntry),
+                        getWeightedSinglePoolElement("dungeon/hallway/large", structureProcessorListEntry)
                 )
         );
         entries.add(RegistryKeyUtils.create(RegistryKeys.TEMPLATE_POOL, "%s/hallway".formatted(key)), hallway);
@@ -333,9 +335,9 @@ public class ProceduralDungeonGenerator extends FabricDynamicRegistryProvider {
         StructurePool hallwayEnd = new StructurePool(
                 empty,
                 List.of(
-                        getWeightedSinglePoolElement("%s/hallway/end/small".formatted(key), structureProcessorListEntry),
-                        getWeightedSinglePoolElement("%s/hallway/end/medium".formatted(key), structureProcessorListEntry),
-                        getWeightedSinglePoolElement("%s/hallway/end/large".formatted(key), structureProcessorListEntry)
+                        getWeightedSinglePoolElement("dungeon/hallway/end/small", structureProcessorListEntry),
+                        getWeightedSinglePoolElement("dungeon/hallway/end/medium", structureProcessorListEntry),
+                        getWeightedSinglePoolElement("dungeon/hallway/end/large", structureProcessorListEntry)
                 )
         );
         entries.add(RegistryKeyUtils.create(RegistryKeys.TEMPLATE_POOL, "%s/hallway/end".formatted(key)), hallwayEnd);
@@ -343,9 +345,9 @@ public class ProceduralDungeonGenerator extends FabricDynamicRegistryProvider {
         StructurePool hallwayLoot = new StructurePool(
                 empty,
                 List.of(
-                        getWeightedSinglePoolElement("%s/hallway/loot/small".formatted(key), structureProcessorListEntry),
-                        getWeightedSinglePoolElement("%s/hallway/loot/medium".formatted(key), structureProcessorListEntry),
-                        getWeightedSinglePoolElement("%s/hallway/loot/large".formatted(key), structureProcessorListEntry)
+                        getWeightedSinglePoolElement("dungeon/hallway/loot/small", structureProcessorListEntry),
+                        getWeightedSinglePoolElement("dungeon/hallway/loot/medium", structureProcessorListEntry),
+                        getWeightedSinglePoolElement("dungeon/hallway/loot/large", structureProcessorListEntry)
                 )
         );
         entries.add(RegistryKeyUtils.create(RegistryKeys.TEMPLATE_POOL, "%s/hallway/loot".formatted(key)), hallwayLoot);
@@ -353,16 +355,15 @@ public class ProceduralDungeonGenerator extends FabricDynamicRegistryProvider {
         StructurePool hallwayRoom = new StructurePool(
                 empty,
                 List.of(
-                        getWeightedSinglePoolElement("%s/hallway/room/armorsmith".formatted(key), structureProcessorListEntry),
-                        getWeightedSinglePoolElement("%s/hallway/room/dropper".formatted(key), structureProcessorListEntry),
-                        getWeightedSinglePoolElement("%s/hallway/room/enchanter".formatted(key), structureProcessorListEntry),
-                        getWeightedSinglePoolElement("%s/hallway/room/spawner_corridor".formatted(key), structureProcessorListEntry),
-                        getWeightedSinglePoolElement("%s/hallway/room/staircase_diagonal_down".formatted(key), structureProcessorListEntry),
-                        getWeightedSinglePoolElement("%s/hallway/room/staircase_diagonal_up".formatted(key), structureProcessorListEntry),
-                        getWeightedSinglePoolElement("%s/hallway/room/staircase_spiral_down".formatted(key), structureProcessorListEntry),
-                        getWeightedSinglePoolElement("%s/hallway/room/staircase_spiral_up".formatted(key), structureProcessorListEntry),
-                        getWeightedSinglePoolElement("%s/hallway/room/toolsmith".formatted(key), structureProcessorListEntry),
-                        getWeightedSinglePoolElement("%s/hallway/room/weaponsmith".formatted(key), structureProcessorListEntry)
+                        getWeightedSinglePoolElement("dungeon/hallway/room/armorsmith", structureProcessorListEntry),
+                        getWeightedSinglePoolElement("dungeon/hallway/room/enchanter", structureProcessorListEntry),
+                        getWeightedSinglePoolElement("dungeon/hallway/room/spawner_corridor", structureProcessorListEntry),
+                        getWeightedSinglePoolElement("dungeon/hallway/room/staircase_diagonal_down", structureProcessorListEntry),
+                        getWeightedSinglePoolElement("dungeon/hallway/room/staircase_diagonal_up", structureProcessorListEntry),
+                        getWeightedSinglePoolElement("dungeon/hallway/room/staircase_spiral_down", structureProcessorListEntry),
+                        getWeightedSinglePoolElement("dungeon/hallway/room/staircase_spiral_up", structureProcessorListEntry),
+                        getWeightedSinglePoolElement("dungeon/hallway/room/toolsmith", structureProcessorListEntry),
+                        getWeightedSinglePoolElement("dungeon/hallway/room/weaponsmith", structureProcessorListEntry)
                 )
         );
         entries.add(RegistryKeyUtils.create(RegistryKeys.TEMPLATE_POOL, "%s/hallway/room".formatted(key)), hallwayRoom);
@@ -370,10 +371,10 @@ public class ProceduralDungeonGenerator extends FabricDynamicRegistryProvider {
         StructurePool hallwayTrap = new StructurePool(
                 empty,
                 List.of(
-                        getWeightedSinglePoolElement("%s/hallway/trap/dripstone".formatted(key), structureProcessorListEntry),
-                        getWeightedSinglePoolElement("%s/hallway/trap/lava".formatted(key), structureProcessorListEntry),
-                        getWeightedSinglePoolElement("%s/hallway/trap/negative_potions".formatted(key), structureProcessorListEntry),
-                        getWeightedSinglePoolElement("%s/hallway/trap/spawners".formatted(key), structureProcessorListEntry)
+                        getWeightedSinglePoolElement("dungeon/hallway/trap/dripstone", structureProcessorListEntry),
+                        getWeightedSinglePoolElement("dungeon/hallway/trap/lava", structureProcessorListEntry),
+                        getWeightedSinglePoolElement("dungeon/hallway/trap/negative_potions", structureProcessorListEntry),
+                        getWeightedSinglePoolElement("dungeon/hallway/trap/spawners", structureProcessorListEntry)
                 )
         );
         entries.add(RegistryKeyUtils.create(RegistryKeys.TEMPLATE_POOL, "%s/hallway/trap".formatted(key)), hallwayTrap);
@@ -389,16 +390,26 @@ public class ProceduralDungeonGenerator extends FabricDynamicRegistryProvider {
                         GENERIC_AIR,
                         GENERIC_DECAY,
                         tier.getBaseProcessorList(),
-                        theme.baseProcessorList
+                        theme.baseProcessorList,
+                        createJigsawPoolReplacements(key, tier)
                 ).flatMap(structureProcessorList1 -> structureProcessorList1.getList().stream()).toList()
         );
 
-        entries.add(
-                RegistryKeyUtils.create(RegistryKeys.PROCESSOR_LIST, key),
-                structureProcessorList
-        );
+        var processorListKey = RegistryKeyUtils.create(RegistryKeys.PROCESSOR_LIST, key);
+        entries.add(processorListKey, structureProcessorList);
 
         return structureProcessorList;
+    }
+
+    private static StructureProcessorList createJigsawPoolReplacements(String key, DungeonTier tier) {
+        return create(List.of(new ReplaceJigsawPoolProcessor(Map.ofEntries(
+                Map.entry(ProceduralDungeon.of("dungeon/hallway"), ProceduralDungeon.of("%s/hallway".formatted(key))),
+                Map.entry(ProceduralDungeon.of("dungeon/hallway/end"), ProceduralDungeon.of("%s/hallway/end".formatted(key))),
+                Map.entry(ProceduralDungeon.of("dungeon/hallway/loot"), ProceduralDungeon.of("%s/hallway/loot".formatted(key))),
+                Map.entry(ProceduralDungeon.of("dungeon/hallway/room"), ProceduralDungeon.of("%s/hallway/room".formatted(key))),
+                Map.entry(ProceduralDungeon.of("dungeon/hallway/trap"), ProceduralDungeon.of("%s/hallway/trap".formatted(key))),
+                Map.entry(ProceduralDungeon.of("dungeon/spawner/tier_1"), ProceduralDungeon.of("dungeon/spawner/tier_%d".formatted(tier.tier)))
+        ))));
     }
 
     @Override
