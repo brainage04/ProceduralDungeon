@@ -96,6 +96,7 @@ public class EntranceStructureProvider implements DataProvider {
 
         scatterRubble(builder, center, surfaceY + 1, center, radius, tier.tier, 11);
         placeTierSkulls(builder, center - radius + 2, surfaceY + 1, center + radius - 2, tier, "east");
+        addTierCampFeatures(builder, center, surfaceY + 1, center, radius, tier, 11);
         builder.block(center - radius + 3, surfaceY + 1, center - radius + 4, "minecraft:lantern", properties("hanging", "false", "waterlogged", "false"));
         if (tier.tier >= 3) {
             builder.block(center + radius - 4, surfaceY + 1, center + 2, "minecraft:soul_lantern", properties("hanging", "false", "waterlogged", "false"));
@@ -161,6 +162,7 @@ public class EntranceStructureProvider implements DataProvider {
         builder.block(max - 4, surfaceY + 1, center + 3, tier.tier >= 4 ? "minecraft:soul_lantern" : "minecraft:lantern", properties("hanging", "false", "waterlogged", "false"));
         scatterRubble(builder, center, surfaceY + 1, center, radius, tier.tier + 1, 23);
         placeTierSkulls(builder, center - tier.tier, surfaceY + 1, min + 3, tier, "south");
+        addTierCampFeatures(builder, center, surfaceY + 1, center, radius, tier, 23);
 
         builder.startJigsaw(center, surfaceY + 1, center);
         builder.dungeonJigsaw(center, 0, center);
@@ -238,6 +240,7 @@ public class EntranceStructureProvider implements DataProvider {
         }
         scatterRubble(builder, center, surfaceY + 1, center, radius, tier.tier + 2, 37);
         placeTierSkulls(builder, center + inner + 1, surfaceY + 1, center - inner, tier, "west");
+        addTierCampFeatures(builder, center, surfaceY + 1, center, radius, tier, 37);
         builder.startJigsaw(center, surfaceY + 2, center);
         builder.dungeonJigsaw(center, 0, center);
         return builder.build();
@@ -283,9 +286,21 @@ public class EntranceStructureProvider implements DataProvider {
                 int edgeDistance = Math.min(Math.min(x - minX, maxX - x), Math.min(z - minZ, maxZ - z));
                 int noise = Math.floorMod(x * 31 + z * 17 + seed, 11);
                 if (edgeDistance > 0 || noise < 7) {
-                    builder.block(x, y, z, pickStone(x * 31 + z + seed));
+                    if (noise == 0 && edgeDistance > 1) {
+                        builder.block(x, y, z, "minecraft:stone_brick_slab", properties("type", "bottom", "waterlogged", "false"));
+                    } else {
+                        builder.block(x, y, z, pickStone(x * 31 + z + seed));
+                    }
+                    if (noise == 1 && edgeDistance > 1) {
+                        builder.block(x, y + 1, z, "minecraft:stone_brick_slab", properties("type", "bottom", "waterlogged", "false"));
+                    }
+                    if (noise == 2 && edgeDistance > 2) {
+                        builder.block(x, y + 1, z, pickStone(x * 13 + z + seed));
+                        builder.block(x + 1, y + 1, z, "minecraft:stone_brick_slab", properties("type", "bottom", "waterlogged", "false"));
+                        builder.block(x, y + 1, z + 1, "minecraft:stone_brick_slab", properties("type", "bottom", "waterlogged", "false"));
+                    }
                 }
-                if (edgeDistance == 1 && noise < 2) {
+                if (edgeDistance == 1 && noise < 3) {
                     builder.block(x, y + 1, z, "minecraft:stone_brick_slab", properties("type", "bottom", "waterlogged", "false"));
                 }
             }
@@ -353,6 +368,120 @@ public class EntranceStructureProvider implements DataProvider {
                     properties("rotation", Integer.toString(Math.floorMod(rotation + i, 16)))
             );
         }
+    }
+
+    private static void addTierCampFeatures(StructureBuilder builder, int centerX, int y, int centerZ, int radius, DungeonTier tier, int seed) {
+        addCampfire(builder, centerX - radius + 4, y, centerZ + radius - 4, Math.floorMod(seed, 4));
+
+        if (tier.tier >= 2) {
+            addSupplyCache(builder, centerX + radius - 4, y, centerZ - radius + 4);
+        }
+        if (tier.tier >= 3) {
+            addMarketStall(builder, centerX - radius + 5, y, centerZ - radius + 4, tier.tier >= 5);
+        }
+        if (tier.tier >= 4) {
+            addStable(builder, centerX + radius - 7, y, centerZ + radius - 7);
+            addRackArea(builder, centerX + radius - 6, y, centerZ - 1);
+        }
+        if (tier.tier >= 5) {
+            addCampfire(builder, centerX + radius - 5, y, centerZ + radius - 5, 2);
+            addMarketStall(builder, centerX - 1, y, centerZ + radius - 8, true);
+        }
+    }
+
+    private static void addCampfire(StructureBuilder builder, int x, int y, int z, int rotation) {
+        builder.block(x, y, z, "minecraft:campfire", properties(
+                "facing", direction(rotation),
+                "lit", "true",
+                "signal_fire", "false",
+                "waterlogged", "false"
+        ));
+        builder.block(x - 2, y, z, "minecraft:oak_stairs", stairs("east"));
+        builder.block(x + 2, y, z, "minecraft:oak_stairs", stairs("west"));
+        builder.block(x, y, z - 2, "minecraft:oak_slab", slab("bottom"));
+        builder.block(x + 1, y, z + 2, "minecraft:oak_slab", slab("top"));
+    }
+
+    private static void addSupplyCache(StructureBuilder builder, int x, int y, int z) {
+        builder.block(x, y, z, "minecraft:barrel", properties("facing", "north", "open", "false"));
+        builder.block(x + 1, y, z, "minecraft:barrel", properties("facing", "up", "open", "false"));
+        builder.block(x, y, z + 1, "minecraft:crafting_table");
+        builder.block(x + 2, y, z + 1, "minecraft:hay_block", properties("axis", "y"));
+        builder.block(x + 2, y + 1, z + 1, "minecraft:hay_block", properties("axis", "y"));
+    }
+
+    private static void addMarketStall(StructureBuilder builder, int x, int y, int z, boolean large) {
+        int width = large ? 5 : 3;
+        int depth = large ? 4 : 3;
+        for (int dx : List.of(0, width - 1)) {
+            for (int dz : List.of(0, depth - 1)) {
+                builder.block(x + dx, y, z + dz, "minecraft:oak_fence", fence());
+                builder.block(x + dx, y + 1, z + dz, "minecraft:oak_fence", fence());
+                builder.block(x + dx, y + 2, z + dz, "minecraft:oak_fence", fence());
+            }
+        }
+        for (int dx = 0; dx < width; dx++) {
+            builder.block(x + dx, y + 3, z, "minecraft:dark_oak_slab", slab("bottom"));
+            builder.block(x + dx, y + 3, z + depth - 1, "minecraft:dark_oak_slab", slab("bottom"));
+        }
+        for (int dz = 1; dz < depth - 1; dz++) {
+            builder.block(x, y + 3, z + dz, "minecraft:dark_oak_slab", slab("bottom"));
+            if (large) {
+                builder.block(x + width - 1, y + 3, z + dz, "minecraft:dark_oak_slab", slab("bottom"));
+            }
+        }
+        builder.block(x + 1, y, z + 1, "minecraft:barrel", properties("facing", "south", "open", "false"));
+        builder.block(x + width - 2, y, z + depth - 2, "minecraft:smithing_table");
+        if (large) {
+            builder.block(x + 2, y, z + 1, "minecraft:grindstone", properties("face", "floor", "facing", "north"));
+        }
+    }
+
+    private static void addStable(StructureBuilder builder, int x, int y, int z) {
+        for (int dx = 0; dx <= 5; dx++) {
+            builder.block(x + dx, y, z, "minecraft:oak_fence", fence());
+            if (dx != 2) {
+                builder.block(x + dx, y, z + 4, "minecraft:oak_fence", fence());
+            }
+        }
+        for (int dz = 1; dz <= 3; dz++) {
+            builder.block(x, y, z + dz, "minecraft:oak_fence", fence());
+            builder.block(x + 5, y, z + dz, "minecraft:oak_fence", fence());
+        }
+        builder.block(x + 1, y, z + 1, "minecraft:hay_block", properties("axis", "y"));
+        builder.block(x + 2, y, z + 1, "minecraft:hay_block", properties("axis", "x"));
+        builder.block(x + 4, y, z + 3, "minecraft:cauldron");
+        builder.block(x + 3, y, z + 4, "minecraft:oak_fence_gate", properties("facing", "south", "in_wall", "false", "open", "true", "powered", "false"));
+    }
+
+    private static void addRackArea(StructureBuilder builder, int x, int y, int z) {
+        builder.block(x, y, z, "minecraft:smithing_table");
+        builder.block(x + 1, y, z, "minecraft:grindstone", properties("face", "floor", "facing", "east"));
+        builder.block(x + 2, y, z, "minecraft:chipped_anvil", properties("facing", "north"));
+        for (int dz = -1; dz <= 1; dz++) {
+            builder.block(x + 3, y, z + dz, "minecraft:iron_bars", properties("east", "false", "north", "false", "south", "false", "waterlogged", "false", "west", "false"));
+        }
+    }
+
+    private static String direction(int rotation) {
+        return switch (Math.floorMod(rotation, 4)) {
+            case 1 -> "east";
+            case 2 -> "south";
+            case 3 -> "west";
+            default -> "north";
+        };
+    }
+
+    private static Map<String, String> stairs(String facing) {
+        return properties("facing", facing, "half", "bottom", "shape", "straight", "waterlogged", "false");
+    }
+
+    private static Map<String, String> slab(String type) {
+        return properties("type", type, "waterlogged", "false");
+    }
+
+    private static Map<String, String> fence() {
+        return properties("east", "false", "north", "false", "south", "false", "waterlogged", "false", "west", "false");
     }
 
     private static String pickStone(int value) {
