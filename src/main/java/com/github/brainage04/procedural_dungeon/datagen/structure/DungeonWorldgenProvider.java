@@ -66,13 +66,9 @@ public class DungeonWorldgenProvider implements DataProvider {
         int tier = getTier(variantId);
         if (!theme.dimension.equals(Level.NETHER)) {
             addTemplatePool(writer, futures, "%s/entrance".formatted(key), List.of(
-                    poolElement("dungeon/entrance/tier_%d/hatch".formatted(tier), variantId, 3, Integer.MAX_VALUE),
-                    poolElement("dungeon/entrance/tier_%d/well".formatted(tier), variantId, 3, Integer.MAX_VALUE),
-                    poolElement("dungeon/entrance/tier_%d/staircase".formatted(tier), variantId, 2, Integer.MAX_VALUE),
-                    poolElement("dungeon/entrance/tier_%d/shrine".formatted(tier), variantId, 2, Integer.MAX_VALUE),
-                    poolElement("dungeon/entrance/tier_%d/ruined_archway".formatted(tier), variantId, 2, Integer.MAX_VALUE),
-                    poolElement("dungeon/entrance/tier_%d/sunken_courtyard".formatted(tier), variantId, 2, Integer.MAX_VALUE),
-                    poolElement("dungeon/entrance/tier_%d/ritual_descent".formatted(tier), variantId, 2, Integer.MAX_VALUE)
+                    poolElement("dungeon/entrance/tier_%d/ruined_archway".formatted(tier), variantId, 3, Integer.MAX_VALUE),
+                    poolElement("dungeon/entrance/tier_%d/sunken_courtyard".formatted(tier), variantId, 3, Integer.MAX_VALUE),
+                    poolElement("dungeon/entrance/tier_%d/ritual_descent".formatted(tier), variantId, 3, Integer.MAX_VALUE)
             ));
         }
 

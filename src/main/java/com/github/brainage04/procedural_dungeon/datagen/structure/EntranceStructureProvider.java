@@ -24,7 +24,6 @@ import net.minecraft.resources.Identifier;
 
 public class EntranceStructureProvider implements DataProvider {
     private static final int MAX_STRUCTURE_BLOCK_AXIS = 48;
-    private static final int MAX_ENTRANCE_DEPTH = 40;
     private static final int MAX_DECORATIVE_ENTRANCE_DEPTH = 22;
 
     private final PackOutput.PathProvider structureResolver;
@@ -37,10 +36,6 @@ public class EntranceStructureProvider implements DataProvider {
     public CompletableFuture<?> run(CachedOutput writer) {
         List<CompletableFuture<?>> futures = new ArrayList<>();
         for (DungeonTier tier : DungeonTier.values()) {
-            futures.add(saveNbt(writer, hatch(tier), structurePath(tier, "hatch")));
-            futures.add(saveNbt(writer, well(tier), structurePath(tier, "well")));
-            futures.add(saveNbt(writer, staircase(tier), structurePath(tier, "staircase")));
-            futures.add(saveNbt(writer, shrine(tier), structurePath(tier, "shrine")));
             futures.add(saveNbt(writer, ruinedArchway(tier), structurePath(tier, "ruined_archway")));
             futures.add(saveNbt(writer, sunkenCourtyard(tier), structurePath(tier, "sunken_courtyard")));
             futures.add(saveNbt(writer, ritualDescent(tier), structurePath(tier, "ritual_descent")));
@@ -54,180 +49,57 @@ public class EntranceStructureProvider implements DataProvider {
         return structureResolver.file(id, "nbt");
     }
 
-    private static CompoundTag hatch(DungeonTier tier) {
-        int depth = entranceDepth(tier);
-        int size = 5;
-        int surfaceY = depth;
-        StructureBuilder builder = new StructureBuilder(size, depth + 5, size);
-        int center = 2;
-
-        carveVerticalShaft(builder, center, center, surfaceY, 1);
-        for (int x = 1; x <= 3; x++) {
-            for (int z = 1; z <= 3; z++) {
-                builder.block(x, surfaceY - 1, z, "minecraft:cobblestone");
-            }
-        }
-        for (int z = 1; z <= 3; z++) {
-            builder.block(1, surfaceY, z, "minecraft:cobblestone");
-            builder.block(3, surfaceY, z, "minecraft:cobblestone");
-            builder.block(z, surfaceY, 1, "minecraft:cobblestone");
-            builder.block(z, surfaceY, 3, "minecraft:cobblestone");
-        }
-        builder.block(center, surfaceY, center, "minecraft:oak_trapdoor", properties("half", "bottom", "open", "true", "facing", "north", "waterlogged", "false"));
-        for (int y = 1; y < surfaceY; y++) {
-            builder.block(center, y, center - 1, "minecraft:ladder", properties("facing", "south", "waterlogged", "false"));
-        }
-
-        builder.startJigsaw(center, surfaceY + 1, center);
-        builder.dungeonJigsaw(center, 0, center);
-        return builder.build();
-    }
-
-    private static CompoundTag well(DungeonTier tier) {
-        int depth = entranceDepth(tier);
-        int size = 7;
-        int surfaceY = depth;
-        StructureBuilder builder = new StructureBuilder(size, depth + 6, size);
-        int center = 3;
-
-        carveVerticalShaft(builder, center, center, surfaceY, 2);
-        for (int x = 1; x <= 5; x++) {
-            for (int z = 1; z <= 5; z++) {
-                if (x == 1 || x == 5 || z == 1 || z == 5) {
-                    builder.block(x, surfaceY, z, "minecraft:cobblestone_wall", properties("east", "none", "north", "none", "south", "none", "up", "true", "waterlogged", "false", "west", "none"));
-                }
-            }
-        }
-        for (int y = surfaceY + 1; y <= surfaceY + 3; y++) {
-            builder.block(1, y, 1, "minecraft:cobblestone_wall", properties("east", "none", "north", "none", "south", "none", "up", "true", "waterlogged", "false", "west", "none"));
-            builder.block(5, y, 1, "minecraft:cobblestone_wall", properties("east", "none", "north", "none", "south", "none", "up", "true", "waterlogged", "false", "west", "none"));
-            builder.block(1, y, 5, "minecraft:cobblestone_wall", properties("east", "none", "north", "none", "south", "none", "up", "true", "waterlogged", "false", "west", "none"));
-            builder.block(5, y, 5, "minecraft:cobblestone_wall", properties("east", "none", "north", "none", "south", "none", "up", "true", "waterlogged", "false", "west", "none"));
-        }
-        for (int x = 1; x <= 5; x++) {
-            builder.block(x, surfaceY + 4, 1, "minecraft:cobblestone");
-            builder.block(x, surfaceY + 4, 5, "minecraft:cobblestone");
-        }
-        builder.block(center, surfaceY - 1, center, "minecraft:water", properties("level", "0"));
-
-        builder.startJigsaw(center, surfaceY + 1, center);
-        builder.dungeonJigsaw(center, 0, center);
-        return builder.build();
-    }
-
-    private static CompoundTag staircase(DungeonTier tier) {
-        int depth = entranceDepth(tier);
-        int size = 7;
-        int surfaceY = depth;
-        StructureBuilder builder = new StructureBuilder(size, depth + 5, size);
-        int center = 3;
-
-        carveVerticalShaft(builder, center, center, surfaceY, 2);
-        for (int y = 1; y <= surfaceY; y++) {
-            int phase = Math.floorMod(surfaceY - y, 4);
-            int x = switch (phase) {
-                case 0 -> center;
-                case 1 -> center + 1;
-                case 2 -> center;
-                default -> center - 1;
-            };
-            int z = switch (phase) {
-                case 0 -> center - 1;
-                case 1 -> center;
-                case 2 -> center + 1;
-                default -> center;
-            };
-            String facing = switch (phase) {
-                case 0 -> "south";
-                case 1 -> "west";
-                case 2 -> "north";
-                default -> "east";
-            };
-            builder.block(x, y - 1, z, "minecraft:cobblestone_stairs", properties("facing", facing, "half", "bottom", "shape", "straight", "waterlogged", "false"));
-        }
-
-        for (int x = 1; x <= 5; x++) {
-            builder.block(x, surfaceY, 1, "minecraft:cobblestone");
-            builder.block(x, surfaceY, 5, "minecraft:cobblestone");
-        }
-        for (int z = 1; z <= 5; z++) {
-            builder.block(1, surfaceY, z, "minecraft:cobblestone");
-            builder.block(5, surfaceY, z, "minecraft:cobblestone");
-        }
-        builder.startJigsaw(center, surfaceY + 1, center);
-        builder.dungeonJigsaw(center, 0, center);
-        return builder.build();
-    }
-
-    private static CompoundTag shrine(DungeonTier tier) {
-        int depth = entranceDepth(tier);
-        int size = 9;
-        int surfaceY = depth;
-        StructureBuilder builder = new StructureBuilder(size, depth + 8, size);
-        int center = 4;
-
-        carveVerticalShaft(builder, center, center, surfaceY, 2);
-        for (int x = 1; x <= 7; x++) {
-            for (int z = 1; z <= 7; z++) {
-                builder.block(x, surfaceY, z, "minecraft:cobblestone");
-            }
-        }
-        for (int x = 2; x <= 6; x++) {
-            for (int z = 2; z <= 6; z++) {
-                builder.block(x, surfaceY + 1, z, "minecraft:air");
-            }
-        }
-        for (int x : List.of(1, 7)) {
-            for (int z : List.of(1, 7)) {
-                for (int y = surfaceY + 1; y <= surfaceY + 4; y++) {
-                    builder.block(x, y, z, "minecraft:cobblestone_wall", properties("east", "none", "north", "none", "south", "none", "up", "true", "waterlogged", "false", "west", "none"));
-                }
-            }
-        }
-        for (int x = 2; x <= 6; x++) {
-            builder.block(x, surfaceY + 5, 1, "minecraft:cobblestone_slab", properties("type", "bottom", "waterlogged", "false"));
-            builder.block(x, surfaceY + 5, 7, "minecraft:cobblestone_slab", properties("type", "bottom", "waterlogged", "false"));
-        }
-        for (int z = 2; z <= 6; z++) {
-            builder.block(1, surfaceY + 5, z, "minecraft:cobblestone_slab", properties("type", "bottom", "waterlogged", "false"));
-            builder.block(7, surfaceY + 5, z, "minecraft:cobblestone_slab", properties("type", "bottom", "waterlogged", "false"));
-        }
-        builder.block(center, surfaceY + 1, center, "minecraft:chiseled_stone_bricks");
-        builder.block(center, surfaceY + 2, center, "minecraft:lantern", properties("hanging", "false", "waterlogged", "false"));
-
-        builder.startJigsaw(center, surfaceY + 1, center);
-        builder.dungeonJigsaw(center, 0, center);
-        return builder.build();
-    }
-
     private static CompoundTag ruinedArchway(DungeonTier tier) {
         int depth = decorativeEntranceDepth(tier);
         int surfaceY = depth;
-        StructureBuilder builder = new StructureBuilder(13, depth + 9, 13);
-        int center = 6;
+        int size = entranceFootprint(tier, 13);
+        StructureBuilder builder = new StructureBuilder(size, depth + 10, size);
+        int center = size / 2;
+        int radius = surfaceRadius(tier);
 
         carveVerticalShaft(builder, center, center, surfaceY, 2);
-        buildRoughFloor(builder, 2, 10, surfaceY, 2, 10);
+        buildBrokenSurface(builder, center - radius, center + radius, surfaceY, center - radius, center + radius, tier.tier * 13);
 
-        for (int z = 2; z <= 10; z++) {
-            builder.block(3, surfaceY + 1, z, pickStone(z));
-            builder.block(9, surfaceY + 1, z, pickStone(z + 1));
-        }
-        for (int y = surfaceY + 1; y <= surfaceY + 5; y++) {
-            builder.block(3, y, 3, "minecraft:stone_bricks");
-            builder.block(3, y, 9, "minecraft:stone_bricks");
-            builder.block(9, y, 3, "minecraft:stone_bricks");
-            builder.block(9, y, 9, "minecraft:stone_bricks");
-        }
-        for (int x = 4; x <= 8; x++) {
-            builder.block(x, surfaceY + 6, 3, "minecraft:stone_bricks");
-            builder.block(x, surfaceY + 6, 9, "minecraft:mossy_cobblestone");
+        int westX = center - radius + 2;
+        int eastX = center + radius - 1;
+        int northZ = center - radius + 2;
+        int southZ = center + radius - 2;
+        for (int z = northZ; z <= southZ; z++) {
+            if (z != center + 1) {
+                buildLowRuinWall(builder, westX, surfaceY + 1, z, unevenHeight(tier, z, 2));
+            }
+            if (z % 3 != 0) {
+                buildLowRuinWall(builder, eastX, surfaceY + 1, z, unevenHeight(tier, z + 3, 1));
+            }
         }
 
-        builder.block(2, surfaceY + 2, 6, "minecraft:cobblestone_wall", wall());
-        builder.block(10, surfaceY + 2, 6, "minecraft:cobblestone_wall", wall());
-        builder.block(4, surfaceY + 1, 4, "minecraft:lantern", properties("hanging", "false", "waterlogged", "false"));
-        builder.block(8, surfaceY + 1, 8, "minecraft:lantern", properties("hanging", "false", "waterlogged", "false"));
+        for (int y = surfaceY + 1; y <= surfaceY + 4 + tier.tier / 2; y++) {
+            builder.block(westX, y, northZ, "minecraft:stone_bricks");
+            if (y < surfaceY + 4 + tier.tier / 2) {
+                builder.block(eastX, y, northZ + 1, pickStone(y + tier.tier));
+            }
+            builder.block(westX + 1, y, southZ, pickStone(y + 7));
+            if (tier.tier >= 3 || y <= surfaceY + 3) {
+                builder.block(eastX, y, southZ - 1, "minecraft:mossy_cobblestone");
+            }
+        }
+        for (int x = westX + 1; x <= eastX - 1; x++) {
+            if (x != center + tier.tier % 2) {
+                builder.block(x, surfaceY + 5 + tier.tier / 2, northZ, pickStone(x + tier.tier));
+            }
+        }
+        if (tier.tier >= 4) {
+            for (int x = center - 2; x <= center + 3; x++) {
+                builder.block(x, surfaceY + 4, southZ, "minecraft:stone_brick_slab", properties("type", "top", "waterlogged", "false"));
+            }
+        }
+
+        scatterRubble(builder, center, surfaceY + 1, center, radius, tier.tier, 11);
+        placeTierSkulls(builder, center - radius + 2, surfaceY + 1, center + radius - 2, tier, "east");
+        builder.block(center - radius + 3, surfaceY + 1, center - radius + 4, "minecraft:lantern", properties("hanging", "false", "waterlogged", "false"));
+        if (tier.tier >= 3) {
+            builder.block(center + radius - 4, surfaceY + 1, center + 2, "minecraft:soul_lantern", properties("hanging", "false", "waterlogged", "false"));
+        }
 
         for (int y = 1; y < surfaceY; y++) {
             builder.block(center, y, center - 2, "minecraft:ladder", properties("facing", "south", "waterlogged", "false"));
@@ -241,33 +113,54 @@ public class EntranceStructureProvider implements DataProvider {
     private static CompoundTag sunkenCourtyard(DungeonTier tier) {
         int depth = decorativeEntranceDepth(tier);
         int surfaceY = depth;
-        StructureBuilder builder = new StructureBuilder(15, depth + 8, 15);
-        int center = 7;
+        int size = entranceFootprint(tier, 15);
+        StructureBuilder builder = new StructureBuilder(size, depth + 9, size);
+        int center = size / 2;
+        int radius = surfaceRadius(tier) + 1;
 
         carveVerticalShaft(builder, center, center, surfaceY, 2);
-        buildRoughFloor(builder, 2, 12, surfaceY, 2, 12);
+        buildBrokenSurface(builder, center - radius, center + radius, surfaceY, center - radius, center + radius, tier.tier * 19);
 
-        for (int x = 2; x <= 12; x++) {
-            buildLowRuinWall(builder, x, surfaceY + 1, 2, x % 4 == 0 ? 2 : 1);
-            buildLowRuinWall(builder, x, surfaceY + 1, 12, x % 5 == 0 ? 3 : 1);
+        int min = center - radius;
+        int max = center + radius;
+        for (int x = min + 1; x <= max - 1; x++) {
+            if (x % 4 != tier.tier % 3) {
+                buildLowRuinWall(builder, x, surfaceY + 1, min + 1, unevenHeight(tier, x, 1));
+            }
+            if (x % 5 != 1) {
+                buildLowRuinWall(builder, x, surfaceY + 1, max - 2, unevenHeight(tier, x + 4, 1));
+            }
         }
-        for (int z = 3; z <= 11; z++) {
-            buildLowRuinWall(builder, 2, surfaceY + 1, z, z % 4 == 1 ? 2 : 1);
-            buildLowRuinWall(builder, 12, surfaceY + 1, z, z % 5 == 2 ? 3 : 1);
+        for (int z = min + 2; z <= max - 3; z++) {
+            if (z % 4 != 0) {
+                buildLowRuinWall(builder, min + 2, surfaceY + 1, z, unevenHeight(tier, z + 9, 1));
+            }
+            if (z % 5 != 2 || tier.tier >= 4) {
+                buildLowRuinWall(builder, max - 1, surfaceY + 1, z, unevenHeight(tier, z + 2, 1));
+            }
         }
 
-        for (int x = 5; x <= 9; x++) {
-            builder.block(x, surfaceY + 1, 5, "minecraft:stone_brick_slab", properties("type", "bottom", "waterlogged", "false"));
-            builder.block(x, surfaceY + 1, 9, "minecraft:stone_brick_slab", properties("type", "bottom", "waterlogged", "false"));
+        int ring = 2 + tier.tier / 2;
+        for (int x = center - ring; x <= center + ring; x++) {
+            builder.block(x, surfaceY + 1, center - ring, "minecraft:stone_brick_slab", properties("type", "bottom", "waterlogged", "false"));
+            if (x != center + ring - 1) {
+                builder.block(x, surfaceY + 1, center + ring, "minecraft:stone_brick_slab", properties("type", "bottom", "waterlogged", "false"));
+            }
         }
-        for (int z = 6; z <= 8; z++) {
-            builder.block(5, surfaceY + 1, z, "minecraft:stone_brick_slab", properties("type", "bottom", "waterlogged", "false"));
-            builder.block(9, surfaceY + 1, z, "minecraft:stone_brick_slab", properties("type", "bottom", "waterlogged", "false"));
+        for (int z = center - ring + 1; z <= center + ring - 1; z++) {
+            builder.block(center - ring, surfaceY + 1, z, "minecraft:stone_brick_slab", properties("type", "bottom", "waterlogged", "false"));
+            if (z != center - 1) {
+                builder.block(center + ring, surfaceY + 1, z, "minecraft:stone_brick_slab", properties("type", "bottom", "waterlogged", "false"));
+            }
         }
 
         builder.block(center, surfaceY - 1, center, "minecraft:water", properties("level", "0"));
-        builder.block(4, surfaceY + 1, 4, "minecraft:lantern", properties("hanging", "false", "waterlogged", "false"));
-        builder.block(10, surfaceY + 1, 10, "minecraft:lantern", properties("hanging", "false", "waterlogged", "false"));
+        builder.block(center + 1, surfaceY - 1, center, "minecraft:water", properties("level", "0"));
+        builder.block(center - 1, surfaceY + 1, center + 2, "minecraft:stone_bricks");
+        builder.block(min + 3, surfaceY + 1, min + 4, "minecraft:lantern", properties("hanging", "false", "waterlogged", "false"));
+        builder.block(max - 4, surfaceY + 1, center + 3, tier.tier >= 4 ? "minecraft:soul_lantern" : "minecraft:lantern", properties("hanging", "false", "waterlogged", "false"));
+        scatterRubble(builder, center, surfaceY + 1, center, radius, tier.tier + 1, 23);
+        placeTierSkulls(builder, center - tier.tier, surfaceY + 1, min + 3, tier, "south");
 
         builder.startJigsaw(center, surfaceY + 1, center);
         builder.dungeonJigsaw(center, 0, center);
@@ -277,28 +170,40 @@ public class EntranceStructureProvider implements DataProvider {
     private static CompoundTag ritualDescent(DungeonTier tier) {
         int depth = decorativeEntranceDepth(tier);
         int surfaceY = depth;
-        StructureBuilder builder = new StructureBuilder(15, depth + 8, 15);
-        int center = 7;
+        int size = entranceFootprint(tier, 15);
+        StructureBuilder builder = new StructureBuilder(size, depth + 10, size);
+        int center = size / 2;
+        int radius = surfaceRadius(tier) + 1;
 
         carveVerticalShaft(builder, center, center, surfaceY, 2);
-        buildRoughFloor(builder, 3, 11, surfaceY, 3, 11);
+        buildBrokenSurface(builder, center - radius, center + radius, surfaceY, center - radius, center + radius, tier.tier * 29);
 
-        for (int offset = -4; offset <= 4; offset++) {
-            builder.block(center + offset, surfaceY + 1, center - 4, "minecraft:cobbled_deepslate_wall", wall());
-            builder.block(center + offset, surfaceY + 1, center + 4, "minecraft:cobbled_deepslate_wall", wall());
-            builder.block(center - 4, surfaceY + 1, center + offset, "minecraft:cobbled_deepslate_wall", wall());
-            builder.block(center + 4, surfaceY + 1, center + offset, "minecraft:cobbled_deepslate_wall", wall());
+        int inner = 3 + tier.tier / 2;
+        int outer = Math.min(radius - 2, inner + 2 + tier.tier / 2);
+        for (int offset = -outer; offset <= outer; offset++) {
+            if (Math.abs(offset) > 1 || tier.tier >= 3) {
+                builder.block(center + offset, surfaceY + 1, center - outer, "minecraft:cobbled_deepslate_wall", wall());
+            }
+            if (offset != -outer + 1) {
+                builder.block(center + offset, surfaceY + 1, center + outer, "minecraft:cobbled_deepslate_wall", wall());
+            }
+            if (offset % 3 != 0) {
+                builder.block(center - outer, surfaceY + 1, center + offset, "minecraft:cobbled_deepslate_wall", wall());
+            }
+            if (offset != outer - 2) {
+                builder.block(center + outer, surfaceY + 1, center + offset, "minecraft:cobbled_deepslate_wall", wall());
+            }
         }
         for (int[] pillar : List.of(
-                new int[]{3, 3},
-                new int[]{3, 11},
-                new int[]{11, 3},
-                new int[]{11, 11}
+                new int[]{center - outer, center - outer},
+                new int[]{center - outer + 1, center + outer},
+                new int[]{center + outer, center - outer + 2},
+                new int[]{center + outer - 1, center + outer - 1}
         )) {
-            for (int y = surfaceY + 1; y <= surfaceY + 4; y++) {
+            for (int y = surfaceY + 1; y <= surfaceY + 3 + tier.tier / 2; y++) {
                 builder.block(pillar[0], y, pillar[1], y == surfaceY + 4 ? "minecraft:chiseled_stone_bricks" : "minecraft:deepslate_bricks");
             }
-            builder.block(pillar[0], surfaceY + 5, pillar[1], "minecraft:lantern", properties("hanging", "false", "waterlogged", "false"));
+            builder.block(pillar[0], surfaceY + 4 + tier.tier / 2, pillar[1], "minecraft:soul_lantern", properties("hanging", "false", "waterlogged", "false"));
         }
 
         for (int y = 1; y <= surfaceY; y++) {
@@ -325,6 +230,14 @@ public class EntranceStructureProvider implements DataProvider {
         }
 
         builder.block(center, surfaceY + 1, center, "minecraft:chiseled_deepslate");
+        for (int offset = -inner; offset <= inner; offset++) {
+            if (Math.abs(offset) == inner || Math.floorMod(offset + tier.tier, 3) == 0) {
+                builder.block(center + offset, surfaceY + 1, center - inner, "minecraft:deepslate_tile_slab", properties("type", "bottom", "waterlogged", "false"));
+                builder.block(center - inner, surfaceY + 1, center + offset, "minecraft:deepslate_tile_slab", properties("type", "bottom", "waterlogged", "false"));
+            }
+        }
+        scatterRubble(builder, center, surfaceY + 1, center, radius, tier.tier + 2, 37);
+        placeTierSkulls(builder, center + inner + 1, surfaceY + 1, center - inner, tier, "west");
         builder.startJigsaw(center, surfaceY + 2, center);
         builder.dungeonJigsaw(center, 0, center);
         return builder.build();
@@ -348,12 +261,35 @@ public class EntranceStructureProvider implements DataProvider {
         }
     }
 
-    private static int entranceDepth(DungeonTier tier) {
-        return Math.min(Math.abs(tier.surfaceOffset), MAX_ENTRANCE_DEPTH);
-    }
-
     private static int decorativeEntranceDepth(DungeonTier tier) {
         return Math.min(12 + tier.tier * 2, MAX_DECORATIVE_ENTRANCE_DEPTH);
+    }
+
+    private static int entranceFootprint(DungeonTier tier, int baseSize) {
+        return Math.min(baseSize + tier.tier * 4, MAX_STRUCTURE_BLOCK_AXIS);
+    }
+
+    private static int surfaceRadius(DungeonTier tier) {
+        return 4 + tier.tier * 2;
+    }
+
+    private static int unevenHeight(DungeonTier tier, int seed, int minimum) {
+        return minimum + Math.floorMod(seed * 7 + tier.tier * 3, 2 + tier.tier / 2);
+    }
+
+    private static void buildBrokenSurface(StructureBuilder builder, int minX, int maxX, int y, int minZ, int maxZ, int seed) {
+        for (int x = minX; x <= maxX; x++) {
+            for (int z = minZ; z <= maxZ; z++) {
+                int edgeDistance = Math.min(Math.min(x - minX, maxX - x), Math.min(z - minZ, maxZ - z));
+                int noise = Math.floorMod(x * 31 + z * 17 + seed, 11);
+                if (edgeDistance > 0 || noise < 7) {
+                    builder.block(x, y, z, pickStone(x * 31 + z + seed));
+                }
+                if (edgeDistance == 1 && noise < 2) {
+                    builder.block(x, y + 1, z, "minecraft:stone_brick_slab", properties("type", "bottom", "waterlogged", "false"));
+                }
+            }
+        }
     }
 
     private static void buildRoughFloor(StructureBuilder builder, int minX, int maxX, int y, int minZ, int maxZ) {
@@ -367,6 +303,55 @@ public class EntranceStructureProvider implements DataProvider {
     private static void buildLowRuinWall(StructureBuilder builder, int x, int y, int z, int height) {
         for (int offset = 0; offset < height; offset++) {
             builder.block(x, y + offset, z, pickStone(x * 17 + y * 7 + z + offset));
+        }
+    }
+
+    private static void scatterRubble(StructureBuilder builder, int centerX, int y, int centerZ, int radius, int tier, int seed) {
+        int count = 8 + tier * 8;
+        for (int i = 0; i < count; i++) {
+            int x = centerX - radius + 1 + Math.floorMod(seed + i * 5 + tier * 3, Math.max(1, radius * 2 - 2));
+            int z = centerZ - radius + 1 + Math.floorMod(seed * 2 + i * 7 + tier, Math.max(1, radius * 2 - 2));
+            if (Math.abs(x - centerX) <= 2 && Math.abs(z - centerZ) <= 2) {
+                continue;
+            }
+
+            int noise = Math.floorMod(x * 19 + z * 23 + seed + i, 10);
+            if (noise < 5) {
+                builder.block(x, y, z, "minecraft:cobblestone_slab", properties("type", noise < 2 ? "top" : "bottom", "waterlogged", "false"));
+            } else if (noise < 8) {
+                builder.block(x, y, z, pickStone(noise + x + z));
+            } else {
+                builder.block(x, y, z, "minecraft:cobblestone_wall", wall());
+            }
+        }
+    }
+
+    private static void placeTierSkulls(StructureBuilder builder, int startX, int y, int startZ, DungeonTier tier, String direction) {
+        int dx = switch (direction) {
+            case "east" -> 1;
+            case "west" -> -1;
+            default -> 0;
+        };
+        int dz = switch (direction) {
+            case "south" -> 1;
+            case "north" -> -1;
+            default -> 0;
+        };
+        int rotation = switch (direction) {
+            case "east" -> 4;
+            case "south" -> 8;
+            case "west" -> 12;
+            default -> 0;
+        };
+
+        for (int i = 0; i < tier.tier; i++) {
+            builder.block(
+                    startX + dx * i,
+                    y,
+                    startZ + dz * i,
+                    "minecraft:skeleton_skull",
+                    properties("rotation", Integer.toString(Math.floorMod(rotation + i, 16)))
+            );
         }
     }
 
