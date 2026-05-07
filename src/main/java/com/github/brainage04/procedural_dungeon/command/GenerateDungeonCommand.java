@@ -4,10 +4,14 @@ import com.github.brainage04.procedural_dungeon.command.core.ModSuggestionProvid
 import com.github.brainage04.procedural_dungeon.dungeon.DungeonTheme;
 import com.github.brainage04.procedural_dungeon.dungeon.DungeonTier;
 import com.github.brainage04.procedural_dungeon.util.RegistryKeyUtils;
+import com.github.brainage04.procedural_dungeon.worldgen.structure.StagedDungeonGenerationManager;
+import com.github.brainage04.procedural_dungeon.worldgen.structure.StagedDungeonLayout;
+import com.github.brainage04.procedural_dungeon.worldgen.structure.StagedDungeonLayoutCompiler;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import java.util.Optional;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.synchronization.SuggestionProviders;
@@ -16,7 +20,10 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
-import net.minecraft.server.commands.PlaceCommand;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.structure.Structure;
+import net.minecraft.world.level.levelgen.structure.structures.JigsawStructure;
+import net.minecraft.world.level.levelgen.structure.templatesystem.LiquidSettings;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 
 import static net.minecraft.commands.Commands.argument;
@@ -35,22 +42,51 @@ public class GenerateDungeonCommand {
         ResourceKey<StructureTemplatePool> poolKey = RegistryKeyUtils.create(Registries.TEMPLATE_POOL, "%s/start".formatted(key));
         var pool = source.registryAccess().lookupOrThrow(Registries.TEMPLATE_POOL).getOrThrow(poolKey);
         BlockPos pos = BlockPos.containing(source.getPosition());
+        ChunkPos chunkPos = ChunkPos.containing(pos);
 
         source.sendSuccess(() -> Component.literal(
-                "Generating Tier %d %s dungeon at jigsaw depth %d..."
+                "Scheduling Tier %d %s dungeon at jigsaw depth %d..."
                         .formatted(tier.tier, theme.getName().getString(), depth)
         ), true);
 
-        PlaceCommand.placeJigsaw(
-                source.withSuppressedOutput(),
+        var chunkGenerator = source.getLevel().getChunkSource().getGenerator();
+        Structure.GenerationContext generationContext = new Structure.GenerationContext(
+                source.registryAccess(),
+                chunkGenerator,
+                chunkGenerator.getBiomeSource(),
+                source.getLevel().getChunkSource().randomState(),
+                source.getLevel().getStructureManager(),
+                source.getLevel().getSeed(),
+                chunkPos,
+                source.getLevel(),
+                ignored -> true
+        );
+        Optional<StagedDungeonLayout> layout = StagedDungeonLayoutCompiler.compile(
+                generationContext,
                 pool,
-                Identifier.withDefaultNamespace("start"),
+                Optional.of(Identifier.withDefaultNamespace("start")),
                 depth,
-                pos
+                pos,
+                false,
+                Optional.empty(),
+                new JigsawStructure.MaxDistance(tier.maxDistanceFromCenter),
+                LiquidSettings.IGNORE_WATERLOGGING
+        );
+        if (layout.isEmpty()) {
+            source.sendFailure(Component.literal("Failed to compile dungeon layout."));
+            return 0;
+        }
+
+        StagedDungeonGenerationManager.enqueue(
+                source.getLevel(),
+                chunkPos,
+                layout.get().pieces(),
+                LiquidSettings.IGNORE_WATERLOGGING
         );
 
         source.sendSuccess(() -> Component.literal(
-                "Generated %s at %d %d %d.".formatted(key, pos.getX(), pos.getY(), pos.getZ())
+                "Scheduled %s at %d %d %d with %d pieces."
+                        .formatted(key, pos.getX(), pos.getY(), pos.getZ(), layout.get().pieces().size())
         ), true);
 
         return depth;
@@ -75,6 +111,19 @@ public class GenerateDungeonCommand {
                         )
                 )
         );
+        dispatcher.register(literal("generatedungeonstatus")
+                .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                .executes(context -> status(context.getSource()))
+        );
+    }
+
+    private static int status(CommandSourceStack source) {
+        StagedDungeonGenerationManager.Status status = StagedDungeonGenerationManager.status(source.getLevel());
+        source.sendSuccess(() -> Component.literal(
+                "Staged dungeon jobs: %d, pending pieces: %d."
+                        .formatted(status.jobs(), status.pendingPieces())
+        ), true);
+        return status.pendingPieces();
     }
 
     private static DungeonTheme getTheme(String value) {

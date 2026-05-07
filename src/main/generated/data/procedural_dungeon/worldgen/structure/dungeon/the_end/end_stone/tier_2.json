@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:jigsaw",
+  "type": "procedural_dungeon:staged_dungeon",
   "biomes": "#minecraft:is_end",
   "liquid_settings": "ignore_waterlogging",
   "max_distance_from_center": 56,

@@ -2,6 +2,8 @@ package com.github.brainage04.procedural_dungeon;
 
 import com.github.brainage04.procedural_dungeon.command.core.ModCommands;
 import com.github.brainage04.procedural_dungeon.worldgen.processor.ModStructureProcessorTypes;
+import com.github.brainage04.procedural_dungeon.worldgen.structure.ModStructureTypes;
+import com.github.brainage04.procedural_dungeon.worldgen.structure.StagedDungeonGenerationManager;
 import com.github.brainage04.procedural_dungeon.worldgen.structure.ModStructurePoolElementTypes;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.resources.Identifier;
@@ -24,6 +26,8 @@ public class ProceduralDungeon implements ModInitializer {
         // Register runtime types referenced by generated worldgen JSON.
         ModStructureProcessorTypes.initialize();
         ModStructurePoolElementTypes.initialize();
+        ModStructureTypes.initialize();
+        StagedDungeonGenerationManager.initialize();
 
         ModCommands.initialize();
 

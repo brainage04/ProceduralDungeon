@@ -66,7 +66,7 @@ public class VariantSinglePoolElement extends StructurePoolElement {
                 .toList();
         int expandableJigsaws = countExpandable(jigsaws);
 
-        if (branchLimit == Integer.MAX_VALUE) {
+        if (branchLimit == Integer.MAX_VALUE || pos.equals(BlockPos.ZERO)) {
             DungeonGenerationProfiler.recordJigsaws(jigsaws.size(), expandableJigsaws, jigsaws.size(), expandableJigsaws);
             return jigsaws;
         }

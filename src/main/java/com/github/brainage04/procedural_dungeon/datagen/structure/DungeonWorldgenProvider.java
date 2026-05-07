@@ -64,44 +64,44 @@ public class DungeonWorldgenProvider implements DataProvider {
 
     private void addTemplatePools(CachedOutput writer, List<CompletableFuture<?>> futures, String key, Identifier variantId) {
         addTemplatePool(writer, futures, "%s/start".formatted(key), List.of(
-                poolElement("dungeon/start", variantId, 1, 2)
+                poolElement("dungeon/start", variantId, 1, startBranchLimit(variantId))
         ));
 
         addTemplatePool(writer, futures, "%s/hallway".formatted(key), List.of(
-                poolElement("dungeon/hallway/small", variantId, 6, 1),
-                poolElement("dungeon/hallway/medium", variantId, 3, 1),
-                poolElement("dungeon/hallway/large", variantId, 1, 1)
+                poolElement("dungeon/hallway/small", variantId, 6, primaryBranchLimit(variantId)),
+                poolElement("dungeon/hallway/medium", variantId, 3, primaryBranchLimit(variantId)),
+                poolElement("dungeon/hallway/large", variantId, 1, primaryBranchLimit(variantId))
         ));
 
         addTemplatePool(writer, futures, "%s/hallway/end".formatted(key), List.of(
-                poolElement("dungeon/hallway/end/small", variantId, 3, 1),
-                poolElement("dungeon/hallway/end/medium", variantId, 2, 1),
-                poolElement("dungeon/hallway/end/large", variantId, 1, 1)
+                poolElement("dungeon/hallway/end/small", variantId, 3, secondaryBranchLimit(variantId)),
+                poolElement("dungeon/hallway/end/medium", variantId, 2, secondaryBranchLimit(variantId)),
+                poolElement("dungeon/hallway/end/large", variantId, 1, secondaryBranchLimit(variantId))
         ));
 
         addTemplatePool(writer, futures, "%s/hallway/loot".formatted(key), List.of(
-                poolElement("dungeon/hallway/loot/small", variantId, 3, 1),
-                poolElement("dungeon/hallway/loot/medium", variantId, 2, 1),
-                poolElement("dungeon/hallway/loot/large", variantId, 1, 1)
+                poolElement("dungeon/hallway/loot/small", variantId, 3, secondaryBranchLimit(variantId)),
+                poolElement("dungeon/hallway/loot/medium", variantId, 2, secondaryBranchLimit(variantId)),
+                poolElement("dungeon/hallway/loot/large", variantId, 1, secondaryBranchLimit(variantId))
         ));
 
         addTemplatePool(writer, futures, "%s/hallway/room".formatted(key), List.of(
-                poolElement("dungeon/hallway/room/armorsmith", variantId, 2, 1),
-                poolElement("dungeon/hallway/room/enchanter", variantId, 2, 1),
-                poolElement("dungeon/hallway/room/spawner_corridor", variantId, 2, 1),
-                poolElement("dungeon/hallway/room/staircase_diagonal_down", variantId, 1, 1),
-                poolElement("dungeon/hallway/room/staircase_diagonal_up", variantId, 1, 1),
-                poolElement("dungeon/hallway/room/staircase_spiral_down", variantId, 1, 1),
-                poolElement("dungeon/hallway/room/staircase_spiral_up", variantId, 1, 1),
-                poolElement("dungeon/hallway/room/toolsmith", variantId, 2, 1),
-                poolElement("dungeon/hallway/room/weaponsmith", variantId, 2, 1)
+                poolElement("dungeon/hallway/room/armorsmith", variantId, 2, secondaryBranchLimit(variantId)),
+                poolElement("dungeon/hallway/room/enchanter", variantId, 2, secondaryBranchLimit(variantId)),
+                poolElement("dungeon/hallway/room/spawner_corridor", variantId, 2, secondaryBranchLimit(variantId)),
+                poolElement("dungeon/hallway/room/staircase_diagonal_down", variantId, 1, secondaryBranchLimit(variantId)),
+                poolElement("dungeon/hallway/room/staircase_diagonal_up", variantId, 1, secondaryBranchLimit(variantId)),
+                poolElement("dungeon/hallway/room/staircase_spiral_down", variantId, 1, secondaryBranchLimit(variantId)),
+                poolElement("dungeon/hallway/room/staircase_spiral_up", variantId, 1, secondaryBranchLimit(variantId)),
+                poolElement("dungeon/hallway/room/toolsmith", variantId, 2, secondaryBranchLimit(variantId)),
+                poolElement("dungeon/hallway/room/weaponsmith", variantId, 2, secondaryBranchLimit(variantId))
         ));
 
         addTemplatePool(writer, futures, "%s/hallway/trap".formatted(key), List.of(
-                poolElement("dungeon/hallway/trap/dripstone", variantId, 1, 1),
-                poolElement("dungeon/hallway/trap/lava", variantId, 1, 1),
-                poolElement("dungeon/hallway/trap/negative_potions", variantId, 1, 1),
-                poolElement("dungeon/hallway/trap/spawners", variantId, 1, 1)
+                poolElement("dungeon/hallway/trap/dripstone", variantId, 1, secondaryBranchLimit(variantId)),
+                poolElement("dungeon/hallway/trap/lava", variantId, 1, secondaryBranchLimit(variantId)),
+                poolElement("dungeon/hallway/trap/negative_potions", variantId, 1, secondaryBranchLimit(variantId)),
+                poolElement("dungeon/hallway/trap/spawners", variantId, 1, secondaryBranchLimit(variantId))
         ));
     }
 
@@ -145,9 +145,35 @@ public class DungeonWorldgenProvider implements DataProvider {
         return Integer.parseInt(path.substring(index + "tier_".length()));
     }
 
+    private static int startBranchLimit(Identifier variantId) {
+        return switch (getTier(variantId)) {
+            case 1 -> 1;
+            case 2 -> 2;
+            case 3 -> 3;
+            default -> 4;
+        };
+    }
+
+    private static int primaryBranchLimit(Identifier variantId) {
+        return switch (getTier(variantId)) {
+            case 1 -> 1;
+            case 2, 3 -> 2;
+            case 4 -> 3;
+            default -> 4;
+        };
+    }
+
+    private static int secondaryBranchLimit(Identifier variantId) {
+        return switch (getTier(variantId)) {
+            case 1, 2 -> 1;
+            case 3, 4 -> 2;
+            default -> 3;
+        };
+    }
+
     private static JsonObject createStructureJson(String key, DungeonTier tier, DungeonTheme theme) {
         JsonObject structure = new JsonObject();
-        structure.addProperty("type", "minecraft:jigsaw");
+        structure.addProperty("type", ProceduralDungeon.of("staged_dungeon").toString());
         structure.addProperty("biomes", getBiomeTag(theme));
         structure.addProperty("step", "underground_structures");
         structure.addProperty("terrain_adaptation", "bury");

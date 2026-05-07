@@ -2,7 +2,7 @@
   "elements": [
     {
       "element": {
-        "branch_limit": 1,
+        "branch_limit": 3,
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/room/armorsmith",
         "override_liquid_settings": "ignore_waterlogging",
@@ -15,7 +15,7 @@
     },
     {
       "element": {
-        "branch_limit": 1,
+        "branch_limit": 3,
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/room/enchanter",
         "override_liquid_settings": "ignore_waterlogging",
@@ -28,7 +28,7 @@
     },
     {
       "element": {
-        "branch_limit": 1,
+        "branch_limit": 3,
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/room/spawner_corridor",
         "override_liquid_settings": "ignore_waterlogging",
@@ -41,7 +41,7 @@
     },
     {
       "element": {
-        "branch_limit": 1,
+        "branch_limit": 3,
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/room/staircase_diagonal_down",
         "override_liquid_settings": "ignore_waterlogging",
@@ -54,7 +54,7 @@
     },
     {
       "element": {
-        "branch_limit": 1,
+        "branch_limit": 3,
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/room/staircase_diagonal_up",
         "override_liquid_settings": "ignore_waterlogging",
@@ -67,7 +67,7 @@
     },
     {
       "element": {
-        "branch_limit": 1,
+        "branch_limit": 3,
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/room/staircase_spiral_down",
         "override_liquid_settings": "ignore_waterlogging",
@@ -80,7 +80,7 @@
     },
     {
       "element": {
-        "branch_limit": 1,
+        "branch_limit": 3,
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/room/staircase_spiral_up",
         "override_liquid_settings": "ignore_waterlogging",
@@ -93,7 +93,7 @@
     },
     {
       "element": {
-        "branch_limit": 1,
+        "branch_limit": 3,
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/room/toolsmith",
         "override_liquid_settings": "ignore_waterlogging",
@@ -106,7 +106,7 @@
     },
     {
       "element": {
-        "branch_limit": 1,
+        "branch_limit": 3,
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/room/weaponsmith",
         "override_liquid_settings": "ignore_waterlogging",
