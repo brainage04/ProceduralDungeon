@@ -289,7 +289,7 @@ public class EntranceStructureProvider implements DataProvider {
                     if (noise == 0 && edgeDistance > 1) {
                         builder.block(x, y, z, "minecraft:stone_brick_slab", properties("type", "bottom", "waterlogged", "false"));
                     } else {
-                        builder.block(x, y, z, pickStone(x * 31 + z + seed));
+                        builder.block(x, y, z, pickSurface(x * 31 + z + seed, edgeDistance));
                     }
                     if (noise == 1 && edgeDistance > 1) {
                         builder.block(x, y + 1, z, "minecraft:stone_brick_slab", properties("type", "bottom", "waterlogged", "false"));
@@ -301,7 +301,9 @@ public class EntranceStructureProvider implements DataProvider {
                     }
                 }
                 if (edgeDistance == 1 && noise < 3) {
-                    builder.block(x, y + 1, z, "minecraft:stone_brick_slab", properties("type", "bottom", "waterlogged", "false"));
+                    builder.block(x, y + 1, z, Math.floorMod(seed + x + z, 3) == 0
+                            ? "minecraft:mossy_cobblestone_slab"
+                            : "minecraft:stone_brick_slab", properties("type", "bottom", "waterlogged", "false"));
                 }
             }
         }
@@ -387,6 +389,7 @@ public class EntranceStructureProvider implements DataProvider {
             addCampfire(builder, centerX + radius - 5, y, centerZ + radius - 5, 2);
             addMarketStall(builder, centerX - 1, y, centerZ + radius - 8, true);
         }
+        addRitualMarkers(builder, centerX, y, centerZ, radius, tier, seed);
     }
 
     private static void addCampfire(StructureBuilder builder, int x, int y, int z, int rotation) {
@@ -396,18 +399,20 @@ public class EntranceStructureProvider implements DataProvider {
                 "signal_fire", "false",
                 "waterlogged", "false"
         ));
-        builder.block(x - 2, y, z, "minecraft:oak_stairs", stairs("east"));
-        builder.block(x + 2, y, z, "minecraft:oak_stairs", stairs("west"));
-        builder.block(x, y, z - 2, "minecraft:oak_slab", slab("bottom"));
-        builder.block(x + 1, y, z + 2, "minecraft:oak_slab", slab("top"));
+        builder.block(x - 2, y, z, "minecraft:spruce_stairs", stairs("east"));
+        builder.block(x + 2, y, z, "minecraft:dark_oak_stairs", stairs("west"));
+        builder.block(x, y, z - 2, "minecraft:spruce_slab", slab("bottom"));
+        builder.block(x + 1, y, z + 2, "minecraft:dark_oak_slab", slab("top"));
+        builder.block(x - 1, y, z + 2, "minecraft:spruce_slab", slab("bottom"));
     }
 
     private static void addSupplyCache(StructureBuilder builder, int x, int y, int z) {
         builder.block(x, y, z, "minecraft:barrel", properties("facing", "north", "open", "false"));
         builder.block(x + 1, y, z, "minecraft:barrel", properties("facing", "up", "open", "false"));
         builder.block(x, y, z + 1, "minecraft:crafting_table");
-        builder.block(x + 2, y, z + 1, "minecraft:hay_block", properties("axis", "y"));
-        builder.block(x + 2, y + 1, z + 1, "minecraft:hay_block", properties("axis", "y"));
+        builder.block(x + 2, y, z + 1, "minecraft:bone_block", properties("axis", "x"));
+        builder.block(x + 2, y + 1, z + 1, "minecraft:candle", properties("candles", "2", "lit", "false", "waterlogged", "false"));
+        builder.block(x + 1, y, z + 2, "minecraft:coarse_dirt");
     }
 
     private static void addMarketStall(StructureBuilder builder, int x, int y, int z, boolean large) {
@@ -415,51 +420,83 @@ public class EntranceStructureProvider implements DataProvider {
         int depth = large ? 4 : 3;
         for (int dx : List.of(0, width - 1)) {
             for (int dz : List.of(0, depth - 1)) {
-                builder.block(x + dx, y, z + dz, "minecraft:oak_fence", fence());
-                builder.block(x + dx, y + 1, z + dz, "minecraft:oak_fence", fence());
-                builder.block(x + dx, y + 2, z + dz, "minecraft:oak_fence", fence());
+                String post = Math.floorMod(dx + dz, 2) == 0 ? "minecraft:dark_oak_fence" : "minecraft:spruce_fence";
+                builder.block(x + dx, y, z + dz, post, fence());
+                builder.block(x + dx, y + 1, z + dz, post, fence());
+                builder.block(x + dx, y + 2, z + dz, post, fence());
             }
         }
         for (int dx = 0; dx < width; dx++) {
-            builder.block(x + dx, y + 3, z, "minecraft:dark_oak_slab", slab("bottom"));
-            builder.block(x + dx, y + 3, z + depth - 1, "minecraft:dark_oak_slab", slab("bottom"));
+            builder.block(x + dx, y + 3, z, dx % 2 == 0 ? "minecraft:dark_oak_slab" : "minecraft:spruce_slab", slab("bottom"));
+            builder.block(x + dx, y + 3, z + depth - 1, dx % 2 == 0 ? "minecraft:spruce_slab" : "minecraft:dark_oak_slab", slab("bottom"));
         }
         for (int dz = 1; dz < depth - 1; dz++) {
-            builder.block(x, y + 3, z + dz, "minecraft:dark_oak_slab", slab("bottom"));
+            builder.block(x, y + 3, z + dz, "minecraft:spruce_slab", slab("bottom"));
             if (large) {
                 builder.block(x + width - 1, y + 3, z + dz, "minecraft:dark_oak_slab", slab("bottom"));
             }
         }
         builder.block(x + 1, y, z + 1, "minecraft:barrel", properties("facing", "south", "open", "false"));
         builder.block(x + width - 2, y, z + depth - 2, "minecraft:smithing_table");
+        builder.block(x + 1, y + 2, z + depth - 1, "minecraft:chain", chain("y"));
+        builder.block(x + 1, y + 1, z + depth - 1, "minecraft:lantern", properties("hanging", "true", "waterlogged", "false"));
         if (large) {
             builder.block(x + 2, y, z + 1, "minecraft:grindstone", properties("face", "floor", "facing", "north"));
+            builder.block(x + 3, y, z + 1, "minecraft:cauldron");
+            builder.block(x + width - 2, y + 2, z, "minecraft:iron_bars", bars(false, true, false, true));
+            builder.block(x + width - 2, y + 1, z, "minecraft:soul_lantern", properties("hanging", "true", "waterlogged", "false"));
         }
     }
 
     private static void addStable(StructureBuilder builder, int x, int y, int z) {
         for (int dx = 0; dx <= 5; dx++) {
-            builder.block(x + dx, y, z, "minecraft:oak_fence", fence());
+            builder.block(x + dx, y, z, dx % 2 == 0 ? "minecraft:spruce_fence" : "minecraft:dark_oak_fence", fence());
             if (dx != 2) {
-                builder.block(x + dx, y, z + 4, "minecraft:oak_fence", fence());
+                builder.block(x + dx, y, z + 4, dx % 2 == 0 ? "minecraft:dark_oak_fence" : "minecraft:spruce_fence", fence());
             }
         }
         for (int dz = 1; dz <= 3; dz++) {
-            builder.block(x, y, z + dz, "minecraft:oak_fence", fence());
-            builder.block(x + 5, y, z + dz, "minecraft:oak_fence", fence());
+            builder.block(x, y, z + dz, "minecraft:spruce_fence", fence());
+            builder.block(x + 5, y, z + dz, "minecraft:dark_oak_fence", fence());
         }
-        builder.block(x + 1, y, z + 1, "minecraft:hay_block", properties("axis", "y"));
-        builder.block(x + 2, y, z + 1, "minecraft:hay_block", properties("axis", "x"));
+        builder.block(x + 1, y, z + 1, "minecraft:rooted_dirt");
+        builder.block(x + 2, y, z + 1, "minecraft:bone_block", properties("axis", "x"));
         builder.block(x + 4, y, z + 3, "minecraft:cauldron");
-        builder.block(x + 3, y, z + 4, "minecraft:oak_fence_gate", properties("facing", "south", "in_wall", "false", "open", "true", "powered", "false"));
+        builder.block(x + 3, y, z + 4, "minecraft:dark_oak_fence_gate", properties("facing", "south", "in_wall", "false", "open", "true", "powered", "false"));
+        builder.block(x + 3, y + 1, z + 1, "minecraft:chain", chain("y"));
     }
 
     private static void addRackArea(StructureBuilder builder, int x, int y, int z) {
         builder.block(x, y, z, "minecraft:smithing_table");
         builder.block(x + 1, y, z, "minecraft:grindstone", properties("face", "floor", "facing", "east"));
         builder.block(x + 2, y, z, "minecraft:chipped_anvil", properties("facing", "north"));
+        builder.block(x + 2, y + 1, z - 1, "minecraft:chain", chain("y"));
+        builder.block(x + 2, y + 2, z - 1, "minecraft:chain", chain("y"));
         for (int dz = -1; dz <= 1; dz++) {
-            builder.block(x + 3, y, z + dz, "minecraft:iron_bars", properties("east", "false", "north", "false", "south", "false", "waterlogged", "false", "west", "false"));
+            builder.block(x + 3, y, z + dz, "minecraft:iron_bars", bars(false, dz < 1, dz > -1, false));
+        }
+    }
+
+    private static void addRitualMarkers(StructureBuilder builder, int centerX, int y, int centerZ, int radius, DungeonTier tier, int seed) {
+        builder.block(centerX - radius + 2, y, centerZ - radius + 2, "minecraft:rooted_dirt");
+        builder.block(centerX + radius - 2, y, centerZ + radius - 3, "minecraft:gravel");
+        if (tier.tier >= 2) {
+            builder.block(centerX - radius + 3, y, centerZ - radius + 2, "minecraft:bone_block", properties("axis", "x"));
+            builder.block(centerX - radius + 4, y, centerZ - radius + 2, "minecraft:candle", properties("candles", Integer.toString(Math.min(4, tier.tier)), "lit", "false", "waterlogged", "false"));
+        }
+        if (tier.tier >= 3) {
+            int x = centerX + radius - 3;
+            int z = centerZ - radius + 3;
+            builder.block(x, y, z, "minecraft:bone_block", properties("axis", "z"));
+            builder.block(x, y + 1, z, "minecraft:skeleton_skull", properties("rotation", Integer.toString(Math.floorMod(seed + tier.tier, 16))));
+            builder.block(x + 1, y, z, "minecraft:soul_lantern", properties("hanging", "false", "waterlogged", "false"));
+        }
+        if (tier.tier >= 5) {
+            int x = centerX + radius - 5;
+            int z = centerZ + radius - 2;
+            builder.block(x, y, z, "minecraft:damaged_anvil", properties("facing", "east"));
+            builder.block(x + 1, y, z, "minecraft:iron_bars", bars(true, false, false, true));
+            builder.block(x + 2, y, z, "minecraft:iron_bars", bars(true, false, false, true));
         }
     }
 
@@ -482,6 +519,33 @@ public class EntranceStructureProvider implements DataProvider {
 
     private static Map<String, String> fence() {
         return properties("east", "false", "north", "false", "south", "false", "waterlogged", "false", "west", "false");
+    }
+
+    private static Map<String, String> bars(boolean east, boolean north, boolean south, boolean west) {
+        return properties(
+                "east", Boolean.toString(east),
+                "north", Boolean.toString(north),
+                "south", Boolean.toString(south),
+                "waterlogged", "false",
+                "west", Boolean.toString(west)
+        );
+    }
+
+    private static Map<String, String> chain(String axis) {
+        return properties("axis", axis, "waterlogged", "false");
+    }
+
+    private static String pickSurface(int value, int edgeDistance) {
+        if (edgeDistance > 0) {
+            return switch (Math.floorMod(value, 11)) {
+                case 0 -> "minecraft:mud";
+                case 1 -> "minecraft:coarse_dirt";
+                case 2 -> "minecraft:rooted_dirt";
+                case 3 -> "minecraft:gravel";
+                default -> pickStone(value);
+            };
+        }
+        return Math.floorMod(value, 3) == 0 ? "minecraft:coarse_dirt" : pickStone(value);
     }
 
     private static String pickStone(int value) {
