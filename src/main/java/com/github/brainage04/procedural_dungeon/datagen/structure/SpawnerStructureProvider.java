@@ -1,6 +1,7 @@
 package com.github.brainage04.procedural_dungeon.datagen.structure;
 
 import com.github.brainage04.procedural_dungeon.ProceduralDungeon;
+import com.github.brainage04.procedural_dungeon.datagen.common.DungeonTier;
 import com.google.common.hash.Hashing;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -44,9 +45,8 @@ public class SpawnerStructureProvider implements DataProvider {
         List<CompletableFuture<?>> futures = new ArrayList<>();
         JsonArray entities = spec.getAsJsonArray("entities");
 
-        for (JsonElement tierElement : spec.getAsJsonArray("tiers")) {
-            JsonObject tier = tierElement.getAsJsonObject();
-            int tierId = tier.get("id").getAsInt();
+        for (DungeonTier tier : DungeonTier.values()) {
+            int tierId = tier.tier;
 
             for (JsonElement entityElement : entities) {
                 String entityId = normalizeId(entityElement.getAsString());
@@ -100,7 +100,7 @@ public class SpawnerStructureProvider implements DataProvider {
         return output.toByteArray();
     }
 
-    private static CompoundTag createSpawnerStructure(JsonObject tier, String entityId) {
+    private static CompoundTag createSpawnerStructure(DungeonTier tier, String entityId) {
         CompoundTag structure = new CompoundTag();
         structure.putInt("DataVersion", SharedConstants.getCurrentVersion().dataVersion().version());
         structure.put("size", intList(1, 2, 1));
@@ -155,18 +155,18 @@ public class SpawnerStructureProvider implements DataProvider {
         return nbt;
     }
 
-    private static CompoundTag createSpawnerBlockEntity(JsonObject tier, String entityId) {
+    private static CompoundTag createSpawnerBlockEntity(DungeonTier tier, String entityId) {
         CompoundTag nbt = new CompoundTag();
         nbt.put("components", new CompoundTag());
-        nbt.putInt("MaxNearbyEntities", tier.get("maxNearbyEntities").getAsInt());
-        nbt.putInt("RequiredPlayerRange", tier.get("requiredPlayerRange").getAsInt());
-        nbt.putInt("SpawnCount", tier.get("spawnCount").getAsInt());
+        nbt.putInt("MaxNearbyEntities", tier.spawnerMaxNearbyEntities);
+        nbt.putInt("RequiredPlayerRange", tier.spawnerRequiredPlayerRange);
+        nbt.putInt("SpawnCount", tier.spawnerSpawnCount);
         nbt.put("SpawnData", createSpawnData(entityId));
-        nbt.putInt("MaxSpawnDelay", tier.get("maxSpawnDelay").getAsInt());
+        nbt.putInt("MaxSpawnDelay", tier.spawnerMaxSpawnDelay);
         nbt.putString("id", "minecraft:mob_spawner");
-        nbt.putInt("SpawnRange", tier.get("spawnRange").getAsInt());
+        nbt.putInt("SpawnRange", tier.spawnerSpawnRange);
         nbt.putInt("Delay", 0);
-        nbt.putInt("MinSpawnDelay", tier.get("minSpawnDelay").getAsInt());
+        nbt.putInt("MinSpawnDelay", tier.spawnerMinSpawnDelay);
         nbt.put("SpawnPotentials", new ListTag());
         return nbt;
     }

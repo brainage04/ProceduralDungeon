@@ -1,40 +1,98 @@
 package com.github.brainage04.procedural_dungeon.datagen.common;
 
 import com.github.brainage04.procedural_dungeon.ProceduralDungeon;
-import com.github.brainage04.procedural_dungeon.datagen.core.ProceduralDungeonGenerator;
 import com.github.brainage04.procedural_dungeon.util.StringUtils;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import java.util.List;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorList;
 
 public enum DungeonTheme implements StringRepresentable {
-    COBBLESTONE(Level.OVERWORLD, ProceduralDungeonGenerator.COBBLESTONE),
-    DEEPSLATE(Level.OVERWORLD, ProceduralDungeonGenerator.DEEPSLATE),
-    SCULK(Level.OVERWORLD, ProceduralDungeonGenerator.SCULK),
-    NETHER_WASTES(Level.NETHER, ProceduralDungeonGenerator.NETHER_WASTES),
-    CRIMSON_FOREST(Level.NETHER, ProceduralDungeonGenerator.CRIMSON_FOREST),
-    WARPED_FOREST(Level.NETHER, ProceduralDungeonGenerator.WARPED_FOREST),
-    BASALT_DELTAS(Level.NETHER, ProceduralDungeonGenerator.BASALT_DELTAS),
-    SOUL_SAND_VALLEY(Level.NETHER, ProceduralDungeonGenerator.SOUL_SAND_VALLEY),
-    NETHER_FORTRESS(Level.NETHER, ProceduralDungeonGenerator.NETHER_FORTRESS),
-    BASTION(Level.NETHER, ProceduralDungeonGenerator.BASTION),
-    END_STONE(Level.END, ProceduralDungeonGenerator.END_STONE),
-    END_CITY(Level.END, ProceduralDungeonGenerator.END_CITY);
+    COBBLESTONE,
+    DEEPSLATE,
+    SCULK,
+    NETHER_WASTES,
+    CRIMSON_FOREST,
+    WARPED_FOREST,
+    BASALT_DELTAS,
+    SOUL_SAND_VALLEY,
+    NETHER_FORTRESS,
+    BASTION,
+    END_STONE,
+    END_CITY;
 
-    public final ResourceKey<Level> dimension;
-    public final StructureProcessorList baseProcessorList;
+    public String id;
+    public ResourceKey<Level> dimension;
+    public List<ProcessorRuleSpec> processorRules;
 
-    DungeonTheme(ResourceKey<Level> dimension, StructureProcessorList baseProcessorList) {
-        this.dimension = dimension;
-        this.baseProcessorList = baseProcessorList;
+    private static List<ProcessorRuleSpec> bookshelfRules;
+    private static List<ProcessorRuleSpec> mineralRules;
+    private static List<ProcessorRuleSpec> airRules;
+    private static float ageChance;
+    private static float rotChance;
+
+    static {
+        JsonObject spec = DungeonSpecLoader.load("themes.json");
+        JsonObject generic = spec.getAsJsonObject("generic");
+        bookshelfRules = rules(generic.getAsJsonArray("bookshelf"));
+        mineralRules = rules(generic.getAsJsonArray("minerals"));
+        airRules = rules(generic.getAsJsonArray("air"));
+        ageChance = generic.getAsJsonObject("decay").get("age").getAsFloat();
+        rotChance = generic.getAsJsonObject("decay").get("rot").getAsFloat();
+
+        JsonArray themes = spec.getAsJsonArray("themes");
+        if (themes.size() != values().length) {
+            throw new IllegalStateException("Theme spec count does not match DungeonTheme count");
+        }
+
+        for (JsonElement element : themes) {
+            JsonObject themeSpec = element.getAsJsonObject();
+            DungeonTheme theme = getById(themeSpec.get("name").getAsString());
+            theme.id = themeSpec.get("name").getAsString();
+            theme.dimension = ResourceKey.create(Registries.DIMENSION, Identifier.parse(themeSpec.get("dimension").getAsString()));
+            theme.processorRules = rules(themeSpec.getAsJsonArray("rules"));
+        }
+    }
+
+    public static DungeonTheme getById(String id) {
+        for (DungeonTheme theme : values()) {
+            if (theme.name().equalsIgnoreCase(id)) {
+                return theme;
+            }
+        }
+
+        throw new IllegalArgumentException("Unsupported dungeon theme: " + id);
+    }
+
+    public static List<ProcessorRuleSpec> bookshelfRules() {
+        return bookshelfRules;
+    }
+
+    public static List<ProcessorRuleSpec> mineralRules() {
+        return mineralRules;
+    }
+
+    public static List<ProcessorRuleSpec> airRules() {
+        return airRules;
+    }
+
+    public static float ageChance() {
+        return ageChance;
+    }
+
+    public static float rotChance() {
+        return rotChance;
     }
 
     @Override
     public String getSerializedName() {
-        return this.toString().toLowerCase();
+        return id;
     }
 
     public Identifier getId() {
@@ -43,5 +101,19 @@ public enum DungeonTheme implements StringRepresentable {
 
     public Component getName() {
         return Component.literal(StringUtils.snakeCaseToHumanReadable(this.getSerializedName()));
+    }
+
+    private static List<ProcessorRuleSpec> rules(JsonArray specs) {
+        return specs.asList().stream()
+                .map(JsonElement::getAsJsonObject)
+                .map(spec -> new ProcessorRuleSpec(
+                        spec.get("input").getAsString(),
+                        spec.get("probability").getAsFloat(),
+                        spec.get("output").getAsString()
+                ))
+                .toList();
+    }
+
+    public record ProcessorRuleSpec(String input, float probability, String output) {
     }
 }

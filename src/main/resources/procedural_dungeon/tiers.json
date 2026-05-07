@@ -1,0 +1,159 @@
+{
+  "tiers": [
+    {
+      "id": 1,
+      "size": 8,
+      "spacing": 32,
+      "separation": 16,
+      "loot": {
+        "resources": ["minecraft:leather", "minecraft:oak_planks"],
+        "equipment": {
+          "helmet": "minecraft:leather_helmet",
+          "chestplate": "minecraft:leather_chestplate",
+          "leggings": "minecraft:leather_leggings",
+          "boots": "minecraft:leather_boots",
+          "sword": "minecraft:wooden_sword",
+          "axe": "minecraft:wooden_axe",
+          "shovel": "minecraft:wooden_shovel",
+          "pickaxe": "minecraft:wooden_pickaxe",
+          "hoe": "minecraft:wooden_hoe"
+        },
+        "goodRolls": 1,
+        "badRolls": 5,
+        "levels": 10
+      },
+      "spawner": {
+        "spawnCount": 1,
+        "maxNearbyEntities": 4,
+        "requiredPlayerRange": 16,
+        "spawnRange": 4,
+        "minSpawnDelay": 200,
+        "maxSpawnDelay": 800
+      }
+    },
+    {
+      "id": 2,
+      "size": 10,
+      "spacing": 40,
+      "separation": 20,
+      "loot": {
+        "resources": ["minecraft:copper_ingot"],
+        "equipment": {
+          "helmet": "minecraft:copper_helmet",
+          "chestplate": "minecraft:copper_chestplate",
+          "leggings": "minecraft:copper_leggings",
+          "boots": "minecraft:copper_boots",
+          "sword": "minecraft:copper_sword",
+          "axe": "minecraft:copper_axe",
+          "shovel": "minecraft:copper_shovel",
+          "pickaxe": "minecraft:copper_pickaxe",
+          "hoe": "minecraft:copper_hoe"
+        },
+        "goodRolls": 2,
+        "badRolls": 4,
+        "levels": 15
+      },
+      "spawner": {
+        "spawnCount": 2,
+        "maxNearbyEntities": 8,
+        "requiredPlayerRange": 20,
+        "spawnRange": 5,
+        "minSpawnDelay": 175,
+        "maxSpawnDelay": 650
+      }
+    },
+    {
+      "id": 3,
+      "size": 12,
+      "spacing": 48,
+      "separation": 24,
+      "loot": {
+        "resources": ["minecraft:iron_ingot"],
+        "equipment": {
+          "helmet": "minecraft:iron_helmet",
+          "chestplate": "minecraft:iron_chestplate",
+          "leggings": "minecraft:iron_leggings",
+          "boots": "minecraft:iron_boots",
+          "sword": "minecraft:iron_sword",
+          "axe": "minecraft:iron_axe",
+          "shovel": "minecraft:iron_shovel",
+          "pickaxe": "minecraft:iron_pickaxe",
+          "hoe": "minecraft:iron_hoe"
+        },
+        "goodRolls": 3,
+        "badRolls": 3,
+        "levels": 20
+      },
+      "spawner": {
+        "spawnCount": 3,
+        "maxNearbyEntities": 12,
+        "requiredPlayerRange": 24,
+        "spawnRange": 6,
+        "minSpawnDelay": 150,
+        "maxSpawnDelay": 500
+      }
+    },
+    {
+      "id": 4,
+      "size": 14,
+      "spacing": 56,
+      "separation": 28,
+      "loot": {
+        "resources": ["minecraft:diamond"],
+        "equipment": {
+          "helmet": "minecraft:diamond_helmet",
+          "chestplate": "minecraft:diamond_chestplate",
+          "leggings": "minecraft:diamond_leggings",
+          "boots": "minecraft:diamond_boots",
+          "sword": "minecraft:diamond_sword",
+          "axe": "minecraft:diamond_axe",
+          "shovel": "minecraft:diamond_shovel",
+          "pickaxe": "minecraft:diamond_pickaxe",
+          "hoe": "minecraft:diamond_hoe"
+        },
+        "goodRolls": 4,
+        "badRolls": 2,
+        "levels": 25
+      },
+      "spawner": {
+        "spawnCount": 4,
+        "maxNearbyEntities": 16,
+        "requiredPlayerRange": 28,
+        "spawnRange": 7,
+        "minSpawnDelay": 125,
+        "maxSpawnDelay": 350
+      }
+    },
+    {
+      "id": 5,
+      "size": 16,
+      "spacing": 64,
+      "separation": 32,
+      "loot": {
+        "resources": ["minecraft:netherite_scrap", "minecraft:gold_ingot"],
+        "equipment": {
+          "helmet": "minecraft:netherite_helmet",
+          "chestplate": "minecraft:netherite_chestplate",
+          "leggings": "minecraft:netherite_leggings",
+          "boots": "minecraft:netherite_boots",
+          "sword": "minecraft:netherite_sword",
+          "axe": "minecraft:netherite_axe",
+          "shovel": "minecraft:netherite_shovel",
+          "pickaxe": "minecraft:netherite_pickaxe",
+          "hoe": "minecraft:netherite_hoe"
+        },
+        "goodRolls": 5,
+        "badRolls": 1,
+        "levels": 30
+      },
+      "spawner": {
+        "spawnCount": 5,
+        "maxNearbyEntities": 20,
+        "requiredPlayerRange": 32,
+        "spawnRange": 8,
+        "minSpawnDelay": 100,
+        "maxSpawnDelay": 200
+      }
+    }
+  ]
+}

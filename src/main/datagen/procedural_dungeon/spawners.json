@@ -8,52 +8,5 @@
     "minecraft:stray",
     "minecraft:wither_skeleton",
     "minecraft:zombie"
-  ],
-  "tiers": [
-    {
-      "id": 1,
-      "spawnCount": 1,
-      "maxNearbyEntities": 4,
-      "requiredPlayerRange": 16,
-      "spawnRange": 4,
-      "minSpawnDelay": 200,
-      "maxSpawnDelay": 800
-    },
-    {
-      "id": 2,
-      "spawnCount": 2,
-      "maxNearbyEntities": 8,
-      "requiredPlayerRange": 20,
-      "spawnRange": 5,
-      "minSpawnDelay": 175,
-      "maxSpawnDelay": 650
-    },
-    {
-      "id": 3,
-      "spawnCount": 3,
-      "maxNearbyEntities": 12,
-      "requiredPlayerRange": 24,
-      "spawnRange": 6,
-      "minSpawnDelay": 150,
-      "maxSpawnDelay": 500
-    },
-    {
-      "id": 4,
-      "spawnCount": 4,
-      "maxNearbyEntities": 16,
-      "requiredPlayerRange": 28,
-      "spawnRange": 7,
-      "minSpawnDelay": 125,
-      "maxSpawnDelay": 350
-    },
-    {
-      "id": 5,
-      "spawnCount": 5,
-      "maxNearbyEntities": 20,
-      "requiredPlayerRange": 32,
-      "spawnRange": 8,
-      "minSpawnDelay": 100,
-      "maxSpawnDelay": 200
-    }
   ]
 }
