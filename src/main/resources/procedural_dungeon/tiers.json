@@ -3,7 +3,7 @@
     {
       "id": 1,
       "size": 8,
-      "worldgenSize": 3,
+      "worldgenSize": 8,
       "maxDistanceFromCenter": 48,
       "spacing": 32,
       "separation": 16,
@@ -36,7 +36,7 @@
     {
       "id": 2,
       "size": 10,
-      "worldgenSize": 4,
+      "worldgenSize": 10,
       "maxDistanceFromCenter": 56,
       "spacing": 40,
       "separation": 20,
@@ -69,7 +69,7 @@
     {
       "id": 3,
       "size": 12,
-      "worldgenSize": 5,
+      "worldgenSize": 12,
       "maxDistanceFromCenter": 64,
       "spacing": 48,
       "separation": 24,
@@ -102,7 +102,7 @@
     {
       "id": 4,
       "size": 14,
-      "worldgenSize": 6,
+      "worldgenSize": 14,
       "maxDistanceFromCenter": 72,
       "spacing": 56,
       "separation": 28,
@@ -135,8 +135,8 @@
     {
       "id": 5,
       "size": 16,
-      "worldgenSize": 7,
-      "maxDistanceFromCenter": 80,
+      "worldgenSize": 16,
+      "maxDistanceFromCenter": 72,
       "spacing": 64,
       "separation": 32,
       "loot": {

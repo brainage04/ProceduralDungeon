@@ -3,6 +3,7 @@ package com.github.brainage04.procedural_dungeon.command;
 import com.github.brainage04.procedural_dungeon.dungeon.DungeonTheme;
 import com.github.brainage04.procedural_dungeon.dungeon.DungeonTier;
 import com.github.brainage04.procedural_dungeon.util.RegistryKeyUtils;
+import com.github.brainage04.procedural_dungeon.worldgen.structure.DungeonGenerationProfiler;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.LongArgumentType;
@@ -215,20 +216,45 @@ public class BenchmarkDungeonCommand {
             BlockPos pos = samplePosition(origin, i, spacing);
 
             long placementStart = System.nanoTime();
-            place(source, sample, pos);
+            DungeonGenerationProfiler.begin();
+            DungeonGenerationProfiler.Snapshot profile;
+            try {
+                place(source, sample, pos);
+            } finally {
+                profile = DungeonGenerationProfiler.finish();
+            }
             long placementNanos = System.nanoTime() - placementStart;
-            timing.add(placementNanos);
+            timing.add(placementNanos, profile);
 
             source.sendSuccess(() -> Component.literal(
-                    "Tier 5 %s: place %.2f ms at %s."
-                            .formatted(sample.theme.name().toLowerCase(), toMillis(placementNanos), pos.toShortString())
+                    "Tier 5 %s: place %.2f ms, %d pieces (%d placed, %d failed), bbox volume %,d, jigsaws %d/%d kept (%d pruned) at %s."
+                            .formatted(
+                                    sample.theme.name().toLowerCase(),
+                                    toMillis(placementNanos),
+                                    profile.pieces(),
+                                    profile.placedPieces(),
+                                    profile.failedPieces(),
+                                    profile.boundingBoxVolume(),
+                                    profile.keptExpandableJigsaws(),
+                                    profile.expandableJigsaws(),
+                                    profile.prunedExpandableJigsaws(),
+                                    pos.toShortString()
+                            )
             ), true);
         }
         long totalNanos = System.nanoTime() - totalStart;
 
         source.sendSuccess(() -> Component.literal(
-                "Tier 5 benchmark completed in %.2f ms. Avg place %.2f ms, max place %.2f ms."
-                        .formatted(toMillis(totalNanos), timing.averagePlacementMillis(), timing.maxPlacementMillis())
+                "Tier 5 benchmark completed in %.2f ms. Avg place %.2f ms, max place %.2f ms. Avg pieces %.1f, max pieces %d, avg bbox volume %,.0f, max bbox volume %,d."
+                        .formatted(
+                                toMillis(totalNanos),
+                                timing.averagePlacementMillis(),
+                                timing.maxPlacementMillis(),
+                                timing.averagePieces(),
+                                timing.maxPieces,
+                                timing.averageBoundingBoxVolume(),
+                                timing.maxBoundingBoxVolume
+                        )
         ), true);
 
         return generationSamples.size();
@@ -286,11 +312,19 @@ public class BenchmarkDungeonCommand {
         private int samples;
         private long placementNanos;
         private long maxPlacementNanos;
+        private int pieces;
+        private int maxPieces;
+        private long boundingBoxVolume;
+        private long maxBoundingBoxVolume;
 
-        private void add(long placementNanos) {
+        private void add(long placementNanos, DungeonGenerationProfiler.Snapshot profile) {
             samples++;
             this.placementNanos += placementNanos;
             this.maxPlacementNanos = Math.max(maxPlacementNanos, placementNanos);
+            this.pieces += profile.pieces();
+            this.maxPieces = Math.max(maxPieces, profile.pieces());
+            this.boundingBoxVolume += profile.boundingBoxVolume();
+            this.maxBoundingBoxVolume = Math.max(maxBoundingBoxVolume, profile.boundingBoxVolume());
         }
 
         private double averagePlacementMillis() {
@@ -299,6 +333,14 @@ public class BenchmarkDungeonCommand {
 
         private double maxPlacementMillis() {
             return toMillis(maxPlacementNanos);
+        }
+
+        private double averagePieces() {
+            return samples == 0 ? 0.0 : (double) pieces / samples;
+        }
+
+        private double averageBoundingBoxVolume() {
+            return samples == 0 ? 0.0 : (double) boundingBoxVolume / samples;
         }
     }
 }

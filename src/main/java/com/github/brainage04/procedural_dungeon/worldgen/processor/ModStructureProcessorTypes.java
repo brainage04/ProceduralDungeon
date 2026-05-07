@@ -27,6 +27,13 @@ public class ModStructureProcessorTypes {
                     () -> StripInvalidBlockEntityProcessor.CODEC
             );
 
+    public static final StructureProcessorType<LootTableAndBlockEntityProcessor> LOOT_TABLES_AND_BLOCK_ENTITIES =
+            Registry.register(
+                    BuiltInRegistries.STRUCTURE_PROCESSOR,
+                    ProceduralDungeon.of("loot_tables_and_block_entities"),
+                    () -> LootTableAndBlockEntityProcessor.CODEC
+            );
+
     public static void initialize() {
         // load class and run static init
     }

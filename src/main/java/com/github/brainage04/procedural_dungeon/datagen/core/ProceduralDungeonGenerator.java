@@ -3,10 +3,7 @@ package com.github.brainage04.procedural_dungeon.datagen.core;
 import com.github.brainage04.procedural_dungeon.dungeon.DungeonTheme;
 import com.github.brainage04.procedural_dungeon.dungeon.DungeonTier;
 import com.github.brainage04.procedural_dungeon.datagen.loot_table.DungeonLootTableProvider;
-import com.github.brainage04.procedural_dungeon.worldgen.processor.ReplaceJigsawPoolProcessor;
-import com.github.brainage04.procedural_dungeon.worldgen.processor.ReplaceLootTableProcessor;
-import com.github.brainage04.procedural_dungeon.worldgen.processor.StripInvalidBlockEntityProcessor;
-import com.github.brainage04.procedural_dungeon.worldgen.structure.DungeonJigsawPoolReplacements;
+import com.github.brainage04.procedural_dungeon.worldgen.processor.LootTableAndBlockEntityProcessor;
 import com.github.brainage04.procedural_dungeon.util.RegistryKeyUtils;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +43,7 @@ public class ProceduralDungeonGenerator extends FabricDynamicRegistryProvider {
     }
 
     private static StructureProcessorList createLootTable(DungeonTier tier) {
-        return create(List.of(new ReplaceLootTableProcessor(createLootTableReplacements(tier))));
+        return create(List.of(new LootTableAndBlockEntityProcessor(createLootTableReplacements(tier))));
     }
 
     private static Map<Identifier, Identifier> createLootTableReplacements(DungeonTier tier) {
@@ -106,19 +103,13 @@ public class ProceduralDungeonGenerator extends FabricDynamicRegistryProvider {
                         createBasic(DungeonTheme.mineralRules()),
                         createBasic(DungeonTheme.airRules()),
                         createDecay(),
-                        createLootTable(tier),
                         createBasic(theme.processorRules),
-                        createJigsawPoolReplacements(key, tier),
-                        create(List.of(StripInvalidBlockEntityProcessor.INSTANCE))
+                        createLootTable(tier)
                 ).flatMap(structureProcessorList1 -> structureProcessorList1.list().stream()).toList()
         );
 
         var processorListKey = RegistryKeyUtils.create(Registries.PROCESSOR_LIST, key);
         entries.add(processorListKey, structureProcessorList);
-    }
-
-    private static StructureProcessorList createJigsawPoolReplacements(String key, DungeonTier tier) {
-        return create(List.of(new ReplaceJigsawPoolProcessor(DungeonJigsawPoolReplacements.create(key, tier))));
     }
 
     @Override

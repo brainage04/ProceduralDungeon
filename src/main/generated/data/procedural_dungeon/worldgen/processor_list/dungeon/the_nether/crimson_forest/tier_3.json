@@ -244,18 +244,6 @@
       "processor_type": "minecraft:block_rot"
     },
     {
-      "processor_type": "procedural_dungeon:replace_loot_tables",
-      "replacements": {
-        "procedural_dungeon:armorsmith": "procedural_dungeon:armorsmith/tier_3",
-        "procedural_dungeon:enchanter": "procedural_dungeon:enchanter/tier_3",
-        "procedural_dungeon:hallway/trap/negative_potions": "procedural_dungeon:hallway/trap/negative_potions/tier_3",
-        "procedural_dungeon:hallway_end": "procedural_dungeon:hallway_end/tier_3",
-        "procedural_dungeon:hallway_loot": "procedural_dungeon:hallway_loot/tier_3",
-        "procedural_dungeon:toolsmith": "procedural_dungeon:toolsmith/tier_3",
-        "procedural_dungeon:weaponsmith": "procedural_dungeon:weaponsmith/tier_3"
-      }
-    },
-    {
       "processor_type": "minecraft:rule",
       "rules": [
         {
@@ -316,18 +304,16 @@
       ]
     },
     {
-      "processor_type": "procedural_dungeon:replace_jigsaw_pools",
-      "replacements": {
-        "procedural_dungeon:dungeon/hallway": "procedural_dungeon:dungeon/the_nether/crimson_forest/tier_3/hallway",
-        "procedural_dungeon:dungeon/hallway/end": "procedural_dungeon:dungeon/the_nether/crimson_forest/tier_3/hallway/end",
-        "procedural_dungeon:dungeon/hallway/loot": "procedural_dungeon:dungeon/the_nether/crimson_forest/tier_3/hallway/loot",
-        "procedural_dungeon:dungeon/hallway/room": "procedural_dungeon:dungeon/the_nether/crimson_forest/tier_3/hallway/room",
-        "procedural_dungeon:dungeon/hallway/trap": "procedural_dungeon:dungeon/the_nether/crimson_forest/tier_3/hallway/trap",
-        "procedural_dungeon:dungeon/spawner/tier_1": "procedural_dungeon:dungeon/spawner/tier_3"
-      }
-    },
-    {
-      "processor_type": "procedural_dungeon:strip_invalid_block_entity"
+      "loot_table_replacements": {
+        "procedural_dungeon:armorsmith": "procedural_dungeon:armorsmith/tier_3",
+        "procedural_dungeon:enchanter": "procedural_dungeon:enchanter/tier_3",
+        "procedural_dungeon:hallway/trap/negative_potions": "procedural_dungeon:hallway/trap/negative_potions/tier_3",
+        "procedural_dungeon:hallway_end": "procedural_dungeon:hallway_end/tier_3",
+        "procedural_dungeon:hallway_loot": "procedural_dungeon:hallway_loot/tier_3",
+        "procedural_dungeon:toolsmith": "procedural_dungeon:toolsmith/tier_3",
+        "procedural_dungeon:weaponsmith": "procedural_dungeon:weaponsmith/tier_3"
+      },
+      "processor_type": "procedural_dungeon:loot_tables_and_block_entities"
     }
   ]
 }

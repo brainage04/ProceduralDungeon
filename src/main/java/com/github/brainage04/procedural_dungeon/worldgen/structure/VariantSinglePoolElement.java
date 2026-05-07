@@ -64,8 +64,10 @@ public class VariantSinglePoolElement extends StructurePoolElement {
                 .stream()
                 .map(this::replacePool)
                 .toList();
+        int expandableJigsaws = countExpandable(jigsaws);
 
         if (branchLimit == Integer.MAX_VALUE) {
+            DungeonGenerationProfiler.recordJigsaws(jigsaws.size(), expandableJigsaws, jigsaws.size(), expandableJigsaws);
             return jigsaws;
         }
 
@@ -77,7 +79,19 @@ public class VariantSinglePoolElement extends StructurePoolElement {
             }
         }
 
+        DungeonGenerationProfiler.recordJigsaws(jigsaws.size(), expandableJigsaws, limited.size(), countExpandable(limited));
         return limited;
+    }
+
+    private static int countExpandable(List<StructureTemplate.JigsawBlockInfo> jigsaws) {
+        int expandable = 0;
+        for (StructureTemplate.JigsawBlockInfo info : jigsaws) {
+            if (isExpandable(info)) {
+                expandable++;
+            }
+        }
+
+        return expandable;
     }
 
     private static boolean isExpandable(StructureTemplate.JigsawBlockInfo info) {
@@ -120,7 +134,14 @@ public class VariantSinglePoolElement extends StructurePoolElement {
             LiquidSettings liquidSettings,
             boolean keepJigsaws
     ) {
-        return delegate.place(structureTemplateManager, world, structureAccessor, chunkGenerator, pos, pivot, rotation, box, random, liquidSettings, keepJigsaws);
+        if (!DungeonGenerationProfiler.isActive()) {
+            return delegate.place(structureTemplateManager, world, structureAccessor, chunkGenerator, pos, pivot, rotation, box, random, liquidSettings, keepJigsaws);
+        }
+
+        BoundingBox boundingBox = delegate.getBoundingBox(structureTemplateManager, pos, rotation);
+        boolean placed = delegate.place(structureTemplateManager, world, structureAccessor, chunkGenerator, pos, pivot, rotation, box, random, liquidSettings, keepJigsaws);
+        DungeonGenerationProfiler.recordPiece(variant, boundingBox, placed);
+        return placed;
     }
 
     @Override
