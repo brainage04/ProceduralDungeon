@@ -5,6 +5,7 @@ import com.github.brainage04.procedural_dungeon.dungeon.DungeonTier;
 import com.github.brainage04.procedural_dungeon.datagen.loot_table.DungeonLootTableProvider;
 import com.github.brainage04.procedural_dungeon.worldgen.processor.ReplaceJigsawPoolProcessor;
 import com.github.brainage04.procedural_dungeon.worldgen.processor.ReplaceLootTableProcessor;
+import com.github.brainage04.procedural_dungeon.worldgen.processor.StripInvalidBlockEntityProcessor;
 import com.github.brainage04.procedural_dungeon.worldgen.structure.DungeonJigsawPoolReplacements;
 import com.github.brainage04.procedural_dungeon.util.RegistryKeyUtils;
 import java.util.ArrayList;
@@ -60,19 +61,17 @@ public class ProceduralDungeonGenerator extends FabricDynamicRegistryProvider {
     }
 
     private static StructureProcessorList createBasic(List<DungeonTheme.ProcessorRuleSpec> rules) {
-        List<StructureProcessor> list = new ArrayList<>(rules.size());
+        List<ProcessorRule> processorRules = new ArrayList<>(rules.size());
 
         for (DungeonTheme.ProcessorRuleSpec rule : rules) {
-            list.add(new RuleProcessor(List.of(
-                    new ProcessorRule(
-                            new RandomBlockMatchTest(block(rule.input()), rule.probability()),
-                            AlwaysTrueTest.INSTANCE,
-                            block(rule.output()).defaultBlockState()
-                    )
-            )));
+            processorRules.add(new ProcessorRule(
+                    new RandomBlockMatchTest(block(rule.input()), rule.probability()),
+                    AlwaysTrueTest.INSTANCE,
+                    block(rule.output()).defaultBlockState()
+            ));
         }
 
-        return create(list);
+        return create(List.of(new RuleProcessor(processorRules)));
     }
 
     private static StructureProcessorList createDecay() {
@@ -109,7 +108,8 @@ public class ProceduralDungeonGenerator extends FabricDynamicRegistryProvider {
                         createDecay(),
                         createLootTable(tier),
                         createBasic(theme.processorRules),
-                        createJigsawPoolReplacements(key, tier)
+                        createJigsawPoolReplacements(key, tier),
+                        create(List.of(StripInvalidBlockEntityProcessor.INSTANCE))
                 ).flatMap(structureProcessorList1 -> structureProcessorList1.list().stream()).toList()
         );
 

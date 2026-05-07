@@ -2,6 +2,7 @@
   "elements": [
     {
       "element": {
+        "branch_limit": 1,
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/loot/small",
         "override_liquid_settings": "ignore_waterlogging",
@@ -10,10 +11,11 @@
         "spawner_tier": 4,
         "variant": "procedural_dungeon:dungeon/the_nether/bastion/tier_4"
       },
-      "weight": 1
+      "weight": 3
     },
     {
       "element": {
+        "branch_limit": 1,
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/loot/medium",
         "override_liquid_settings": "ignore_waterlogging",
@@ -22,10 +24,11 @@
         "spawner_tier": 4,
         "variant": "procedural_dungeon:dungeon/the_nether/bastion/tier_4"
       },
-      "weight": 1
+      "weight": 2
     },
     {
       "element": {
+        "branch_limit": 1,
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/loot/large",
         "override_liquid_settings": "ignore_waterlogging",

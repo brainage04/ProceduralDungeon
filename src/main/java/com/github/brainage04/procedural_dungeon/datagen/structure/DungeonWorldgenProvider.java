@@ -64,44 +64,44 @@ public class DungeonWorldgenProvider implements DataProvider {
 
     private void addTemplatePools(CachedOutput writer, List<CompletableFuture<?>> futures, String key, Identifier variantId) {
         addTemplatePool(writer, futures, "%s/start".formatted(key), List.of(
-                poolElement("dungeon/start", variantId)
+                poolElement("dungeon/start", variantId, 1, 2)
         ));
 
         addTemplatePool(writer, futures, "%s/hallway".formatted(key), List.of(
-                poolElement("dungeon/hallway/small", variantId),
-                poolElement("dungeon/hallway/medium", variantId),
-                poolElement("dungeon/hallway/large", variantId)
+                poolElement("dungeon/hallway/small", variantId, 6, 1),
+                poolElement("dungeon/hallway/medium", variantId, 3, 1),
+                poolElement("dungeon/hallway/large", variantId, 1, 1)
         ));
 
         addTemplatePool(writer, futures, "%s/hallway/end".formatted(key), List.of(
-                poolElement("dungeon/hallway/end/small", variantId),
-                poolElement("dungeon/hallway/end/medium", variantId),
-                poolElement("dungeon/hallway/end/large", variantId)
+                poolElement("dungeon/hallway/end/small", variantId, 3, 1),
+                poolElement("dungeon/hallway/end/medium", variantId, 2, 1),
+                poolElement("dungeon/hallway/end/large", variantId, 1, 1)
         ));
 
         addTemplatePool(writer, futures, "%s/hallway/loot".formatted(key), List.of(
-                poolElement("dungeon/hallway/loot/small", variantId),
-                poolElement("dungeon/hallway/loot/medium", variantId),
-                poolElement("dungeon/hallway/loot/large", variantId)
+                poolElement("dungeon/hallway/loot/small", variantId, 3, 1),
+                poolElement("dungeon/hallway/loot/medium", variantId, 2, 1),
+                poolElement("dungeon/hallway/loot/large", variantId, 1, 1)
         ));
 
         addTemplatePool(writer, futures, "%s/hallway/room".formatted(key), List.of(
-                poolElement("dungeon/hallway/room/armorsmith", variantId),
-                poolElement("dungeon/hallway/room/enchanter", variantId),
-                poolElement("dungeon/hallway/room/spawner_corridor", variantId),
-                poolElement("dungeon/hallway/room/staircase_diagonal_down", variantId),
-                poolElement("dungeon/hallway/room/staircase_diagonal_up", variantId),
-                poolElement("dungeon/hallway/room/staircase_spiral_down", variantId),
-                poolElement("dungeon/hallway/room/staircase_spiral_up", variantId),
-                poolElement("dungeon/hallway/room/toolsmith", variantId),
-                poolElement("dungeon/hallway/room/weaponsmith", variantId)
+                poolElement("dungeon/hallway/room/armorsmith", variantId, 2, 1),
+                poolElement("dungeon/hallway/room/enchanter", variantId, 2, 1),
+                poolElement("dungeon/hallway/room/spawner_corridor", variantId, 2, 1),
+                poolElement("dungeon/hallway/room/staircase_diagonal_down", variantId, 1, 1),
+                poolElement("dungeon/hallway/room/staircase_diagonal_up", variantId, 1, 1),
+                poolElement("dungeon/hallway/room/staircase_spiral_down", variantId, 1, 1),
+                poolElement("dungeon/hallway/room/staircase_spiral_up", variantId, 1, 1),
+                poolElement("dungeon/hallway/room/toolsmith", variantId, 2, 1),
+                poolElement("dungeon/hallway/room/weaponsmith", variantId, 2, 1)
         ));
 
         addTemplatePool(writer, futures, "%s/hallway/trap".formatted(key), List.of(
-                poolElement("dungeon/hallway/trap/dripstone", variantId),
-                poolElement("dungeon/hallway/trap/lava", variantId),
-                poolElement("dungeon/hallway/trap/negative_potions", variantId),
-                poolElement("dungeon/hallway/trap/spawners", variantId)
+                poolElement("dungeon/hallway/trap/dripstone", variantId, 1, 1),
+                poolElement("dungeon/hallway/trap/lava", variantId, 1, 1),
+                poolElement("dungeon/hallway/trap/negative_potions", variantId, 1, 1),
+                poolElement("dungeon/hallway/trap/spawners", variantId, 1, 1)
         ));
     }
 
@@ -118,7 +118,7 @@ public class DungeonWorldgenProvider implements DataProvider {
         futures.add(DataProvider.saveStable(writer, pool, templatePoolResolver.json(ProceduralDungeon.of(path))));
     }
 
-    private static JsonObject poolElement(String structure, Identifier variantId) {
+    private static JsonObject poolElement(String structure, Identifier variantId, int weight, int branchLimit) {
         JsonObject element = new JsonObject();
         element.addProperty("element_type", ProceduralDungeon.of("variant_single_pool_element").toString());
         element.addProperty("location", ProceduralDungeon.of(structure).toString());
@@ -127,10 +127,11 @@ public class DungeonWorldgenProvider implements DataProvider {
         element.addProperty("override_liquid_settings", "ignore_waterlogging");
         element.addProperty("variant", variantId.toString());
         element.addProperty("spawner_tier", getTier(variantId));
+        element.addProperty("branch_limit", branchLimit);
 
         JsonObject weightedElement = new JsonObject();
         weightedElement.add("element", element);
-        weightedElement.addProperty("weight", 1);
+        weightedElement.addProperty("weight", weight);
         return weightedElement;
     }
 
@@ -152,10 +153,10 @@ public class DungeonWorldgenProvider implements DataProvider {
         structure.addProperty("terrain_adaptation", "bury");
         structure.addProperty("start_pool", ProceduralDungeon.of("%s/start".formatted(key)).toString());
         structure.addProperty("start_jigsaw_name", "minecraft:start");
-        structure.addProperty("size", tier.size);
+        structure.addProperty("size", tier.worldgenSize);
         structure.add("start_height", absoluteHeight(0));
         structure.addProperty("project_start_to_heightmap", "WORLD_SURFACE_WG");
-        structure.addProperty("max_distance_from_center", 116);
+        structure.addProperty("max_distance_from_center", tier.maxDistanceFromCenter);
         structure.addProperty("use_expansion_hack", true);
         structure.addProperty("liquid_settings", "ignore_waterlogging");
         structure.add("spawn_overrides", new JsonObject());

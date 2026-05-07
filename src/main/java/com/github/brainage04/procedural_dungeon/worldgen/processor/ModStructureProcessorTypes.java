@@ -20,6 +20,13 @@ public class ModStructureProcessorTypes {
                     () -> ReplaceLootTableProcessor.CODEC
             );
 
+    public static final StructureProcessorType<StripInvalidBlockEntityProcessor> STRIP_INVALID_BLOCK_ENTITY =
+            Registry.register(
+                    BuiltInRegistries.STRUCTURE_PROCESSOR,
+                    ProceduralDungeon.of("strip_invalid_block_entity"),
+                    () -> StripInvalidBlockEntityProcessor.CODEC
+            );
+
     public static void initialize() {
         // load class and run static init
     }

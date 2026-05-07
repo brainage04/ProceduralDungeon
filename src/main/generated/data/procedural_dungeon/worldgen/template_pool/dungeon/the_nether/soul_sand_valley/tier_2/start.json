@@ -2,6 +2,7 @@
   "elements": [
     {
       "element": {
+        "branch_limit": 2,
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/start",
         "override_liquid_settings": "ignore_waterlogging",

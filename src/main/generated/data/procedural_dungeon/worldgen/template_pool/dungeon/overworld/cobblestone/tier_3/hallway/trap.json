@@ -2,6 +2,7 @@
   "elements": [
     {
       "element": {
+        "branch_limit": 1,
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/trap/dripstone",
         "override_liquid_settings": "ignore_waterlogging",
@@ -14,6 +15,7 @@
     },
     {
       "element": {
+        "branch_limit": 1,
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/trap/lava",
         "override_liquid_settings": "ignore_waterlogging",
@@ -26,6 +28,7 @@
     },
     {
       "element": {
+        "branch_limit": 1,
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/trap/negative_potions",
         "override_liquid_settings": "ignore_waterlogging",
@@ -38,6 +41,7 @@
     },
     {
       "element": {
+        "branch_limit": 1,
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/trap/spawners",
         "override_liquid_settings": "ignore_waterlogging",

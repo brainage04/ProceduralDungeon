@@ -24,12 +24,7 @@
               "slot_5_occupied": "false"
             }
           }
-        }
-      ]
-    },
-    {
-      "processor_type": "minecraft:rule",
-      "rules": [
+        },
         {
           "input_predicate": {
             "block": "minecraft:oak_log",
@@ -63,12 +58,7 @@
           "output_state": {
             "Name": "minecraft:raw_copper_block"
           }
-        }
-      ]
-    },
-    {
-      "processor_type": "minecraft:rule",
-      "rules": [
+        },
         {
           "input_predicate": {
             "block": "minecraft:copper_block",
@@ -81,12 +71,7 @@
           "output_state": {
             "Name": "minecraft:copper_ore"
           }
-        }
-      ]
-    },
-    {
-      "processor_type": "minecraft:rule",
-      "rules": [
+        },
         {
           "input_predicate": {
             "block": "minecraft:copper_block",
@@ -99,12 +84,7 @@
           "output_state": {
             "Name": "minecraft:deepslate_copper_ore"
           }
-        }
-      ]
-    },
-    {
-      "processor_type": "minecraft:rule",
-      "rules": [
+        },
         {
           "input_predicate": {
             "block": "minecraft:iron_block",
@@ -117,12 +97,7 @@
           "output_state": {
             "Name": "minecraft:raw_iron_block"
           }
-        }
-      ]
-    },
-    {
-      "processor_type": "minecraft:rule",
-      "rules": [
+        },
         {
           "input_predicate": {
             "block": "minecraft:iron_block",
@@ -135,12 +110,7 @@
           "output_state": {
             "Name": "minecraft:iron_ore"
           }
-        }
-      ]
-    },
-    {
-      "processor_type": "minecraft:rule",
-      "rules": [
+        },
         {
           "input_predicate": {
             "block": "minecraft:iron_block",
@@ -153,12 +123,7 @@
           "output_state": {
             "Name": "minecraft:deepslate_iron_ore"
           }
-        }
-      ]
-    },
-    {
-      "processor_type": "minecraft:rule",
-      "rules": [
+        },
         {
           "input_predicate": {
             "block": "minecraft:gold_block",
@@ -171,12 +136,7 @@
           "output_state": {
             "Name": "minecraft:raw_gold_block"
           }
-        }
-      ]
-    },
-    {
-      "processor_type": "minecraft:rule",
-      "rules": [
+        },
         {
           "input_predicate": {
             "block": "minecraft:gold_block",
@@ -189,12 +149,7 @@
           "output_state": {
             "Name": "minecraft:gold_ore"
           }
-        }
-      ]
-    },
-    {
-      "processor_type": "minecraft:rule",
-      "rules": [
+        },
         {
           "input_predicate": {
             "block": "minecraft:gold_block",
@@ -207,12 +162,7 @@
           "output_state": {
             "Name": "minecraft:deepslate_gold_ore"
           }
-        }
-      ]
-    },
-    {
-      "processor_type": "minecraft:rule",
-      "rules": [
+        },
         {
           "input_predicate": {
             "block": "minecraft:diamond_block",
@@ -225,12 +175,7 @@
           "output_state": {
             "Name": "minecraft:diamond_ore"
           }
-        }
-      ]
-    },
-    {
-      "processor_type": "minecraft:rule",
-      "rules": [
+        },
         {
           "input_predicate": {
             "block": "minecraft:diamond_block",
@@ -243,12 +188,7 @@
           "output_state": {
             "Name": "minecraft:deepslate_diamond_ore"
           }
-        }
-      ]
-    },
-    {
-      "processor_type": "minecraft:rule",
-      "rules": [
+        },
         {
           "input_predicate": {
             "block": "minecraft:lapis_block",
@@ -261,12 +201,7 @@
           "output_state": {
             "Name": "minecraft:lapis_ore"
           }
-        }
-      ]
-    },
-    {
-      "processor_type": "minecraft:rule",
-      "rules": [
+        },
         {
           "input_predicate": {
             "block": "minecraft:lapis_block",
@@ -338,12 +273,7 @@
               "axis": "y"
             }
           }
-        }
-      ]
-    },
-    {
-      "processor_type": "minecraft:rule",
-      "rules": [
+        },
         {
           "input_predicate": {
             "block": "minecraft:cobblestone",
@@ -356,12 +286,7 @@
           "output_state": {
             "Name": "minecraft:smooth_basalt"
           }
-        }
-      ]
-    },
-    {
-      "processor_type": "minecraft:rule",
-      "rules": [
+        },
         {
           "input_predicate": {
             "block": "minecraft:cobblestone",
@@ -390,6 +315,9 @@
         "procedural_dungeon:dungeon/hallway/trap": "procedural_dungeon:dungeon/the_nether/basalt_deltas/tier_1/hallway/trap",
         "procedural_dungeon:dungeon/spawner/tier_1": "procedural_dungeon:dungeon/spawner/tier_1"
       }
+    },
+    {
+      "processor_type": "procedural_dungeon:strip_invalid_block_entity"
     }
   ]
 }

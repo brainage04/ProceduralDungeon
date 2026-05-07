@@ -3,6 +3,7 @@ package com.github.brainage04.procedural_dungeon.worldgen.structure;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
@@ -24,22 +25,27 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 
 public class VariantSinglePoolElement extends StructurePoolElement {
+    private static final Identifier EMPTY_POOL = Identifier.withDefaultNamespace("empty");
+
     public static final MapCodec<VariantSinglePoolElement> CODEC =
             RecordCodecBuilder.mapCodec(instance -> instance.group(
                     SinglePoolElement.CODEC.forGetter(element -> element.delegate),
                     Identifier.CODEC.fieldOf("variant").forGetter(element -> element.variant),
-                    Codec.INT.fieldOf("spawner_tier").forGetter(element -> element.spawnerTier)
+                    Codec.INT.fieldOf("spawner_tier").forGetter(element -> element.spawnerTier),
+                    Codec.INT.optionalFieldOf("branch_limit", Integer.MAX_VALUE).forGetter(element -> element.branchLimit)
             ).apply(instance, VariantSinglePoolElement::new));
 
     private final SinglePoolElement delegate;
     private final Identifier variant;
     private final int spawnerTier;
+    private final int branchLimit;
 
-    public VariantSinglePoolElement(SinglePoolElement delegate, Identifier variant, int spawnerTier) {
+    public VariantSinglePoolElement(SinglePoolElement delegate, Identifier variant, int spawnerTier, int branchLimit) {
         super(delegate.getProjection());
         this.delegate = delegate;
         this.variant = variant;
         this.spawnerTier = spawnerTier;
+        this.branchLimit = branchLimit;
     }
 
     @Override
@@ -54,10 +60,28 @@ public class VariantSinglePoolElement extends StructurePoolElement {
             Rotation rotation,
             RandomSource random
     ) {
-        return delegate.getShuffledJigsawBlocks(structureTemplateManager, pos, rotation, random)
+        List<StructureTemplate.JigsawBlockInfo> jigsaws = delegate.getShuffledJigsawBlocks(structureTemplateManager, pos, rotation, random)
                 .stream()
                 .map(this::replacePool)
                 .toList();
+
+        if (branchLimit == Integer.MAX_VALUE) {
+            return jigsaws;
+        }
+
+        List<StructureTemplate.JigsawBlockInfo> limited = new ArrayList<>(jigsaws.size());
+        int branches = 0;
+        for (StructureTemplate.JigsawBlockInfo info : jigsaws) {
+            if (!isExpandable(info) || branches++ < branchLimit) {
+                limited.add(info);
+            }
+        }
+
+        return limited;
+    }
+
+    private static boolean isExpandable(StructureTemplate.JigsawBlockInfo info) {
+        return !info.pool().identifier().equals(EMPTY_POOL);
     }
 
     private StructureTemplate.JigsawBlockInfo replacePool(StructureTemplate.JigsawBlockInfo info) {
@@ -112,6 +136,6 @@ public class VariantSinglePoolElement extends StructurePoolElement {
 
     @Override
     public String toString() {
-        return "VariantSingle[" + delegate + " -> " + variant + "]";
+        return "VariantSingle[" + delegate + " -> " + variant + ", branches <= " + branchLimit + "]";
     }
 }
