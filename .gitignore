@@ -46,3 +46,6 @@ replay_*.log
 .env
 
 .codex
+
+.chunky/
+scratch/
