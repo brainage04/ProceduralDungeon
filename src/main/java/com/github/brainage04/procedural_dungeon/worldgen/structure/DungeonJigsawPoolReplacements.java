@@ -1,7 +1,7 @@
-package com.github.brainage04.procedural_dungeon.datagen.structure;
+package com.github.brainage04.procedural_dungeon.worldgen.structure;
 
 import com.github.brainage04.procedural_dungeon.ProceduralDungeon;
-import com.github.brainage04.procedural_dungeon.datagen.common.DungeonTier;
+import com.github.brainage04.procedural_dungeon.dungeon.DungeonTier;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -31,7 +31,7 @@ public final class DungeonJigsawPoolReplacements {
         ));
     }
 
-    public static Identifier getReplacement(Identifier pool, Identifier variant, int spawnerTier) {
+    static Identifier getReplacement(Identifier pool, Identifier variant, int spawnerTier) {
         if (!pool.getNamespace().equals(ProceduralDungeon.MOD_ID)) {
             return pool;
         }

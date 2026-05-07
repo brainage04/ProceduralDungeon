@@ -1,8 +1,8 @@
 package com.github.brainage04.procedural_dungeon.datagen.structure;
 
 import com.github.brainage04.procedural_dungeon.ProceduralDungeon;
-import com.github.brainage04.procedural_dungeon.datagen.common.DungeonTheme;
-import com.github.brainage04.procedural_dungeon.datagen.common.DungeonTier;
+import com.github.brainage04.procedural_dungeon.dungeon.DungeonTheme;
+import com.github.brainage04.procedural_dungeon.dungeon.DungeonTier;
 import com.github.brainage04.procedural_dungeon.util.RegistryKeyUtils;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;

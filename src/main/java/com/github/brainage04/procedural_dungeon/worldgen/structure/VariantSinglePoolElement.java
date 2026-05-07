@@ -1,4 +1,4 @@
-package com.github.brainage04.procedural_dungeon.datagen.structure;
+package com.github.brainage04.procedural_dungeon.worldgen.structure;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;

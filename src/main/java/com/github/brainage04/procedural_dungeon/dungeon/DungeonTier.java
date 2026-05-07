@@ -1,4 +1,4 @@
-package com.github.brainage04.procedural_dungeon.datagen.common;
+package com.github.brainage04.procedural_dungeon.dungeon;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -51,7 +51,7 @@ public enum DungeonTier {
         }
     }
 
-    public static DungeonTier getById(int id) {
+    private static DungeonTier getById(int id) {
         for (DungeonTier tier : values()) {
             if (tier.ordinal() + 1 == id) {
                 return tier;

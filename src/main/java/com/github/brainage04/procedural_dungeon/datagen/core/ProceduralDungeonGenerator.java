@@ -1,11 +1,11 @@
 package com.github.brainage04.procedural_dungeon.datagen.core;
 
-import com.github.brainage04.procedural_dungeon.datagen.common.DungeonTheme;
-import com.github.brainage04.procedural_dungeon.datagen.common.DungeonTier;
+import com.github.brainage04.procedural_dungeon.dungeon.DungeonTheme;
+import com.github.brainage04.procedural_dungeon.dungeon.DungeonTier;
 import com.github.brainage04.procedural_dungeon.datagen.loot_table.DungeonLootTableProvider;
-import com.github.brainage04.procedural_dungeon.datagen.processor_list.ReplaceJigsawPoolProcessor;
-import com.github.brainage04.procedural_dungeon.datagen.processor_list.ReplaceLootTableProcessor;
-import com.github.brainage04.procedural_dungeon.datagen.structure.DungeonJigsawPoolReplacements;
+import com.github.brainage04.procedural_dungeon.worldgen.processor.ReplaceJigsawPoolProcessor;
+import com.github.brainage04.procedural_dungeon.worldgen.processor.ReplaceLootTableProcessor;
+import com.github.brainage04.procedural_dungeon.worldgen.structure.DungeonJigsawPoolReplacements;
 import com.github.brainage04.procedural_dungeon.util.RegistryKeyUtils;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +44,7 @@ public class ProceduralDungeonGenerator extends FabricDynamicRegistryProvider {
         super(output, registriesFuture);
     }
 
-    public static StructureProcessorList createLootTable(DungeonTier tier) {
+    private static StructureProcessorList createLootTable(DungeonTier tier) {
         return create(List.of(new ReplaceLootTableProcessor(createLootTableReplacements(tier))));
     }
 
@@ -55,7 +55,7 @@ public class ProceduralDungeonGenerator extends FabricDynamicRegistryProvider {
         ));
     }
 
-    public static StructureProcessorList create(List<StructureProcessor> rules) {
+    private static StructureProcessorList create(List<StructureProcessor> rules) {
         return new StructureProcessorList(rules);
     }
 

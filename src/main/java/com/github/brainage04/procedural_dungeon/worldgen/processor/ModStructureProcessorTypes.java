@@ -1,4 +1,4 @@
-package com.github.brainage04.procedural_dungeon.datagen.processor_list;
+package com.github.brainage04.procedural_dungeon.worldgen.processor;
 
 import com.github.brainage04.procedural_dungeon.ProceduralDungeon;
 import net.minecraft.core.Registry;

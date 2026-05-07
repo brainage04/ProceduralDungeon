@@ -1,4 +1,4 @@
-package com.github.brainage04.procedural_dungeon.datagen.processor_list;
+package com.github.brainage04.procedural_dungeon.worldgen.processor;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
@@ -8,23 +8,22 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 
-public class ReplaceJigsawPoolProcessor extends StructureProcessor {
-    public static final MapCodec<ReplaceJigsawPoolProcessor> CODEC =
+public class ReplaceLootTableProcessor extends StructureProcessor {
+    public static final MapCodec<ReplaceLootTableProcessor> CODEC =
             RecordCodecBuilder.mapCodec(instance -> instance.group(
                     Codec.unboundedMap(Identifier.CODEC, Identifier.CODEC)
                             .fieldOf("replacements")
                             .forGetter(processor -> processor.replacements)
-            ).apply(instance, ReplaceJigsawPoolProcessor::new));
+            ).apply(instance, ReplaceLootTableProcessor::new));
 
     private final Map<Identifier, Identifier> replacements;
 
-    public ReplaceJigsawPoolProcessor(Map<Identifier, Identifier> replacements) {
+    public ReplaceLootTableProcessor(Map<Identifier, Identifier> replacements) {
         this.replacements = replacements;
     }
 
@@ -37,43 +36,34 @@ public class ReplaceJigsawPoolProcessor extends StructureProcessor {
             StructureTemplate.StructureBlockInfo currentBlockInfo,
             StructurePlaceSettings data
     ) {
-        if (!currentBlockInfo.state().is(Blocks.JIGSAW) || currentBlockInfo.nbt() == null) {
+        CompoundTag nbt = currentBlockInfo.nbt();
+        if (nbt == null) {
             return currentBlockInfo;
         }
 
-        CompoundTag copy = currentBlockInfo.nbt().copy();
-        boolean changed = replacePool(copy, "pool");
-        changed |= replacePool(copy, "target_pool");
-
-        if (!changed) {
+        String oldLootTable = nbt.getString("LootTable").orElse(null);
+        if (oldLootTable == null) {
             return currentBlockInfo;
         }
 
-        return new StructureTemplate.StructureBlockInfo(currentBlockInfo.pos(), currentBlockInfo.state(), copy);
-    }
-
-    private boolean replacePool(CompoundTag nbt, String key) {
-        String oldPool = nbt.getString(key).orElse(null);
-        if (oldPool == null) {
-            return false;
-        }
-
-        Identifier oldId = Identifier.tryParse(oldPool);
+        Identifier oldId = Identifier.tryParse(oldLootTable);
         if (oldId == null) {
-            return false;
+            return currentBlockInfo;
         }
 
         Identifier newId = replacements.get(oldId);
         if (newId == null) {
-            return false;
+            return currentBlockInfo;
         }
 
-        nbt.putString(key, newId.toString());
-        return true;
+        CompoundTag copy = nbt.copy();
+        copy.putString("LootTable", newId.toString());
+        copy.putLong("LootTableSeed", data.getRandom(currentBlockInfo.pos()).nextLong());
+        return new StructureTemplate.StructureBlockInfo(currentBlockInfo.pos(), currentBlockInfo.state(), copy);
     }
 
     @Override
     protected StructureProcessorType<?> getType() {
-        return ModStructureProcessorTypes.REPLACE_JIGSAW_POOLS;
+        return ModStructureProcessorTypes.REPLACE_LOOT_TABLES;
     }
 }

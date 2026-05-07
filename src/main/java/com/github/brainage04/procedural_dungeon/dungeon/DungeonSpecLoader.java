@@ -1,4 +1,4 @@
-package com.github.brainage04.procedural_dungeon.datagen.common;
+package com.github.brainage04.procedural_dungeon.dungeon;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;

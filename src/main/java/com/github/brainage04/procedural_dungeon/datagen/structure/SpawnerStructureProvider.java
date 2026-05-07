@@ -1,7 +1,7 @@
 package com.github.brainage04.procedural_dungeon.datagen.structure;
 
 import com.github.brainage04.procedural_dungeon.ProceduralDungeon;
-import com.github.brainage04.procedural_dungeon.datagen.common.DungeonTier;
+import com.github.brainage04.procedural_dungeon.dungeon.DungeonTier;
 import com.google.common.hash.Hashing;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;

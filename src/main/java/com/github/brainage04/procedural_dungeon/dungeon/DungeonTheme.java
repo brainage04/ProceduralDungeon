@@ -1,4 +1,4 @@
-package com.github.brainage04.procedural_dungeon.datagen.common;
+package com.github.brainage04.procedural_dungeon.dungeon;
 
 import com.github.brainage04.procedural_dungeon.ProceduralDungeon;
 import com.github.brainage04.procedural_dungeon.util.StringUtils;
@@ -60,7 +60,7 @@ public enum DungeonTheme implements StringRepresentable {
         }
     }
 
-    public static DungeonTheme getById(String id) {
+    private static DungeonTheme getById(String id) {
         for (DungeonTheme theme : values()) {
             if (theme.name().equalsIgnoreCase(id)) {
                 return theme;
