@@ -1,10 +1,8 @@
 {
 	"required": true,
 	"package": "com.github.brainage04.procedural_dungeon.mixin",
-	"compatibilityLevel": "JAVA_21",
-	"mixins": [
-		"ExampleMixin"
-	],
+	"compatibilityLevel": "JAVA_25",
+	"mixins": [],
 	"injectors": {
 		"defaultRequire": 1
 	},
