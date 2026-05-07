@@ -13,6 +13,13 @@ public class ModStructureProcessorTypes {
                     () -> ReplaceJigsawPoolProcessor.CODEC
             );
 
+    public static final StructureProcessorType<ReplaceLootTableProcessor> REPLACE_LOOT_TABLES =
+            Registry.register(
+                    BuiltInRegistries.STRUCTURE_PROCESSOR,
+                    ProceduralDungeon.of("replace_loot_tables"),
+                    () -> ReplaceLootTableProcessor.CODEC
+            );
+
     public static void initialize() {
         // load class and run static init
     }

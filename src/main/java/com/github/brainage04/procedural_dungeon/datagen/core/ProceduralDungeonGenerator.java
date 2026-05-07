@@ -5,13 +5,14 @@ import com.github.brainage04.procedural_dungeon.datagen.common.DungeonTheme;
 import com.github.brainage04.procedural_dungeon.datagen.common.DungeonTier;
 import com.github.brainage04.procedural_dungeon.datagen.loot_table.DungeonLootTableProvider;
 import com.github.brainage04.procedural_dungeon.datagen.processor_list.ReplaceJigsawPoolProcessor;
-import com.github.brainage04.procedural_dungeon.datagen.processor_list.ReplaceLootByOldTableModifier;
+import com.github.brainage04.procedural_dungeon.datagen.processor_list.ReplaceLootTableProcessor;
 import com.github.brainage04.procedural_dungeon.datagen.structure.DungeonJigsawPoolReplacements;
 import com.github.brainage04.procedural_dungeon.util.RegistryKeyUtils;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricDynamicRegistryProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.structure.templatesystem.AlwaysTrueTest;
@@ -26,49 +27,32 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProc
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorList;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class ProceduralDungeonGenerator extends FabricDynamicRegistryProvider {
+    private static final List<String> TIERED_LOOT_TABLES = List.of(
+            "hallway_end",
+            "hallway_loot",
+            "armorsmith",
+            "weaponsmith",
+            "toolsmith",
+            "enchanter",
+            "hallway/trap/negative_potions"
+    );
+
     public ProceduralDungeonGenerator(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(output, registriesFuture);
     }
 
     public static StructureProcessorList createLootTable(DungeonTier tier) {
-        return create(List.of(
-                new RuleProcessor(List.of(
-                        new ProcessorRule(
-                                new BlockMatchTest(Blocks.CHEST),
-                                AlwaysTrueTest.INSTANCE,
-                                PosAlwaysTrueTest.INSTANCE,
-                                Blocks.CHEST.defaultBlockState(),
-                                new ReplaceLootByOldTableModifier(Map.ofEntries(
-                                        Map.entry(
-                                                DungeonLootTableProvider.getLootTableId("hallway_end"),
-                                                DungeonLootTableProvider.getLootTableId("hallway_end", tier)
-                                        ),
-                                        Map.entry(
-                                                DungeonLootTableProvider.getLootTableId("hallway_loot"),
-                                                DungeonLootTableProvider.getLootTableId("hallway_loot", tier)
-                                        ),
-                                        Map.entry(
-                                                DungeonLootTableProvider.getLootTableId("armorsmith"),
-                                                DungeonLootTableProvider.getLootTableId("armorsmith", tier)
-                                        ),
-                                        Map.entry(
-                                                DungeonLootTableProvider.getLootTableId("weaponsmith"),
-                                                DungeonLootTableProvider.getLootTableId("weaponsmith", tier)
-                                        ),
-                                        Map.entry(
-                                                DungeonLootTableProvider.getLootTableId("toolsmith"),
-                                                DungeonLootTableProvider.getLootTableId("toolsmith", tier)
-                                        ),
-                                        Map.entry(
-                                                DungeonLootTableProvider.getLootTableId("enchanter"),
-                                                DungeonLootTableProvider.getLootTableId("enchanter", tier)
-                                        )
-                                ))
-                        )
-                ))
+        return create(List.of(new ReplaceLootTableProcessor(createLootTableReplacements(tier))));
+    }
+
+    private static Map<Identifier, Identifier> createLootTableReplacements(DungeonTier tier) {
+        return TIERED_LOOT_TABLES.stream().collect(Collectors.toUnmodifiableMap(
+                DungeonLootTableProvider::getLootTableId,
+                table -> DungeonLootTableProvider.getLootTableId(table, tier)
         ));
     }
 

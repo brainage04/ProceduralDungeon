@@ -43,6 +43,17 @@
       { "item": "minecraft:experience_bottle", "count": [4, 8], "rolls": "$goodRolls" },
       { "item": "minecraft:lapis_lazuli", "count": [4, 8], "rolls": "$goodRolls" },
       { "enchantedBooks": ["armor", "damage", "bow", "crossbow", "mining"], "levels": "$levels" }
+    ],
+    "hallway/trap/negative_potions": [
+      {
+        "splashPotionsByTier": [
+          ["minecraft:weakness", "minecraft:slowness"],
+          ["minecraft:weakness", "minecraft:long_slowness", "minecraft:poison"],
+          ["minecraft:long_weakness", "minecraft:long_slowness", "minecraft:poison", "minecraft:harming"],
+          ["minecraft:long_weakness", "minecraft:strong_slowness", "minecraft:long_poison", "minecraft:strong_poison", "minecraft:harming"],
+          ["minecraft:long_weakness", "minecraft:strong_slowness", "minecraft:long_poison", "minecraft:strong_poison", "minecraft:harming", "minecraft:strong_harming"]
+        ]
+      }
     ]
   }
 }

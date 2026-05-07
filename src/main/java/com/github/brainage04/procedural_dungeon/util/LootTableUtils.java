@@ -4,17 +4,22 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.EnchantWithLevelsFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
+import net.minecraft.world.level.storage.loot.functions.SetPotionFunction;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 
@@ -97,6 +102,28 @@ public class LootTableUtils {
                                                         UniformGenerator.between(min, max)
                                                 )
                                         )
+                        )
+        );
+    }
+
+    public static LootTable.Builder addPotionPool(LootTable.Builder input, Item item, Identifier potionId, CompletableFuture<HolderLookup.Provider> registryLookup) {
+        Holder<Potion> potion;
+        try {
+            potion = registryLookup.get()
+                    .lookupOrThrow(Registries.POTION)
+                    .getOrThrow(ResourceKey.create(Registries.POTION, potionId));
+        } catch (ExecutionException e) {
+            throw new IllegalStateException("Failed to look up potion: " + potionId, e);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new IllegalStateException("Interrupted while looking up potion: " + potionId, e);
+        }
+
+        return input.withPool(
+                LootPool.lootPool()
+                        .add(
+                                LootItem.lootTableItem(item)
+                                        .apply(SetPotionFunction.setPotion(potion))
                         )
         );
     }

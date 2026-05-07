@@ -309,37 +309,16 @@
       "processor_type": "minecraft:block_rot"
     },
     {
-      "processor_type": "minecraft:rule",
-      "rules": [
-        {
-          "block_entity_modifier": {
-            "type": "procedural_dungeon:replace_loot_by_old_table",
-            "replacements": {
-              "procedural_dungeon:armorsmith": "procedural_dungeon:armorsmith/tier_3",
-              "procedural_dungeon:enchanter": "procedural_dungeon:enchanter/tier_3",
-              "procedural_dungeon:hallway_end": "procedural_dungeon:hallway_end/tier_3",
-              "procedural_dungeon:hallway_loot": "procedural_dungeon:hallway_loot/tier_3",
-              "procedural_dungeon:toolsmith": "procedural_dungeon:toolsmith/tier_3",
-              "procedural_dungeon:weaponsmith": "procedural_dungeon:weaponsmith/tier_3"
-            }
-          },
-          "input_predicate": {
-            "block": "minecraft:chest",
-            "predicate_type": "minecraft:block_match"
-          },
-          "location_predicate": {
-            "predicate_type": "minecraft:always_true"
-          },
-          "output_state": {
-            "Name": "minecraft:chest",
-            "Properties": {
-              "type": "single",
-              "facing": "north",
-              "waterlogged": "false"
-            }
-          }
-        }
-      ]
+      "processor_type": "procedural_dungeon:replace_loot_tables",
+      "replacements": {
+        "procedural_dungeon:armorsmith": "procedural_dungeon:armorsmith/tier_3",
+        "procedural_dungeon:enchanter": "procedural_dungeon:enchanter/tier_3",
+        "procedural_dungeon:hallway/trap/negative_potions": "procedural_dungeon:hallway/trap/negative_potions/tier_3",
+        "procedural_dungeon:hallway_end": "procedural_dungeon:hallway_end/tier_3",
+        "procedural_dungeon:hallway_loot": "procedural_dungeon:hallway_loot/tier_3",
+        "procedural_dungeon:toolsmith": "procedural_dungeon:toolsmith/tier_3",
+        "procedural_dungeon:weaponsmith": "procedural_dungeon:weaponsmith/tier_3"
+      }
     },
     {
       "processor_type": "minecraft:rule",

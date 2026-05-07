@@ -37,7 +37,8 @@ public class DungeonLootTableProvider extends SimpleFabricLootTableSubProvider {
             "armorsmith",
             "weaponsmith",
             "toolsmith",
-            "enchanter"
+            "enchanter",
+            "hallway/trap/negative_potions"
     };
 
     private final CompletableFuture<HolderLookup.Provider> registryLookup;
@@ -139,6 +140,14 @@ public class DungeonLootTableProvider extends SimpleFabricLootTableSubProvider {
             int levels = intValue(spec.get("levels"), dungeonTier);
             for (JsonElement enchant : spec.getAsJsonArray("enchantedBooks")) {
                 builder = LootTableUtils.addEnchantedItemPool(builder, Items.BOOK, enchantTag(enchant.getAsString()), levels, registryLookup);
+            }
+            return builder;
+        }
+
+        if (spec.has("splashPotionsByTier")) {
+            JsonArray potions = spec.getAsJsonArray("splashPotionsByTier").get(dungeonTier.tier - 1).getAsJsonArray();
+            for (JsonElement potion : potions) {
+                builder = LootTableUtils.addPotionPool(builder, Items.SPLASH_POTION, Identifier.parse(potion.getAsString()), registryLookup);
             }
             return builder;
         }
