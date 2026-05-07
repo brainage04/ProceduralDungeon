@@ -30,6 +30,7 @@ public enum DungeonTheme implements StringRepresentable {
     public String id;
     public ResourceKey<Level> dimension;
     public List<ProcessorRuleSpec> processorRules;
+    public ShapeReplacementSpec shapeReplacements;
 
     private static List<ProcessorRuleSpec> bookshelfRules;
     private static List<ProcessorRuleSpec> mineralRules;
@@ -57,6 +58,7 @@ public enum DungeonTheme implements StringRepresentable {
             theme.id = themeSpec.get("name").getAsString();
             theme.dimension = ResourceKey.create(Registries.DIMENSION, Identifier.parse(themeSpec.get("dimension").getAsString()));
             theme.processorRules = rules(themeSpec.getAsJsonArray("rules"));
+            theme.shapeReplacements = shapes(themeSpec.getAsJsonObject("shapes"));
         }
     }
 
@@ -114,6 +116,22 @@ public enum DungeonTheme implements StringRepresentable {
                 .toList();
     }
 
+    private static ShapeReplacementSpec shapes(JsonObject spec) {
+        return new ShapeReplacementSpec(
+                spec.get("fallback").getAsString(),
+                optionalString(spec, "stairs"),
+                optionalString(spec, "slab"),
+                optionalString(spec, "wall")
+        );
+    }
+
+    private static String optionalString(JsonObject spec, String key) {
+        return spec.has(key) ? spec.get(key).getAsString() : null;
+    }
+
     public record ProcessorRuleSpec(String input, float probability, String output) {
+    }
+
+    public record ShapeReplacementSpec(String fallback, String stairs, String slab, String wall) {
     }
 }

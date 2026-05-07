@@ -244,6 +244,13 @@
       "processor_type": "minecraft:block_rot"
     },
     {
+      "fallback": "minecraft:deepslate",
+      "processor_type": "procedural_dungeon:theme_shape_replacements",
+      "slab": "minecraft:cobbled_deepslate_slab",
+      "stairs": "minecraft:cobbled_deepslate_stairs",
+      "wall": "minecraft:cobbled_deepslate_wall"
+    },
+    {
       "processor_type": "minecraft:rule",
       "rules": [
         {

@@ -244,6 +244,13 @@
       "processor_type": "minecraft:block_rot"
     },
     {
+      "fallback": "minecraft:cobblestone",
+      "processor_type": "procedural_dungeon:theme_shape_replacements",
+      "slab": "minecraft:cobblestone_slab",
+      "stairs": "minecraft:cobblestone_stairs",
+      "wall": "minecraft:cobblestone_wall"
+    },
+    {
       "processor_type": "minecraft:rule",
       "rules": [
         {

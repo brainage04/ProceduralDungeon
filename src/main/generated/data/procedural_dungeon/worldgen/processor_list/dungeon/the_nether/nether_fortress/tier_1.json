@@ -244,6 +244,13 @@
       "processor_type": "minecraft:block_rot"
     },
     {
+      "fallback": "minecraft:nether_bricks",
+      "processor_type": "procedural_dungeon:theme_shape_replacements",
+      "slab": "minecraft:nether_brick_slab",
+      "stairs": "minecraft:nether_brick_stairs",
+      "wall": "minecraft:nether_brick_fence"
+    },
+    {
       "processor_type": "minecraft:rule",
       "rules": [
         {

@@ -35,7 +35,13 @@
         { "input": "minecraft:cobblestone", "probability": 0.1, "output": "minecraft:stone_bricks" },
         { "input": "minecraft:cobblestone", "probability": 0.1, "output": "minecraft:cracked_stone_bricks" },
         { "input": "minecraft:cobblestone", "probability": 0.1, "output": "minecraft:chiseled_stone_bricks" }
-      ]
+      ],
+      "shapes": {
+        "fallback": "minecraft:cobblestone",
+        "stairs": "minecraft:cobblestone_stairs",
+        "slab": "minecraft:cobblestone_slab",
+        "wall": "minecraft:cobblestone_wall"
+      }
     },
     {
       "name": "deepslate",
@@ -45,7 +51,13 @@
         { "input": "minecraft:cobblestone", "probability": 0.1, "output": "minecraft:cracked_deepslate_bricks" },
         { "input": "minecraft:cobblestone", "probability": 0.1, "output": "minecraft:deepslate_bricks" },
         { "input": "minecraft:cobblestone", "probability": 1.0, "output": "minecraft:deepslate" }
-      ]
+      ],
+      "shapes": {
+        "fallback": "minecraft:deepslate",
+        "stairs": "minecraft:cobbled_deepslate_stairs",
+        "slab": "minecraft:cobbled_deepslate_slab",
+        "wall": "minecraft:cobbled_deepslate_wall"
+      }
     },
     {
       "name": "sculk",
@@ -56,7 +68,10 @@
         { "input": "minecraft:cobblestone", "probability": 0.1, "output": "minecraft:sculk_sensor" },
         { "input": "minecraft:cobblestone", "probability": 0.1, "output": "minecraft:sculk_catalyst" },
         { "input": "minecraft:cobblestone", "probability": 1.0, "output": "minecraft:sculk" }
-      ]
+      ],
+      "shapes": {
+        "fallback": "minecraft:sculk"
+      }
     },
     {
       "name": "nether_wastes",
@@ -67,7 +82,10 @@
         { "input": "minecraft:cobblestone", "probability": 0.025, "output": "minecraft:nether_gold_ore" },
         { "input": "minecraft:cobblestone", "probability": 0.025, "output": "minecraft:nether_quartz_ore" },
         { "input": "minecraft:cobblestone", "probability": 1.0, "output": "minecraft:netherrack" }
-      ]
+      ],
+      "shapes": {
+        "fallback": "minecraft:netherrack"
+      }
     },
     {
       "name": "crimson_forest",
@@ -77,7 +95,13 @@
         { "input": "minecraft:cobblestone", "probability": 0.1, "output": "minecraft:crimson_nylium" },
         { "input": "minecraft:cobblestone", "probability": 0.1, "output": "minecraft:crimson_hyphae" },
         { "input": "minecraft:cobblestone", "probability": 1.0, "output": "minecraft:nether_wart_block" }
-      ]
+      ],
+      "shapes": {
+        "fallback": "minecraft:nether_wart_block",
+        "stairs": "minecraft:crimson_stairs",
+        "slab": "minecraft:crimson_slab",
+        "wall": "minecraft:crimson_fence"
+      }
     },
     {
       "name": "warped_forest",
@@ -87,7 +111,13 @@
         { "input": "minecraft:cobblestone", "probability": 0.1, "output": "minecraft:warped_nylium" },
         { "input": "minecraft:cobblestone", "probability": 0.1, "output": "minecraft:warped_hyphae" },
         { "input": "minecraft:cobblestone", "probability": 1.0, "output": "minecraft:warped_wart_block" }
-      ]
+      ],
+      "shapes": {
+        "fallback": "minecraft:warped_wart_block",
+        "stairs": "minecraft:warped_stairs",
+        "slab": "minecraft:warped_slab",
+        "wall": "minecraft:warped_fence"
+      }
     },
     {
       "name": "basalt_deltas",
@@ -96,7 +126,10 @@
         { "input": "minecraft:cobblestone", "probability": 0.1, "output": "minecraft:polished_basalt" },
         { "input": "minecraft:cobblestone", "probability": 0.1, "output": "minecraft:smooth_basalt" },
         { "input": "minecraft:cobblestone", "probability": 1.0, "output": "minecraft:basalt" }
-      ]
+      ],
+      "shapes": {
+        "fallback": "minecraft:basalt"
+      }
     },
     {
       "name": "soul_sand_valley",
@@ -104,7 +137,10 @@
       "rules": [
         { "input": "minecraft:cobblestone", "probability": 0.1, "output": "minecraft:soul_sand" },
         { "input": "minecraft:cobblestone", "probability": 1.0, "output": "minecraft:soul_soil" }
-      ]
+      ],
+      "shapes": {
+        "fallback": "minecraft:soul_soil"
+      }
     },
     {
       "name": "nether_fortress",
@@ -114,7 +150,13 @@
         { "input": "minecraft:cobblestone", "probability": 0.1, "output": "minecraft:chiseled_nether_bricks" },
         { "input": "minecraft:cobblestone", "probability": 0.1, "output": "minecraft:cracked_nether_bricks" },
         { "input": "minecraft:cobblestone", "probability": 1.0, "output": "minecraft:nether_bricks" }
-      ]
+      ],
+      "shapes": {
+        "fallback": "minecraft:nether_bricks",
+        "stairs": "minecraft:nether_brick_stairs",
+        "slab": "minecraft:nether_brick_slab",
+        "wall": "minecraft:nether_brick_fence"
+      }
     },
     {
       "name": "bastion",
@@ -125,7 +167,13 @@
         { "input": "minecraft:cobblestone", "probability": 0.1, "output": "minecraft:chiseled_polished_blackstone" },
         { "input": "minecraft:cobblestone", "probability": 0.1, "output": "minecraft:cracked_polished_blackstone_bricks" },
         { "input": "minecraft:cobblestone", "probability": 1.0, "output": "minecraft:blackstone" }
-      ]
+      ],
+      "shapes": {
+        "fallback": "minecraft:blackstone",
+        "stairs": "minecraft:blackstone_stairs",
+        "slab": "minecraft:blackstone_slab",
+        "wall": "minecraft:blackstone_wall"
+      }
     },
     {
       "name": "end_stone",
@@ -133,7 +181,13 @@
       "rules": [
         { "input": "minecraft:cobblestone", "probability": 0.1, "output": "minecraft:end_stone_bricks" },
         { "input": "minecraft:cobblestone", "probability": 1.0, "output": "minecraft:end_stone" }
-      ]
+      ],
+      "shapes": {
+        "fallback": "minecraft:end_stone",
+        "stairs": "minecraft:end_stone_brick_stairs",
+        "slab": "minecraft:end_stone_brick_slab",
+        "wall": "minecraft:end_stone_brick_wall"
+      }
     },
     {
       "name": "end_city",
@@ -142,7 +196,13 @@
         { "input": "minecraft:cobblestone", "probability": 0.01, "output": "minecraft:purple_stained_glass" },
         { "input": "minecraft:cobblestone", "probability": 0.1, "output": "minecraft:purpur_pillar" },
         { "input": "minecraft:cobblestone", "probability": 1.0, "output": "minecraft:purpur_block" }
-      ]
+      ],
+      "shapes": {
+        "fallback": "minecraft:purpur_block",
+        "stairs": "minecraft:purpur_stairs",
+        "slab": "minecraft:purpur_slab",
+        "wall": "minecraft:purple_stained_glass_pane"
+      }
     }
   ]
 }

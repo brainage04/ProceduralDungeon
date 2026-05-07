@@ -244,6 +244,13 @@
       "processor_type": "minecraft:block_rot"
     },
     {
+      "fallback": "minecraft:nether_wart_block",
+      "processor_type": "procedural_dungeon:theme_shape_replacements",
+      "slab": "minecraft:crimson_slab",
+      "stairs": "minecraft:crimson_stairs",
+      "wall": "minecraft:crimson_fence"
+    },
+    {
       "processor_type": "minecraft:rule",
       "rules": [
         {

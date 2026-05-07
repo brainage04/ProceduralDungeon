@@ -244,6 +244,10 @@
       "processor_type": "minecraft:block_rot"
     },
     {
+      "fallback": "minecraft:soul_soil",
+      "processor_type": "procedural_dungeon:theme_shape_replacements"
+    },
+    {
       "processor_type": "minecraft:rule",
       "rules": [
         {

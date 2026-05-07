@@ -244,6 +244,13 @@
       "processor_type": "minecraft:block_rot"
     },
     {
+      "fallback": "minecraft:warped_wart_block",
+      "processor_type": "procedural_dungeon:theme_shape_replacements",
+      "slab": "minecraft:warped_slab",
+      "stairs": "minecraft:warped_stairs",
+      "wall": "minecraft:warped_fence"
+    },
+    {
       "processor_type": "minecraft:rule",
       "rules": [
         {

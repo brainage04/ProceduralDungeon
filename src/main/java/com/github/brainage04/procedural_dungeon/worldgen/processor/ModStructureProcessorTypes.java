@@ -34,6 +34,13 @@ public class ModStructureProcessorTypes {
                     () -> LootTableAndBlockEntityProcessor.CODEC
             );
 
+    public static final StructureProcessorType<ThemeShapeReplacementProcessor> THEME_SHAPE_REPLACEMENTS =
+            Registry.register(
+                    BuiltInRegistries.STRUCTURE_PROCESSOR,
+                    ProceduralDungeon.of("theme_shape_replacements"),
+                    () -> ThemeShapeReplacementProcessor.CODEC
+            );
+
     public static void initialize() {
         // load class and run static init
     }

@@ -4,10 +4,12 @@ import com.github.brainage04.procedural_dungeon.dungeon.DungeonTheme;
 import com.github.brainage04.procedural_dungeon.dungeon.DungeonTier;
 import com.github.brainage04.procedural_dungeon.datagen.loot_table.DungeonLootTableProvider;
 import com.github.brainage04.procedural_dungeon.worldgen.processor.LootTableAndBlockEntityProcessor;
+import com.github.brainage04.procedural_dungeon.worldgen.processor.ThemeShapeReplacementProcessor;
 import com.github.brainage04.procedural_dungeon.util.RegistryKeyUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -78,6 +80,20 @@ public class ProceduralDungeonGenerator extends FabricDynamicRegistryProvider {
         ));
     }
 
+    private static StructureProcessorList createThemeShapes(DungeonTheme theme) {
+        DungeonTheme.ShapeReplacementSpec replacements = theme.shapeReplacements;
+        return create(List.of(new ThemeShapeReplacementProcessor(
+                Identifier.parse(replacements.fallback()),
+                optionalIdentifier(replacements.stairs()),
+                optionalIdentifier(replacements.slab()),
+                optionalIdentifier(replacements.wall())
+        )));
+    }
+
+    private static Optional<Identifier> optionalIdentifier(String id) {
+        return id == null ? Optional.empty() : Optional.of(Identifier.parse(id));
+    }
+
     private static Block block(String id) {
         Identifier identifier = Identifier.parse(id);
         if (!BuiltInRegistries.BLOCK.containsKey(identifier)) {
@@ -103,6 +119,7 @@ public class ProceduralDungeonGenerator extends FabricDynamicRegistryProvider {
                         createBasic(DungeonTheme.mineralRules()),
                         createBasic(DungeonTheme.airRules()),
                         createDecay(),
+                        createThemeShapes(theme),
                         createBasic(theme.processorRules),
                         createLootTable(tier)
                 ).flatMap(structureProcessorList1 -> structureProcessorList1.list().stream()).toList()
