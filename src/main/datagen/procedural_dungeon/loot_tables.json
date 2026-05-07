@@ -1,0 +1,48 @@
+{
+  "tables": {
+    "hallway_end": [
+      { "item": "minecraft:stick", "count": [4, 8], "rolls": 1 },
+      { "each": ["minecraft:rotten_flesh", "minecraft:bone", "minecraft:string", "minecraft:spider_eye"], "count": [2, 4], "rolls": "$badRolls" },
+      {
+        "items": [
+          { "item": "minecraft:golden_apple", "weight": "$badRolls" },
+          { "item": "minecraft:enchanted_golden_apple", "weight": "$goodRolls" }
+        ],
+        "count": 1,
+        "rolls": "$goodRolls"
+      },
+      { "tierItems": "resources", "count": [1, 2], "rolls": "$goodRolls" },
+      { "enchantedBooks": ["armor", "damage", "mining"], "levels": "$levels" }
+    ],
+    "hallway_loot": [
+      { "item": "minecraft:stick", "count": [4, 8], "rolls": 1 },
+      { "each": ["minecraft:rotten_flesh", "minecraft:bone", "minecraft:string", "minecraft:spider_eye"], "count": [1, 2], "rolls": "$badRolls" },
+      {
+        "items": [
+          { "item": "minecraft:golden_apple", "weight": "$badRolls" },
+          { "item": "minecraft:enchanted_golden_apple", "weight": "$goodRolls" }
+        ],
+        "count": 1,
+        "rolls": "$goodRolls"
+      },
+      { "tierItems": "resources", "count": [2, 4], "rolls": "$goodRolls" },
+      { "enchantedBooks": ["armor", "damage", "mining"], "levels": "$levels * 2" }
+    ],
+    "armorsmith": [
+      { "tierEquipment": ["helmet", "chestplate", "leggings", "boots"], "enchant": "armor", "levels": "$levels" }
+    ],
+    "weaponsmith": [
+      { "tierEquipment": ["sword", "axe"], "enchant": "damage", "levels": "$levels" },
+      { "item": "minecraft:bow", "enchant": "bow", "levels": "$levels" },
+      { "item": "minecraft:crossbow", "enchant": "crossbow", "levels": "$levels" }
+    ],
+    "toolsmith": [
+      { "tierEquipment": ["axe", "shovel", "pickaxe", "hoe"], "enchant": "mining", "levels": "$levels" }
+    ],
+    "enchanter": [
+      { "item": "minecraft:experience_bottle", "count": [4, 8], "rolls": "$goodRolls" },
+      { "item": "minecraft:lapis_lazuli", "count": [4, 8], "rolls": "$goodRolls" },
+      { "enchantedBooks": ["armor", "damage", "bow", "crossbow", "mining"], "levels": "$levels" }
+    ]
+  }
+}
