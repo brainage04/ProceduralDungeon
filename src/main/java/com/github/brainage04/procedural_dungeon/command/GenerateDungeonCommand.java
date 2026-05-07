@@ -9,9 +9,9 @@ import com.github.brainage04.procedural_dungeon.worldgen.structure.StagedDungeon
 import com.github.brainage04.procedural_dungeon.worldgen.structure.StagedDungeonLayoutCompiler;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
-import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import java.util.Optional;
+import net.minecraft.commands.arguments.IdentifierArgument;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.synchronization.SuggestionProviders;
@@ -30,8 +30,8 @@ import static net.minecraft.commands.Commands.argument;
 import static net.minecraft.commands.Commands.literal;
 
 public class GenerateDungeonCommand {
-    public static int execute(CommandSourceStack source, String themeString, int tierNumber, int depth) throws CommandSyntaxException {
-        DungeonTheme theme = getTheme(themeString);
+    public static int execute(CommandSourceStack source, Identifier themeId, int tierNumber, int depth) throws CommandSyntaxException {
+        DungeonTheme theme = getTheme(themeId);
         if (theme == null) {
             source.sendFailure(Component.literal("Invalid dungeon theme!"));
             return 0;
@@ -95,14 +95,14 @@ public class GenerateDungeonCommand {
     public static void initialize(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(literal("generatedungeon")
                 .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
-                .then(argument("theme", StringArgumentType.word())
+                .then(argument("theme", IdentifierArgument.id())
                         .suggests(SuggestionProviders.cast(ModSuggestionProviders.DUNGEON_THEMES))
                         .then(argument("tier", IntegerArgumentType.integer(1, 5))
                                 .then(argument("depth", IntegerArgumentType.integer(1, 20))
                                         .executes(context ->
                                                 execute(
                                                         context.getSource(),
-                                                        StringArgumentType.getString(context, "theme"),
+                                                        IdentifierArgument.getId(context, "theme"),
                                                         IntegerArgumentType.getInteger(context, "tier"),
                                                         IntegerArgumentType.getInteger(context, "depth")
                                                 )
@@ -126,9 +126,11 @@ public class GenerateDungeonCommand {
         return status.pendingPieces();
     }
 
-    private static DungeonTheme getTheme(String value) {
+    private static DungeonTheme getTheme(Identifier id) {
         for (DungeonTheme theme : DungeonTheme.values()) {
-            if (theme.getSerializedName().equals(value) || theme.name().equalsIgnoreCase(value)) {
+            if (theme.getId().equals(id)
+                    || theme.getSerializedName().equals(id.getPath())
+                    || theme.name().equalsIgnoreCase(id.getPath())) {
                 return theme;
             }
         }

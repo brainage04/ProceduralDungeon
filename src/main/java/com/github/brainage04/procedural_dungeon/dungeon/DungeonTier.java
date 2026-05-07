@@ -17,6 +17,7 @@ public enum DungeonTier {
     public int tier;
     public int size;
     public int worldgenSize;
+    public int surfaceOffset;
     public int maxDistanceFromCenter;
     public int spacing;
     public int separation;
@@ -67,6 +68,7 @@ public enum DungeonTier {
         this.tier = spec.get("id").getAsInt();
         this.size = spec.get("size").getAsInt();
         this.worldgenSize = spec.get("worldgenSize").getAsInt();
+        this.surfaceOffset = spec.get("surfaceOffset").getAsInt();
         this.maxDistanceFromCenter = spec.get("maxDistanceFromCenter").getAsInt();
         this.spacing = spec.get("spacing").getAsInt();
         this.separation = spec.get("separation").getAsInt();

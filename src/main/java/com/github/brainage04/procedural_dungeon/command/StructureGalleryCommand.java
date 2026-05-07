@@ -9,7 +9,9 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.commands.CommandSourceStack;
@@ -40,20 +42,24 @@ import static net.minecraft.commands.Commands.literal;
 
 public class StructureGalleryCommand {
     private static final String AUTOBUILD_PROPERTY = "procedural_dungeon.structureGallery.autobuild";
-    private static final String GALLERY_WORLD_NAME = "structure-gallery";
+    private static final String SHUTDOWN_AFTER_BUILD_PROPERTY = "procedural_dungeon.structureGallery.shutdownAfterBuild";
     private static final String MARKER_FILE = "procedural_dungeon_structure_gallery_built.marker";
-    private static final Path SOURCE_STRUCTURE_ROOT = Path.of("src/main/resources/data/procedural_dungeon/structure");
-    private static final int DEFAULT_Y = 80;
-    private static final int DEFAULT_SPACING = 80;
+    private static final List<Path> SOURCE_STRUCTURE_ROOTS = List.of(
+            Path.of("src/main/resources/data/procedural_dungeon/structure"),
+            Path.of("src/main/generated/data/procedural_dungeon/structure")
+    );
+    private static final int DEFAULT_Y = -60;
+    private static final int DEFAULT_SPACING = 4;
     private static final int CLEAR_MARGIN = 8;
     private static final int CLEAR_HEIGHT_EXTRA = 8;
+    private static final int STRUCTURE_BLOCK_MAX_AXIS = 48;
 
     public static void initialize(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(literal("structuregallery")
                 .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                 .then(literal("build")
                         .executes(context -> build(context.getSource(), DEFAULT_SPACING))
-                        .then(argument("spacing", IntegerArgumentType.integer(32, 256))
+                        .then(argument("spacing", IntegerArgumentType.integer(0, 256))
                                 .executes(context -> build(
                                         context.getSource(),
                                         IntegerArgumentType.getInteger(context, "spacing")
@@ -74,8 +80,18 @@ public class StructureGalleryCommand {
 
             Path marker = markerPath(server);
             if (Files.exists(marker)) {
-                ProceduralDungeon.LOGGER.info("Structure gallery already exists; skipping autobuild.");
-                return;
+                int expectedStructures = baseStructureSourcePaths().size();
+                Optional<Integer> markerCount = readMarkerCount(marker);
+                if (markerCount.isPresent() && markerCount.get() == expectedStructures) {
+                    ProceduralDungeon.LOGGER.info("Structure gallery already exists; skipping autobuild.");
+                    shutdownAfterBuild(server);
+                    return;
+                }
+
+                ProceduralDungeon.LOGGER.info(
+                        "Structure gallery marker is stale; rebuilding gallery for {} structures.",
+                        expectedStructures
+                );
             }
 
             try {
@@ -86,6 +102,7 @@ public class StructureGalleryCommand {
                         result.count(),
                         result.spacing()
                 );
+                shutdownAfterBuild(server);
             } catch (Exception e) {
                 ProceduralDungeon.LOGGER.error("Failed to autobuild structure gallery.", e);
             }
@@ -116,14 +133,28 @@ public class StructureGalleryCommand {
             throw new IllegalStateException("No base procedural dungeon templates found.");
         }
 
-        int columns = (int) Math.ceil(Math.sqrt(templates.size()));
         BlockPos base = new BlockPos(0, DEFAULT_Y, 0);
+        int columns = (int) Math.ceil(Math.sqrt(templates.size()));
+        int[] columnWidths = new int[columns];
+        int[] rowDepths = new int[(int) Math.ceil(templates.size() / (double) columns)];
+
+        for (int i = 0; i < templates.size(); i++) {
+            Vec3i size = templates.get(i).template().getSize();
+            int col = i % columns;
+            int row = i / columns;
+            columnWidths[col] = Math.max(columnWidths[col], cellWidth(size.getX()));
+            rowDepths[row] = Math.max(rowDepths[row], cellWidth(size.getZ()));
+        }
 
         for (int i = 0; i < templates.size(); i++) {
             TemplateEntry entry = templates.get(i);
             int col = i % columns;
             int row = i / columns;
-            BlockPos origin = base.offset(col * spacing, 0, row * spacing);
+            BlockPos origin = base.offset(
+                    offsetForIndex(columnWidths, col, spacing) + CLEAR_MARGIN,
+                    0,
+                    offsetForIndex(rowDepths, row, spacing) + CLEAR_MARGIN
+            );
             placeGalleryCell(world, origin, entry);
         }
 
@@ -132,6 +163,24 @@ public class StructureGalleryCommand {
 
     private static void placeGalleryCell(ServerLevel world, BlockPos origin, TemplateEntry entry) {
         Vec3i size = entry.template().getSize();
+        ProceduralDungeon.LOGGER.info(
+                "Placing gallery structure '{}' at {} with dimensions {}x{}x{}.",
+                entry.id(),
+                origin.toShortString(),
+                size.getX(),
+                size.getY(),
+                size.getZ()
+        );
+        if (size.getX() > STRUCTURE_BLOCK_MAX_AXIS || size.getY() > STRUCTURE_BLOCK_MAX_AXIS || size.getZ() > STRUCTURE_BLOCK_MAX_AXIS) {
+            ProceduralDungeon.LOGGER.warn(
+                    "Gallery structure '{}' exceeds the vanilla Structure Block axis limit of {} blocks: {}x{}x{}.",
+                    entry.id(),
+                    STRUCTURE_BLOCK_MAX_AXIS,
+                    size.getX(),
+                    size.getY(),
+                    size.getZ()
+            );
+        }
         BlockPos clearMin = origin.offset(-CLEAR_MARGIN, -1, -CLEAR_MARGIN);
         BlockPos clearMax = origin.offset(
                 Math.max(size.getX(), 1) + CLEAR_MARGIN,
@@ -154,6 +203,19 @@ public class StructureGalleryCommand {
         entry.template().placeInWorld(world, origin, origin, settings, world.getRandom(), 3);
 
         placeStructureBlock(world, origin.offset(-2, 0, -2), origin, entry.id(), size);
+    }
+
+    private static int offsetForIndex(int[] sizes, int index, int spacing) {
+        int offset = 0;
+        for (int i = 0; i < index; i++) {
+            offset += sizes[i] + spacing;
+        }
+
+        return offset;
+    }
+
+    private static int cellWidth(int structureAxisSize) {
+        return Math.max(structureAxisSize, 1) + (CLEAR_MARGIN * 2);
     }
 
     private static void placeStructureBlock(
@@ -189,7 +251,7 @@ public class StructureGalleryCommand {
         try {
             SaveResult result = saveChangedStructures(source.getServer());
             source.sendSuccess(() -> Component.literal(
-                    "Saved %d structure file(s) from the gallery world back to src/main/resources."
+                    "Saved %d structure file(s) from the gallery world back to source structure folders."
                             .formatted(result.saved())
             ), true);
 
@@ -209,22 +271,22 @@ public class StructureGalleryCommand {
     }
 
     private static SaveResult saveChangedStructures(MinecraftServer server) throws IOException {
-        Path sourceRoot = resolveProjectPath(SOURCE_STRUCTURE_ROOT);
         Path generatedRoot = server.getWorldPath(LevelResource.GENERATED_DIR)
                 .resolve(ProceduralDungeon.MOD_ID)
                 .resolve("structures");
-        List<Identifier> ids = baseStructureIds(sourceRoot);
+        Map<Identifier, Path> sourceStructures = baseStructureSourcePaths();
 
         int saved = 0;
         int missing = 0;
-        for (Identifier id : ids) {
+        for (Map.Entry<Identifier, Path> entry : sourceStructures.entrySet()) {
+            Identifier id = entry.getKey();
             Path source = generatedRoot.resolve(id.getPath() + ".nbt");
             if (!Files.exists(source)) {
                 missing++;
                 continue;
             }
 
-            Path destination = sourceRoot.resolve(id.getPath() + ".nbt");
+            Path destination = entry.getValue();
             Files.createDirectories(destination.getParent());
             Files.copy(source, destination, StandardCopyOption.REPLACE_EXISTING);
             saved++;
@@ -234,7 +296,7 @@ public class StructureGalleryCommand {
     }
 
     private static List<TemplateEntry> baseTemplates(StructureTemplateManager templateManager) {
-        List<Identifier> ids = baseStructureIds(resolveProjectPath(SOURCE_STRUCTURE_ROOT));
+        List<Identifier> ids = new ArrayList<>(baseStructureSourcePaths().keySet());
         List<TemplateEntry> templates = new ArrayList<>();
 
         for (Identifier id : ids) {
@@ -249,11 +311,26 @@ public class StructureGalleryCommand {
         return templates;
     }
 
-    private static List<Identifier> baseStructureIds(Path sourceRoot) {
-        if (!Files.isDirectory(sourceRoot)) {
-            throw new IllegalStateException("Could not find source structure directory: " + sourceRoot);
+    private static Map<Identifier, Path> baseStructureSourcePaths() {
+        Map<Identifier, Path> structures = new LinkedHashMap<>();
+        for (Path root : SOURCE_STRUCTURE_ROOTS) {
+            Path sourceRoot = resolveProjectPath(root);
+            if (!Files.isDirectory(sourceRoot)) {
+                continue;
+            }
+
+            for (Identifier id : baseStructureIds(sourceRoot)) {
+                structures.putIfAbsent(id, sourceRoot.resolve(id.getPath() + ".nbt"));
+            }
         }
 
+        if (structures.isEmpty()) {
+            throw new IllegalStateException("Could not find any procedural dungeon source structure directories.");
+        }
+        return structures;
+    }
+
+    private static List<Identifier> baseStructureIds(Path sourceRoot) {
         try (var paths = Files.walk(sourceRoot)) {
             return paths
                     .filter(Files::isRegularFile)
@@ -312,6 +389,34 @@ public class StructureGalleryCommand {
         }
 
         Files.writeString(marker, "Built %d structures at spacing %d.%n".formatted(result.count(), result.spacing()));
+    }
+
+    private static void shutdownAfterBuild(MinecraftServer server) {
+        if (!Boolean.getBoolean(SHUTDOWN_AFTER_BUILD_PROPERTY)) {
+            return;
+        }
+
+        ProceduralDungeon.LOGGER.info("Saving structure gallery world and stopping preparation server.");
+        server.saveEverything(false, true, true);
+        server.halt(false);
+    }
+
+    private static Optional<Integer> readMarkerCount(Path marker) {
+        try {
+            String content = Files.readString(marker).trim();
+            if (!content.startsWith("Built ")) {
+                return Optional.empty();
+            }
+
+            int end = content.indexOf(" structures");
+            if (end < 0) {
+                return Optional.empty();
+            }
+
+            return Optional.of(Integer.parseInt(content.substring("Built ".length(), end)));
+        } catch (IOException | NumberFormatException e) {
+            return Optional.empty();
+        }
     }
 
     private record TemplateEntry(Identifier id, StructureTemplate template) {

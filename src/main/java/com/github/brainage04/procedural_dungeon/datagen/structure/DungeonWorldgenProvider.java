@@ -44,7 +44,7 @@ public class DungeonWorldgenProvider implements DataProvider {
                 String key = RegistryKeyUtils.getKeyString(theme, tier);
                 Identifier id = ProceduralDungeon.of(key);
 
-                addTemplatePools(writer, futures, key, id);
+                addTemplatePools(writer, futures, key, id, theme);
                 futures.add(DataProvider.saveStable(writer, createStructureJson(key, tier, theme), structureResolver.json(id)));
                 structureSets.computeIfAbsent(createStructureSetId(theme), ignored -> new ArrayList<>())
                         .add(new WeightedStructure(id, getTierWeight(tier)));
@@ -62,7 +62,17 @@ public class DungeonWorldgenProvider implements DataProvider {
         return CompletableFuture.allOf(futures.toArray(CompletableFuture[]::new));
     }
 
-    private void addTemplatePools(CachedOutput writer, List<CompletableFuture<?>> futures, String key, Identifier variantId) {
+    private void addTemplatePools(CachedOutput writer, List<CompletableFuture<?>> futures, String key, Identifier variantId, DungeonTheme theme) {
+        int tier = getTier(variantId);
+        if (!theme.dimension.equals(Level.NETHER)) {
+            addTemplatePool(writer, futures, "%s/entrance".formatted(key), List.of(
+                    poolElement("dungeon/entrance/tier_%d/hatch".formatted(tier), variantId, 3, Integer.MAX_VALUE),
+                    poolElement("dungeon/entrance/tier_%d/well".formatted(tier), variantId, 3, Integer.MAX_VALUE),
+                    poolElement("dungeon/entrance/tier_%d/staircase".formatted(tier), variantId, 2, Integer.MAX_VALUE),
+                    poolElement("dungeon/entrance/tier_%d/shrine".formatted(tier), variantId, 2, Integer.MAX_VALUE)
+            ));
+        }
+
         addTemplatePool(writer, futures, "%s/start".formatted(key), List.of(
                 poolElement("dungeon/start", variantId, 1, startBranchLimit(variantId))
         ));
@@ -89,9 +99,9 @@ public class DungeonWorldgenProvider implements DataProvider {
                 poolElement("dungeon/hallway/room/armorsmith", variantId, 2, secondaryBranchLimit(variantId)),
                 poolElement("dungeon/hallway/room/enchanter", variantId, 2, secondaryBranchLimit(variantId)),
                 poolElement("dungeon/hallway/room/spawner_corridor", variantId, 2, secondaryBranchLimit(variantId)),
-                poolElement("dungeon/hallway/room/staircase_diagonal_down", variantId, 1, secondaryBranchLimit(variantId)),
+                poolElement("dungeon/hallway/room/staircase_diagonal_down", variantId, 3, secondaryBranchLimit(variantId)),
                 poolElement("dungeon/hallway/room/staircase_diagonal_up", variantId, 1, secondaryBranchLimit(variantId)),
-                poolElement("dungeon/hallway/room/staircase_spiral_down", variantId, 1, secondaryBranchLimit(variantId)),
+                poolElement("dungeon/hallway/room/staircase_spiral_down", variantId, 3, secondaryBranchLimit(variantId)),
                 poolElement("dungeon/hallway/room/staircase_spiral_up", variantId, 1, secondaryBranchLimit(variantId)),
                 poolElement("dungeon/hallway/room/toolsmith", variantId, 2, secondaryBranchLimit(variantId)),
                 poolElement("dungeon/hallway/room/weaponsmith", variantId, 2, secondaryBranchLimit(variantId))
@@ -177,11 +187,23 @@ public class DungeonWorldgenProvider implements DataProvider {
         structure.addProperty("biomes", getBiomeTag(theme));
         structure.addProperty("step", "underground_structures");
         structure.addProperty("terrain_adaptation", "bury");
-        structure.addProperty("start_pool", ProceduralDungeon.of("%s/start".formatted(key)).toString());
+        boolean nether = theme.dimension.equals(Level.NETHER);
+        boolean entrance = !nether;
+        structure.addProperty("start_pool", ProceduralDungeon.of("%s/%s".formatted(key, entrance ? "entrance" : "start")).toString());
         structure.addProperty("start_jigsaw_name", "minecraft:start");
-        structure.addProperty("size", tier.worldgenSize);
-        structure.add("start_height", absoluteHeight(0));
-        structure.addProperty("project_start_to_heightmap", "WORLD_SURFACE_WG");
+        structure.addProperty("size", tier.worldgenSize + (entrance ? 1 : 0));
+        if (nether) {
+            structure.add("start_height", absoluteHeight(48));
+            structure.addProperty("placement_height_mode", "solid_density");
+            structure.addProperty("solid_density_min_y", 24);
+            structure.addProperty("solid_density_max_y", 104);
+            structure.addProperty("solid_density_window", Math.max(24, Math.abs(tier.surfaceOffset) / 2));
+            structure.addProperty("solid_density_step", 4);
+            structure.addProperty("solid_density_horizontal_radius", 16);
+        } else {
+            structure.add("start_height", absoluteHeight(0));
+            structure.addProperty("project_start_to_heightmap", "WORLD_SURFACE_WG");
+        }
         structure.addProperty("max_distance_from_center", tier.maxDistanceFromCenter);
         structure.addProperty("use_expansion_hack", true);
         structure.addProperty("liquid_settings", "ignore_waterlogging");

@@ -1,4 +1,5 @@
 # About
+
 Adds a procedurally generated dungeon to Minecraft.
 
 The structures that can spawn within this dungeon are as follows:
@@ -31,6 +32,7 @@ The structures that can spawn within this dungeon are as follows:
     - Large: Large pile of blocks, 4 chests
 
 # Tiers
+
 Loot tiers:
 1. Leather/Wood
 2. Copper
@@ -46,6 +48,7 @@ Spawner tiers:
 5. MaxNearbyEntites=20, MinSpawnDelay=100, MaxSpawnDelay=200, RequiredPlayerRange=32, SpawnCount=5, SpawnRange=8
 
 # Themes
+
 Dungeon themes:
 1. Overworld (Cobblestone)
 2. Nether (Netherrack)
@@ -55,6 +58,7 @@ Dungeon themes:
 6. The Deep Dark (Sculk)
 
 # Generating a Dungeon
+
 Command usage: `/generatedungeon <tier> <theme> <depth>`
 
 Tier must range from 1-5
@@ -68,3 +72,7 @@ Theme must be one of the following:
 - `deep_dark`
 
 Depth must range from 1-20
+
+# Todo
+
+ensure structure voids are placed appropriately for all structures (they seem to be missing from staircases)

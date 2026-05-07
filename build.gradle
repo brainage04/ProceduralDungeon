@@ -59,16 +59,6 @@ processResources {
 
 loom {
 	accessWidenerPath = file("src/main/resources/procedural_dungeon.accesswidener")
-
-	runs {
-		structureGallery {
-			server()
-			name = "Structure Gallery"
-			runDir = "run"
-			programArgs "--world", "structure-gallery"
-			property "procedural_dungeon.structureGallery.autobuild", "true"
-		}
-	}
 }
 
 fabricApi {
