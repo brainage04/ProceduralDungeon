@@ -69,7 +69,10 @@ public class DungeonWorldgenProvider implements DataProvider {
                     poolElement("dungeon/entrance/tier_%d/hatch".formatted(tier), variantId, 3, Integer.MAX_VALUE),
                     poolElement("dungeon/entrance/tier_%d/well".formatted(tier), variantId, 3, Integer.MAX_VALUE),
                     poolElement("dungeon/entrance/tier_%d/staircase".formatted(tier), variantId, 2, Integer.MAX_VALUE),
-                    poolElement("dungeon/entrance/tier_%d/shrine".formatted(tier), variantId, 2, Integer.MAX_VALUE)
+                    poolElement("dungeon/entrance/tier_%d/shrine".formatted(tier), variantId, 2, Integer.MAX_VALUE),
+                    poolElement("dungeon/entrance/tier_%d/ruined_archway".formatted(tier), variantId, 2, Integer.MAX_VALUE),
+                    poolElement("dungeon/entrance/tier_%d/sunken_courtyard".formatted(tier), variantId, 2, Integer.MAX_VALUE),
+                    poolElement("dungeon/entrance/tier_%d/ritual_descent".formatted(tier), variantId, 2, Integer.MAX_VALUE)
             ));
         }
 

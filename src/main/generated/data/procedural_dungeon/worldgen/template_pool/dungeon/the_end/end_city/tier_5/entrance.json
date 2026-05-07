@@ -51,6 +51,45 @@
         "variant": "procedural_dungeon:dungeon/the_end/end_city/tier_5"
       },
       "weight": 2
+    },
+    {
+      "element": {
+        "branch_limit": 2147483647,
+        "element_type": "procedural_dungeon:variant_single_pool_element",
+        "location": "procedural_dungeon:dungeon/entrance/tier_5/ruined_archway",
+        "override_liquid_settings": "ignore_waterlogging",
+        "processors": "procedural_dungeon:dungeon/the_end/end_city/tier_5",
+        "projection": "rigid",
+        "spawner_tier": 5,
+        "variant": "procedural_dungeon:dungeon/the_end/end_city/tier_5"
+      },
+      "weight": 2
+    },
+    {
+      "element": {
+        "branch_limit": 2147483647,
+        "element_type": "procedural_dungeon:variant_single_pool_element",
+        "location": "procedural_dungeon:dungeon/entrance/tier_5/sunken_courtyard",
+        "override_liquid_settings": "ignore_waterlogging",
+        "processors": "procedural_dungeon:dungeon/the_end/end_city/tier_5",
+        "projection": "rigid",
+        "spawner_tier": 5,
+        "variant": "procedural_dungeon:dungeon/the_end/end_city/tier_5"
+      },
+      "weight": 2
+    },
+    {
+      "element": {
+        "branch_limit": 2147483647,
+        "element_type": "procedural_dungeon:variant_single_pool_element",
+        "location": "procedural_dungeon:dungeon/entrance/tier_5/ritual_descent",
+        "override_liquid_settings": "ignore_waterlogging",
+        "processors": "procedural_dungeon:dungeon/the_end/end_city/tier_5",
+        "projection": "rigid",
+        "spawner_tier": 5,
+        "variant": "procedural_dungeon:dungeon/the_end/end_city/tier_5"
+      },
+      "weight": 2
     }
   ],
   "fallback": "minecraft:empty"
