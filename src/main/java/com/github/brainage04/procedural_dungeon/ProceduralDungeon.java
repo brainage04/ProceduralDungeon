@@ -1,6 +1,7 @@
 package com.github.brainage04.procedural_dungeon;
 
 import com.github.brainage04.procedural_dungeon.command.core.ModCommands;
+import com.github.brainage04.procedural_dungeon.command.StructureGalleryCommand;
 import com.github.brainage04.procedural_dungeon.worldgen.processor.ModStructureProcessorTypes;
 import com.github.brainage04.procedural_dungeon.worldgen.structure.ModStructureTypes;
 import com.github.brainage04.procedural_dungeon.worldgen.structure.StagedDungeonGenerationManager;
@@ -28,6 +29,7 @@ public class ProceduralDungeon implements ModInitializer {
         ModStructurePoolElementTypes.initialize();
         ModStructureTypes.initialize();
         StagedDungeonGenerationManager.initialize();
+        StructureGalleryCommand.initializeAutobuild();
 
         ModCommands.initialize();
 
