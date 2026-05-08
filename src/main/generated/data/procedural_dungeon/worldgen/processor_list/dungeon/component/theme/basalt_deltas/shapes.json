@@ -1,0 +1,8 @@
+{
+  "processors": [
+    {
+      "fallback": "minecraft:basalt",
+      "processor_type": "procedural_dungeon:theme_shape_replacements"
+    }
+  ]
+}

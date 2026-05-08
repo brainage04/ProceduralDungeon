@@ -1,0 +1,11 @@
+{
+  "processors": [
+    {
+      "fallback": "minecraft:blackstone",
+      "processor_type": "procedural_dungeon:theme_shape_replacements",
+      "slab": "minecraft:blackstone_slab",
+      "stairs": "minecraft:blackstone_stairs",
+      "wall": "minecraft:blackstone_wall"
+    }
+  ]
+}

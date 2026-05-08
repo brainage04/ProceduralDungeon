@@ -3,23 +3,36 @@ package com.github.brainage04.procedural_dungeon.datagen.core;
 import com.github.brainage04.procedural_dungeon.dungeon.DungeonTheme;
 import com.github.brainage04.procedural_dungeon.dungeon.DungeonTier;
 import com.github.brainage04.procedural_dungeon.datagen.loot_table.DungeonLootTableProvider;
+import com.github.brainage04.procedural_dungeon.worldgen.processor.IncludeProcessorListProcessor;
 import com.github.brainage04.procedural_dungeon.worldgen.processor.LootTableAndBlockEntityProcessor;
 import com.github.brainage04.procedural_dungeon.worldgen.processor.ThemeShapeReplacementProcessor;
 import com.github.brainage04.procedural_dungeon.util.RegistryKeyUtils;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.HexFormat;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricDynamicRegistryProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtAccounter;
+import net.minecraft.nbt.NbtIo;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.structure.templatesystem.AlwaysTrueTest;
 import net.minecraft.world.level.levelgen.structure.templatesystem.BlockAgeProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.BlockRotProcessor;
@@ -30,6 +43,45 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProc
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorList;
 
 public class ProceduralDungeonGenerator extends FabricDynamicRegistryProvider {
+    public static final List<String> BASE_STRUCTURES = List.of(
+            "dungeon/start",
+            "dungeon/hallway/small",
+            "dungeon/hallway/medium",
+            "dungeon/hallway/large",
+            "dungeon/hallway/end/small",
+            "dungeon/hallway/end/medium",
+            "dungeon/hallway/end/large",
+            "dungeon/hallway/loot/small",
+            "dungeon/hallway/loot/medium",
+            "dungeon/hallway/loot/large",
+            "dungeon/hallway/room/armorsmith",
+            "dungeon/hallway/room/enchanter",
+            "dungeon/hallway/room/spawner_corridor",
+            "dungeon/hallway/room/staircase_diagonal_down",
+            "dungeon/hallway/room/staircase_diagonal_up",
+            "dungeon/hallway/room/staircase_spiral_down",
+            "dungeon/hallway/room/staircase_spiral_up",
+            "dungeon/hallway/room/toolsmith",
+            "dungeon/hallway/room/weaponsmith",
+            "dungeon/hallway/trap/dripstone",
+            "dungeon/hallway/trap/lava",
+            "dungeon/hallway/trap/negative_potions",
+            "dungeon/hallway/trap/spawners"
+    );
+    private static final Set<String> THEME_SHAPE_INPUTS = Set.of(
+            BuiltInRegistries.BLOCK.getKey(Blocks.COBBLESTONE_STAIRS).toString(),
+            BuiltInRegistries.BLOCK.getKey(Blocks.STONE_BRICK_STAIRS).toString(),
+            BuiltInRegistries.BLOCK.getKey(Blocks.MOSSY_STONE_BRICK_STAIRS).toString(),
+            BuiltInRegistries.BLOCK.getKey(Blocks.COBBLESTONE_SLAB).toString(),
+            BuiltInRegistries.BLOCK.getKey(Blocks.STONE_SLAB).toString(),
+            BuiltInRegistries.BLOCK.getKey(Blocks.STONE_BRICK_SLAB).toString(),
+            BuiltInRegistries.BLOCK.getKey(Blocks.MOSSY_STONE_BRICK_SLAB).toString(),
+            BuiltInRegistries.BLOCK.getKey(Blocks.COBBLESTONE_WALL).toString(),
+            BuiltInRegistries.BLOCK.getKey(Blocks.MOSSY_STONE_BRICK_WALL).toString()
+    );
+    private static final Map<String, TemplateCapabilities> TEMPLATE_CAPABILITIES = BASE_STRUCTURES.stream()
+            .collect(Collectors.toUnmodifiableMap(structure -> structure, ProceduralDungeonGenerator::readTemplateCapabilities));
+
     private static final List<String> TIERED_LOOT_TABLES = List.of(
             "hallway_end",
             "hallway_loot",
@@ -104,33 +156,251 @@ public class ProceduralDungeonGenerator extends FabricDynamicRegistryProvider {
 
     @Override
     protected void configure(HolderLookup.Provider registries, Entries entries) {
+        Set<String> generatedKeys = new HashSet<>();
         for (DungeonTheme theme : DungeonTheme.values()) {
             for (DungeonTier tier : DungeonTier.values()) {
                 String key = RegistryKeyUtils.getKeyString(theme, tier);
-                generateProcessorList(entries, key, tier, theme);
+                generateProcessorList(entries, generatedKeys, key, tier, theme, TemplateCapabilities.full());
+                for (String structure : BASE_STRUCTURES) {
+                    generateTemplateProcessorList(entries, generatedKeys, tier, theme, TEMPLATE_CAPABILITIES.get(structure));
+                }
             }
         }
     }
 
-    private static void generateProcessorList(Entries entries, String key, DungeonTier tier, DungeonTheme theme) {
-        StructureProcessorList structureProcessorList = new StructureProcessorList(
-                Stream.of(
-                        createBasic(DungeonTheme.bookshelfRules()),
-                        createBasic(DungeonTheme.mineralRules()),
-                        createBasic(DungeonTheme.airRules()),
-                        createDecay(),
-                        createThemeShapes(theme),
-                        createBasic(theme.processorRules),
-                        createLootTable(tier)
-                ).flatMap(structureProcessorList1 -> structureProcessorList1.list().stream()).toList()
-        );
+    private static void generateProcessorList(
+            Entries entries,
+            Set<String> generatedKeys,
+            String key,
+            DungeonTier tier,
+            DungeonTheme theme,
+            TemplateCapabilities capabilities
+    ) {
+        List<StructureProcessor> processors = new ArrayList<>();
+        addBasic(processors, DungeonTheme.bookshelfRules(), capabilities);
+        addBasic(processors, DungeonTheme.mineralRules(), capabilities);
+        addBasic(processors, DungeonTheme.airRules(), capabilities);
+        processors.addAll(createDecay().list());
+        if (capabilities.hasThemeShapes()) {
+            processors.addAll(createThemeShapes(theme).list());
+        }
+        addBasic(processors, theme.processorRules, capabilities);
+        if (capabilities.hasNbt()) {
+            processors.addAll(createLootTable(tier).list());
+        }
 
-        var processorListKey = RegistryKeyUtils.create(Registries.PROCESSOR_LIST, key);
-        entries.add(processorListKey, structureProcessorList);
+        addProcessorList(entries, generatedKeys, key, new StructureProcessorList(List.copyOf(processors)));
+    }
+
+    private static void generateTemplateProcessorList(
+            Entries entries,
+            Set<String> generatedKeys,
+            DungeonTier tier,
+            DungeonTheme theme,
+            TemplateCapabilities capabilities
+    ) {
+        List<String> components = generateProfileComponents(entries, generatedKeys, tier, theme, capabilities);
+        addProcessorList(entries, generatedKeys, profileProcessorKey(components), create(List.of(include(components))));
+    }
+
+    private static List<String> generateProfileComponents(
+            Entries entries,
+            Set<String> generatedKeys,
+            DungeonTier tier,
+            DungeonTheme theme,
+            TemplateCapabilities capabilities
+    ) {
+        List<String> components = new ArrayList<>();
+        addRuleComponent(entries, generatedKeys, components, "generic/bookshelf", DungeonTheme.bookshelfRules(), capabilities);
+        addRuleComponent(entries, generatedKeys, components, "generic/minerals", DungeonTheme.mineralRules(), capabilities);
+        addRuleComponent(entries, generatedKeys, components, "generic/air", DungeonTheme.airRules(), capabilities);
+
+        String decayKey = "dungeon/component/generic/decay";
+        addProcessorList(entries, generatedKeys, decayKey, createDecay());
+        components.add(decayKey);
+
+        if (capabilities.hasThemeShapes()) {
+            String shapesKey = "dungeon/component/theme/%s/shapes".formatted(theme.getSerializedName());
+            addProcessorList(entries, generatedKeys, shapesKey, createThemeShapes(theme));
+            components.add(shapesKey);
+        }
+
+        addRuleComponent(entries, generatedKeys, components, "theme/%s/rules".formatted(theme.getSerializedName()), theme.processorRules, capabilities);
+
+        if (capabilities.hasNbt()) {
+            String lootKey = "dungeon/component/loot/tier_%d".formatted(tier.tier);
+            addProcessorList(entries, generatedKeys, lootKey, createLootTable(tier));
+            components.add(lootKey);
+        }
+
+        return List.copyOf(components);
+    }
+
+    private static void addRuleComponent(
+            Entries entries,
+            Set<String> generatedKeys,
+            List<String> components,
+            String path,
+            List<DungeonTheme.ProcessorRuleSpec> rules,
+            TemplateCapabilities capabilities
+    ) {
+        List<DungeonTheme.ProcessorRuleSpec> matchingRules = matchingRules(rules, capabilities);
+        if (matchingRules.isEmpty()) {
+            return;
+        }
+
+        String componentKey = "dungeon/component/%s/%s".formatted(path, shortHash(canonicalRules(matchingRules)));
+        addProcessorList(entries, generatedKeys, componentKey, createBasic(matchingRules));
+        components.add(componentKey);
+    }
+
+    private static void addProcessorList(Entries entries, Set<String> generatedKeys, String key, StructureProcessorList structureProcessorList) {
+        if (generatedKeys.add(key)) {
+            entries.add(RegistryKeyUtils.create(Registries.PROCESSOR_LIST, key), structureProcessorList);
+        }
+    }
+
+    private static IncludeProcessorListProcessor include(List<String> keys) {
+        return new IncludeProcessorListProcessor(keys.stream()
+                .map(key -> RegistryKeyUtils.create(Registries.PROCESSOR_LIST, key))
+                .toList());
+    }
+
+    public static String templateProcessorKey(String key, String structure, DungeonTheme theme, int tier) {
+        TemplateCapabilities capabilities = TEMPLATE_CAPABILITIES.get(structure);
+        if (capabilities == null) {
+            throw new IllegalArgumentException("Unknown base structure: " + structure);
+        }
+
+        return profileProcessorKey(profileComponents(theme, tier, capabilities));
+    }
+
+    private static List<String> profileComponents(DungeonTheme theme, int tier, TemplateCapabilities capabilities) {
+        List<String> components = new ArrayList<>();
+        addRuleComponentKey(components, "generic/bookshelf", DungeonTheme.bookshelfRules(), capabilities);
+        addRuleComponentKey(components, "generic/minerals", DungeonTheme.mineralRules(), capabilities);
+        addRuleComponentKey(components, "generic/air", DungeonTheme.airRules(), capabilities);
+        components.add("dungeon/component/generic/decay");
+        if (capabilities.hasThemeShapes()) {
+            components.add("dungeon/component/theme/%s/shapes".formatted(theme.getSerializedName()));
+        }
+        addRuleComponentKey(components, "theme/%s/rules".formatted(theme.getSerializedName()), theme.processorRules, capabilities);
+        if (capabilities.hasNbt()) {
+            components.add("dungeon/component/loot/tier_%d".formatted(tier));
+        }
+
+        return List.copyOf(components);
+    }
+
+    private static void addRuleComponentKey(
+            List<String> components,
+            String path,
+            List<DungeonTheme.ProcessorRuleSpec> rules,
+            TemplateCapabilities capabilities
+    ) {
+        List<DungeonTheme.ProcessorRuleSpec> matchingRules = matchingRules(rules, capabilities);
+        if (!matchingRules.isEmpty()) {
+            components.add("dungeon/component/%s/%s".formatted(path, shortHash(canonicalRules(matchingRules))));
+        }
+    }
+
+    private static String profileProcessorKey(List<String> componentKeys) {
+        return "dungeon/profile/%s".formatted(shortHash(String.join("\n", componentKeys)));
+    }
+
+    private static void addBasic(List<StructureProcessor> processors, List<DungeonTheme.ProcessorRuleSpec> rules, TemplateCapabilities capabilities) {
+        List<DungeonTheme.ProcessorRuleSpec> matchingRules = matchingRules(rules, capabilities);
+        if (!matchingRules.isEmpty()) {
+            processors.addAll(createBasic(matchingRules).list());
+        }
+    }
+
+    private static List<DungeonTheme.ProcessorRuleSpec> matchingRules(
+            List<DungeonTheme.ProcessorRuleSpec> rules,
+            TemplateCapabilities capabilities
+    ) {
+        return rules.stream()
+                .filter(rule -> capabilities.hasBlock(rule.input()))
+                .toList();
+    }
+
+    private static String canonicalRules(List<DungeonTheme.ProcessorRuleSpec> rules) {
+        return rules.stream()
+                .map(rule -> "%s|%s|%s".formatted(rule.input(), Float.toString(rule.probability()), rule.output()))
+                .collect(Collectors.joining("\n"));
+    }
+
+    private static String shortHash(String value) {
+        try {
+            byte[] hash = MessageDigest.getInstance("SHA-1").digest(value.getBytes(StandardCharsets.UTF_8));
+            return HexFormat.of().formatHex(hash, 0, 8);
+        } catch (NoSuchAlgorithmException e) {
+            throw new IllegalStateException("SHA-1 digest is unavailable", e);
+        }
+    }
+
+    private static TemplateCapabilities readTemplateCapabilities(String structure) {
+        String resource = "data/procedural_dungeon/structure/%s.nbt".formatted(structure);
+        InputStream input = ProceduralDungeonGenerator.class.getClassLoader().getResourceAsStream(resource);
+        if (input == null) {
+            throw new IllegalStateException("Missing source structure resource: " + resource);
+        }
+
+        try (input) {
+            CompoundTag tag = NbtIo.readCompressed(input, NbtAccounter.unlimitedHeap());
+            Set<String> paletteBlocks = new HashSet<>();
+            List<String> paletteBlockList = new ArrayList<>();
+            ListTag palette = tag.getListOrEmpty("palette");
+            for (int i = 0; i < palette.size(); i++) {
+                String block = palette.getCompoundOrEmpty(i).getString("Name").orElse(null);
+                if (block != null) {
+                    paletteBlocks.add(block);
+                }
+                paletteBlockList.add(block);
+            }
+
+            boolean needsNbtProcessor = false;
+            ListTag blocks = tag.getListOrEmpty("blocks");
+            for (int i = 0; i < blocks.size(); i++) {
+                CompoundTag block = blocks.getCompoundOrEmpty(i);
+                int stateIndex = block.getIntOr("state", -1);
+                if (block.contains("nbt")
+                        && stateIndex >= 0
+                        && stateIndex < paletteBlockList.size()
+                        && isRelevantNbtBlock(paletteBlockList.get(stateIndex))) {
+                    needsNbtProcessor = true;
+                    break;
+                }
+            }
+
+            return new TemplateCapabilities(Set.copyOf(paletteBlocks), needsNbtProcessor);
+        } catch (IOException e) {
+            throw new IllegalStateException("Failed to read source structure resource: " + resource, e);
+        }
+    }
+
+    private static boolean isRelevantNbtBlock(String blockId) {
+        return blockId != null
+                && !blockId.equals("minecraft:jigsaw")
+                && !blockId.equals("minecraft:structure_block");
     }
 
     @Override
     public String getName() {
         return "Procedural Dungeon Generator";
+    }
+
+    private record TemplateCapabilities(Set<String> paletteBlocks, boolean hasNbt) {
+        private static TemplateCapabilities full() {
+            return new TemplateCapabilities(Set.of(), true);
+        }
+
+        private boolean hasBlock(String id) {
+            return paletteBlocks.isEmpty() || paletteBlocks.contains(id);
+        }
+
+        private boolean hasThemeShapes() {
+            return paletteBlocks.isEmpty() || THEME_SHAPE_INPUTS.stream().anyMatch(paletteBlocks::contains);
+        }
     }
 }

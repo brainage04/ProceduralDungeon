@@ -1,0 +1,11 @@
+{
+  "processors": [
+    {
+      "fallback": "minecraft:warped_wart_block",
+      "processor_type": "procedural_dungeon:theme_shape_replacements",
+      "slab": "minecraft:warped_slab",
+      "stairs": "minecraft:warped_stairs",
+      "wall": "minecraft:warped_fence"
+    }
+  ]
+}

@@ -5,6 +5,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import java.util.Map;
+import java.util.stream.Collectors;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.Identifier;
@@ -24,9 +25,14 @@ public class LootTableAndBlockEntityProcessor extends StructureProcessor {
             ).apply(instance, LootTableAndBlockEntityProcessor::new));
 
     private final Map<Identifier, Identifier> lootTableReplacements;
+    private final Map<String, String> lootTableReplacementStrings;
 
     public LootTableAndBlockEntityProcessor(Map<Identifier, Identifier> lootTableReplacements) {
         this.lootTableReplacements = lootTableReplacements;
+        this.lootTableReplacementStrings = lootTableReplacements.entrySet().stream().collect(Collectors.toUnmodifiableMap(
+                entry -> entry.getKey().toString(),
+                entry -> entry.getValue().toString()
+        ));
     }
 
     @Override
@@ -54,18 +60,13 @@ public class LootTableAndBlockEntityProcessor extends StructureProcessor {
                 return currentBlockInfo;
             }
 
-            Identifier oldId = Identifier.tryParse(oldLootTable);
-            if (oldId == null) {
-                return currentBlockInfo;
-            }
-
-            Identifier newId = lootTableReplacements.get(oldId);
-            if (newId == null) {
+            String newLootTable = lootTableReplacementStrings.get(oldLootTable);
+            if (newLootTable == null) {
                 return currentBlockInfo;
             }
 
             CompoundTag copy = nbt.copy();
-            copy.putString("LootTable", newId.toString());
+            copy.putString("LootTable", newLootTable);
             copy.putLong("LootTableSeed", data.getRandom(currentBlockInfo.pos()).nextLong());
             return new StructureTemplate.StructureBlockInfo(currentBlockInfo.pos(), currentBlockInfo.state(), copy);
         } finally {

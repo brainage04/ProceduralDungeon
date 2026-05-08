@@ -1,0 +1,14 @@
+{
+  "processors": [
+    {
+      "processor_type": "procedural_dungeon:include_processor_list",
+      "processors": [
+        "procedural_dungeon:dungeon/component/generic/minerals/58b29b88684c9764",
+        "procedural_dungeon:dungeon/component/generic/air/937f7d19fe5fd217",
+        "procedural_dungeon:dungeon/component/generic/decay",
+        "procedural_dungeon:dungeon/component/theme/end_stone/rules/7a8b30b0b4b51423",
+        "procedural_dungeon:dungeon/component/loot/tier_5"
+      ]
+    }
+  ]
+}

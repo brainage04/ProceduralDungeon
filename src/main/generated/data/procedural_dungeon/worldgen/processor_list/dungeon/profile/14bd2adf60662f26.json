@@ -1,0 +1,14 @@
+{
+  "processors": [
+    {
+      "processor_type": "procedural_dungeon:include_processor_list",
+      "processors": [
+        "procedural_dungeon:dungeon/component/generic/minerals/7efa414717d17ac5",
+        "procedural_dungeon:dungeon/component/generic/air/937f7d19fe5fd217",
+        "procedural_dungeon:dungeon/component/generic/decay",
+        "procedural_dungeon:dungeon/component/theme/nether_wastes/rules/d4e4578eeab66c62",
+        "procedural_dungeon:dungeon/component/loot/tier_1"
+      ]
+    }
+  ]
+}

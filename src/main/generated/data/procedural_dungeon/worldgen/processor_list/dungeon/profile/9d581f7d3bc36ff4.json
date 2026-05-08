@@ -1,0 +1,14 @@
+{
+  "processors": [
+    {
+      "processor_type": "procedural_dungeon:include_processor_list",
+      "processors": [
+        "procedural_dungeon:dungeon/component/generic/minerals/dbc728585e316591",
+        "procedural_dungeon:dungeon/component/generic/air/937f7d19fe5fd217",
+        "procedural_dungeon:dungeon/component/generic/decay",
+        "procedural_dungeon:dungeon/component/theme/basalt_deltas/rules/b03a462ac83758b3",
+        "procedural_dungeon:dungeon/component/loot/tier_3"
+      ]
+    }
+  ]
+}

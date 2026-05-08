@@ -41,6 +41,13 @@ public class ModStructureProcessorTypes {
                     () -> ThemeShapeReplacementProcessor.CODEC
             );
 
+    public static final StructureProcessorType<IncludeProcessorListProcessor> INCLUDE_PROCESSOR_LIST =
+            Registry.register(
+                    BuiltInRegistries.STRUCTURE_PROCESSOR,
+                    ProceduralDungeon.of("include_processor_list"),
+                    () -> IncludeProcessorListProcessor.CODEC
+            );
+
     public static void initialize() {
         // load class and run static init
     }

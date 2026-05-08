@@ -3,6 +3,9 @@ package com.github.brainage04.procedural_dungeon.worldgen.processor;
 import com.github.brainage04.procedural_dungeon.worldgen.structure.DungeonGenerationProfiler;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import java.util.Collections;
+import java.util.IdentityHashMap;
+import java.util.Map;
 import java.util.Optional;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -23,6 +26,8 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProc
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 
 public class ThemeShapeReplacementProcessor extends StructureProcessor {
+    private static final Map<Block, Shape> INPUT_SHAPES = inputShapes();
+
     public static final MapCodec<ThemeShapeReplacementProcessor> CODEC =
             RecordCodecBuilder.mapCodec(instance -> instance.group(
                     Identifier.CODEC.fieldOf("fallback").forGetter(processor -> processor.fallback),
@@ -68,20 +73,16 @@ public class ThemeShapeReplacementProcessor extends StructureProcessor {
         long start = DungeonGenerationProfiler.start();
         try {
             BlockState state = currentBlockInfo.state();
-            Block block = state.getBlock();
-            BlockState replacement = null;
-
-            if (isStairInput(block)) {
-                replacement = replaceStairs(state);
-            } else if (isSlabInput(block)) {
-                replacement = replaceSlab(state);
-            } else if (isWallInput(block)) {
-                replacement = replaceWall(state);
-            }
-
-            if (replacement == null) {
+            Shape shape = INPUT_SHAPES.get(state.getBlock());
+            if (shape == null) {
                 return currentBlockInfo;
             }
+
+            BlockState replacement = switch (shape) {
+                case STAIR -> replaceStairs(state);
+                case SLAB -> replaceSlab(state);
+                case WALL -> replaceWall(state);
+            };
 
             return new StructureTemplate.StructureBlockInfo(currentBlockInfo.pos(), replacement, currentBlockInfo.nbt());
         } finally {
@@ -103,22 +104,18 @@ public class ThemeShapeReplacementProcessor extends StructureProcessor {
         return wallState == null ? fallbackState : copyWallProperties(input, wallState);
     }
 
-    private static boolean isStairInput(Block block) {
-        return block == Blocks.COBBLESTONE_STAIRS
-                || block == Blocks.STONE_BRICK_STAIRS
-                || block == Blocks.MOSSY_STONE_BRICK_STAIRS;
-    }
-
-    private static boolean isSlabInput(Block block) {
-        return block == Blocks.COBBLESTONE_SLAB
-                || block == Blocks.STONE_SLAB
-                || block == Blocks.STONE_BRICK_SLAB
-                || block == Blocks.MOSSY_STONE_BRICK_SLAB;
-    }
-
-    private static boolean isWallInput(Block block) {
-        return block == Blocks.COBBLESTONE_WALL
-                || block == Blocks.MOSSY_STONE_BRICK_WALL;
+    private static Map<Block, Shape> inputShapes() {
+        IdentityHashMap<Block, Shape> shapes = new IdentityHashMap<>();
+        shapes.put(Blocks.COBBLESTONE_STAIRS, Shape.STAIR);
+        shapes.put(Blocks.STONE_BRICK_STAIRS, Shape.STAIR);
+        shapes.put(Blocks.MOSSY_STONE_BRICK_STAIRS, Shape.STAIR);
+        shapes.put(Blocks.COBBLESTONE_SLAB, Shape.SLAB);
+        shapes.put(Blocks.STONE_SLAB, Shape.SLAB);
+        shapes.put(Blocks.STONE_BRICK_SLAB, Shape.SLAB);
+        shapes.put(Blocks.MOSSY_STONE_BRICK_SLAB, Shape.SLAB);
+        shapes.put(Blocks.COBBLESTONE_WALL, Shape.WALL);
+        shapes.put(Blocks.MOSSY_STONE_BRICK_WALL, Shape.WALL);
+        return Collections.unmodifiableMap(shapes);
     }
 
     private static BlockState defaultState(Identifier id) {
@@ -183,5 +180,11 @@ public class ThemeShapeReplacementProcessor extends StructureProcessor {
     @Override
     protected StructureProcessorType<?> getType() {
         return ModStructureProcessorTypes.THEME_SHAPE_REPLACEMENTS;
+    }
+
+    private enum Shape {
+        STAIR,
+        SLAB,
+        WALL
     }
 }

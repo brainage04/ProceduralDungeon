@@ -1,6 +1,7 @@
 package com.github.brainage04.procedural_dungeon.datagen.structure;
 
 import com.github.brainage04.procedural_dungeon.ProceduralDungeon;
+import com.github.brainage04.procedural_dungeon.datagen.core.ProceduralDungeonGenerator;
 import com.github.brainage04.procedural_dungeon.dungeon.DungeonTheme;
 import com.github.brainage04.procedural_dungeon.dungeon.DungeonTier;
 import com.github.brainage04.procedural_dungeon.util.RegistryKeyUtils;
@@ -73,44 +74,44 @@ public class DungeonWorldgenProvider implements DataProvider {
         }
 
         addTemplatePool(writer, futures, "%s/start".formatted(key), List.of(
-                poolElement("dungeon/start", variantId, 1, startBranchLimit(variantId))
+                templatePoolElement(key, "dungeon/start", theme, tier, variantId, 1, startBranchLimit(variantId))
         ));
 
         addTemplatePool(writer, futures, "%s/hallway".formatted(key), List.of(
-                poolElement("dungeon/hallway/small", variantId, 6, primaryBranchLimit(variantId)),
-                poolElement("dungeon/hallway/medium", variantId, 3, primaryBranchLimit(variantId)),
-                poolElement("dungeon/hallway/large", variantId, 1, primaryBranchLimit(variantId))
+                templatePoolElement(key, "dungeon/hallway/small", theme, tier, variantId, 6, primaryBranchLimit(variantId)),
+                templatePoolElement(key, "dungeon/hallway/medium", theme, tier, variantId, 3, primaryBranchLimit(variantId)),
+                templatePoolElement(key, "dungeon/hallway/large", theme, tier, variantId, 1, primaryBranchLimit(variantId))
         ));
 
         addTemplatePool(writer, futures, "%s/hallway/end".formatted(key), List.of(
-                poolElement("dungeon/hallway/end/small", variantId, 3, secondaryBranchLimit(variantId)),
-                poolElement("dungeon/hallway/end/medium", variantId, 2, secondaryBranchLimit(variantId)),
-                poolElement("dungeon/hallway/end/large", variantId, 1, secondaryBranchLimit(variantId))
+                templatePoolElement(key, "dungeon/hallway/end/small", theme, tier, variantId, 3, secondaryBranchLimit(variantId)),
+                templatePoolElement(key, "dungeon/hallway/end/medium", theme, tier, variantId, 2, secondaryBranchLimit(variantId)),
+                templatePoolElement(key, "dungeon/hallway/end/large", theme, tier, variantId, 1, secondaryBranchLimit(variantId))
         ));
 
         addTemplatePool(writer, futures, "%s/hallway/loot".formatted(key), List.of(
-                poolElement("dungeon/hallway/loot/small", variantId, 3, secondaryBranchLimit(variantId)),
-                poolElement("dungeon/hallway/loot/medium", variantId, 2, secondaryBranchLimit(variantId)),
-                poolElement("dungeon/hallway/loot/large", variantId, 1, secondaryBranchLimit(variantId))
+                templatePoolElement(key, "dungeon/hallway/loot/small", theme, tier, variantId, 3, secondaryBranchLimit(variantId)),
+                templatePoolElement(key, "dungeon/hallway/loot/medium", theme, tier, variantId, 2, secondaryBranchLimit(variantId)),
+                templatePoolElement(key, "dungeon/hallway/loot/large", theme, tier, variantId, 1, secondaryBranchLimit(variantId))
         ));
 
         addTemplatePool(writer, futures, "%s/hallway/room".formatted(key), List.of(
-                poolElement("dungeon/hallway/room/armorsmith", variantId, 2, secondaryBranchLimit(variantId)),
-                poolElement("dungeon/hallway/room/enchanter", variantId, 2, secondaryBranchLimit(variantId)),
-                poolElement("dungeon/hallway/room/spawner_corridor", variantId, 2, secondaryBranchLimit(variantId)),
-                poolElement("dungeon/hallway/room/staircase_diagonal_down", variantId, 16, secondaryBranchLimit(variantId)),
-                poolElement("dungeon/hallway/room/staircase_diagonal_up", variantId, 1, secondaryBranchLimit(variantId)),
-                poolElement("dungeon/hallway/room/staircase_spiral_down", variantId, 16, secondaryBranchLimit(variantId)),
-                poolElement("dungeon/hallway/room/staircase_spiral_up", variantId, 1, secondaryBranchLimit(variantId)),
-                poolElement("dungeon/hallway/room/toolsmith", variantId, 2, secondaryBranchLimit(variantId)),
-                poolElement("dungeon/hallway/room/weaponsmith", variantId, 2, secondaryBranchLimit(variantId))
+                templatePoolElement(key, "dungeon/hallway/room/armorsmith", theme, tier, variantId, 2, secondaryBranchLimit(variantId)),
+                templatePoolElement(key, "dungeon/hallway/room/enchanter", theme, tier, variantId, 2, secondaryBranchLimit(variantId)),
+                templatePoolElement(key, "dungeon/hallway/room/spawner_corridor", theme, tier, variantId, 2, secondaryBranchLimit(variantId)),
+                templatePoolElement(key, "dungeon/hallway/room/staircase_diagonal_down", theme, tier, variantId, 16, secondaryBranchLimit(variantId)),
+                templatePoolElement(key, "dungeon/hallway/room/staircase_diagonal_up", theme, tier, variantId, 1, secondaryBranchLimit(variantId)),
+                templatePoolElement(key, "dungeon/hallway/room/staircase_spiral_down", theme, tier, variantId, 16, secondaryBranchLimit(variantId)),
+                templatePoolElement(key, "dungeon/hallway/room/staircase_spiral_up", theme, tier, variantId, 1, secondaryBranchLimit(variantId)),
+                templatePoolElement(key, "dungeon/hallway/room/toolsmith", theme, tier, variantId, 2, secondaryBranchLimit(variantId)),
+                templatePoolElement(key, "dungeon/hallway/room/weaponsmith", theme, tier, variantId, 2, secondaryBranchLimit(variantId))
         ));
 
         addTemplatePool(writer, futures, "%s/hallway/trap".formatted(key), List.of(
-                poolElement("dungeon/hallway/trap/dripstone", variantId, 1, secondaryBranchLimit(variantId)),
-                poolElement("dungeon/hallway/trap/lava", variantId, 1, secondaryBranchLimit(variantId)),
-                poolElement("dungeon/hallway/trap/negative_potions", variantId, 1, secondaryBranchLimit(variantId)),
-                poolElement("dungeon/hallway/trap/spawners", variantId, 1, secondaryBranchLimit(variantId))
+                templatePoolElement(key, "dungeon/hallway/trap/dripstone", theme, tier, variantId, 1, secondaryBranchLimit(variantId)),
+                templatePoolElement(key, "dungeon/hallway/trap/lava", theme, tier, variantId, 1, secondaryBranchLimit(variantId)),
+                templatePoolElement(key, "dungeon/hallway/trap/negative_potions", theme, tier, variantId, 1, secondaryBranchLimit(variantId)),
+                templatePoolElement(key, "dungeon/hallway/trap/spawners", theme, tier, variantId, 1, secondaryBranchLimit(variantId))
         ));
     }
 
@@ -128,10 +129,32 @@ public class DungeonWorldgenProvider implements DataProvider {
     }
 
     private static JsonObject poolElement(String structure, Identifier variantId, int weight, int branchLimit) {
+        return poolElement(structure, variantId, variantId, weight, branchLimit);
+    }
+
+    private static JsonObject templatePoolElement(
+            String key,
+            String structure,
+            DungeonTheme theme,
+            int tier,
+            Identifier variantId,
+            int weight,
+            int branchLimit
+    ) {
+        return poolElement(
+                structure,
+                ProceduralDungeon.of(ProceduralDungeonGenerator.templateProcessorKey(key, structure, theme, tier)),
+                variantId,
+                weight,
+                branchLimit
+        );
+    }
+
+    private static JsonObject poolElement(String structure, Identifier processorId, Identifier variantId, int weight, int branchLimit) {
         JsonObject element = new JsonObject();
         element.addProperty("element_type", ProceduralDungeon.of("variant_single_pool_element").toString());
         element.addProperty("location", ProceduralDungeon.of(structure).toString());
-        element.addProperty("processors", variantId.toString());
+        element.addProperty("processors", processorId.toString());
         element.addProperty("projection", "rigid");
         element.addProperty("override_liquid_settings", "ignore_waterlogging");
         element.addProperty("variant", variantId.toString());

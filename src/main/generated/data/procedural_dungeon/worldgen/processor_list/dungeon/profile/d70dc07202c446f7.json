@@ -1,0 +1,13 @@
+{
+  "processors": [
+    {
+      "processor_type": "procedural_dungeon:include_processor_list",
+      "processors": [
+        "procedural_dungeon:dungeon/component/generic/air/937f7d19fe5fd217",
+        "procedural_dungeon:dungeon/component/generic/decay",
+        "procedural_dungeon:dungeon/component/theme/soul_sand_valley/shapes",
+        "procedural_dungeon:dungeon/component/theme/soul_sand_valley/rules/45e62318c49e647b"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "processors": [
+    {
+      "fallback": "minecraft:netherrack",
+      "processor_type": "procedural_dungeon:theme_shape_replacements"
+    }
+  ]
+}
