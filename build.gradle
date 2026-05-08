@@ -24,6 +24,13 @@ repositories {
 	maven { url "https://maven.terraformersmc.com/" }
 }
 
+configurations {
+	chunkyLauncher {
+		canBeConsumed = false
+		canBeResolved = true
+	}
+}
+
 dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	implementation "net.fabricmc:fabric-loader:${project.loader_version}"
@@ -35,6 +42,8 @@ dependencies {
 
 	// ModMenu
 	runtimeOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
+
+	chunkyLauncher files("tools/chunky/ChunkyLauncher.jar")
 }
 
 processResources {
@@ -98,4 +107,46 @@ publishing {
 test {
 	useJUnitPlatform()
 	systemProperty "fabric.side", "server"
+}
+
+tasks.register("benchmarkDungeonsVoidFlatJfr", Exec) {
+	group = "profiling"
+	description = "Runs the tier 5 all-theme dungeon benchmark in a fresh void flat world with JFR profiling."
+
+	dependsOn("classes", "configureLaunch")
+
+	def javaLauncher = javaToolchains.launcherFor {
+		languageVersion = JavaLanguageVersion.of(project.java_version.toInteger())
+	}
+
+	environment "JAVA_EXE", javaLauncher.get().executablePath.asFile.absolutePath
+	environment "DUNGEON_BENCHMARK_SAMPLES", providers.gradleProperty("dungeonBenchmarkSamples").orElse("12").get()
+	environment "DUNGEON_BENCHMARK_SPACING", providers.gradleProperty("dungeonBenchmarkSpacing").orElse("384").get()
+	environment "DUNGEON_BENCHMARK_CHUNK_RADIUS", providers.gradleProperty("dungeonBenchmarkChunkRadius").orElse("8").get()
+	environment "DUNGEON_BENCHMARK_SEED", providers.gradleProperty("dungeonBenchmarkSeed").orElse("48879").get()
+	environment "DUNGEON_BENCHMARK_ORIGIN_Y", providers.gradleProperty("dungeonBenchmarkOriginY").orElse("64").get()
+	environment "DUNGEON_BENCHMARK_WORLD", providers.gradleProperty("dungeonBenchmarkWorld").orElse("world-benchmark-void-flat").get()
+
+	commandLine "bash", "gradle/scripts/benchmark_dungeons_void_flat_jfr.sh"
+}
+
+tasks.register("renderBenchmarkDungeonsChunky", Exec) {
+	group = "rendering"
+	description = "Runs the void-flat dungeon benchmark and renders the generated grid with Chunky."
+
+	dependsOn("benchmarkDungeonsVoidFlatJfr")
+
+	environment "CHUNKY_LAUNCHER_JAR", configurations.chunkyLauncher.singleFile.absolutePath
+	environment "DUNGEON_BENCHMARK_SAMPLES", providers.gradleProperty("dungeonBenchmarkSamples").orElse("12").get()
+	environment "DUNGEON_BENCHMARK_SPACING", providers.gradleProperty("dungeonBenchmarkSpacing").orElse("384").get()
+	environment "DUNGEON_BENCHMARK_CHUNK_RADIUS", providers.gradleProperty("dungeonBenchmarkChunkRadius").orElse("8").get()
+	environment "DUNGEON_BENCHMARK_WORLD", providers.gradleProperty("dungeonBenchmarkWorld").orElse("world-benchmark-void-flat").get()
+	environment "CHUNKY_RENDER_TARGET", providers.gradleProperty("chunkyRenderTarget").orElse("4").get()
+	environment "CHUNKY_RENDER_THREADS", providers.gradleProperty("chunkyRenderThreads").orElse("8").get()
+	environment "CHUNKY_SCENE_NAME", providers.gradleProperty("chunkySceneName").orElse("void_flat_tier5_all_themes_grid_overview").get()
+	environment "CHUNKY_RENDER_FOV", providers.gradleProperty("chunkyRenderFov").orElse("2200").get()
+	environment "CHUNKY_RENDER_SHIFT_X", providers.gradleProperty("chunkyRenderShiftX").orElse("0.35").get()
+	environment "CHUNKY_RENDER_SHIFT_Y", providers.gradleProperty("chunkyRenderShiftY").orElse("-0.30").get()
+
+	commandLine "bash", "gradle/scripts/render_benchmark_dungeons_chunky.sh"
 }

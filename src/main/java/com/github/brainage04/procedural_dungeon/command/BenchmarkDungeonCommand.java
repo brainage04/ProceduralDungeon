@@ -209,15 +209,15 @@ public class BenchmarkDungeonCommand {
         Timing timing = new Timing();
 
         source.sendSuccess(() -> Component.literal(
-                "Benchmarking %d tier 5 dungeon placements (spacing %d). Run /benchmarkdungeons preload first to exclude chunk loading."
-                        .formatted(generationSamples.size(), spacing)
+                "Benchmarking %d tier 5 dungeon placements in a %s grid (spacing %d). Run /benchmarkdungeons preload first to exclude chunk loading."
+                        .formatted(generationSamples.size(), gridDescription(generationSamples.size()), spacing)
         ), true);
-        warmupGeneration(source, generationSamples.getFirst(), origin.offset(-spacing, 0, 0));
+        warmupGeneration(source, new GenerationSample(DungeonTheme.COBBLESTONE, DungeonTier.TIER_5), origin.offset(-spacing, 0, 0));
 
         long totalStart = System.nanoTime();
         for (int i = 0; i < generationSamples.size(); i++) {
             GenerationSample sample = generationSamples.get(i);
-            BlockPos pos = samplePosition(origin, i, spacing);
+            BlockPos pos = samplePosition(origin, i, generationSamples.size(), spacing);
 
             long sampleStart = System.nanoTime();
             DungeonGenerationProfiler.begin();
@@ -375,14 +375,29 @@ public class BenchmarkDungeonCommand {
     private static Set<ChunkPos> chunksForSamples(BlockPos origin, int samples, int spacing, int radius) {
         Set<ChunkPos> chunks = new LinkedHashSet<>();
         for (int i = 0; i < samples; i++) {
-            addNearbyChunks(chunks, samplePosition(origin, i, spacing), radius);
+            addNearbyChunks(chunks, samplePosition(origin, i, samples, spacing), radius);
         }
 
         return chunks;
     }
 
-    private static BlockPos samplePosition(BlockPos origin, int sampleIndex, int spacing) {
-        return origin.offset(sampleIndex * spacing, 0, 0);
+    private static BlockPos samplePosition(BlockPos origin, int sampleIndex, int samples, int spacing) {
+        int columns = gridColumns(samples);
+        int x = sampleIndex % columns;
+        int z = sampleIndex / columns;
+
+        return origin.offset(x * spacing, 0, z * spacing);
+    }
+
+    private static String gridDescription(int samples) {
+        int columns = gridColumns(samples);
+        int rows = (int) Math.ceil((double) samples / columns);
+
+        return "%dx%d".formatted(columns, rows);
+    }
+
+    private static int gridColumns(int samples) {
+        return Math.max(1, (int) Math.ceil(Math.sqrt(samples)));
     }
 
     private static void addNearbyChunks(Set<ChunkPos> chunks, BlockPos pos, int radius) {
