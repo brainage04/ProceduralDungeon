@@ -8,11 +8,13 @@ samples="${DUNGEON_BENCHMARK_SAMPLES:-12}"
 spacing="${DUNGEON_BENCHMARK_SPACING:-384}"
 chunk_radius="${DUNGEON_BENCHMARK_CHUNK_RADIUS:-8}"
 scene_name="${CHUNKY_SCENE_NAME:-void_flat_tier5_all_themes_grid_overview}"
-target="${CHUNKY_RENDER_TARGET:-4}"
+target="${CHUNKY_RENDER_TARGET:-8}"
 threads="${CHUNKY_RENDER_THREADS:-8}"
-fov="${CHUNKY_RENDER_FOV:-2200}"
-shift_x="${CHUNKY_RENDER_SHIFT_X:-0.35}"
-shift_y="${CHUNKY_RENDER_SHIFT_Y:--0.30}"
+width="${CHUNKY_RENDER_WIDTH:-3840}"
+height="${CHUNKY_RENDER_HEIGHT:-2160}"
+fov="${CHUNKY_RENDER_FOV:-960}"
+shift_x="${CHUNKY_RENDER_SHIFT_X:-1.003}"
+shift_y="${CHUNKY_RENDER_SHIFT_Y:--0.727}"
 scene_dir="$repo_root/.chunky/scenes"
 snapshot_dir="$scene_dir/snapshots"
 template_scene="${CHUNKY_TEMPLATE_SCENE:-$scene_dir/final1080_zoomed_oriented_tier5_d16_sculk_ne.json}"
@@ -89,6 +91,8 @@ jq \
     --argjson cameraY "$camera_y" \
     --argjson cameraZ "$camera_z" \
     --argjson target "$target" \
+    --argjson width "$width" \
+    --argjson height "$height" \
     --argjson fov "$fov" \
     --arg shiftX "$shift_x" \
     --arg shiftY "$shift_y" \
@@ -97,8 +101,8 @@ jq \
      | .world.path=$world
      | .world.dimension=0
      | .chunkList=$chunks[0]
-     | .width=1920
-     | .height=1080
+     | .width=$width
+     | .height=$height
      | .spp=0
      | .sppTarget=$target
      | .renderTime=0

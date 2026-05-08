@@ -109,6 +109,13 @@ test {
 	systemProperty "fabric.side", "server"
 }
 
+def setEnvironmentOverride = { task, envName, propertyName ->
+	def property = providers.gradleProperty(propertyName)
+	if (property.present) {
+		task.environment envName, property.get()
+	}
+}
+
 tasks.register("benchmarkDungeonsVoidFlatJfr", Exec) {
 	group = "profiling"
 	description = "Runs the tier 5 all-theme dungeon benchmark in a fresh void flat world with JFR profiling."
@@ -120,12 +127,12 @@ tasks.register("benchmarkDungeonsVoidFlatJfr", Exec) {
 	}
 
 	environment "JAVA_EXE", javaLauncher.get().executablePath.asFile.absolutePath
-	environment "DUNGEON_BENCHMARK_SAMPLES", providers.gradleProperty("dungeonBenchmarkSamples").orElse("12").get()
-	environment "DUNGEON_BENCHMARK_SPACING", providers.gradleProperty("dungeonBenchmarkSpacing").orElse("384").get()
-	environment "DUNGEON_BENCHMARK_CHUNK_RADIUS", providers.gradleProperty("dungeonBenchmarkChunkRadius").orElse("8").get()
-	environment "DUNGEON_BENCHMARK_SEED", providers.gradleProperty("dungeonBenchmarkSeed").orElse("48879").get()
-	environment "DUNGEON_BENCHMARK_ORIGIN_Y", providers.gradleProperty("dungeonBenchmarkOriginY").orElse("64").get()
-	environment "DUNGEON_BENCHMARK_WORLD", providers.gradleProperty("dungeonBenchmarkWorld").orElse("world-benchmark-void-flat").get()
+	setEnvironmentOverride(it, "DUNGEON_BENCHMARK_SAMPLES", "dungeonBenchmarkSamples")
+	setEnvironmentOverride(it, "DUNGEON_BENCHMARK_SPACING", "dungeonBenchmarkSpacing")
+	setEnvironmentOverride(it, "DUNGEON_BENCHMARK_CHUNK_RADIUS", "dungeonBenchmarkChunkRadius")
+	setEnvironmentOverride(it, "DUNGEON_BENCHMARK_SEED", "dungeonBenchmarkSeed")
+	setEnvironmentOverride(it, "DUNGEON_BENCHMARK_ORIGIN_Y", "dungeonBenchmarkOriginY")
+	setEnvironmentOverride(it, "DUNGEON_BENCHMARK_WORLD", "dungeonBenchmarkWorld")
 
 	commandLine "bash", "gradle/scripts/benchmark_dungeons_void_flat_jfr.sh"
 }
@@ -137,16 +144,18 @@ tasks.register("renderBenchmarkDungeonsChunky", Exec) {
 	dependsOn("benchmarkDungeonsVoidFlatJfr")
 
 	environment "CHUNKY_LAUNCHER_JAR", configurations.chunkyLauncher.singleFile.absolutePath
-	environment "DUNGEON_BENCHMARK_SAMPLES", providers.gradleProperty("dungeonBenchmarkSamples").orElse("12").get()
-	environment "DUNGEON_BENCHMARK_SPACING", providers.gradleProperty("dungeonBenchmarkSpacing").orElse("384").get()
-	environment "DUNGEON_BENCHMARK_CHUNK_RADIUS", providers.gradleProperty("dungeonBenchmarkChunkRadius").orElse("8").get()
-	environment "DUNGEON_BENCHMARK_WORLD", providers.gradleProperty("dungeonBenchmarkWorld").orElse("world-benchmark-void-flat").get()
-	environment "CHUNKY_RENDER_TARGET", providers.gradleProperty("chunkyRenderTarget").orElse("4").get()
-	environment "CHUNKY_RENDER_THREADS", providers.gradleProperty("chunkyRenderThreads").orElse("8").get()
-	environment "CHUNKY_SCENE_NAME", providers.gradleProperty("chunkySceneName").orElse("void_flat_tier5_all_themes_grid_overview").get()
-	environment "CHUNKY_RENDER_FOV", providers.gradleProperty("chunkyRenderFov").orElse("2200").get()
-	environment "CHUNKY_RENDER_SHIFT_X", providers.gradleProperty("chunkyRenderShiftX").orElse("0.35").get()
-	environment "CHUNKY_RENDER_SHIFT_Y", providers.gradleProperty("chunkyRenderShiftY").orElse("-0.30").get()
+	setEnvironmentOverride(it, "DUNGEON_BENCHMARK_SAMPLES", "dungeonBenchmarkSamples")
+	setEnvironmentOverride(it, "DUNGEON_BENCHMARK_SPACING", "dungeonBenchmarkSpacing")
+	setEnvironmentOverride(it, "DUNGEON_BENCHMARK_CHUNK_RADIUS", "dungeonBenchmarkChunkRadius")
+	setEnvironmentOverride(it, "DUNGEON_BENCHMARK_WORLD", "dungeonBenchmarkWorld")
+	setEnvironmentOverride(it, "CHUNKY_RENDER_TARGET", "chunkyRenderTarget")
+	setEnvironmentOverride(it, "CHUNKY_RENDER_THREADS", "chunkyRenderThreads")
+	setEnvironmentOverride(it, "CHUNKY_RENDER_WIDTH", "chunkyRenderWidth")
+	setEnvironmentOverride(it, "CHUNKY_RENDER_HEIGHT", "chunkyRenderHeight")
+	setEnvironmentOverride(it, "CHUNKY_SCENE_NAME", "chunkySceneName")
+	setEnvironmentOverride(it, "CHUNKY_RENDER_FOV", "chunkyRenderFov")
+	setEnvironmentOverride(it, "CHUNKY_RENDER_SHIFT_X", "chunkyRenderShiftX")
+	setEnvironmentOverride(it, "CHUNKY_RENDER_SHIFT_Y", "chunkyRenderShiftY")
 
 	commandLine "bash", "gradle/scripts/render_benchmark_dungeons_chunky.sh"
 }
