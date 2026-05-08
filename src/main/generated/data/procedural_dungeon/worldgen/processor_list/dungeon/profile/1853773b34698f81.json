@@ -1,12 +1,42 @@
 {
   "processors": [
     {
-      "processor_type": "procedural_dungeon:include_processor_list",
-      "processors": [
-        "procedural_dungeon:dungeon/component/generic/air/937f7d19fe5fd217",
-        "procedural_dungeon:dungeon/component/generic/decay",
-        "procedural_dungeon:dungeon/component/theme/warped_forest/rules/da18ada3b4383785"
-      ]
+      "age_chance": 0.4,
+      "post_rule_groups": [
+        [
+          {
+            "input": "minecraft:cobblestone",
+            "output": "minecraft:warped_planks",
+            "probability": 0.1
+          },
+          {
+            "input": "minecraft:cobblestone",
+            "output": "minecraft:warped_nylium",
+            "probability": 0.1
+          },
+          {
+            "input": "minecraft:cobblestone",
+            "output": "minecraft:warped_hyphae",
+            "probability": 0.1
+          },
+          {
+            "input": "minecraft:cobblestone",
+            "output": "minecraft:warped_wart_block",
+            "probability": 1.0
+          }
+        ]
+      ],
+      "pre_rule_groups": [
+        [
+          {
+            "input": "minecraft:air",
+            "output": "minecraft:cobweb",
+            "probability": 0.01
+          }
+        ]
+      ],
+      "processor_type": "procedural_dungeon:fused_dungeon_processor",
+      "rot_chance": 0.98
     }
   ]
 }

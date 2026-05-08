@@ -1,313 +1,7 @@
 {
   "processors": [
     {
-      "processor_type": "minecraft:rule",
-      "rules": [
-        {
-          "input_predicate": {
-            "block": "minecraft:bookshelf",
-            "predicate_type": "minecraft:random_block_match",
-            "probability": 0.3
-          },
-          "location_predicate": {
-            "predicate_type": "minecraft:always_true"
-          },
-          "output_state": {
-            "Name": "minecraft:chiseled_bookshelf",
-            "Properties": {
-              "facing": "north",
-              "slot_0_occupied": "false",
-              "slot_1_occupied": "false",
-              "slot_2_occupied": "false",
-              "slot_3_occupied": "false",
-              "slot_4_occupied": "false",
-              "slot_5_occupied": "false"
-            }
-          }
-        },
-        {
-          "input_predicate": {
-            "block": "minecraft:oak_log",
-            "predicate_type": "minecraft:random_block_match",
-            "probability": 0.3
-          },
-          "location_predicate": {
-            "predicate_type": "minecraft:always_true"
-          },
-          "output_state": {
-            "Name": "minecraft:stripped_oak_log",
-            "Properties": {
-              "axis": "y"
-            }
-          }
-        }
-      ]
-    },
-    {
-      "processor_type": "minecraft:rule",
-      "rules": [
-        {
-          "input_predicate": {
-            "block": "minecraft:copper_block",
-            "predicate_type": "minecraft:random_block_match",
-            "probability": 0.1
-          },
-          "location_predicate": {
-            "predicate_type": "minecraft:always_true"
-          },
-          "output_state": {
-            "Name": "minecraft:raw_copper_block"
-          }
-        },
-        {
-          "input_predicate": {
-            "block": "minecraft:copper_block",
-            "predicate_type": "minecraft:random_block_match",
-            "probability": 0.1
-          },
-          "location_predicate": {
-            "predicate_type": "minecraft:always_true"
-          },
-          "output_state": {
-            "Name": "minecraft:copper_ore"
-          }
-        },
-        {
-          "input_predicate": {
-            "block": "minecraft:copper_block",
-            "predicate_type": "minecraft:random_block_match",
-            "probability": 0.1
-          },
-          "location_predicate": {
-            "predicate_type": "minecraft:always_true"
-          },
-          "output_state": {
-            "Name": "minecraft:deepslate_copper_ore"
-          }
-        },
-        {
-          "input_predicate": {
-            "block": "minecraft:iron_block",
-            "predicate_type": "minecraft:random_block_match",
-            "probability": 0.1
-          },
-          "location_predicate": {
-            "predicate_type": "minecraft:always_true"
-          },
-          "output_state": {
-            "Name": "minecraft:raw_iron_block"
-          }
-        },
-        {
-          "input_predicate": {
-            "block": "minecraft:iron_block",
-            "predicate_type": "minecraft:random_block_match",
-            "probability": 0.1
-          },
-          "location_predicate": {
-            "predicate_type": "minecraft:always_true"
-          },
-          "output_state": {
-            "Name": "minecraft:iron_ore"
-          }
-        },
-        {
-          "input_predicate": {
-            "block": "minecraft:iron_block",
-            "predicate_type": "minecraft:random_block_match",
-            "probability": 0.1
-          },
-          "location_predicate": {
-            "predicate_type": "minecraft:always_true"
-          },
-          "output_state": {
-            "Name": "minecraft:deepslate_iron_ore"
-          }
-        },
-        {
-          "input_predicate": {
-            "block": "minecraft:gold_block",
-            "predicate_type": "minecraft:random_block_match",
-            "probability": 0.1
-          },
-          "location_predicate": {
-            "predicate_type": "minecraft:always_true"
-          },
-          "output_state": {
-            "Name": "minecraft:raw_gold_block"
-          }
-        },
-        {
-          "input_predicate": {
-            "block": "minecraft:gold_block",
-            "predicate_type": "minecraft:random_block_match",
-            "probability": 0.1
-          },
-          "location_predicate": {
-            "predicate_type": "minecraft:always_true"
-          },
-          "output_state": {
-            "Name": "minecraft:gold_ore"
-          }
-        },
-        {
-          "input_predicate": {
-            "block": "minecraft:gold_block",
-            "predicate_type": "minecraft:random_block_match",
-            "probability": 0.1
-          },
-          "location_predicate": {
-            "predicate_type": "minecraft:always_true"
-          },
-          "output_state": {
-            "Name": "minecraft:deepslate_gold_ore"
-          }
-        },
-        {
-          "input_predicate": {
-            "block": "minecraft:diamond_block",
-            "predicate_type": "minecraft:random_block_match",
-            "probability": 0.15
-          },
-          "location_predicate": {
-            "predicate_type": "minecraft:always_true"
-          },
-          "output_state": {
-            "Name": "minecraft:diamond_ore"
-          }
-        },
-        {
-          "input_predicate": {
-            "block": "minecraft:diamond_block",
-            "predicate_type": "minecraft:random_block_match",
-            "probability": 0.15
-          },
-          "location_predicate": {
-            "predicate_type": "minecraft:always_true"
-          },
-          "output_state": {
-            "Name": "minecraft:deepslate_diamond_ore"
-          }
-        },
-        {
-          "input_predicate": {
-            "block": "minecraft:lapis_block",
-            "predicate_type": "minecraft:random_block_match",
-            "probability": 0.15
-          },
-          "location_predicate": {
-            "predicate_type": "minecraft:always_true"
-          },
-          "output_state": {
-            "Name": "minecraft:lapis_ore"
-          }
-        },
-        {
-          "input_predicate": {
-            "block": "minecraft:lapis_block",
-            "predicate_type": "minecraft:random_block_match",
-            "probability": 0.15
-          },
-          "location_predicate": {
-            "predicate_type": "minecraft:always_true"
-          },
-          "output_state": {
-            "Name": "minecraft:deepslate_lapis_ore"
-          }
-        }
-      ]
-    },
-    {
-      "processor_type": "minecraft:rule",
-      "rules": [
-        {
-          "input_predicate": {
-            "block": "minecraft:air",
-            "predicate_type": "minecraft:random_block_match",
-            "probability": 0.01
-          },
-          "location_predicate": {
-            "predicate_type": "minecraft:always_true"
-          },
-          "output_state": {
-            "Name": "minecraft:cobweb"
-          }
-        }
-      ]
-    },
-    {
-      "mossiness": 0.4,
-      "processor_type": "minecraft:block_age"
-    },
-    {
-      "integrity": 0.98,
-      "processor_type": "minecraft:block_rot"
-    },
-    {
-      "fallback": "minecraft:nether_bricks",
-      "processor_type": "procedural_dungeon:theme_shape_replacements",
-      "slab": "minecraft:nether_brick_slab",
-      "stairs": "minecraft:nether_brick_stairs",
-      "wall": "minecraft:nether_brick_fence"
-    },
-    {
-      "processor_type": "minecraft:rule",
-      "rules": [
-        {
-          "input_predicate": {
-            "block": "minecraft:cobblestone",
-            "predicate_type": "minecraft:random_block_match",
-            "probability": 0.1
-          },
-          "location_predicate": {
-            "predicate_type": "minecraft:always_true"
-          },
-          "output_state": {
-            "Name": "minecraft:red_nether_bricks"
-          }
-        },
-        {
-          "input_predicate": {
-            "block": "minecraft:cobblestone",
-            "predicate_type": "minecraft:random_block_match",
-            "probability": 0.1
-          },
-          "location_predicate": {
-            "predicate_type": "minecraft:always_true"
-          },
-          "output_state": {
-            "Name": "minecraft:chiseled_nether_bricks"
-          }
-        },
-        {
-          "input_predicate": {
-            "block": "minecraft:cobblestone",
-            "predicate_type": "minecraft:random_block_match",
-            "probability": 0.1
-          },
-          "location_predicate": {
-            "predicate_type": "minecraft:always_true"
-          },
-          "output_state": {
-            "Name": "minecraft:cracked_nether_bricks"
-          }
-        },
-        {
-          "input_predicate": {
-            "block": "minecraft:cobblestone",
-            "predicate_type": "minecraft:random_block_match",
-            "probability": 1.0
-          },
-          "location_predicate": {
-            "predicate_type": "minecraft:always_true"
-          },
-          "output_state": {
-            "Name": "minecraft:nether_bricks"
-          }
-        }
-      ]
-    },
-    {
+      "age_chance": 0.4,
       "loot_table_replacements": {
         "procedural_dungeon:armorsmith": "procedural_dungeon:armorsmith/tier_5",
         "procedural_dungeon:enchanter": "procedural_dungeon:enchanter/tier_5",
@@ -317,7 +11,126 @@
         "procedural_dungeon:toolsmith": "procedural_dungeon:toolsmith/tier_5",
         "procedural_dungeon:weaponsmith": "procedural_dungeon:weaponsmith/tier_5"
       },
-      "processor_type": "procedural_dungeon:loot_tables_and_block_entities"
+      "post_rule_groups": [
+        [
+          {
+            "input": "minecraft:cobblestone",
+            "output": "minecraft:red_nether_bricks",
+            "probability": 0.1
+          },
+          {
+            "input": "minecraft:cobblestone",
+            "output": "minecraft:chiseled_nether_bricks",
+            "probability": 0.1
+          },
+          {
+            "input": "minecraft:cobblestone",
+            "output": "minecraft:cracked_nether_bricks",
+            "probability": 0.1
+          },
+          {
+            "input": "minecraft:cobblestone",
+            "output": "minecraft:nether_bricks",
+            "probability": 1.0
+          }
+        ]
+      ],
+      "pre_rule_groups": [
+        [
+          {
+            "input": "minecraft:bookshelf",
+            "output": "minecraft:chiseled_bookshelf",
+            "probability": 0.3
+          },
+          {
+            "input": "minecraft:oak_log",
+            "output": "minecraft:stripped_oak_log",
+            "probability": 0.3
+          }
+        ],
+        [
+          {
+            "input": "minecraft:copper_block",
+            "output": "minecraft:raw_copper_block",
+            "probability": 0.1
+          },
+          {
+            "input": "minecraft:copper_block",
+            "output": "minecraft:copper_ore",
+            "probability": 0.1
+          },
+          {
+            "input": "minecraft:copper_block",
+            "output": "minecraft:deepslate_copper_ore",
+            "probability": 0.1
+          },
+          {
+            "input": "minecraft:iron_block",
+            "output": "minecraft:raw_iron_block",
+            "probability": 0.1
+          },
+          {
+            "input": "minecraft:iron_block",
+            "output": "minecraft:iron_ore",
+            "probability": 0.1
+          },
+          {
+            "input": "minecraft:iron_block",
+            "output": "minecraft:deepslate_iron_ore",
+            "probability": 0.1
+          },
+          {
+            "input": "minecraft:gold_block",
+            "output": "minecraft:raw_gold_block",
+            "probability": 0.1
+          },
+          {
+            "input": "minecraft:gold_block",
+            "output": "minecraft:gold_ore",
+            "probability": 0.1
+          },
+          {
+            "input": "minecraft:gold_block",
+            "output": "minecraft:deepslate_gold_ore",
+            "probability": 0.1
+          },
+          {
+            "input": "minecraft:diamond_block",
+            "output": "minecraft:diamond_ore",
+            "probability": 0.15
+          },
+          {
+            "input": "minecraft:diamond_block",
+            "output": "minecraft:deepslate_diamond_ore",
+            "probability": 0.15
+          },
+          {
+            "input": "minecraft:lapis_block",
+            "output": "minecraft:lapis_ore",
+            "probability": 0.15
+          },
+          {
+            "input": "minecraft:lapis_block",
+            "output": "minecraft:deepslate_lapis_ore",
+            "probability": 0.15
+          }
+        ],
+        [
+          {
+            "input": "minecraft:air",
+            "output": "minecraft:cobweb",
+            "probability": 0.01
+          }
+        ]
+      ],
+      "processor_type": "procedural_dungeon:fused_dungeon_processor",
+      "rot_chance": 0.98,
+      "theme_shapes": {
+        "fallback": "minecraft:nether_bricks",
+        "slab": "minecraft:nether_brick_slab",
+        "stairs": "minecraft:nether_brick_stairs",
+        "wall": "minecraft:nether_brick_fence"
+      }
     }
   ]
 }

@@ -1,15 +1,70 @@
 {
   "processors": [
     {
-      "processor_type": "procedural_dungeon:include_processor_list",
-      "processors": [
-        "procedural_dungeon:dungeon/component/generic/bookshelf/b1e30b4008f99616",
-        "procedural_dungeon:dungeon/component/generic/minerals/a428efa1cf54206e",
-        "procedural_dungeon:dungeon/component/generic/air/937f7d19fe5fd217",
-        "procedural_dungeon:dungeon/component/generic/decay",
-        "procedural_dungeon:dungeon/component/theme/basalt_deltas/rules/b03a462ac83758b3",
-        "procedural_dungeon:dungeon/component/loot/tier_2"
-      ]
+      "age_chance": 0.4,
+      "loot_table_replacements": {
+        "procedural_dungeon:armorsmith": "procedural_dungeon:armorsmith/tier_2",
+        "procedural_dungeon:enchanter": "procedural_dungeon:enchanter/tier_2",
+        "procedural_dungeon:hallway/trap/negative_potions": "procedural_dungeon:hallway/trap/negative_potions/tier_2",
+        "procedural_dungeon:hallway_end": "procedural_dungeon:hallway_end/tier_2",
+        "procedural_dungeon:hallway_loot": "procedural_dungeon:hallway_loot/tier_2",
+        "procedural_dungeon:toolsmith": "procedural_dungeon:toolsmith/tier_2",
+        "procedural_dungeon:weaponsmith": "procedural_dungeon:weaponsmith/tier_2"
+      },
+      "post_rule_groups": [
+        [
+          {
+            "input": "minecraft:cobblestone",
+            "output": "minecraft:polished_basalt",
+            "probability": 0.1
+          },
+          {
+            "input": "minecraft:cobblestone",
+            "output": "minecraft:smooth_basalt",
+            "probability": 0.1
+          },
+          {
+            "input": "minecraft:cobblestone",
+            "output": "minecraft:basalt",
+            "probability": 1.0
+          }
+        ]
+      ],
+      "pre_rule_groups": [
+        [
+          {
+            "input": "minecraft:bookshelf",
+            "output": "minecraft:chiseled_bookshelf",
+            "probability": 0.3
+          },
+          {
+            "input": "minecraft:oak_log",
+            "output": "minecraft:stripped_oak_log",
+            "probability": 0.3
+          }
+        ],
+        [
+          {
+            "input": "minecraft:lapis_block",
+            "output": "minecraft:lapis_ore",
+            "probability": 0.15
+          },
+          {
+            "input": "minecraft:lapis_block",
+            "output": "minecraft:deepslate_lapis_ore",
+            "probability": 0.15
+          }
+        ],
+        [
+          {
+            "input": "minecraft:air",
+            "output": "minecraft:cobweb",
+            "probability": 0.01
+          }
+        ]
+      ],
+      "processor_type": "procedural_dungeon:fused_dungeon_processor",
+      "rot_chance": 0.98
     }
   ]
 }

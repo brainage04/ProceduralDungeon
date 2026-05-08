@@ -48,6 +48,13 @@ public class ModStructureProcessorTypes {
                     () -> IncludeProcessorListProcessor.CODEC
             );
 
+    public static final StructureProcessorType<FusedDungeonProcessor> FUSED_DUNGEON_PROCESSOR =
+            Registry.register(
+                    BuiltInRegistries.STRUCTURE_PROCESSOR,
+                    ProceduralDungeon.of("fused_dungeon_processor"),
+                    () -> FusedDungeonProcessor.CODEC
+            );
+
     public static void initialize() {
         // load class and run static init
     }

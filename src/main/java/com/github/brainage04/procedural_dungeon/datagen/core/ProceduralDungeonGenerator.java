@@ -3,7 +3,7 @@ package com.github.brainage04.procedural_dungeon.datagen.core;
 import com.github.brainage04.procedural_dungeon.dungeon.DungeonTheme;
 import com.github.brainage04.procedural_dungeon.dungeon.DungeonTier;
 import com.github.brainage04.procedural_dungeon.datagen.loot_table.DungeonLootTableProvider;
-import com.github.brainage04.procedural_dungeon.worldgen.processor.IncludeProcessorListProcessor;
+import com.github.brainage04.procedural_dungeon.worldgen.processor.FusedDungeonProcessor;
 import com.github.brainage04.procedural_dungeon.worldgen.processor.LootTableAndBlockEntityProcessor;
 import com.github.brainage04.procedural_dungeon.worldgen.processor.ThemeShapeReplacementProcessor;
 import com.github.brainage04.procedural_dungeon.util.RegistryKeyUtils;
@@ -176,20 +176,7 @@ public class ProceduralDungeonGenerator extends FabricDynamicRegistryProvider {
             DungeonTheme theme,
             TemplateCapabilities capabilities
     ) {
-        List<StructureProcessor> processors = new ArrayList<>();
-        addBasic(processors, DungeonTheme.bookshelfRules(), capabilities);
-        addBasic(processors, DungeonTheme.mineralRules(), capabilities);
-        addBasic(processors, DungeonTheme.airRules(), capabilities);
-        processors.addAll(createDecay().list());
-        if (capabilities.hasThemeShapes()) {
-            processors.addAll(createThemeShapes(theme).list());
-        }
-        addBasic(processors, theme.processorRules, capabilities);
-        if (capabilities.hasNbt()) {
-            processors.addAll(createLootTable(tier).list());
-        }
-
-        addProcessorList(entries, generatedKeys, key, new StructureProcessorList(List.copyOf(processors)));
+        addProcessorList(entries, generatedKeys, key, createFusedProcessorList(tier, theme, capabilities));
     }
 
     private static void generateTemplateProcessorList(
@@ -199,8 +186,48 @@ public class ProceduralDungeonGenerator extends FabricDynamicRegistryProvider {
             DungeonTheme theme,
             TemplateCapabilities capabilities
     ) {
-        List<String> components = generateProfileComponents(entries, generatedKeys, tier, theme, capabilities);
-        addProcessorList(entries, generatedKeys, profileProcessorKey(components), create(List.of(include(components))));
+        List<String> components = profileComponents(theme, tier.tier, capabilities);
+        addProcessorList(entries, generatedKeys, profileProcessorKey(components), createFusedProcessorList(tier, theme, capabilities));
+    }
+
+    private static StructureProcessorList createFusedProcessorList(DungeonTier tier, DungeonTheme theme, TemplateCapabilities capabilities) {
+        return create(List.of(new FusedDungeonProcessor(
+                List.of(
+                        fusedRules(DungeonTheme.bookshelfRules(), capabilities),
+                        fusedRules(DungeonTheme.mineralRules(), capabilities),
+                        fusedRules(DungeonTheme.airRules(), capabilities)
+                ).stream().filter(rules -> !rules.isEmpty()).toList(),
+                List.of(fusedRules(theme.processorRules, capabilities)).stream()
+                        .filter(rules -> !rules.isEmpty())
+                        .toList(),
+                DungeonTheme.ageChance(),
+                DungeonTheme.rotChance(),
+                capabilities.hasThemeShapes() ? Optional.of(fusedShapes(theme)) : Optional.empty(),
+                capabilities.hasNbt() ? createLootTableReplacements(tier) : Map.of()
+        )));
+    }
+
+    private static List<FusedDungeonProcessor.FusedRule> fusedRules(
+            List<DungeonTheme.ProcessorRuleSpec> rules,
+            TemplateCapabilities capabilities
+    ) {
+        return matchingRules(rules, capabilities).stream()
+                .map(rule -> new FusedDungeonProcessor.FusedRule(
+                        Identifier.parse(rule.input()),
+                        rule.probability(),
+                        Identifier.parse(rule.output())
+                ))
+                .toList();
+    }
+
+    private static FusedDungeonProcessor.ShapeReplacements fusedShapes(DungeonTheme theme) {
+        DungeonTheme.ShapeReplacementSpec replacements = theme.shapeReplacements;
+        return new FusedDungeonProcessor.ShapeReplacements(
+                Identifier.parse(replacements.fallback()),
+                optionalIdentifier(replacements.stairs()),
+                optionalIdentifier(replacements.slab()),
+                optionalIdentifier(replacements.wall())
+        );
     }
 
     private static List<String> generateProfileComponents(
@@ -258,12 +285,6 @@ public class ProceduralDungeonGenerator extends FabricDynamicRegistryProvider {
         if (generatedKeys.add(key)) {
             entries.add(RegistryKeyUtils.create(Registries.PROCESSOR_LIST, key), structureProcessorList);
         }
-    }
-
-    private static IncludeProcessorListProcessor include(List<String> keys) {
-        return new IncludeProcessorListProcessor(keys.stream()
-                .map(key -> RegistryKeyUtils.create(Registries.PROCESSOR_LIST, key))
-                .toList());
     }
 
     public static String templateProcessorKey(String key, String structure, DungeonTheme theme, int tier) {
