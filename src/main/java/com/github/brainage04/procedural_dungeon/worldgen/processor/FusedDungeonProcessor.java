@@ -16,8 +16,10 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.Identifier;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.util.Util;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -27,9 +29,8 @@ import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.Half;
 import net.minecraft.world.level.block.state.properties.WallSide;
-import net.minecraft.world.level.levelgen.structure.templatesystem.BlockAgeProcessor;
-import net.minecraft.world.level.levelgen.structure.templatesystem.BlockRotProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
@@ -37,6 +38,14 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 
 public class FusedDungeonProcessor extends StructureProcessor {
     private static final Map<Block, Shape> INPUT_SHAPES = inputShapes();
+    private static final BlockState[] NON_MOSSY_SLAB_REPLACEMENTS = new BlockState[] {
+            Blocks.STONE_SLAB.defaultBlockState(),
+            Blocks.STONE_BRICK_SLAB.defaultBlockState()
+    };
+    private static final BlockState CRACKED_STONE_BRICKS = Blocks.CRACKED_STONE_BRICKS.defaultBlockState();
+    private static final BlockState MOSSY_STONE_BRICKS = Blocks.MOSSY_STONE_BRICKS.defaultBlockState();
+    private static final BlockState MOSSY_STONE_BRICK_SLAB = Blocks.MOSSY_STONE_BRICK_SLAB.defaultBlockState();
+    private static final BlockState CRYING_OBSIDIAN = Blocks.CRYING_OBSIDIAN.defaultBlockState();
 
     public static final MapCodec<FusedDungeonProcessor> CODEC =
             RecordCodecBuilder.mapCodec(instance -> instance.group(
@@ -65,10 +74,12 @@ public class FusedDungeonProcessor extends StructureProcessor {
     private final Map<Identifier, Identifier> lootTableReplacements;
     private final List<IndexedRuleGroup> preIndexedRuleGroups;
     private final List<IndexedRuleGroup> postIndexedRuleGroups;
-    private final BlockAgeProcessor ageProcessor;
-    private final BlockRotProcessor rotProcessor;
     private final ShapeStates shapeStates;
     private final Map<String, String> lootTableReplacementStrings;
+    private final boolean hasPreRules;
+    private final boolean hasPostRules;
+    private final boolean hasShapes;
+    private final boolean hasLoot;
 
     public FusedDungeonProcessor(
             List<List<FusedRule>> preRuleGroups,
@@ -94,13 +105,15 @@ public class FusedDungeonProcessor extends StructureProcessor {
         this.postIndexedRuleGroups = this.postRuleGroups.stream()
                 .map(IndexedRuleGroup::new)
                 .toList();
-        this.ageProcessor = new BlockAgeProcessor(ageChance);
-        this.rotProcessor = new BlockRotProcessor(rotChance);
         this.shapeStates = shapeReplacements.map(ShapeStates::new).orElse(null);
         this.lootTableReplacementStrings = lootTableReplacements.entrySet().stream().collect(Collectors.toUnmodifiableMap(
                 entry -> entry.getKey().toString(),
                 entry -> entry.getValue().toString()
         ));
+        this.hasPreRules = !this.preIndexedRuleGroups.isEmpty();
+        this.hasPostRules = !this.postIndexedRuleGroups.isEmpty();
+        this.hasShapes = this.shapeStates != null;
+        this.hasLoot = !this.lootTableReplacementStrings.isEmpty();
     }
 
     @Override
@@ -113,15 +126,21 @@ public class FusedDungeonProcessor extends StructureProcessor {
             StructurePlaceSettings data
     ) {
         StructureTemplate.StructureBlockInfo result = currentBlockInfo;
-        result = applyRuleGroups(result, preIndexedRuleGroups);
-        result = ageProcessor.processBlock(world, pos, pivot, originalBlockInfo, result, data);
-        result = rotProcessor.processBlock(world, pos, pivot, originalBlockInfo, result, data);
+        if (hasPreRules) {
+            result = applyRuleGroups(result, preIndexedRuleGroups);
+        }
+        result = applyAge(result, data.getRandom(result.pos()));
+        result = applyRot(result, data.getRandom(result.pos()));
         if (result == null) {
             return null;
         }
-        result = applyThemeShapes(result);
-        result = applyRuleGroups(result, postIndexedRuleGroups);
-        return lootTableReplacementStrings.isEmpty() ? result : applyLootAndBlockEntity(result, data);
+        if (hasShapes) {
+            result = applyThemeShapes(result);
+        }
+        if (hasPostRules) {
+            result = applyRuleGroups(result, postIndexedRuleGroups);
+        }
+        return hasLoot ? applyLootAndBlockEntity(result, data) : result;
     }
 
     private StructureTemplate.StructureBlockInfo applyRuleGroups(
@@ -135,13 +154,93 @@ public class FusedDungeonProcessor extends StructureProcessor {
         return result;
     }
 
+    private StructureTemplate.StructureBlockInfo applyAge(
+            StructureTemplate.StructureBlockInfo blockInfo,
+            RandomSource random
+    ) {
+        BlockState state = blockInfo.state();
+        BlockState replacement = null;
+        if (state.is(Blocks.STONE_BRICKS) || state.is(Blocks.STONE) || state.is(Blocks.CHISELED_STONE_BRICKS)) {
+            replacement = maybeReplaceFullStoneBlock(random);
+        } else if (state.is(BlockTags.STAIRS)) {
+            replacement = maybeReplaceStairs(state, random);
+        } else if (state.is(BlockTags.SLABS)) {
+            replacement = maybeReplaceSlab(state, random);
+        } else if (state.is(BlockTags.WALLS)) {
+            replacement = maybeReplaceWall(state, random);
+        } else if (state.is(Blocks.OBSIDIAN)) {
+            replacement = maybeReplaceObsidian(random);
+        }
+
+        return replacement == null
+                ? blockInfo
+                : new StructureTemplate.StructureBlockInfo(blockInfo.pos(), replacement, blockInfo.nbt());
+    }
+
+    private StructureTemplate.StructureBlockInfo applyRot(
+            StructureTemplate.StructureBlockInfo blockInfo,
+            RandomSource random
+    ) {
+        return random.nextFloat() <= rotChance ? blockInfo : null;
+    }
+
+    private BlockState maybeReplaceFullStoneBlock(RandomSource random) {
+        if (random.nextFloat() >= 0.5F) {
+            return null;
+        }
+
+        BlockState[] nonMossy = new BlockState[] {
+                CRACKED_STONE_BRICKS,
+                randomFacingStairs(random, Blocks.STONE_BRICK_STAIRS)
+        };
+        BlockState[] mossy = new BlockState[] {
+                MOSSY_STONE_BRICKS,
+                randomFacingStairs(random, Blocks.MOSSY_STONE_BRICK_STAIRS)
+        };
+        return randomBlock(random, nonMossy, mossy);
+    }
+
+    private BlockState maybeReplaceStairs(BlockState state, RandomSource random) {
+        if (random.nextFloat() >= 0.5F) {
+            return null;
+        }
+
+        BlockState[] mossy = new BlockState[] {
+                Blocks.MOSSY_STONE_BRICK_STAIRS.withPropertiesOf(state),
+                MOSSY_STONE_BRICK_SLAB
+        };
+        return randomBlock(random, NON_MOSSY_SLAB_REPLACEMENTS, mossy);
+    }
+
+    private BlockState maybeReplaceSlab(BlockState state, RandomSource random) {
+        return random.nextFloat() < ageChance ? Blocks.MOSSY_STONE_BRICK_SLAB.withPropertiesOf(state) : null;
+    }
+
+    private BlockState maybeReplaceWall(BlockState state, RandomSource random) {
+        return random.nextFloat() < ageChance ? Blocks.MOSSY_STONE_BRICK_WALL.withPropertiesOf(state) : null;
+    }
+
+    private static BlockState maybeReplaceObsidian(RandomSource random) {
+        return random.nextFloat() < 0.15F ? CRYING_OBSIDIAN : null;
+    }
+
+    private static BlockState randomFacingStairs(RandomSource random, Block block) {
+        return block.defaultBlockState()
+                .setValue(StairBlock.FACING, Direction.Plane.HORIZONTAL.getRandomDirection(random))
+                .setValue(StairBlock.HALF, Util.getRandom(Half.values(), random));
+    }
+
+    private BlockState randomBlock(RandomSource random, BlockState[] nonMossy, BlockState[] mossy) {
+        return random.nextFloat() < ageChance ? randomBlock(random, mossy) : randomBlock(random, nonMossy);
+    }
+
+    private static BlockState randomBlock(RandomSource random, BlockState[] states) {
+        return states[random.nextInt(states.length)];
+    }
+
     private StructureTemplate.StructureBlockInfo applyThemeShapes(StructureTemplate.StructureBlockInfo blockInfo) {
         long start = DungeonGenerationProfiler.start();
         try {
-            if (shapeStates == null) {
-                return blockInfo;
-            }
-
             BlockState state = blockInfo.state();
             Shape shape = INPUT_SHAPES.get(state.getBlock());
             if (shape == null) {
@@ -309,9 +408,10 @@ public class FusedDungeonProcessor extends StructureProcessor {
                 return blockInfo;
             }
 
-            RandomSource random = RandomSource.create(Mth.getSeed(blockInfo.pos()));
-            for (CompiledRule rule : rules) {
-                if (random.nextFloat() < rule.probability()) {
+            long seed = Mth.getSeed(blockInfo.pos());
+            for (int i = 0; i < rules.size(); i++) {
+                CompiledRule rule = rules.get(i);
+                if (unitFloat(seed, i) < rule.probability()) {
                     return new StructureTemplate.StructureBlockInfo(blockInfo.pos(), rule.outputState(), blockInfo.nbt());
                 }
             }
@@ -331,6 +431,14 @@ public class FusedDungeonProcessor extends StructureProcessor {
     }
 
     private record CompiledRule(float probability, BlockState outputState) {
+    }
+
+    private static float unitFloat(long seed, int salt) {
+        long mixed = seed + 0x9E3779B97F4A7C15L * (salt + 1L);
+        mixed = (mixed ^ (mixed >>> 30)) * 0xBF58476D1CE4E5B9L;
+        mixed = (mixed ^ (mixed >>> 27)) * 0x94D049BB133111EBL;
+        mixed = mixed ^ (mixed >>> 31);
+        return (mixed >>> 40) * 0x1.0p-24F;
     }
 
     private record ShapeStates(
