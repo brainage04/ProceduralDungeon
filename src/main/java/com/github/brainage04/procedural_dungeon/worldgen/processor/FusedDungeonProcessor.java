@@ -140,6 +140,9 @@ public class FusedDungeonProcessor extends StructureProcessor {
         if (hasPostRules) {
             result = applyRuleGroups(result, postIndexedRuleGroups);
         }
+        if (result.nbt() == null && result.state().isAir() && world.getBlockState(result.pos()).isAir()) {
+            return null;
+        }
         return hasLoot ? applyLootAndBlockEntity(result, data) : result;
     }
 
