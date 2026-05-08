@@ -1,5 +1,8 @@
 package com.github.brainage04.procedural_dungeon.worldgen.structure;
 
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 
@@ -16,10 +19,63 @@ public final class DungeonGenerationProfiler {
         return CURRENT.get() != null;
     }
 
+    public static long start() {
+        return isActive() ? System.nanoTime() : 0L;
+    }
+
     public static Snapshot finish() {
         Run run = CURRENT.get();
         CURRENT.remove();
         return run == null ? Snapshot.EMPTY : run.snapshot();
+    }
+
+    public static void recordLayoutStubSetup(long nanos) {
+        Run run = CURRENT.get();
+        if (run != null) {
+            run.layoutStubSetupNanos += nanos;
+        }
+    }
+
+    public static void recordGraphExpansion(long nanos) {
+        Run run = CURRENT.get();
+        if (run != null) {
+            run.graphExpansionNanos += nanos;
+        }
+    }
+
+    public static void recordSolidDensity(long nanos) {
+        Run run = CURRENT.get();
+        if (run != null) {
+            run.solidDensityNanos += nanos;
+        }
+    }
+
+    public static void recordJigsawBlockLookup(long nanos) {
+        Run run = CURRENT.get();
+        if (run != null) {
+            run.jigsawBlockLookupNanos += nanos;
+        }
+    }
+
+    public static void recordPoolReplacement(long nanos) {
+        Run run = CURRENT.get();
+        if (run != null) {
+            run.poolReplacementNanos += nanos;
+        }
+    }
+
+    public static void recordBranchLimit(long nanos) {
+        Run run = CURRENT.get();
+        if (run != null) {
+            run.branchLimitNanos += nanos;
+        }
+    }
+
+    public static void recordBoundingBoxLookup(long nanos) {
+        Run run = CURRENT.get();
+        if (run != null) {
+            run.boundingBoxLookupNanos += nanos;
+        }
     }
 
     public static void recordJigsaws(int total, int expandable, int kept, int keptExpandable) {
@@ -34,7 +90,7 @@ public final class DungeonGenerationProfiler {
         run.keptExpandableJigsaws += keptExpandable;
     }
 
-    public static void recordPiece(Identifier variant, BoundingBox boundingBox, boolean placed) {
+    public static void recordPiece(Identifier variant, BoundingBox boundingBox, boolean placed, long placementNanos) {
         Run run = CURRENT.get();
         if (run == null) {
             return;
@@ -47,6 +103,19 @@ public final class DungeonGenerationProfiler {
             run.failedPieces++;
         }
         run.boundingBoxVolume += volume(boundingBox);
+        run.piecePlacementNanos += placementNanos;
+        run.maxPiecePlacementNanos = Math.max(run.maxPiecePlacementNanos, placementNanos);
+    }
+
+    public static void recordProcessor(String id, long nanos) {
+        Run run = CURRENT.get();
+        if (run == null) {
+            return;
+        }
+
+        ProcessorTiming.Mutable timing = run.processorTimings.computeIfAbsent(id, ignored -> new ProcessorTiming.Mutable(id));
+        timing.calls++;
+        timing.nanos += nanos;
     }
 
     private static long volume(BoundingBox boundingBox) {
@@ -62,6 +131,16 @@ public final class DungeonGenerationProfiler {
         private int expandableJigsaws;
         private int keptJigsaws;
         private int keptExpandableJigsaws;
+        private long layoutStubSetupNanos;
+        private long graphExpansionNanos;
+        private long solidDensityNanos;
+        private long jigsawBlockLookupNanos;
+        private long poolReplacementNanos;
+        private long branchLimitNanos;
+        private long boundingBoxLookupNanos;
+        private long piecePlacementNanos;
+        private long maxPiecePlacementNanos;
+        private final Map<String, ProcessorTiming.Mutable> processorTimings = new LinkedHashMap<>();
 
         private Snapshot snapshot() {
             return new Snapshot(
@@ -72,7 +151,19 @@ public final class DungeonGenerationProfiler {
                     jigsaws,
                     expandableJigsaws,
                     keptJigsaws,
-                    keptExpandableJigsaws
+                    keptExpandableJigsaws,
+                    layoutStubSetupNanos,
+                    graphExpansionNanos,
+                    solidDensityNanos,
+                    jigsawBlockLookupNanos,
+                    poolReplacementNanos,
+                    branchLimitNanos,
+                    boundingBoxLookupNanos,
+                    piecePlacementNanos,
+                    maxPiecePlacementNanos,
+                    processorTimings.values().stream()
+                            .map(ProcessorTiming.Mutable::snapshot)
+                            .toList()
             );
         }
     }
@@ -85,9 +176,23 @@ public final class DungeonGenerationProfiler {
             int jigsaws,
             int expandableJigsaws,
             int keptJigsaws,
-            int keptExpandableJigsaws
+            int keptExpandableJigsaws,
+            long layoutStubSetupNanos,
+            long graphExpansionNanos,
+            long solidDensityNanos,
+            long jigsawBlockLookupNanos,
+            long poolReplacementNanos,
+            long branchLimitNanos,
+            long boundingBoxLookupNanos,
+            long piecePlacementNanos,
+            long maxPiecePlacementNanos,
+            List<ProcessorTiming> processorTimings
     ) {
-        public static final Snapshot EMPTY = new Snapshot(0, 0, 0, 0, 0, 0, 0, 0);
+        public static final Snapshot EMPTY = new Snapshot(
+                0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0,
+                List.of()
+        );
 
         public int prunedExpandableJigsaws() {
             return Math.max(0, expandableJigsaws - keptExpandableJigsaws);
@@ -95,6 +200,22 @@ public final class DungeonGenerationProfiler {
 
         public double averagePieceVolume() {
             return pieces == 0 ? 0.0 : (double) boundingBoxVolume / pieces;
+        }
+    }
+
+    public record ProcessorTiming(String id, int calls, long nanos) {
+        private static final class Mutable {
+            private final String id;
+            private int calls;
+            private long nanos;
+
+            private Mutable(String id) {
+                this.id = id;
+            }
+
+            private ProcessorTiming snapshot() {
+                return new ProcessorTiming(id, calls, nanos);
+            }
         }
     }
 }

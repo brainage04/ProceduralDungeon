@@ -1,5 +1,6 @@
 package com.github.brainage04.procedural_dungeon.worldgen.processor;
 
+import com.github.brainage04.procedural_dungeon.worldgen.structure.DungeonGenerationProfiler;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import java.util.Optional;
@@ -77,23 +78,30 @@ public class ThemeShapeReplacementProcessor extends StructureProcessor {
             StructureTemplate.StructureBlockInfo currentBlockInfo,
             StructurePlaceSettings data
     ) {
-        BlockState state = currentBlockInfo.state();
-        Block block = state.getBlock();
-        BlockState replacement = null;
+        long start = DungeonGenerationProfiler.start();
+        try {
+            BlockState state = currentBlockInfo.state();
+            Block block = state.getBlock();
+            BlockState replacement = null;
 
-        if (STAIR_INPUTS.contains(block)) {
-            replacement = replaceStairs(state);
-        } else if (SLAB_INPUTS.contains(block)) {
-            replacement = replaceSlab(state);
-        } else if (WALL_INPUTS.contains(block)) {
-            replacement = replaceWall(state);
+            if (STAIR_INPUTS.contains(block)) {
+                replacement = replaceStairs(state);
+            } else if (SLAB_INPUTS.contains(block)) {
+                replacement = replaceSlab(state);
+            } else if (WALL_INPUTS.contains(block)) {
+                replacement = replaceWall(state);
+            }
+
+            if (replacement == null) {
+                return currentBlockInfo;
+            }
+
+            return new StructureTemplate.StructureBlockInfo(currentBlockInfo.pos(), replacement, currentBlockInfo.nbt());
+        } finally {
+            if (start != 0L) {
+                DungeonGenerationProfiler.recordProcessor("procedural_dungeon:theme_shape_replacements", System.nanoTime() - start);
+            }
         }
-
-        if (replacement == null) {
-            return currentBlockInfo;
-        }
-
-        return new StructureTemplate.StructureBlockInfo(currentBlockInfo.pos(), replacement, currentBlockInfo.nbt());
     }
 
     private BlockState replaceStairs(BlockState input) {

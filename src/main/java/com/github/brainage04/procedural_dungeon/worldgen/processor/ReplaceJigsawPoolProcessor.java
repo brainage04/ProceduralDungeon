@@ -1,5 +1,6 @@
 package com.github.brainage04.procedural_dungeon.worldgen.processor;
 
+import com.github.brainage04.procedural_dungeon.worldgen.structure.DungeonGenerationProfiler;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -37,19 +38,26 @@ public class ReplaceJigsawPoolProcessor extends StructureProcessor {
             StructureTemplate.StructureBlockInfo currentBlockInfo,
             StructurePlaceSettings data
     ) {
-        if (!currentBlockInfo.state().is(Blocks.JIGSAW) || currentBlockInfo.nbt() == null) {
-            return currentBlockInfo;
+        long start = DungeonGenerationProfiler.start();
+        try {
+            if (!currentBlockInfo.state().is(Blocks.JIGSAW) || currentBlockInfo.nbt() == null) {
+                return currentBlockInfo;
+            }
+
+            CompoundTag copy = currentBlockInfo.nbt().copy();
+            boolean changed = replacePool(copy, "pool");
+            changed |= replacePool(copy, "target_pool");
+
+            if (!changed) {
+                return currentBlockInfo;
+            }
+
+            return new StructureTemplate.StructureBlockInfo(currentBlockInfo.pos(), currentBlockInfo.state(), copy);
+        } finally {
+            if (start != 0L) {
+                DungeonGenerationProfiler.recordProcessor("procedural_dungeon:replace_jigsaw_pools", System.nanoTime() - start);
+            }
         }
-
-        CompoundTag copy = currentBlockInfo.nbt().copy();
-        boolean changed = replacePool(copy, "pool");
-        changed |= replacePool(copy, "target_pool");
-
-        if (!changed) {
-            return currentBlockInfo;
-        }
-
-        return new StructureTemplate.StructureBlockInfo(currentBlockInfo.pos(), currentBlockInfo.state(), copy);
     }
 
     private boolean replacePool(CompoundTag nbt, String key) {

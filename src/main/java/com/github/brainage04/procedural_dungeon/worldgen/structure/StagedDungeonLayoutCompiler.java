@@ -31,6 +31,7 @@ public final class StagedDungeonLayoutCompiler {
             JigsawStructure.MaxDistance maxDistanceFromCenter,
             LiquidSettings liquidSettings
     ) {
+        long compileStart = DungeonGenerationProfiler.start();
         Optional<Structure.GenerationStub> stub = JigsawPlacement.addPieces(
                 context,
                 startPool,
@@ -44,10 +45,14 @@ public final class StagedDungeonLayoutCompiler {
                 JigsawStructure.DEFAULT_DIMENSION_PADDING,
                 liquidSettings
         );
+        if (compileStart != 0L) {
+            DungeonGenerationProfiler.recordLayoutStubSetup(System.nanoTime() - compileStart);
+        }
         if (stub.isEmpty()) {
             return Optional.empty();
         }
 
+        long extractionStart = DungeonGenerationProfiler.start();
         ArrayList<StagedDungeonPieceSpec> pieces = new ArrayList<>();
         for (StructurePiece piece : stub.get().getPiecesBuilder().build().pieces()) {
             if (piece instanceof PoolElementStructurePiece poolPiece) {
@@ -61,6 +66,9 @@ public final class StagedDungeonLayoutCompiler {
             }
         }
         if (pieces.isEmpty()) {
+            if (extractionStart != 0L) {
+                DungeonGenerationProfiler.recordGraphExpansion(System.nanoTime() - extractionStart);
+            }
             return Optional.empty();
         }
 
@@ -68,6 +76,9 @@ public final class StagedDungeonLayoutCompiler {
                 .map(StagedDungeonPieceSpec::boundingBox)
                 .reduce(BoundingBox::encapsulating)
                 .orElseThrow();
+        if (extractionStart != 0L) {
+            DungeonGenerationProfiler.recordGraphExpansion(System.nanoTime() - extractionStart);
+        }
         return Optional.of(new StagedDungeonLayout(
                 context.chunkPos(),
                 stub.get().position(),

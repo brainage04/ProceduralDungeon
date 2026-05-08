@@ -60,10 +60,19 @@ public class VariantSinglePoolElement extends StructurePoolElement {
             Rotation rotation,
             RandomSource random
     ) {
-        List<StructureTemplate.JigsawBlockInfo> jigsaws = delegate.getShuffledJigsawBlocks(structureTemplateManager, pos, rotation, random)
-                .stream()
+        long jigsawStart = DungeonGenerationProfiler.start();
+        List<StructureTemplate.JigsawBlockInfo> delegateJigsaws = delegate.getShuffledJigsawBlocks(structureTemplateManager, pos, rotation, random);
+        if (jigsawStart != 0L) {
+            DungeonGenerationProfiler.recordJigsawBlockLookup(System.nanoTime() - jigsawStart);
+        }
+
+        long replacementStart = DungeonGenerationProfiler.start();
+        List<StructureTemplate.JigsawBlockInfo> jigsaws = delegateJigsaws.stream()
                 .map(this::replacePool)
                 .toList();
+        if (replacementStart != 0L) {
+            DungeonGenerationProfiler.recordPoolReplacement(System.nanoTime() - replacementStart);
+        }
         int expandableJigsaws = countExpandable(jigsaws);
 
         if (branchLimit == Integer.MAX_VALUE || pos.equals(BlockPos.ZERO)) {
@@ -71,12 +80,16 @@ public class VariantSinglePoolElement extends StructurePoolElement {
             return jigsaws;
         }
 
+        long branchStart = DungeonGenerationProfiler.start();
         List<StructureTemplate.JigsawBlockInfo> limited = new ArrayList<>(jigsaws.size());
         int branches = 0;
         for (StructureTemplate.JigsawBlockInfo info : jigsaws) {
             if (!isExpandable(info) || branches++ < branchLimit) {
                 limited.add(info);
             }
+        }
+        if (branchStart != 0L) {
+            DungeonGenerationProfiler.recordBranchLimit(System.nanoTime() - branchStart);
         }
 
         DungeonGenerationProfiler.recordJigsaws(jigsaws.size(), expandableJigsaws, limited.size(), countExpandable(limited));
@@ -117,7 +130,12 @@ public class VariantSinglePoolElement extends StructurePoolElement {
 
     @Override
     public BoundingBox getBoundingBox(StructureTemplateManager structureTemplateManager, BlockPos pos, Rotation rotation) {
-        return delegate.getBoundingBox(structureTemplateManager, pos, rotation);
+        long start = DungeonGenerationProfiler.start();
+        BoundingBox box = delegate.getBoundingBox(structureTemplateManager, pos, rotation);
+        if (start != 0L) {
+            DungeonGenerationProfiler.recordBoundingBoxLookup(System.nanoTime() - start);
+        }
+        return box;
     }
 
     @Override
@@ -138,9 +156,14 @@ public class VariantSinglePoolElement extends StructurePoolElement {
             return delegate.place(structureTemplateManager, world, structureAccessor, chunkGenerator, pos, pivot, rotation, box, random, liquidSettings, keepJigsaws);
         }
 
+        long boundingBoxStart = DungeonGenerationProfiler.start();
         BoundingBox boundingBox = delegate.getBoundingBox(structureTemplateManager, pos, rotation);
+        if (boundingBoxStart != 0L) {
+            DungeonGenerationProfiler.recordBoundingBoxLookup(System.nanoTime() - boundingBoxStart);
+        }
+        long placementStart = System.nanoTime();
         boolean placed = delegate.place(structureTemplateManager, world, structureAccessor, chunkGenerator, pos, pivot, rotation, box, random, liquidSettings, keepJigsaws);
-        DungeonGenerationProfiler.recordPiece(variant, boundingBox, placed);
+        DungeonGenerationProfiler.recordPiece(variant, boundingBox, placed, System.nanoTime() - placementStart);
         return placed;
     }
 

@@ -4,14 +4,17 @@ import com.github.brainage04.procedural_dungeon.dungeon.DungeonTheme;
 import com.github.brainage04.procedural_dungeon.dungeon.DungeonTier;
 import com.github.brainage04.procedural_dungeon.util.RegistryKeyUtils;
 import com.github.brainage04.procedural_dungeon.worldgen.structure.DungeonGenerationProfiler;
+import com.github.brainage04.procedural_dungeon.worldgen.structure.StagedDungeonGenerationManager;
+import com.github.brainage04.procedural_dungeon.worldgen.structure.StagedDungeonLayout;
+import com.github.brainage04.procedural_dungeon.worldgen.structure.StagedDungeonLayoutCompiler;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.LongArgumentType;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import net.minecraft.commands.CommandSourceStack;
@@ -21,11 +24,12 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.commands.PlaceCommand;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.levelgen.structure.Structure;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
+import net.minecraft.world.level.levelgen.structure.structures.JigsawStructure;
+import net.minecraft.world.level.levelgen.structure.templatesystem.LiquidSettings;
 
 import static net.minecraft.commands.Commands.argument;
 import static net.minecraft.commands.Commands.literal;
@@ -199,8 +203,7 @@ public class BenchmarkDungeonCommand {
         return chunks.size();
     }
 
-    private static int benchmarkGeneration(CommandSourceStack source, int samples, int spacing, long seed)
-            throws CommandSyntaxException {
+    private static int benchmarkGeneration(CommandSourceStack source, int samples, int spacing, long seed) {
         List<GenerationSample> generationSamples = tierFiveSamples(samples, seed);
         BlockPos origin = BlockPos.containing(source.getPosition());
         Timing timing = new Timing();
@@ -209,43 +212,81 @@ public class BenchmarkDungeonCommand {
                 "Benchmarking %d tier 5 dungeon placements (spacing %d). Run /benchmarkdungeons preload first to exclude chunk loading."
                         .formatted(generationSamples.size(), spacing)
         ), true);
+        warmupGeneration(source, generationSamples.getFirst(), origin.offset(-spacing, 0, 0));
 
         long totalStart = System.nanoTime();
         for (int i = 0; i < generationSamples.size(); i++) {
             GenerationSample sample = generationSamples.get(i);
             BlockPos pos = samplePosition(origin, i, spacing);
 
-            long placementStart = System.nanoTime();
+            long sampleStart = System.nanoTime();
             DungeonGenerationProfiler.begin();
             DungeonGenerationProfiler.Snapshot profile;
+            Optional<StagedDungeonLayout> layout = Optional.empty();
+            int scheduledPieces = 0;
             try {
-                place(source, sample, pos);
+                layout = compileLayout(source, sample, pos);
+                if (layout.isPresent()) {
+                    scheduledPieces = layout.get().pieces().size();
+                    StagedDungeonGenerationManager.placeSynchronously(
+                            source.getLevel(),
+                            layout.get().pieces(),
+                            LiquidSettings.IGNORE_WATERLOGGING
+                    );
+                }
             } finally {
                 profile = DungeonGenerationProfiler.finish();
             }
-            long placementNanos = System.nanoTime() - placementStart;
-            timing.add(placementNanos, profile);
+            if (layout.isEmpty()) {
+                source.sendFailure(Component.literal("Failed to compile tier 5 %s dungeon at %s."
+                        .formatted(sample.theme.name().toLowerCase(), pos.toShortString())));
+                continue;
+            }
+            long totalNanos = System.nanoTime() - sampleStart;
+            timing.add(totalNanos, profile);
+            DungeonGenerationProfiler.Snapshot sampleProfile = profile;
+            int sampleScheduledPieces = scheduledPieces;
+            long sampleTotalNanos = totalNanos;
 
             source.sendSuccess(() -> Component.literal(
-                    "Tier 5 %s: place %.2f ms, %d pieces (%d placed, %d failed), bbox volume %,d, jigsaws %d/%d kept (%d pruned) at %s."
+                    "Tier 5 %s: total %.2f ms, graph %.2f ms, stub %.2f ms, placement %.2f ms, %d/%d pieces placed, bbox volume %,d, jigsaws %d/%d kept (%d pruned) at %s."
                             .formatted(
                                     sample.theme.name().toLowerCase(),
-                                    toMillis(placementNanos),
-                                    profile.pieces(),
-                                    profile.placedPieces(),
-                                    profile.failedPieces(),
-                                    profile.boundingBoxVolume(),
-                                    profile.keptExpandableJigsaws(),
-                                    profile.expandableJigsaws(),
-                                    profile.prunedExpandableJigsaws(),
+                                    toMillis(sampleTotalNanos),
+                                    toMillis(sampleProfile.graphExpansionNanos()),
+                                    toMillis(sampleProfile.layoutStubSetupNanos()),
+                                    toMillis(sampleProfile.piecePlacementNanos()),
+                                    sampleProfile.placedPieces(),
+                                    sampleScheduledPieces,
+                                    sampleProfile.boundingBoxVolume(),
+                                    sampleProfile.keptExpandableJigsaws(),
+                                    sampleProfile.expandableJigsaws(),
+                                    sampleProfile.prunedExpandableJigsaws(),
                                     pos.toShortString()
                             )
             ), true);
+            source.sendSuccess(() -> Component.literal(
+                    "  detail: solid-density %.2f ms, jigsaw lookup %.2f ms, pool replacement %.2f ms, branch limiting %.2f ms, bbox lookup %.2f ms, max piece %.2f ms, custom processors %s."
+                            .formatted(
+                                    toMillis(sampleProfile.solidDensityNanos()),
+                                    toMillis(sampleProfile.jigsawBlockLookupNanos()),
+                                    toMillis(sampleProfile.poolReplacementNanos()),
+                                    toMillis(sampleProfile.branchLimitNanos()),
+                                    toMillis(sampleProfile.boundingBoxLookupNanos()),
+                                    toMillis(sampleProfile.maxPiecePlacementNanos()),
+                                    formatProcessors(sampleProfile.processorTimings())
+                            )
+            ), true);
+            if (sampleProfile.failedPieces() > 0) {
+                source.sendFailure(Component.literal(
+                        "  warning: %d piece placements reported failure.".formatted(sampleProfile.failedPieces())
+                ));
+            }
         }
         long totalNanos = System.nanoTime() - totalStart;
 
         source.sendSuccess(() -> Component.literal(
-                "Tier 5 benchmark completed in %.2f ms. Avg place %.2f ms, max place %.2f ms. Avg pieces %.1f, max pieces %d, avg bbox volume %,.0f, max bbox volume %,d."
+                "Tier 5 benchmark completed in %.2f ms. Avg total %.2f ms, max total %.2f ms. Avg pieces %.1f, max pieces %d, avg bbox volume %,.0f, max bbox volume %,d."
                         .formatted(
                                 toMillis(totalNanos),
                                 timing.averagePlacementMillis(),
@@ -260,6 +301,65 @@ public class BenchmarkDungeonCommand {
         return generationSamples.size();
     }
 
+    private static Optional<StagedDungeonLayout> compileLayout(CommandSourceStack source, GenerationSample sample, BlockPos pos) {
+        String key = RegistryKeyUtils.getKeyString(sample.theme, sample.tier);
+        ResourceKey<StructureTemplatePool> poolKey = RegistryKeyUtils.create(Registries.TEMPLATE_POOL, "%s/start".formatted(key));
+        var pool = source.registryAccess().lookupOrThrow(Registries.TEMPLATE_POOL).getOrThrow(poolKey);
+        ServerLevel level = source.getLevel();
+        ChunkPos chunkPos = ChunkPos.containing(pos);
+        var chunkGenerator = level.getChunkSource().getGenerator();
+        Structure.GenerationContext generationContext = new Structure.GenerationContext(
+                source.registryAccess(),
+                chunkGenerator,
+                chunkGenerator.getBiomeSource(),
+                level.getChunkSource().randomState(),
+                level.getStructureManager(),
+                level.getSeed(),
+                chunkPos,
+                level,
+                ignored -> true
+        );
+
+        return StagedDungeonLayoutCompiler.compile(
+                generationContext,
+                pool,
+                Optional.of(net.minecraft.resources.Identifier.withDefaultNamespace("start")),
+                sample.tier.size,
+                pos,
+                false,
+                Optional.empty(),
+                new JigsawStructure.MaxDistance(sample.tier.maxDistanceFromCenter),
+                LiquidSettings.IGNORE_WATERLOGGING
+        );
+    }
+
+    private static void warmupGeneration(CommandSourceStack source, GenerationSample sample, BlockPos pos) {
+        DungeonGenerationProfiler.begin();
+        try {
+            compileLayout(source, sample, pos)
+                    .ifPresent(layout -> StagedDungeonGenerationManager.placeSynchronously(
+                            source.getLevel(),
+                            layout.pieces(),
+                            LiquidSettings.IGNORE_WATERLOGGING
+                    ));
+        } finally {
+            DungeonGenerationProfiler.finish();
+        }
+    }
+
+    private static String formatProcessors(List<DungeonGenerationProfiler.ProcessorTiming> processorTimings) {
+        if (processorTimings.isEmpty()) {
+            return "none";
+        }
+
+        return processorTimings.stream()
+                .sorted((left, right) -> Long.compare(right.nanos(), left.nanos()))
+                .map(timing -> "%s %.2f ms/%d calls".formatted(timing.id(), toMillis(timing.nanos()), timing.calls()))
+                .limit(4)
+                .reduce((left, right) -> left + ", " + right)
+                .orElse("none");
+    }
+
     private static List<GenerationSample> tierFiveSamples(int samples, long seed) {
         List<DungeonTheme> themes = new ArrayList<>(List.of(DungeonTheme.values()));
         Collections.shuffle(themes, new java.util.Random(seed ^ DungeonTier.TIER_5.tier));
@@ -270,13 +370,6 @@ public class BenchmarkDungeonCommand {
         }
 
         return generationSamples;
-    }
-
-    private static void place(CommandSourceStack source, GenerationSample sample, BlockPos pos) throws CommandSyntaxException {
-        String key = RegistryKeyUtils.getKeyString(sample.theme, sample.tier);
-        ResourceKey<Structure> structureKey = RegistryKeyUtils.create(Registries.STRUCTURE, key);
-        var structure = source.registryAccess().lookupOrThrow(Registries.STRUCTURE).getOrThrow(structureKey);
-        PlaceCommand.placeStructure(source.withSuppressedOutput().withPosition(Vec3.atBottomCenterOf(pos)), structure, pos);
     }
 
     private static Set<ChunkPos> chunksForSamples(BlockPos origin, int samples, int spacing, int radius) {

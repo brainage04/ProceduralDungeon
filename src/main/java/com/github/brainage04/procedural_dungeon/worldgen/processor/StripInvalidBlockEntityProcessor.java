@@ -1,5 +1,6 @@
 package com.github.brainage04.procedural_dungeon.worldgen.processor;
 
+import com.github.brainage04.procedural_dungeon.worldgen.structure.DungeonGenerationProfiler;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelReader;
@@ -25,11 +26,18 @@ public class StripInvalidBlockEntityProcessor extends StructureProcessor {
             StructureTemplate.StructureBlockInfo currentBlockInfo,
             StructurePlaceSettings data
     ) {
-        if (currentBlockInfo.nbt() == null || currentBlockInfo.state().getBlock() instanceof EntityBlock) {
-            return currentBlockInfo;
-        }
+        long start = DungeonGenerationProfiler.start();
+        try {
+            if (currentBlockInfo.nbt() == null || currentBlockInfo.state().getBlock() instanceof EntityBlock) {
+                return currentBlockInfo;
+            }
 
-        return new StructureTemplate.StructureBlockInfo(currentBlockInfo.pos(), currentBlockInfo.state(), null);
+            return new StructureTemplate.StructureBlockInfo(currentBlockInfo.pos(), currentBlockInfo.state(), null);
+        } finally {
+            if (start != 0L) {
+                DungeonGenerationProfiler.recordProcessor("procedural_dungeon:strip_invalid_block_entity", System.nanoTime() - start);
+            }
+        }
     }
 
     @Override

@@ -96,7 +96,11 @@ public class StagedDungeonStructure extends Structure {
                 new WorldGenerationContext(context.chunkGenerator(), context.heightAccessor())
         );
         if (placementHeightMode == PlacementHeightMode.SOLID_DENSITY) {
+            long solidDensityStart = DungeonGenerationProfiler.start();
             y = selectSolidDensityY(context, chunkPos, y);
+            if (solidDensityStart != 0L) {
+                DungeonGenerationProfiler.recordSolidDensity(System.nanoTime() - solidDensityStart);
+            }
         }
         BlockPos startPos = new BlockPos(chunkPos.getMinBlockX(), y, chunkPos.getMinBlockZ());
 
