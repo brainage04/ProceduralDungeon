@@ -50,7 +50,7 @@
         "spawner_tier": 1,
         "variant": "procedural_dungeon:dungeon/the_nether/soul_sand_valley/tier_1"
       },
-      "weight": 3
+      "weight": 10
     },
     {
       "element": {
@@ -76,7 +76,7 @@
         "spawner_tier": 1,
         "variant": "procedural_dungeon:dungeon/the_nether/soul_sand_valley/tier_1"
       },
-      "weight": 3
+      "weight": 10
     },
     {
       "element": {

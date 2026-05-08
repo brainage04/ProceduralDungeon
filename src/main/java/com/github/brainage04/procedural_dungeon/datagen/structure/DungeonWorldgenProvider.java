@@ -98,9 +98,9 @@ public class DungeonWorldgenProvider implements DataProvider {
                 poolElement("dungeon/hallway/room/armorsmith", variantId, 2, secondaryBranchLimit(variantId)),
                 poolElement("dungeon/hallway/room/enchanter", variantId, 2, secondaryBranchLimit(variantId)),
                 poolElement("dungeon/hallway/room/spawner_corridor", variantId, 2, secondaryBranchLimit(variantId)),
-                poolElement("dungeon/hallway/room/staircase_diagonal_down", variantId, 3, secondaryBranchLimit(variantId)),
+                poolElement("dungeon/hallway/room/staircase_diagonal_down", variantId, 10, secondaryBranchLimit(variantId)),
                 poolElement("dungeon/hallway/room/staircase_diagonal_up", variantId, 1, secondaryBranchLimit(variantId)),
-                poolElement("dungeon/hallway/room/staircase_spiral_down", variantId, 3, secondaryBranchLimit(variantId)),
+                poolElement("dungeon/hallway/room/staircase_spiral_down", variantId, 10, secondaryBranchLimit(variantId)),
                 poolElement("dungeon/hallway/room/staircase_spiral_up", variantId, 1, secondaryBranchLimit(variantId)),
                 poolElement("dungeon/hallway/room/toolsmith", variantId, 2, secondaryBranchLimit(variantId)),
                 poolElement("dungeon/hallway/room/weaponsmith", variantId, 2, secondaryBranchLimit(variantId))

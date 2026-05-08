@@ -50,7 +50,7 @@
         "spawner_tier": 5,
         "variant": "procedural_dungeon:dungeon/overworld/deepslate/tier_5"
       },
-      "weight": 3
+      "weight": 10
     },
     {
       "element": {
@@ -76,7 +76,7 @@
         "spawner_tier": 5,
         "variant": "procedural_dungeon:dungeon/overworld/deepslate/tier_5"
       },
-      "weight": 3
+      "weight": 10
     },
     {
       "element": {
