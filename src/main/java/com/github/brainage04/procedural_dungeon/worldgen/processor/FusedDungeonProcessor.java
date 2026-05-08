@@ -10,6 +10,7 @@ import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -72,10 +73,11 @@ public class FusedDungeonProcessor extends StructureProcessor {
     private final float rotChance;
     private final Optional<ShapeReplacements> shapeReplacements;
     private final Map<Identifier, Identifier> lootTableReplacements;
-    private final List<IndexedRuleGroup> preIndexedRuleGroups;
-    private final List<IndexedRuleGroup> postIndexedRuleGroups;
+    private final RuleStage preRuleStage;
+    private final RuleStage postRuleStage;
     private final ShapeStates shapeStates;
     private final Map<String, String> lootTableReplacementStrings;
+    private final Map<BlockState, StateClassification> stateClassifications = new ConcurrentHashMap<>();
     private final boolean hasPreRules;
     private final boolean hasPostRules;
     private final boolean hasShapes;
@@ -99,19 +101,15 @@ public class FusedDungeonProcessor extends StructureProcessor {
         this.rotChance = rotChance;
         this.shapeReplacements = shapeReplacements;
         this.lootTableReplacements = Map.copyOf(lootTableReplacements);
-        this.preIndexedRuleGroups = this.preRuleGroups.stream()
-                .map(IndexedRuleGroup::new)
-                .toList();
-        this.postIndexedRuleGroups = this.postRuleGroups.stream()
-                .map(IndexedRuleGroup::new)
-                .toList();
+        this.preRuleStage = new RuleStage(this.preRuleGroups);
+        this.postRuleStage = new RuleStage(this.postRuleGroups);
         this.shapeStates = shapeReplacements.map(ShapeStates::new).orElse(null);
         this.lootTableReplacementStrings = lootTableReplacements.entrySet().stream().collect(Collectors.toUnmodifiableMap(
                 entry -> entry.getKey().toString(),
                 entry -> entry.getValue().toString()
         ));
-        this.hasPreRules = !this.preIndexedRuleGroups.isEmpty();
-        this.hasPostRules = !this.postIndexedRuleGroups.isEmpty();
+        this.hasPreRules = !this.preRuleStage.isEmpty();
+        this.hasPostRules = !this.postRuleStage.isEmpty();
         this.hasShapes = this.shapeStates != null;
         this.hasLoot = !this.lootTableReplacementStrings.isEmpty();
     }
@@ -126,19 +124,31 @@ public class FusedDungeonProcessor extends StructureProcessor {
             StructurePlaceSettings data
     ) {
         StructureTemplate.StructureBlockInfo result = currentBlockInfo;
-        if (hasPreRules) {
-            result = applyRuleGroups(result, preIndexedRuleGroups);
+        if (hasPreRules && preRuleStage.mayApply(result.state().getBlock())) {
+            result = preRuleStage.apply(result);
         }
-        result = applyAge(result, data.getRandom(result.pos()));
+
+        StateClassification classification = classify(result.state());
+        if (classification.ageKind() != AgeKind.NONE) {
+            result = applyAge(result, classification.ageKind(), data.getRandom(result.pos()));
+            classification = classify(result.state());
+        }
+
+        if (canSkipRedundantAirBeforeRot(world, result, classification)) {
+            return null;
+        }
+
         result = applyRot(result, data.getRandom(result.pos()));
         if (result == null) {
             return null;
         }
-        if (hasShapes) {
+
+        classification = classify(result.state());
+        if (hasShapes && classification.shape() != null) {
             result = applyThemeShapes(result);
         }
-        if (hasPostRules) {
-            result = applyRuleGroups(result, postIndexedRuleGroups);
+        if (hasPostRules && postRuleStage.mayApply(result.state().getBlock())) {
+            result = postRuleStage.apply(result);
         }
         if (result.nbt() == null && result.state().isAir() && world.getBlockState(result.pos()).isAir()) {
             return null;
@@ -146,34 +156,24 @@ public class FusedDungeonProcessor extends StructureProcessor {
         return hasLoot ? applyLootAndBlockEntity(result, data) : result;
     }
 
-    private StructureTemplate.StructureBlockInfo applyRuleGroups(
-            StructureTemplate.StructureBlockInfo blockInfo,
-            List<IndexedRuleGroup> ruleGroups
-    ) {
-        StructureTemplate.StructureBlockInfo result = blockInfo;
-        for (IndexedRuleGroup group : ruleGroups) {
-            result = group.apply(result);
-        }
-        return result;
+    private StateClassification classify(BlockState state) {
+        return stateClassifications.computeIfAbsent(state, FusedDungeonProcessor::createClassification);
     }
 
     private StructureTemplate.StructureBlockInfo applyAge(
             StructureTemplate.StructureBlockInfo blockInfo,
+            AgeKind ageKind,
             RandomSource random
     ) {
         BlockState state = blockInfo.state();
-        BlockState replacement = null;
-        if (state.is(Blocks.STONE_BRICKS) || state.is(Blocks.STONE) || state.is(Blocks.CHISELED_STONE_BRICKS)) {
-            replacement = maybeReplaceFullStoneBlock(random);
-        } else if (state.is(BlockTags.STAIRS)) {
-            replacement = maybeReplaceStairs(state, random);
-        } else if (state.is(BlockTags.SLABS)) {
-            replacement = maybeReplaceSlab(state, random);
-        } else if (state.is(BlockTags.WALLS)) {
-            replacement = maybeReplaceWall(state, random);
-        } else if (state.is(Blocks.OBSIDIAN)) {
-            replacement = maybeReplaceObsidian(random);
-        }
+        BlockState replacement = switch (ageKind) {
+            case FULL_STONE -> maybeReplaceFullStoneBlock(random);
+            case STAIR -> maybeReplaceStairs(state, random);
+            case SLAB -> maybeReplaceSlab(state, random);
+            case WALL -> maybeReplaceWall(state, random);
+            case OBSIDIAN -> maybeReplaceObsidian(random);
+            case NONE -> null;
+        };
 
         return replacement == null
                 ? blockInfo
@@ -241,27 +241,46 @@ public class FusedDungeonProcessor extends StructureProcessor {
         return states[random.nextInt(states.length)];
     }
 
+    private boolean canSkipRedundantAirBeforeRot(
+            LevelReader world,
+            StructureTemplate.StructureBlockInfo blockInfo,
+            StateClassification classification
+    ) {
+        return classification.air()
+                && blockInfo.nbt() == null
+                && (!hasPostRules || !postRuleStage.mayApply(blockInfo.state().getBlock()))
+                && world.getBlockState(blockInfo.pos()).isAir();
+    }
+
     private StructureTemplate.StructureBlockInfo applyThemeShapes(StructureTemplate.StructureBlockInfo blockInfo) {
         long start = DungeonGenerationProfiler.start();
         try {
-            BlockState state = blockInfo.state();
-            Shape shape = INPUT_SHAPES.get(state.getBlock());
-            if (shape == null) {
-                return blockInfo;
-            }
-
-            BlockState replacement = switch (shape) {
-                case STAIR -> shapeStates.replaceStairs(state);
-                case SLAB -> shapeStates.replaceSlab(state);
-                case WALL -> shapeStates.replaceWall(state);
-            };
-
+            BlockState replacement = shapeStates.replace(blockInfo.state());
             return new StructureTemplate.StructureBlockInfo(blockInfo.pos(), replacement, blockInfo.nbt());
         } finally {
             if (start != 0L) {
                 DungeonGenerationProfiler.recordProcessor("procedural_dungeon:theme_shape_replacements", System.nanoTime() - start);
             }
         }
+    }
+
+    private static StateClassification createClassification(BlockState state) {
+        Block block = state.getBlock();
+        AgeKind ageKind;
+        if (state.is(Blocks.STONE_BRICKS) || state.is(Blocks.STONE) || state.is(Blocks.CHISELED_STONE_BRICKS)) {
+            ageKind = AgeKind.FULL_STONE;
+        } else if (state.is(BlockTags.STAIRS)) {
+            ageKind = AgeKind.STAIR;
+        } else if (state.is(BlockTags.SLABS)) {
+            ageKind = AgeKind.SLAB;
+        } else if (state.is(BlockTags.WALLS)) {
+            ageKind = AgeKind.WALL;
+        } else if (state.is(Blocks.OBSIDIAN)) {
+            ageKind = AgeKind.OBSIDIAN;
+        } else {
+            ageKind = AgeKind.NONE;
+        }
+        return new StateClassification(state.isAir(), ageKind, INPUT_SHAPES.get(block));
     }
 
     private StructureTemplate.StructureBlockInfo applyLootAndBlockEntity(
@@ -400,6 +419,44 @@ public class FusedDungeonProcessor extends StructureProcessor {
         ).apply(instance, ShapeReplacements::new));
     }
 
+    private record RuleStage(List<IndexedRuleGroup> groups, Map<Block, Boolean> candidateInputs) {
+        private RuleStage(List<List<FusedRule>> ruleGroups) {
+            this(indexGroups(ruleGroups), indexCandidateInputs(ruleGroups));
+        }
+
+        private boolean isEmpty() {
+            return groups.isEmpty();
+        }
+
+        private boolean mayApply(Block block) {
+            return candidateInputs.containsKey(block);
+        }
+
+        private StructureTemplate.StructureBlockInfo apply(StructureTemplate.StructureBlockInfo blockInfo) {
+            StructureTemplate.StructureBlockInfo result = blockInfo;
+            for (IndexedRuleGroup group : groups) {
+                result = group.apply(result);
+            }
+            return result;
+        }
+
+        private static List<IndexedRuleGroup> indexGroups(List<List<FusedRule>> ruleGroups) {
+            return ruleGroups.stream()
+                    .map(IndexedRuleGroup::new)
+                    .toList();
+        }
+
+        private static Map<Block, Boolean> indexCandidateInputs(List<List<FusedRule>> ruleGroups) {
+            IdentityHashMap<Block, Boolean> candidates = new IdentityHashMap<>();
+            for (List<FusedRule> group : ruleGroups) {
+                for (FusedRule rule : group) {
+                    candidates.put(block(rule.input()), Boolean.TRUE);
+                }
+            }
+            return Collections.unmodifiableMap(candidates);
+        }
+    }
+
     private record IndexedRuleGroup(Map<Block, List<CompiledRule>> rulesByInput) {
         private IndexedRuleGroup(List<FusedRule> rules) {
             this(indexRules(rules));
@@ -436,6 +493,18 @@ public class FusedDungeonProcessor extends StructureProcessor {
     private record CompiledRule(float probability, BlockState outputState) {
     }
 
+    private record StateClassification(boolean air, AgeKind ageKind, Shape shape) {
+    }
+
+    private enum AgeKind {
+        NONE,
+        FULL_STONE,
+        STAIR,
+        SLAB,
+        WALL,
+        OBSIDIAN
+    }
+
     private static float unitFloat(long seed, int salt) {
         long mixed = seed + 0x9E3779B97F4A7C15L * (salt + 1L);
         mixed = (mixed ^ (mixed >>> 30)) * 0xBF58476D1CE4E5B9L;
@@ -448,7 +517,8 @@ public class FusedDungeonProcessor extends StructureProcessor {
             BlockState fallbackState,
             BlockState stairsState,
             BlockState slabState,
-            BlockState wallState
+            BlockState wallState,
+            Map<BlockState, BlockState> replacementsByInputState
     ) {
         private ShapeStates(ShapeReplacements replacements) {
             this(
@@ -459,16 +529,38 @@ public class FusedDungeonProcessor extends StructureProcessor {
             );
         }
 
-        private BlockState replaceStairs(BlockState input) {
-            return stairsState == null ? fallbackState : copyStairProperties(input, stairsState);
+        private ShapeStates(
+                BlockState fallbackState,
+                BlockState stairsState,
+                BlockState slabState,
+                BlockState wallState
+        ) {
+            this(fallbackState, stairsState, slabState, wallState,
+                    indexShapeReplacements(fallbackState, stairsState, slabState, wallState));
         }
 
-        private BlockState replaceSlab(BlockState input) {
-            return slabState == null ? fallbackState : copySlabProperties(input, slabState);
+        private BlockState replace(BlockState input) {
+            return replacementsByInputState.get(input);
         }
 
-        private BlockState replaceWall(BlockState input) {
-            return wallState == null ? fallbackState : copyWallProperties(input, wallState);
+        private static Map<BlockState, BlockState> indexShapeReplacements(
+                BlockState fallbackState,
+                BlockState stairsState,
+                BlockState slabState,
+                BlockState wallState
+        ) {
+            IdentityHashMap<BlockState, BlockState> replacements = new IdentityHashMap<>();
+            for (Map.Entry<Block, Shape> entry : INPUT_SHAPES.entrySet()) {
+                for (BlockState input : entry.getKey().getStateDefinition().getPossibleStates()) {
+                    BlockState replacement = switch (entry.getValue()) {
+                        case STAIR -> stairsState == null ? fallbackState : copyStairProperties(input, stairsState);
+                        case SLAB -> slabState == null ? fallbackState : copySlabProperties(input, slabState);
+                        case WALL -> wallState == null ? fallbackState : copyWallProperties(input, wallState);
+                    };
+                    replacements.put(input, replacement);
+                }
+            }
+            return Collections.unmodifiableMap(replacements);
         }
     }
 
