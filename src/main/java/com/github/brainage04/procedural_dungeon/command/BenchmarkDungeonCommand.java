@@ -295,6 +295,9 @@ public class BenchmarkDungeonCommand {
                             )
             ), true);
             source.sendSuccess(() -> Component.literal(
+                    "  stair candidates: %s.".formatted(formatStairCandidateCounts(sampleProfile.graphCandidateCounts()))
+            ), true);
+            source.sendSuccess(() -> Component.literal(
                     "  pieces: %s.".formatted(formatPieceCounts(sampleProfile.pieceCounts()))
             ), true);
             if (sampleProfile.failedPieces() > 0) {
@@ -399,6 +402,29 @@ public class BenchmarkDungeonCommand {
                 })
                 .reduce((left, right) -> left + ", " + right)
                 .orElse("none");
+    }
+
+    private static String formatStairCandidateCounts(List<DungeonGenerationProfiler.GraphCandidateCount> candidateCounts) {
+        String formatted = candidateCounts.stream()
+                .filter(count -> count.template().contains("staircase_"))
+                .sorted((left, right) -> pieceLabel(left.template()).compareTo(pieceLabel(right.template())))
+                .map(count -> "%s tried %d, attach %d, bounds %d, collision %d, accepted %d (%.1f%%)"
+                        .formatted(
+                                pieceLabel(count.template()),
+                                count.attempts(),
+                                count.attachMatches(),
+                                count.outOfBounds(),
+                                count.collision(),
+                                count.accepted(),
+                                acceptancePercent(count)
+                        ))
+                .reduce((left, right) -> left + ", " + right)
+                .orElse("none");
+        return formatted;
+    }
+
+    private static double acceptancePercent(DungeonGenerationProfiler.GraphCandidateCount count) {
+        return count.attempts() == 0 ? 0.0 : (count.accepted() * 100.0) / count.attempts();
     }
 
     private static String pieceLabel(String template) {

@@ -173,7 +173,7 @@ echo "Stopping JFR recording..."
 jcmd "$minecraft_pid" JFR.dump name="$jfr_name" filename="$jfr_file" >/dev/null || true
 jcmd "$minecraft_pid" JFR.stop name="$jfr_name" >/dev/null || true
 
-rg 'Preloaded and force-loaded|Tier 5 .*: total|  detail:|  graph:|  pieces:|Tier 5 benchmark completed|Invalid block entity|DUMMY block entity|POI data mismatch|Failed to create block entity' "$log_file" > "$summary_file" || true
+rg 'Preloaded and force-loaded|Tier 5 .*: total|  detail:|  graph:|  stair candidates:|  pieces:|Tier 5 benchmark completed|Invalid block entity|DUMMY block entity|POI data mismatch|Failed to create block entity' "$log_file" > "$summary_file" || true
 
 stop_server
 restore_properties

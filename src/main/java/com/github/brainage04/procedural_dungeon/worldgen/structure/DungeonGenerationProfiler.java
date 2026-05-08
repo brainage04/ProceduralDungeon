@@ -104,6 +104,41 @@ public final class DungeonGenerationProfiler {
         }
     }
 
+    public static void recordGraphCandidateTemplate(String template) {
+        GraphCandidateCount.Mutable count = graphCandidateCount(template);
+        if (count != null) {
+            count.attempts++;
+        }
+    }
+
+    public static void recordGraphCandidateTemplateAttachMatch(String template) {
+        GraphCandidateCount.Mutable count = graphCandidateCount(template);
+        if (count != null) {
+            count.attachMatches++;
+        }
+    }
+
+    public static void recordGraphCandidateTemplateRejectedOutOfBounds(String template) {
+        GraphCandidateCount.Mutable count = graphCandidateCount(template);
+        if (count != null) {
+            count.outOfBounds++;
+        }
+    }
+
+    public static void recordGraphCandidateTemplateRejectedCollision(String template) {
+        GraphCandidateCount.Mutable count = graphCandidateCount(template);
+        if (count != null) {
+            count.collision++;
+        }
+    }
+
+    public static void recordGraphCandidateTemplateAccepted(String template) {
+        GraphCandidateCount.Mutable count = graphCandidateCount(template);
+        if (count != null) {
+            count.accepted++;
+        }
+    }
+
     public static void recordGraphAttachMatch() {
         Run run = CURRENT.get();
         if (run != null) {
@@ -210,6 +245,14 @@ public final class DungeonGenerationProfiler {
         timing.nanos += nanos;
     }
 
+    private static GraphCandidateCount.Mutable graphCandidateCount(String template) {
+        Run run = CURRENT.get();
+        if (run == null) {
+            return null;
+        }
+        return run.graphCandidateCounts.computeIfAbsent(template, GraphCandidateCount.Mutable::new);
+    }
+
     private static long volume(BoundingBox boundingBox) {
         return (long) boundingBox.getXSpan() * boundingBox.getYSpan() * boundingBox.getZSpan();
     }
@@ -246,6 +289,7 @@ public final class DungeonGenerationProfiler {
         private long maxPiecePlacementNanos;
         private final Map<String, ProcessorTiming.Mutable> processorTimings = new LinkedHashMap<>();
         private final Map<String, PieceCount.Mutable> pieceCounts = new LinkedHashMap<>();
+        private final Map<String, GraphCandidateCount.Mutable> graphCandidateCounts = new LinkedHashMap<>();
 
         private Snapshot snapshot() {
             return new Snapshot(
@@ -283,6 +327,9 @@ public final class DungeonGenerationProfiler {
                             .toList(),
                     pieceCounts.values().stream()
                             .map(PieceCount.Mutable::snapshot)
+                            .toList(),
+                    graphCandidateCounts.values().stream()
+                            .map(GraphCandidateCount.Mutable::snapshot)
                             .toList()
             );
         }
@@ -319,12 +366,14 @@ public final class DungeonGenerationProfiler {
             long piecePlacementNanos,
             long maxPiecePlacementNanos,
             List<ProcessorTiming> processorTimings,
-            List<PieceCount> pieceCounts
+            List<PieceCount> pieceCounts,
+            List<GraphCandidateCount> graphCandidateCounts
     ) {
         public static final Snapshot EMPTY = new Snapshot(
                 0, 0, 0, 0, 0, 0, 0, 0,
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                List.of(),
                 List.of(),
                 List.of()
         );
@@ -367,6 +416,25 @@ public final class DungeonGenerationProfiler {
 
             private PieceCount snapshot() {
                 return new PieceCount(template, total, placed, failed);
+            }
+        }
+    }
+
+    public record GraphCandidateCount(String template, int attempts, int attachMatches, int outOfBounds, int collision, int accepted) {
+        private static final class Mutable {
+            private final String template;
+            private int attempts;
+            private int attachMatches;
+            private int outOfBounds;
+            private int collision;
+            private int accepted;
+
+            private Mutable(String template) {
+                this.template = template;
+            }
+
+            private GraphCandidateCount snapshot() {
+                return new GraphCandidateCount(template, attempts, attachMatches, outOfBounds, collision, accepted);
             }
         }
     }

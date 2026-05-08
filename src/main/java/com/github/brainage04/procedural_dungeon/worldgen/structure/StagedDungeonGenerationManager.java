@@ -332,10 +332,9 @@ public final class StagedDungeonGenerationManager {
 
             for (int x = markerMinX; x <= markerMaxX; x++) {
                 for (int z = markerMinZ; z <= markerMaxZ; z++) {
-                    boolean edge = x == markerMinX || x == markerMaxX || z == markerMinZ || z == markerMaxZ;
                     world.setBlock(
                             new BlockPos(x, y, z),
-                            edge ? Blocks.BLACK_CONCRETE.defaultBlockState() : debugStartMarkerColor(y - markerBaseY),
+                            debugStartMarkerColor(y - markerBaseY),
                             3
                     );
                 }

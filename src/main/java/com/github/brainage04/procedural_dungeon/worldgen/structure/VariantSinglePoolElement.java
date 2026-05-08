@@ -48,6 +48,10 @@ public class VariantSinglePoolElement extends StructurePoolElement {
         this.branchLimit = branchLimit;
     }
 
+    public Identifier templateLocation() {
+        return delegate.getTemplateLocation();
+    }
+
     @Override
     public Vec3i getSize(StructureTemplateManager structureTemplateManager, Rotation rotation) {
         return delegate.getSize(structureTemplateManager, rotation);

@@ -222,6 +222,8 @@ public final class StagedDungeonLayoutCompiler {
                 }
                 sawCandidate = true;
                 DungeonGenerationProfiler.recordGraphCandidateElement();
+                String candidateTemplate = candidateTemplate(candidate);
+                DungeonGenerationProfiler.recordGraphCandidateTemplate(candidateTemplate);
 
                 for (Rotation rotation : Rotation.getShuffled(random)) {
                     List<StructureTemplate.JigsawBlockInfo> targetJigsaws = candidate.getShuffledJigsawBlocks(
@@ -239,6 +241,7 @@ public final class StagedDungeonLayoutCompiler {
                         }
                         sawAttachMatch = true;
                         DungeonGenerationProfiler.recordGraphAttachMatch();
+                        DungeonGenerationProfiler.recordGraphCandidateTemplateAttachMatch(candidateTemplate);
 
                         CandidatePlacement placement = createCandidatePlacement(
                                 context,
@@ -257,11 +260,13 @@ public final class StagedDungeonLayoutCompiler {
                         if (!allowedBounds.containsDeflated(placement.boundingBox())) {
                             rejectedByOutOfBounds = true;
                             DungeonGenerationProfiler.recordGraphRejectedOutOfBounds();
+                            DungeonGenerationProfiler.recordGraphCandidateTemplateRejectedOutOfBounds(candidateTemplate);
                             continue;
                         }
                         if (occupancy.intersectsDeflated(placement.boundingBox())) {
                             rejectedByCollision = true;
                             DungeonGenerationProfiler.recordGraphRejectedCollision();
+                            DungeonGenerationProfiler.recordGraphCandidateTemplateRejectedCollision(candidateTemplate);
                             continue;
                         }
 
@@ -275,6 +280,7 @@ public final class StagedDungeonLayoutCompiler {
                         pieces.add(piece);
                         occupancy.add(placement.boundingBox());
                         DungeonGenerationProfiler.recordGraphAcceptedPiece();
+                        DungeonGenerationProfiler.recordGraphCandidateTemplateAccepted(candidateTemplate);
 
                         if (depth + 1 <= maxDepth) {
                             queue.add(new PendingPiece(piece, depth + 1), placementPriority);
@@ -305,6 +311,13 @@ public final class StagedDungeonLayoutCompiler {
                 }
             }
         }
+    }
+
+    private static String candidateTemplate(StructurePoolElement element) {
+        if (element instanceof VariantSinglePoolElement variantElement) {
+            return variantElement.templateLocation().toString();
+        }
+        return element.toString();
     }
 
     private static boolean isUnexpectedEmptyPool(Holder<StructureTemplatePool> pool) {
