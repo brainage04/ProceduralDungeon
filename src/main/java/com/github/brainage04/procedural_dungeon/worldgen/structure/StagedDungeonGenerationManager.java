@@ -16,16 +16,11 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.templatesystem.LiquidSettings;
 
 public final class StagedDungeonGenerationManager {
-    private static final boolean DEBUG_START_MARKERS = true;
-    private static final int DEBUG_START_MARKER_HEIGHT = 16;
-    private static final int DEBUG_START_MARKER_WIDTH = 8;
     private static final long TARGET_TICK_NANOS = 50_000_000L;
     private static final long MIN_BUDGET_NANOS = 2_000_000L;
     private static final long MAX_BUDGET_NANOS = 20_000_000L;
@@ -322,9 +317,6 @@ public final class StagedDungeonGenerationManager {
                 liquidSettings,
                 false
         );
-        if (DEBUG_START_MARKERS && piece.startPiece()) {
-            placeDebugStartMarker(world, piece.boundingBox());
-        }
         long elapsed = System.nanoTime() - start;
         if (elapsed > MAX_BUDGET_NANOS) {
             ProceduralDungeon.LOGGER.debug(
@@ -333,49 +325,6 @@ public final class StagedDungeonGenerationManager {
                     "%.2f".formatted(elapsed / 1_000_000.0)
             );
         }
-    }
-
-    private static void placeDebugStartMarker(WorldGenLevel world, BoundingBox box) {
-        int centerX = (box.minX() + box.maxX()) / 2;
-        int centerZ = (box.minZ() + box.maxZ()) / 2;
-        int markerBaseY = box.maxY() + 1;
-        int markerMinX = centerX - DEBUG_START_MARKER_WIDTH / 2;
-        int markerMinZ = centerZ - DEBUG_START_MARKER_WIDTH / 2;
-        int markerMaxX = markerMinX + DEBUG_START_MARKER_WIDTH - 1;
-        int markerMaxZ = markerMinZ + DEBUG_START_MARKER_WIDTH - 1;
-        for (int y = markerBaseY; y < markerBaseY + DEBUG_START_MARKER_HEIGHT; y++) {
-            if (world.isOutsideBuildHeight(y)) {
-                break;
-            }
-
-            for (int x = markerMinX; x <= markerMaxX; x++) {
-                for (int z = markerMinZ; z <= markerMaxZ; z++) {
-                    world.setBlock(
-                            new BlockPos(x, y, z),
-                            debugStartMarkerColor(y - markerBaseY),
-                            3
-                    );
-                }
-            }
-        }
-
-        BlockPos top = new BlockPos(centerX, markerBaseY + DEBUG_START_MARKER_HEIGHT, centerZ);
-        if (!world.isOutsideBuildHeight(top)) {
-            world.setBlock(top, Blocks.BEACON.defaultBlockState(), 3);
-        }
-    }
-
-    private static BlockState debugStartMarkerColor(int layer) {
-        return switch (Math.floorMod(layer, 8)) {
-            case 0 -> Blocks.RED_WOOL.defaultBlockState();
-            case 1 -> Blocks.ORANGE_WOOL.defaultBlockState();
-            case 2 -> Blocks.YELLOW_WOOL.defaultBlockState();
-            case 3 -> Blocks.LIME_WOOL.defaultBlockState();
-            case 4 -> Blocks.CYAN_WOOL.defaultBlockState();
-            case 5 -> Blocks.BLUE_WOOL.defaultBlockState();
-            case 6 -> Blocks.PURPLE_WOOL.defaultBlockState();
-            default -> Blocks.MAGENTA_WOOL.defaultBlockState();
-        };
     }
 
     public record Status(int jobs, int pendingPieces) {}
