@@ -5,6 +5,8 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.registries.Registries;
@@ -39,6 +41,8 @@ public class VariantSinglePoolElement extends StructurePoolElement {
     private final Identifier variant;
     private final int spawnerTier;
     private final int branchLimit;
+    private final Map<ResourceKey<StructureTemplatePool>, ResourceKey<StructureTemplatePool>> poolReplacementCache =
+            new ConcurrentHashMap<>();
 
     public VariantSinglePoolElement(SinglePoolElement delegate, Identifier variant, int spawnerTier, int branchLimit) {
         super(delegate.getProjection());
@@ -71,13 +75,28 @@ public class VariantSinglePoolElement extends StructurePoolElement {
         }
 
         long replacementStart = DungeonGenerationProfiler.start();
-        List<StructureTemplate.JigsawBlockInfo> jigsaws = delegateJigsaws.stream()
-                .map(this::replacePool)
-                .toList();
+        ArrayList<StructureTemplate.JigsawBlockInfo> replacedJigsaws = null;
+        int expandableJigsaws = 0;
+        for (int i = 0; i < delegateJigsaws.size(); i++) {
+            StructureTemplate.JigsawBlockInfo original = delegateJigsaws.get(i);
+            StructureTemplate.JigsawBlockInfo replaced = replacePool(original);
+            if (replacedJigsaws != null) {
+                replacedJigsaws.add(replaced);
+            } else if (replaced != original) {
+                replacedJigsaws = new ArrayList<>(delegateJigsaws.size());
+                for (int previous = 0; previous < i; previous++) {
+                    replacedJigsaws.add(delegateJigsaws.get(previous));
+                }
+                replacedJigsaws.add(replaced);
+            }
+            if (isExpandable(replaced)) {
+                expandableJigsaws++;
+            }
+        }
+        List<StructureTemplate.JigsawBlockInfo> jigsaws = replacedJigsaws == null ? delegateJigsaws : replacedJigsaws;
         if (replacementStart != 0L) {
             DungeonGenerationProfiler.recordPoolReplacement(System.nanoTime() - replacementStart);
         }
-        int expandableJigsaws = countExpandable(jigsaws);
 
         if (branchLimit == Integer.MAX_VALUE || pos.equals(BlockPos.ZERO)) {
             DungeonGenerationProfiler.recordJigsaws(jigsaws.size(), expandableJigsaws, jigsaws.size(), expandableJigsaws);
@@ -87,28 +106,21 @@ public class VariantSinglePoolElement extends StructurePoolElement {
         long branchStart = DungeonGenerationProfiler.start();
         List<StructureTemplate.JigsawBlockInfo> limited = new ArrayList<>(jigsaws.size());
         int branches = 0;
+        int keptExpandable = 0;
         for (StructureTemplate.JigsawBlockInfo info : jigsaws) {
             if (!isExpandable(info) || branches++ < branchLimit) {
                 limited.add(info);
+                if (isExpandable(info)) {
+                    keptExpandable++;
+                }
             }
         }
         if (branchStart != 0L) {
             DungeonGenerationProfiler.recordBranchLimit(System.nanoTime() - branchStart);
         }
 
-        DungeonGenerationProfiler.recordJigsaws(jigsaws.size(), expandableJigsaws, limited.size(), countExpandable(limited));
+        DungeonGenerationProfiler.recordJigsaws(jigsaws.size(), expandableJigsaws, limited.size(), keptExpandable);
         return limited;
-    }
-
-    private static int countExpandable(List<StructureTemplate.JigsawBlockInfo> jigsaws) {
-        int expandable = 0;
-        for (StructureTemplate.JigsawBlockInfo info : jigsaws) {
-            if (isExpandable(info)) {
-                expandable++;
-            }
-        }
-
-        return expandable;
     }
 
     private static boolean isExpandable(StructureTemplate.JigsawBlockInfo info) {
@@ -116,8 +128,9 @@ public class VariantSinglePoolElement extends StructurePoolElement {
     }
 
     private StructureTemplate.JigsawBlockInfo replacePool(StructureTemplate.JigsawBlockInfo info) {
-        Identifier replacement = DungeonJigsawPoolReplacements.getReplacement(info.pool().identifier(), variant, spawnerTier);
-        if (replacement.equals(info.pool().identifier())) {
+        ResourceKey<StructureTemplatePool> pool = info.pool();
+        ResourceKey<StructureTemplatePool> replacement = poolReplacementCache.computeIfAbsent(pool, this::replacementPool);
+        if (replacement == pool) {
             return info;
         }
 
@@ -125,11 +138,20 @@ public class VariantSinglePoolElement extends StructurePoolElement {
                 info.info(),
                 info.jointType(),
                 info.name(),
-                ResourceKey.create(Registries.TEMPLATE_POOL, replacement),
+                replacement,
                 info.target(),
                 info.placementPriority(),
                 info.selectionPriority()
         );
+    }
+
+    private ResourceKey<StructureTemplatePool> replacementPool(ResourceKey<StructureTemplatePool> pool) {
+        Identifier replacement = DungeonJigsawPoolReplacements.getReplacement(pool.identifier(), variant, spawnerTier);
+        if (replacement.equals(pool.identifier())) {
+            return pool;
+        }
+
+        return ResourceKey.create(Registries.TEMPLATE_POOL, replacement);
     }
 
     @Override

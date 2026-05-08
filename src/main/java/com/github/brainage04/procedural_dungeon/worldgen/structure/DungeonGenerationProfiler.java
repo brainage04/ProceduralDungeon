@@ -8,10 +8,14 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 
 public final class DungeonGenerationProfiler {
     private static final ThreadLocal<Run> CURRENT = new ThreadLocal<>();
+    private static volatile int activeRuns;
 
     private DungeonGenerationProfiler() {}
 
-    public static void begin() {
+    public static synchronized void begin() {
+        if (CURRENT.get() == null) {
+            activeRuns++;
+        }
         CURRENT.set(new Run());
     }
 
@@ -20,12 +24,19 @@ public final class DungeonGenerationProfiler {
     }
 
     public static long start() {
+        if (activeRuns == 0) {
+            return 0L;
+        }
+
         return isActive() ? System.nanoTime() : 0L;
     }
 
-    public static Snapshot finish() {
+    public static synchronized Snapshot finish() {
         Run run = CURRENT.get();
-        CURRENT.remove();
+        if (run != null) {
+            CURRENT.remove();
+            activeRuns = Math.max(0, activeRuns - 1);
+        }
         return run == null ? Snapshot.EMPTY : run.snapshot();
     }
 

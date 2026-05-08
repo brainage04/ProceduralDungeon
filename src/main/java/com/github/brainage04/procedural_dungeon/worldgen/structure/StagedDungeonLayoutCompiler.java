@@ -2,11 +2,9 @@ package com.github.brainage04.procedural_dungeon.worldgen.structure;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
@@ -430,12 +428,8 @@ public final class StagedDungeonLayoutCompiler {
 
     private static final class BoxOccupancy {
         private final Map<Long, List<BoundingBox>> buckets = new HashMap<>();
-        private final Set<BoundingBox> boxes = new HashSet<>();
 
         private void add(BoundingBox box) {
-            if (!boxes.add(box)) {
-                return;
-            }
             for (int bucketX = bucket(box.minX()); bucketX <= bucket(box.maxX()); bucketX++) {
                 for (int bucketZ = bucket(box.minZ()); bucketZ <= bucket(box.maxZ()); bucketZ++) {
                     buckets.computeIfAbsent(pack(bucketX, bucketZ), ignored -> new ArrayList<>()).add(box);
@@ -444,7 +438,6 @@ public final class StagedDungeonLayoutCompiler {
         }
 
         private boolean intersectsDeflated(BoundingBox candidate) {
-            HashSet<BoundingBox> checked = new HashSet<>();
             for (int bucketX = bucket(candidate.minX()); bucketX <= bucket(candidate.maxX()); bucketX++) {
                 for (int bucketZ = bucket(candidate.minZ()); bucketZ <= bucket(candidate.maxZ()); bucketZ++) {
                     List<BoundingBox> nearby = buckets.get(pack(bucketX, bucketZ));
@@ -452,7 +445,7 @@ public final class StagedDungeonLayoutCompiler {
                         continue;
                     }
                     for (BoundingBox box : nearby) {
-                        if (checked.add(box) && intersectsDeflated(box, candidate)) {
+                        if (intersectsDeflated(box, candidate)) {
                             return true;
                         }
                     }

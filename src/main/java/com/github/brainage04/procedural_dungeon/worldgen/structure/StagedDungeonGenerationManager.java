@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.SectionPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
@@ -212,6 +213,7 @@ public final class StagedDungeonGenerationManager {
         private final LiquidSettings liquidSettings;
         private final boolean tracked;
         private final java.util.Set<Long> ticketedChunks = new java.util.HashSet<>();
+        private final RandomSource placementRandom = RandomSource.create(0L);
 
         private Job(
                 ChunkPos startChunk,
@@ -241,22 +243,35 @@ public final class StagedDungeonGenerationManager {
             }
 
             pending.removeFirst();
-            placePiece(level, level.structureManager(), level.getChunkSource().getGenerator(), piece, liquidSettings);
+            placePiece(level, level.structureManager(), level.getChunkSource().getGenerator(), piece, liquidSettings, placementRandom);
             return true;
         }
 
         private void ensureChunkTickets(ServerLevel level, BoundingBox box) {
-            for (ChunkPos chunk : box.intersectingChunks().toList()) {
-                if (ticketedChunks.add(chunk.pack())) {
-                    level.getChunkSource().addTicketWithRadius(TicketType.FORCED, chunk, 1);
+            int minChunkX = SectionPos.blockToSectionCoord(box.minX());
+            int maxChunkX = SectionPos.blockToSectionCoord(box.maxX());
+            int minChunkZ = SectionPos.blockToSectionCoord(box.minZ());
+            int maxChunkZ = SectionPos.blockToSectionCoord(box.maxZ());
+            for (int chunkX = minChunkX; chunkX <= maxChunkX; chunkX++) {
+                for (int chunkZ = minChunkZ; chunkZ <= maxChunkZ; chunkZ++) {
+                    long packed = ChunkPos.pack(chunkX, chunkZ);
+                    if (ticketedChunks.add(packed)) {
+                        level.getChunkSource().addTicketWithRadius(TicketType.FORCED, new ChunkPos(chunkX, chunkZ), 1);
+                    }
                 }
             }
         }
 
         private boolean chunksLoaded(ServerLevel level, BoundingBox box) {
-            for (ChunkPos chunk : box.intersectingChunks().toList()) {
-                if (level.getChunkSource().getChunkNow(chunk.x(), chunk.z()) == null) {
-                    return false;
+            int minChunkX = SectionPos.blockToSectionCoord(box.minX());
+            int maxChunkX = SectionPos.blockToSectionCoord(box.maxX());
+            int minChunkZ = SectionPos.blockToSectionCoord(box.minZ());
+            int maxChunkZ = SectionPos.blockToSectionCoord(box.maxZ());
+            for (int chunkX = minChunkX; chunkX <= maxChunkX; chunkX++) {
+                for (int chunkZ = minChunkZ; chunkZ <= maxChunkZ; chunkZ++) {
+                    if (level.getChunkSource().getChunkNow(chunkX, chunkZ) == null) {
+                        return false;
+                    }
                 }
             }
 
@@ -275,8 +290,9 @@ public final class StagedDungeonGenerationManager {
 
     public static int placeSynchronously(ServerLevel level, List<StagedDungeonPieceSpec> pieces, LiquidSettings liquidSettings) {
         int placed = 0;
+        RandomSource random = RandomSource.create(0L);
         for (StagedDungeonPieceSpec piece : pieces) {
-            placePiece(level, level.structureManager(), level.getChunkSource().getGenerator(), piece, liquidSettings);
+            placePiece(level, level.structureManager(), level.getChunkSource().getGenerator(), piece, liquidSettings, random);
             placed++;
         }
 
@@ -288,9 +304,11 @@ public final class StagedDungeonGenerationManager {
             StructureManager structureManager,
             ChunkGenerator chunkGenerator,
             StagedDungeonPieceSpec piece,
-            LiquidSettings liquidSettings
+            LiquidSettings liquidSettings,
+            RandomSource random
     ) {
         long start = System.nanoTime();
+        random.setSeed(world.getSeed() ^ piece.position().asLong());
         piece.element().place(
                 world.getLevel().getStructureManager(),
                 world,
@@ -300,7 +318,7 @@ public final class StagedDungeonGenerationManager {
                 BlockPos.ZERO,
                 piece.rotation(),
                 piece.boundingBox(),
-                RandomSource.create(world.getSeed() ^ piece.position().asLong()),
+                random,
                 liquidSettings,
                 false
         );

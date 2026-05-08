@@ -49,10 +49,11 @@ trap cleanup EXIT
 
 write_void_flat_properties() {
     local generator_settings='{"layers":[],"biome":"minecraft:the_void","structure_overrides":[]}'
-    awk -v world="$world_name" -v generator_settings="$generator_settings" '
+    awk -v world="$world_name" -v seed="$seed" -v generator_settings="$generator_settings" '
         BEGIN {
             seen_generate = 0
             seen_generator = 0
+            seen_level_seed = 0
             seen_level_name = 0
             seen_level_type = 0
             seen_pause = 0
@@ -72,6 +73,11 @@ write_void_flat_properties() {
             seen_level_name = 1
             next
         }
+        /^level-seed=/ {
+            print "level-seed=" seed
+            seen_level_seed = 1
+            next
+        }
         /^level-type=/ {
             print "level-type=minecraft\\:flat"
             seen_level_type = 1
@@ -87,6 +93,7 @@ write_void_flat_properties() {
             if (!seen_generate) print "generate-structures=false"
             if (!seen_generator) print "generator-settings=" generator_settings
             if (!seen_level_name) print "level-name=" world
+            if (!seen_level_seed) print "level-seed=" seed
             if (!seen_level_type) print "level-type=minecraft\\:flat"
             if (!seen_pause) print "pause-when-empty-seconds=0"
         }

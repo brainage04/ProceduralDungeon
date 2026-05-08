@@ -4,7 +4,6 @@ import com.github.brainage04.procedural_dungeon.worldgen.structure.DungeonGenera
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import java.util.Optional;
-import java.util.Set;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -24,22 +23,6 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProc
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 
 public class ThemeShapeReplacementProcessor extends StructureProcessor {
-    private static final Set<Block> STAIR_INPUTS = Set.of(
-            Blocks.COBBLESTONE_STAIRS,
-            Blocks.STONE_BRICK_STAIRS,
-            Blocks.MOSSY_STONE_BRICK_STAIRS
-    );
-    private static final Set<Block> SLAB_INPUTS = Set.of(
-            Blocks.COBBLESTONE_SLAB,
-            Blocks.STONE_SLAB,
-            Blocks.STONE_BRICK_SLAB,
-            Blocks.MOSSY_STONE_BRICK_SLAB
-    );
-    private static final Set<Block> WALL_INPUTS = Set.of(
-            Blocks.COBBLESTONE_WALL,
-            Blocks.MOSSY_STONE_BRICK_WALL
-    );
-
     public static final MapCodec<ThemeShapeReplacementProcessor> CODEC =
             RecordCodecBuilder.mapCodec(instance -> instance.group(
                     Identifier.CODEC.fieldOf("fallback").forGetter(processor -> processor.fallback),
@@ -52,6 +35,10 @@ public class ThemeShapeReplacementProcessor extends StructureProcessor {
     private final Optional<Identifier> stairs;
     private final Optional<Identifier> slab;
     private final Optional<Identifier> wall;
+    private final BlockState fallbackState;
+    private final BlockState stairsState;
+    private final BlockState slabState;
+    private final BlockState wallState;
 
     public ThemeShapeReplacementProcessor(
             Identifier fallback,
@@ -63,10 +50,10 @@ public class ThemeShapeReplacementProcessor extends StructureProcessor {
         this.stairs = stairs;
         this.slab = slab;
         this.wall = wall;
-        block(fallback);
-        stairs.ifPresent(ThemeShapeReplacementProcessor::block);
-        slab.ifPresent(ThemeShapeReplacementProcessor::block);
-        wall.ifPresent(ThemeShapeReplacementProcessor::block);
+        this.fallbackState = defaultState(fallback);
+        this.stairsState = stairs.map(ThemeShapeReplacementProcessor::defaultState).orElse(null);
+        this.slabState = slab.map(ThemeShapeReplacementProcessor::defaultState).orElse(null);
+        this.wallState = wall.map(ThemeShapeReplacementProcessor::defaultState).orElse(null);
     }
 
     @Override
@@ -84,11 +71,11 @@ public class ThemeShapeReplacementProcessor extends StructureProcessor {
             Block block = state.getBlock();
             BlockState replacement = null;
 
-            if (STAIR_INPUTS.contains(block)) {
+            if (isStairInput(block)) {
                 replacement = replaceStairs(state);
-            } else if (SLAB_INPUTS.contains(block)) {
+            } else if (isSlabInput(block)) {
                 replacement = replaceSlab(state);
-            } else if (WALL_INPUTS.contains(block)) {
+            } else if (isWallInput(block)) {
                 replacement = replaceWall(state);
             }
 
@@ -105,28 +92,33 @@ public class ThemeShapeReplacementProcessor extends StructureProcessor {
     }
 
     private BlockState replaceStairs(BlockState input) {
-        return stairs
-                .map(ThemeShapeReplacementProcessor::defaultState)
-                .map(output -> copyStairProperties(input, output))
-                .orElseGet(this::fallbackState);
+        return stairsState == null ? fallbackState : copyStairProperties(input, stairsState);
     }
 
     private BlockState replaceSlab(BlockState input) {
-        return slab
-                .map(ThemeShapeReplacementProcessor::defaultState)
-                .map(output -> copySlabProperties(input, output))
-                .orElseGet(this::fallbackState);
+        return slabState == null ? fallbackState : copySlabProperties(input, slabState);
     }
 
     private BlockState replaceWall(BlockState input) {
-        return wall
-                .map(ThemeShapeReplacementProcessor::defaultState)
-                .map(output -> copyWallProperties(input, output))
-                .orElseGet(this::fallbackState);
+        return wallState == null ? fallbackState : copyWallProperties(input, wallState);
     }
 
-    private BlockState fallbackState() {
-        return defaultState(fallback);
+    private static boolean isStairInput(Block block) {
+        return block == Blocks.COBBLESTONE_STAIRS
+                || block == Blocks.STONE_BRICK_STAIRS
+                || block == Blocks.MOSSY_STONE_BRICK_STAIRS;
+    }
+
+    private static boolean isSlabInput(Block block) {
+        return block == Blocks.COBBLESTONE_SLAB
+                || block == Blocks.STONE_SLAB
+                || block == Blocks.STONE_BRICK_SLAB
+                || block == Blocks.MOSSY_STONE_BRICK_SLAB;
+    }
+
+    private static boolean isWallInput(Block block) {
+        return block == Blocks.COBBLESTONE_WALL
+                || block == Blocks.MOSSY_STONE_BRICK_WALL;
     }
 
     private static BlockState defaultState(Identifier id) {
