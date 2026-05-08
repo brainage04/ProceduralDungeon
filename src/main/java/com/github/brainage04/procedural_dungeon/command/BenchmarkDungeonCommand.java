@@ -294,6 +294,9 @@ public class BenchmarkDungeonCommand {
                                     sampleProfile.graphRejectedEmptyFallback()
                             )
             ), true);
+            source.sendSuccess(() -> Component.literal(
+                    "  pieces: %s.".formatted(formatPieceCounts(sampleProfile.pieceCounts()))
+            ), true);
             if (sampleProfile.failedPieces() > 0) {
                 source.sendFailure(Component.literal(
                         "  warning: %d piece placements reported failure.".formatted(sampleProfile.failedPieces())
@@ -375,6 +378,38 @@ public class BenchmarkDungeonCommand {
                 .limit(4)
                 .reduce((left, right) -> left + ", " + right)
                 .orElse("none");
+    }
+
+    private static String formatPieceCounts(List<DungeonGenerationProfiler.PieceCount> pieceCounts) {
+        if (pieceCounts.isEmpty()) {
+            return "none";
+        }
+
+        return pieceCounts.stream()
+                .sorted((left, right) -> {
+                    int count = Integer.compare(right.placed(), left.placed());
+                    return count != 0 ? count : left.template().compareTo(right.template());
+                })
+                .map(count -> {
+                    String label = pieceLabel(count.template());
+                    if (count.failed() > 0) {
+                        return "%s %d/%d placed".formatted(label, count.placed(), count.total());
+                    }
+                    return "%s %d".formatted(label, count.placed());
+                })
+                .reduce((left, right) -> left + ", " + right)
+                .orElse("none");
+    }
+
+    private static String pieceLabel(String template) {
+        String label = template;
+        if (label.startsWith("procedural_dungeon:")) {
+            label = label.substring("procedural_dungeon:".length());
+        }
+        if (label.startsWith("dungeon/")) {
+            label = label.substring("dungeon/".length());
+        }
+        return label;
     }
 
     private static List<GenerationSample> tierFiveSamples(int samples, long seed) {

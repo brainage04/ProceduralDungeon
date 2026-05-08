@@ -174,7 +174,7 @@ public final class DungeonGenerationProfiler {
         }
     }
 
-    public static void recordPiece(Identifier variant, BoundingBox boundingBox, boolean placed, long placementNanos) {
+    public static void recordPiece(Identifier variant, Identifier template, BoundingBox boundingBox, boolean placed, long placementNanos) {
         Run run = CURRENT.get();
         if (run == null) {
             return;
@@ -189,6 +189,14 @@ public final class DungeonGenerationProfiler {
         run.boundingBoxVolume += volume(boundingBox);
         run.piecePlacementNanos += placementNanos;
         run.maxPiecePlacementNanos = Math.max(run.maxPiecePlacementNanos, placementNanos);
+
+        PieceCount.Mutable pieceCount = run.pieceCounts.computeIfAbsent(template.toString(), PieceCount.Mutable::new);
+        pieceCount.total++;
+        if (placed) {
+            pieceCount.placed++;
+        } else {
+            pieceCount.failed++;
+        }
     }
 
     public static void recordProcessor(String id, long nanos) {
@@ -237,6 +245,7 @@ public final class DungeonGenerationProfiler {
         private long piecePlacementNanos;
         private long maxPiecePlacementNanos;
         private final Map<String, ProcessorTiming.Mutable> processorTimings = new LinkedHashMap<>();
+        private final Map<String, PieceCount.Mutable> pieceCounts = new LinkedHashMap<>();
 
         private Snapshot snapshot() {
             return new Snapshot(
@@ -271,6 +280,9 @@ public final class DungeonGenerationProfiler {
                     maxPiecePlacementNanos,
                     processorTimings.values().stream()
                             .map(ProcessorTiming.Mutable::snapshot)
+                            .toList(),
+                    pieceCounts.values().stream()
+                            .map(PieceCount.Mutable::snapshot)
                             .toList()
             );
         }
@@ -306,12 +318,14 @@ public final class DungeonGenerationProfiler {
             long boundingBoxLookupNanos,
             long piecePlacementNanos,
             long maxPiecePlacementNanos,
-            List<ProcessorTiming> processorTimings
+            List<ProcessorTiming> processorTimings,
+            List<PieceCount> pieceCounts
     ) {
         public static final Snapshot EMPTY = new Snapshot(
                 0, 0, 0, 0, 0, 0, 0, 0,
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                List.of(),
                 List.of()
         );
 
@@ -336,6 +350,23 @@ public final class DungeonGenerationProfiler {
 
             private ProcessorTiming snapshot() {
                 return new ProcessorTiming(id, calls, nanos);
+            }
+        }
+    }
+
+    public record PieceCount(String template, int total, int placed, int failed) {
+        private static final class Mutable {
+            private final String template;
+            private int total;
+            private int placed;
+            private int failed;
+
+            private Mutable(String template) {
+                this.template = template;
+            }
+
+            private PieceCount snapshot() {
+                return new PieceCount(template, total, placed, failed);
             }
         }
     }

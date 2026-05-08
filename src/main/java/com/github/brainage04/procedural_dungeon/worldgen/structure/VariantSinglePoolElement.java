@@ -163,7 +163,7 @@ public class VariantSinglePoolElement extends StructurePoolElement {
         }
         long placementStart = System.nanoTime();
         boolean placed = delegate.place(structureTemplateManager, world, structureAccessor, chunkGenerator, pos, pivot, rotation, box, random, liquidSettings, keepJigsaws);
-        DungeonGenerationProfiler.recordPiece(variant, boundingBox, placed, System.nanoTime() - placementStart);
+        DungeonGenerationProfiler.recordPiece(variant, delegate.getTemplateLocation(), boundingBox, placed, System.nanoTime() - placementStart);
         return placed;
     }
 
