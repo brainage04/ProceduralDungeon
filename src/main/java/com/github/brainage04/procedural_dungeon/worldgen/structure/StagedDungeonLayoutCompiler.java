@@ -185,6 +185,7 @@ public final class StagedDungeonLayoutCompiler {
         int parentMinY = parent.boundingBox().minY();
 
         for (StructureTemplate.JigsawBlockInfo sourceJigsaw : parentElement.getShuffledJigsawBlocks(templateManager, parentPos, parentRotation, random)) {
+            DungeonGenerationProfiler.recordGraphSourceJigsaw();
             StructureTemplate.StructureBlockInfo sourceInfo = sourceJigsaw.info();
             Direction sourceFacing = JigsawBlock.getFrontFacing(sourceInfo.state());
             BlockPos sourcePos = sourceInfo.pos();
@@ -192,11 +193,13 @@ public final class StagedDungeonLayoutCompiler {
             int sourceDeltaY = sourcePos.getY() - parentMinY;
             Optional<Holder.Reference<StructureTemplatePool>> poolHolder = pools.get(PoolAliasLookup.EMPTY.lookup(sourceJigsaw.pool()));
             if (poolHolder.isEmpty() || isUnexpectedEmptyPool(poolHolder.get())) {
+                DungeonGenerationProfiler.recordGraphRejectedEmptyPool();
                 continue;
             }
 
             Holder<StructureTemplatePool> fallback = poolHolder.get().value().getFallback();
             if (isUnexpectedEmptyPool(fallback)) {
+                DungeonGenerationProfiler.recordGraphRejectedEmptyFallback();
                 continue;
             }
 
@@ -208,10 +211,16 @@ public final class StagedDungeonLayoutCompiler {
 
             int placementPriority = sourceJigsaw.placementPriority();
             boolean acceptedForSource = false;
+            boolean sawCandidate = false;
+            boolean sawAttachMatch = false;
+            boolean rejectedByOutOfBounds = false;
+            boolean rejectedByCollision = false;
             for (StructurePoolElement candidate : candidates) {
                 if (candidate == EmptyPoolElement.INSTANCE) {
                     break;
                 }
+                sawCandidate = true;
+                DungeonGenerationProfiler.recordGraphCandidateElement();
 
                 for (Rotation rotation : Rotation.getShuffled(random)) {
                     List<StructureTemplate.JigsawBlockInfo> targetJigsaws = candidate.getShuffledJigsawBlocks(
@@ -227,6 +236,8 @@ public final class StagedDungeonLayoutCompiler {
                         if (!JigsawBlock.canAttach(sourceJigsaw, targetJigsaw)) {
                             continue;
                         }
+                        sawAttachMatch = true;
+                        DungeonGenerationProfiler.recordGraphAttachMatch();
 
                         CandidatePlacement placement = createCandidatePlacement(
                                 context,
@@ -242,7 +253,14 @@ public final class StagedDungeonLayoutCompiler {
                                 expansionHeight,
                                 templateManager
                         );
-                        if (!allowedBounds.containsDeflated(placement.boundingBox()) || occupancy.intersectsDeflated(placement.boundingBox())) {
+                        if (!allowedBounds.containsDeflated(placement.boundingBox())) {
+                            rejectedByOutOfBounds = true;
+                            DungeonGenerationProfiler.recordGraphRejectedOutOfBounds();
+                            continue;
+                        }
+                        if (occupancy.intersectsDeflated(placement.boundingBox())) {
+                            rejectedByCollision = true;
+                            DungeonGenerationProfiler.recordGraphRejectedCollision();
                             continue;
                         }
 
@@ -255,6 +273,7 @@ public final class StagedDungeonLayoutCompiler {
                         );
                         pieces.add(piece);
                         occupancy.add(placement.boundingBox());
+                        DungeonGenerationProfiler.recordGraphAcceptedPiece();
 
                         if (depth + 1 <= maxDepth) {
                             queue.add(new PendingPiece(piece, depth + 1), placementPriority);
@@ -270,6 +289,18 @@ public final class StagedDungeonLayoutCompiler {
 
                 if (acceptedForSource) {
                     break;
+                }
+            }
+
+            if (!acceptedForSource) {
+                if (!sawCandidate) {
+                    DungeonGenerationProfiler.recordGraphRejectedNoCandidate();
+                } else if (!sawAttachMatch) {
+                    DungeonGenerationProfiler.recordGraphRejectedNoAttach();
+                } else if (rejectedByCollision) {
+                    DungeonGenerationProfiler.recordGraphSourceTerminalCollision();
+                } else if (rejectedByOutOfBounds) {
+                    DungeonGenerationProfiler.recordGraphSourceTerminalOutOfBounds();
                 }
             }
         }

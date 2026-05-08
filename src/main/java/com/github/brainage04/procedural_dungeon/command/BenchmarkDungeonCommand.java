@@ -277,6 +277,23 @@ public class BenchmarkDungeonCommand {
                                     formatProcessors(sampleProfile.processorTimings())
                             )
             ), true);
+            source.sendSuccess(() -> Component.literal(
+                    "  graph: sources %,d, candidates %,d, attach matches %,d, accepted %,d; terminal no-candidate %,d, no-attach %,d, bounds %,d, collision %,d; candidate rejects bounds %,d, collision %,d, empty-pool %,d, empty-fallback %,d."
+                            .formatted(
+                                    sampleProfile.graphSourceJigsaws(),
+                                    sampleProfile.graphCandidateElements(),
+                                    sampleProfile.graphAttachMatches(),
+                                    sampleProfile.graphAcceptedPieces(),
+                                    sampleProfile.graphRejectedNoCandidate(),
+                                    sampleProfile.graphRejectedNoAttach(),
+                                    sampleProfile.graphSourceTerminalOutOfBounds(),
+                                    sampleProfile.graphSourceTerminalCollision(),
+                                    sampleProfile.graphRejectedOutOfBounds(),
+                                    sampleProfile.graphRejectedCollision(),
+                                    sampleProfile.graphRejectedEmptyPool(),
+                                    sampleProfile.graphRejectedEmptyFallback()
+                            )
+            ), true);
             if (sampleProfile.failedPieces() > 0) {
                 source.sendFailure(Component.literal(
                         "  warning: %d piece placements reported failure.".formatted(sampleProfile.failedPieces())

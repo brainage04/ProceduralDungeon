@@ -90,6 +90,90 @@ public final class DungeonGenerationProfiler {
         run.keptExpandableJigsaws += keptExpandable;
     }
 
+    public static void recordGraphSourceJigsaw() {
+        Run run = CURRENT.get();
+        if (run != null) {
+            run.graphSourceJigsaws++;
+        }
+    }
+
+    public static void recordGraphCandidateElement() {
+        Run run = CURRENT.get();
+        if (run != null) {
+            run.graphCandidateElements++;
+        }
+    }
+
+    public static void recordGraphAttachMatch() {
+        Run run = CURRENT.get();
+        if (run != null) {
+            run.graphAttachMatches++;
+        }
+    }
+
+    public static void recordGraphAcceptedPiece() {
+        Run run = CURRENT.get();
+        if (run != null) {
+            run.graphAcceptedPieces++;
+        }
+    }
+
+    public static void recordGraphRejectedEmptyPool() {
+        Run run = CURRENT.get();
+        if (run != null) {
+            run.graphRejectedEmptyPool++;
+        }
+    }
+
+    public static void recordGraphRejectedEmptyFallback() {
+        Run run = CURRENT.get();
+        if (run != null) {
+            run.graphRejectedEmptyFallback++;
+        }
+    }
+
+    public static void recordGraphRejectedNoCandidate() {
+        Run run = CURRENT.get();
+        if (run != null) {
+            run.graphRejectedNoCandidate++;
+        }
+    }
+
+    public static void recordGraphRejectedNoAttach() {
+        Run run = CURRENT.get();
+        if (run != null) {
+            run.graphRejectedNoAttach++;
+        }
+    }
+
+    public static void recordGraphRejectedOutOfBounds() {
+        Run run = CURRENT.get();
+        if (run != null) {
+            run.graphRejectedOutOfBounds++;
+        }
+    }
+
+    public static void recordGraphRejectedCollision() {
+        Run run = CURRENT.get();
+        if (run != null) {
+            run.graphRejectedCollision++;
+        }
+    }
+
+    public static void recordGraphSourceTerminalOutOfBounds() {
+        Run run = CURRENT.get();
+        if (run != null) {
+            run.graphSourceTerminalOutOfBounds++;
+        }
+    }
+
+    public static void recordGraphSourceTerminalCollision() {
+        Run run = CURRENT.get();
+        if (run != null) {
+            run.graphSourceTerminalCollision++;
+        }
+    }
+
     public static void recordPiece(Identifier variant, BoundingBox boundingBox, boolean placed, long placementNanos) {
         Run run = CURRENT.get();
         if (run == null) {
@@ -131,6 +215,18 @@ public final class DungeonGenerationProfiler {
         private int expandableJigsaws;
         private int keptJigsaws;
         private int keptExpandableJigsaws;
+        private int graphSourceJigsaws;
+        private int graphCandidateElements;
+        private int graphAttachMatches;
+        private int graphAcceptedPieces;
+        private int graphRejectedEmptyPool;
+        private int graphRejectedEmptyFallback;
+        private int graphRejectedNoCandidate;
+        private int graphRejectedNoAttach;
+        private int graphRejectedOutOfBounds;
+        private int graphRejectedCollision;
+        private int graphSourceTerminalOutOfBounds;
+        private int graphSourceTerminalCollision;
         private long layoutStubSetupNanos;
         private long graphExpansionNanos;
         private long solidDensityNanos;
@@ -152,6 +248,18 @@ public final class DungeonGenerationProfiler {
                     expandableJigsaws,
                     keptJigsaws,
                     keptExpandableJigsaws,
+                    graphSourceJigsaws,
+                    graphCandidateElements,
+                    graphAttachMatches,
+                    graphAcceptedPieces,
+                    graphRejectedEmptyPool,
+                    graphRejectedEmptyFallback,
+                    graphRejectedNoCandidate,
+                    graphRejectedNoAttach,
+                    graphRejectedOutOfBounds,
+                    graphRejectedCollision,
+                    graphSourceTerminalOutOfBounds,
+                    graphSourceTerminalCollision,
                     layoutStubSetupNanos,
                     graphExpansionNanos,
                     solidDensityNanos,
@@ -177,6 +285,18 @@ public final class DungeonGenerationProfiler {
             int expandableJigsaws,
             int keptJigsaws,
             int keptExpandableJigsaws,
+            int graphSourceJigsaws,
+            int graphCandidateElements,
+            int graphAttachMatches,
+            int graphAcceptedPieces,
+            int graphRejectedEmptyPool,
+            int graphRejectedEmptyFallback,
+            int graphRejectedNoCandidate,
+            int graphRejectedNoAttach,
+            int graphRejectedOutOfBounds,
+            int graphRejectedCollision,
+            int graphSourceTerminalOutOfBounds,
+            int graphSourceTerminalCollision,
             long layoutStubSetupNanos,
             long graphExpansionNanos,
             long solidDensityNanos,
@@ -190,6 +310,7 @@ public final class DungeonGenerationProfiler {
     ) {
         public static final Snapshot EMPTY = new Snapshot(
                 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                 0, 0, 0, 0, 0, 0, 0, 0, 0,
                 List.of()
         );
