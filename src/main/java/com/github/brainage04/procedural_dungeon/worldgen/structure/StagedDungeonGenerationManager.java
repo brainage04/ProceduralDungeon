@@ -16,6 +16,7 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.templatesystem.LiquidSettings;
@@ -334,7 +335,7 @@ public final class StagedDungeonGenerationManager {
                     boolean edge = x == markerMinX || x == markerMaxX || z == markerMinZ || z == markerMaxZ;
                     world.setBlock(
                             new BlockPos(x, y, z),
-                            edge ? Blocks.BLACK_CONCRETE.defaultBlockState() : Blocks.LIME_WOOL.defaultBlockState(),
+                            edge ? Blocks.BLACK_CONCRETE.defaultBlockState() : debugStartMarkerColor(y - markerBaseY),
                             3
                     );
                 }
@@ -345,6 +346,19 @@ public final class StagedDungeonGenerationManager {
         if (!world.isOutsideBuildHeight(top)) {
             world.setBlock(top, Blocks.BEACON.defaultBlockState(), 3);
         }
+    }
+
+    private static BlockState debugStartMarkerColor(int layer) {
+        return switch (Math.floorMod(layer, 8)) {
+            case 0 -> Blocks.RED_WOOL.defaultBlockState();
+            case 1 -> Blocks.ORANGE_WOOL.defaultBlockState();
+            case 2 -> Blocks.YELLOW_WOOL.defaultBlockState();
+            case 3 -> Blocks.LIME_WOOL.defaultBlockState();
+            case 4 -> Blocks.CYAN_WOOL.defaultBlockState();
+            case 5 -> Blocks.BLUE_WOOL.defaultBlockState();
+            case 6 -> Blocks.PURPLE_WOOL.defaultBlockState();
+            default -> Blocks.MAGENTA_WOOL.defaultBlockState();
+        };
     }
 
     public record Status(int jobs, int pendingPieces) {}
