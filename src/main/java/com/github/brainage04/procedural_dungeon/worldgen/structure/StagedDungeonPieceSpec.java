@@ -14,8 +14,19 @@ public record StagedDungeonPieceSpec(
         BlockPos position,
         Rotation rotation,
         BoundingBox boundingBox,
-        int groundLevelDelta
+        int groundLevelDelta,
+        boolean startPiece
 ) {
+    public StagedDungeonPieceSpec(
+            StructurePoolElement element,
+            BlockPos position,
+            Rotation rotation,
+            BoundingBox boundingBox,
+            int groundLevelDelta
+    ) {
+        this(element, position, rotation, boundingBox, groundLevelDelta, false);
+    }
+
     public CompoundTag save(RegistryOps<Tag> ops) {
         CompoundTag tag = new CompoundTag();
         tag.store("element", StructurePoolElement.CODEC, ops, element);
@@ -25,6 +36,7 @@ public record StagedDungeonPieceSpec(
         tag.store("rotation", Rotation.LEGACY_CODEC, rotation);
         tag.store("bounding_box", BoundingBox.CODEC, boundingBox);
         tag.putInt("ground_level_delta", groundLevelDelta);
+        tag.putBoolean("start_piece", startPiece);
         return tag;
     }
 
@@ -38,7 +50,8 @@ public record StagedDungeonPieceSpec(
         Rotation rotation = tag.read("rotation", Rotation.LEGACY_CODEC).orElse(Rotation.NONE);
         BoundingBox boundingBox = tag.read("bounding_box", BoundingBox.CODEC).orElseThrow();
         int groundLevelDelta = tag.getIntOr("ground_level_delta", element.getGroundLevelDelta());
-        return new StagedDungeonPieceSpec(element, position, rotation, boundingBox, groundLevelDelta);
+        boolean startPiece = tag.getBooleanOr("start_piece", false);
+        return new StagedDungeonPieceSpec(element, position, rotation, boundingBox, groundLevelDelta, startPiece);
     }
 
     public static RegistryOps<Tag> ops(net.minecraft.core.RegistryAccess registryAccess) {

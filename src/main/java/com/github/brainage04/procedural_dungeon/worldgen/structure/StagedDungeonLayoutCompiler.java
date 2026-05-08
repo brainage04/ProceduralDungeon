@@ -123,7 +123,8 @@ public final class StagedDungeonLayoutCompiler {
                 piecePos,
                 startRotation,
                 startBox,
-                startElement.getGroundLevelDelta()
+                startElement.getGroundLevelDelta(),
+                true
         );
         pieces.add(startPiece);
         occupancy.add(startBox);
