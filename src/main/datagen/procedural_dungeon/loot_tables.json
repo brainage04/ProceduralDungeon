@@ -12,7 +12,20 @@
         "rolls": "$goodRolls"
       },
       { "tierItems": "resources", "count": [1, 2], "rolls": "$goodRolls" },
-      { "enchantedBooks": ["armor", "damage", "mining"], "levels": "$levels" }
+      {
+        "enchantedBooks": [
+          { "enchantment": "minecraft:protection", "weight": 6 },
+          { "enchantment": "minecraft:projectile_protection", "weight": 3 },
+          { "enchantment": "minecraft:sharpness", "weight": 5 },
+          { "enchantment": "minecraft:smite", "weight": 4 },
+          { "enchantment": "minecraft:bane_of_arthropods", "weight": 3 },
+          { "enchantment": "minecraft:unbreaking", "weight": 5 },
+          { "enchantment": "minecraft:thorns", "weight": 2 },
+          { "enchantment": "minecraft:efficiency", "weight": 4 },
+          { "enchantment": "minecraft:fortune", "weight": 2 }
+        ],
+        "rolls": 3
+      }
     ],
     "hallway_loot": [
       { "item": "minecraft:stick", "count": [4, 8], "rolls": 1 },
@@ -26,7 +39,20 @@
         "rolls": "$goodRolls"
       },
       { "tierItems": "resources", "count": [2, 4], "rolls": "$goodRolls" },
-      { "enchantedBooks": ["armor", "damage", "mining"], "levels": "$levels * 2" }
+      {
+        "enchantedBooks": [
+          { "enchantment": "minecraft:protection", "weight": 6 },
+          { "enchantment": "minecraft:projectile_protection", "weight": 3 },
+          { "enchantment": "minecraft:sharpness", "weight": 5 },
+          { "enchantment": "minecraft:smite", "weight": 4 },
+          { "enchantment": "minecraft:bane_of_arthropods", "weight": 3 },
+          { "enchantment": "minecraft:unbreaking", "weight": 5 },
+          { "enchantment": "minecraft:thorns", "weight": 2 },
+          { "enchantment": "minecraft:efficiency", "weight": 4 },
+          { "enchantment": "minecraft:fortune", "weight": 2 }
+        ],
+        "rolls": 3
+      }
     ],
     "armorsmith": [
       { "tierEquipment": ["helmet", "chestplate", "leggings", "boots"], "enchant": "armor", "levels": "$levels" }
@@ -42,7 +68,28 @@
     "enchanter": [
       { "item": "minecraft:experience_bottle", "count": [4, 8], "rolls": "$goodRolls" },
       { "item": "minecraft:lapis_lazuli", "count": [4, 8], "rolls": "$goodRolls" },
-      { "enchantedBooks": ["armor", "damage", "bow", "crossbow", "mining"], "levels": "$levels" }
+      {
+        "enchantedBooks": [
+          { "enchantment": "minecraft:protection", "weight": 6 },
+          { "enchantment": "minecraft:projectile_protection", "weight": 3 },
+          { "enchantment": "minecraft:feather_falling", "weight": 2 },
+          { "enchantment": "minecraft:sharpness", "weight": 5 },
+          { "enchantment": "minecraft:smite", "weight": 4 },
+          { "enchantment": "minecraft:bane_of_arthropods", "weight": 3 },
+          { "enchantment": "minecraft:unbreaking", "weight": 5 },
+          { "enchantment": "minecraft:thorns", "weight": 2 },
+          { "enchantment": "minecraft:efficiency", "weight": 4 },
+          { "enchantment": "minecraft:fortune", "weight": 2 },
+          { "enchantment": "minecraft:power", "weight": 3 },
+          { "enchantment": "minecraft:punch", "weight": 1 },
+          { "enchantment": "minecraft:flame", "weight": 1 },
+          { "enchantment": "minecraft:quick_charge", "weight": 2 },
+          { "enchantment": "minecraft:multishot", "weight": 1 },
+          { "enchantment": "minecraft:piercing", "weight": 2 },
+          { "enchantment": "minecraft:mending", "weight": 1 }
+        ],
+        "rolls": 5
+      }
     ],
     "hallway/trap/negative_potions": [
       {

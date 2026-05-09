@@ -12,12 +12,14 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.EnchantWithLevelsFunction;
+import net.minecraft.world.level.storage.loot.functions.SetEnchantmentsFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.functions.SetPotionFunction;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
@@ -52,6 +54,48 @@ public class LootTableUtils {
                                         )
                         )
         );
+    }
+
+    public static LootTable.Builder addEnchantedBookPool(
+            LootTable.Builder input,
+            WeightedEnchantment[] enchantments,
+            int tier,
+            int tierCount,
+            int rolls,
+            CompletableFuture<HolderLookup.Provider> registryLookup
+    ) {
+        HolderLookup.RegistryLookup<Enchantment> registry;
+        try {
+            registry = registryLookup.get().lookupOrThrow(Registries.ENCHANTMENT);
+        } catch (ExecutionException e) {
+            throw new IllegalStateException("Failed to look up enchantment registry", e);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new IllegalStateException("Interrupted while looking up enchantment registry", e);
+        }
+
+        LootPool.Builder builder = LootPool.lootPool()
+                .setRolls(ConstantValue.exactly(rolls));
+        for (WeightedEnchantment enchantment : enchantments) {
+            Holder<Enchantment> holder = registry.getOrThrow(ResourceKey.create(Registries.ENCHANTMENT, enchantment.id));
+            builder = builder.add(
+                    LootItem.lootTableItem(Items.BOOK)
+                            .setWeight(enchantment.weight)
+                            .apply(new SetEnchantmentsFunction.Builder()
+                                    .withEnchantment(holder, ConstantValue.exactly(bookLevel(holder.value(), tier, tierCount))))
+            );
+        }
+
+        return input.withPool(builder);
+    }
+
+    private static int bookLevel(Enchantment enchantment, int tier, int tierCount) {
+        if (tierCount <= 1 || enchantment.getMinLevel() == enchantment.getMaxLevel()) {
+            return enchantment.getMinLevel();
+        }
+
+        int range = enchantment.getMaxLevel() - enchantment.getMinLevel();
+        return enchantment.getMinLevel() + Math.round((tier - 1) * range / (float) (tierCount - 1));
     }
 
     public static LootTable.Builder addWeightedPool(LootTable.Builder input, WeightedItem[] items, int min, int max, int rolls) {
@@ -129,4 +173,6 @@ public class LootTableUtils {
     }
 
     public record WeightedItem(Item item, int weight) {}
+
+    public record WeightedEnchantment(Identifier id, int weight) {}
 }

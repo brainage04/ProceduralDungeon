@@ -87,8 +87,9 @@ public class DungeonStructureVariantProvider implements DataProvider {
 
             Random random = new Random(31L * room.hashCode() + 17L * tier.tier + armorStand);
             entity.remove("UUID");
-            entity.put("ArmorItems", armorItems(room, tier, random));
-            entity.put("HandItems", handItems(room, tier, random));
+            entity.remove("ArmorItems");
+            entity.remove("HandItems");
+            entity.put("equipment", equipment(room, tier, random));
             if (!room.equals("armorsmith")) {
                 entity.putByte("ShowArms", (byte) 1);
             }
@@ -96,43 +97,33 @@ public class DungeonStructureVariantProvider implements DataProvider {
         }
     }
 
-    private static ListTag armorItems(String room, DungeonTier tier, Random random) {
-        ListTag items = new ListTag();
+    private static CompoundTag equipment(String room, DungeonTier tier, Random random) {
+        CompoundTag equipment = new CompoundTag();
         if (room.equals("armorsmith")) {
-            items.add(stack(random.nextBoolean() ? tier.boots : null));
-            items.add(stack(random.nextInt(4) == 0 ? null : tier.leggings));
-            items.add(stack(tier.chestplate));
-            items.add(stack(random.nextInt(3) == 0 ? null : tier.helmet));
-        } else {
-            items.add(stack(null));
-            items.add(stack(null));
-            items.add(stack(null));
-            items.add(stack(null));
+            putStack(equipment, "feet", random.nextBoolean() ? tier.boots : null);
+            putStack(equipment, "legs", random.nextInt(4) == 0 ? null : tier.leggings);
+            putStack(equipment, "chest", tier.chestplate);
+            putStack(equipment, "head", random.nextInt(3) == 0 ? null : tier.helmet);
+        } else if (room.equals("toolsmith")) {
+            Item[] tools = {tier.pickaxe, tier.axe, tier.shovel, tier.hoe};
+            putStack(equipment, "mainhand", tools[random.nextInt(tools.length)]);
+        } else if (room.equals("weaponsmith")) {
+            putStack(equipment, "mainhand", random.nextBoolean() ? tier.sword : tier.axe);
         }
-        return items;
+        return equipment;
     }
 
-    private static ListTag handItems(String room, DungeonTier tier, Random random) {
-        ListTag items = new ListTag();
-        if (room.equals("toolsmith")) {
-            Item[] tools = {tier.pickaxe, tier.axe, tier.shovel, tier.hoe};
-            items.add(stack(tools[random.nextInt(tools.length)]));
-        } else if (room.equals("weaponsmith")) {
-            items.add(stack(random.nextBoolean() ? tier.sword : tier.axe));
-        } else {
-            items.add(stack(null));
+    private static void putStack(CompoundTag equipment, String slot, Item item) {
+        if (item != null) {
+            equipment.put(slot, stack(item));
         }
-        items.add(stack(null));
-        return items;
     }
 
     private static CompoundTag stack(Item item) {
         CompoundTag tag = new CompoundTag();
-        if (item != null) {
-            Identifier id = BuiltInRegistries.ITEM.getKey(item);
-            tag.putString("id", id.toString());
-            tag.putInt("count", 1);
-        }
+        Identifier id = BuiltInRegistries.ITEM.getKey(item);
+        tag.putString("id", id.toString());
+        tag.putInt("count", 1);
         return tag;
     }
 

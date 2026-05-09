@@ -172,49 +172,130 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "minecraft:enchant_with_levels",
-              "levels": 15.0,
-              "options": "#minecraft:exclusive_set/armor"
+              "add": false,
+              "enchantments": {
+                "minecraft:protection": 2.0
+              },
+              "function": "minecraft:set_enchantments"
             }
           ],
-          "name": "minecraft:book"
-        }
-      ],
-      "rolls": 1.0
-    },
-    {
-      "bonus_rolls": 0.0,
-      "entries": [
+          "name": "minecraft:book",
+          "weight": 6
+        },
         {
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "minecraft:enchant_with_levels",
-              "levels": 15.0,
-              "options": "#minecraft:exclusive_set/damage"
+              "add": false,
+              "enchantments": {
+                "minecraft:projectile_protection": 2.0
+              },
+              "function": "minecraft:set_enchantments"
             }
           ],
-          "name": "minecraft:book"
-        }
-      ],
-      "rolls": 1.0
-    },
-    {
-      "bonus_rolls": 0.0,
-      "entries": [
+          "name": "minecraft:book",
+          "weight": 3
+        },
         {
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "minecraft:enchant_with_levels",
-              "levels": 15.0,
-              "options": "#minecraft:exclusive_set/mining"
+              "add": false,
+              "enchantments": {
+                "minecraft:sharpness": 2.0
+              },
+              "function": "minecraft:set_enchantments"
             }
           ],
-          "name": "minecraft:book"
+          "name": "minecraft:book",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "enchantments": {
+                "minecraft:smite": 2.0
+              },
+              "function": "minecraft:set_enchantments"
+            }
+          ],
+          "name": "minecraft:book",
+          "weight": 4
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "enchantments": {
+                "minecraft:bane_of_arthropods": 2.0
+              },
+              "function": "minecraft:set_enchantments"
+            }
+          ],
+          "name": "minecraft:book",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "enchantments": {
+                "minecraft:unbreaking": 2.0
+              },
+              "function": "minecraft:set_enchantments"
+            }
+          ],
+          "name": "minecraft:book",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "enchantments": {
+                "minecraft:thorns": 2.0
+              },
+              "function": "minecraft:set_enchantments"
+            }
+          ],
+          "name": "minecraft:book",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "enchantments": {
+                "minecraft:efficiency": 2.0
+              },
+              "function": "minecraft:set_enchantments"
+            }
+          ],
+          "name": "minecraft:book",
+          "weight": 4
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "enchantments": {
+                "minecraft:fortune": 2.0
+              },
+              "function": "minecraft:set_enchantments"
+            }
+          ],
+          "name": "minecraft:book",
+          "weight": 2
         }
       ],
-      "rolls": 1.0
+      "rolls": 3.0
     }
   ]
 }

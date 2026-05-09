@@ -137,11 +137,24 @@ public class DungeonLootTableProvider extends SimpleFabricLootTableSubProvider {
         }
 
         if (spec.has("enchantedBooks")) {
-            int levels = intValue(spec.get("levels"), dungeonTier);
-            for (JsonElement enchant : spec.getAsJsonArray("enchantedBooks")) {
-                builder = LootTableUtils.addEnchantedItemPool(builder, Items.BOOK, enchantTag(enchant.getAsString()), levels, registryLookup);
+            JsonArray enchantments = spec.getAsJsonArray("enchantedBooks");
+            LootTableUtils.WeightedEnchantment[] weightedEnchantments = new LootTableUtils.WeightedEnchantment[enchantments.size()];
+            for (int i = 0; i < enchantments.size(); i++) {
+                JsonObject enchantment = enchantments.get(i).getAsJsonObject();
+                weightedEnchantments[i] = new LootTableUtils.WeightedEnchantment(
+                        Identifier.parse(enchantment.get("enchantment").getAsString()),
+                        intValue(enchantment.get("weight"), dungeonTier)
+                );
             }
-            return builder;
+            int rolls = spec.has("rolls") ? intValue(spec.get("rolls"), dungeonTier) : 1;
+            return LootTableUtils.addEnchantedBookPool(
+                    builder,
+                    weightedEnchantments,
+                    dungeonTier.tier,
+                    DungeonTier.values().length,
+                    rolls,
+                    registryLookup
+            );
         }
 
         if (spec.has("splashPotionsByTier")) {
