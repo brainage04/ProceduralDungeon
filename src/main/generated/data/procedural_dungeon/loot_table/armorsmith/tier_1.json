@@ -13,7 +13,32 @@
               "options": "#minecraft:exclusive_set/armor"
             }
           ],
-          "name": "minecraft:leather_helmet"
+          "name": "minecraft:leather_helmet",
+          "weight": 80
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:enchant_with_levels",
+              "levels": 10.0,
+              "options": "#minecraft:exclusive_set/armor"
+            }
+          ],
+          "name": "minecraft:copper_helmet",
+          "weight": 16
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:enchant_with_levels",
+              "levels": 10.0,
+              "options": "#minecraft:exclusive_set/armor"
+            }
+          ],
+          "name": "minecraft:iron_helmet",
+          "weight": 4
         }
       ],
       "rolls": 1.0
@@ -30,7 +55,32 @@
               "options": "#minecraft:exclusive_set/armor"
             }
           ],
-          "name": "minecraft:leather_chestplate"
+          "name": "minecraft:leather_chestplate",
+          "weight": 80
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:enchant_with_levels",
+              "levels": 10.0,
+              "options": "#minecraft:exclusive_set/armor"
+            }
+          ],
+          "name": "minecraft:copper_chestplate",
+          "weight": 16
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:enchant_with_levels",
+              "levels": 10.0,
+              "options": "#minecraft:exclusive_set/armor"
+            }
+          ],
+          "name": "minecraft:iron_chestplate",
+          "weight": 4
         }
       ],
       "rolls": 1.0
@@ -47,7 +97,32 @@
               "options": "#minecraft:exclusive_set/armor"
             }
           ],
-          "name": "minecraft:leather_leggings"
+          "name": "minecraft:leather_leggings",
+          "weight": 80
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:enchant_with_levels",
+              "levels": 10.0,
+              "options": "#minecraft:exclusive_set/armor"
+            }
+          ],
+          "name": "minecraft:copper_leggings",
+          "weight": 16
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:enchant_with_levels",
+              "levels": 10.0,
+              "options": "#minecraft:exclusive_set/armor"
+            }
+          ],
+          "name": "minecraft:iron_leggings",
+          "weight": 4
         }
       ],
       "rolls": 1.0
@@ -64,7 +139,32 @@
               "options": "#minecraft:exclusive_set/armor"
             }
           ],
-          "name": "minecraft:leather_boots"
+          "name": "minecraft:leather_boots",
+          "weight": 80
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:enchant_with_levels",
+              "levels": 10.0,
+              "options": "#minecraft:exclusive_set/armor"
+            }
+          ],
+          "name": "minecraft:copper_boots",
+          "weight": 16
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:enchant_with_levels",
+              "levels": 10.0,
+              "options": "#minecraft:exclusive_set/armor"
+            }
+          ],
+          "name": "minecraft:iron_boots",
+          "weight": 4
         }
       ],
       "rolls": 1.0

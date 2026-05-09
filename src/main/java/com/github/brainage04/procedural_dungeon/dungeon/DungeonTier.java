@@ -14,6 +14,14 @@ public enum DungeonTier {
     TIER_4,
     TIER_5;
 
+    private static final int[][] LOOT_TIER_WEIGHTS = {
+            {80, 16, 4, 0, 0},
+            {12, 70, 15, 3, 0},
+            {3, 12, 70, 12, 3},
+            {0, 3, 12, 70, 15},
+            {0, 0, 4, 16, 80}
+    };
+
     public int tier;
     public int size;
     public int worldgenSize;
@@ -62,6 +70,42 @@ public enum DungeonTier {
         }
 
         throw new IllegalArgumentException("Unsupported dungeon tier: " + id);
+    }
+
+    public WeightedTier[] weightedLootTiers() {
+        int[] weights = LOOT_TIER_WEIGHTS[ordinal()];
+        int count = 0;
+        for (int weight : weights) {
+            if (weight > 0) {
+                count++;
+            }
+        }
+
+        WeightedTier[] weightedTiers = new WeightedTier[count];
+        int index = 0;
+        for (int i = 0; i < weights.length; i++) {
+            if (weights[i] > 0) {
+                weightedTiers[index++] = new WeightedTier(values()[i], weights[i]);
+            }
+        }
+        return weightedTiers;
+    }
+
+    public DungeonTier randomLootTier(java.util.Random random) {
+        int[] weights = LOOT_TIER_WEIGHTS[ordinal()];
+        int total = 0;
+        for (int weight : weights) {
+            total += weight;
+        }
+
+        int roll = random.nextInt(total);
+        for (int i = 0; i < weights.length; i++) {
+            roll -= weights[i];
+            if (roll < 0) {
+                return values()[i];
+            }
+        }
+        return this;
     }
 
     private void load(JsonObject spec) {
@@ -114,4 +158,6 @@ public enum DungeonTier {
         }
         return BuiltInRegistries.ITEM.getValue(identifier);
     }
+
+    public record WeightedTier(DungeonTier tier, int weight) {}
 }

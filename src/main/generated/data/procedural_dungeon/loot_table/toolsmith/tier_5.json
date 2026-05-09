@@ -13,7 +13,32 @@
               "options": "#minecraft:exclusive_set/mining"
             }
           ],
-          "name": "minecraft:netherite_axe"
+          "name": "minecraft:iron_axe",
+          "weight": 4
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:enchant_with_levels",
+              "levels": 30.0,
+              "options": "#minecraft:exclusive_set/mining"
+            }
+          ],
+          "name": "minecraft:diamond_axe",
+          "weight": 16
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:enchant_with_levels",
+              "levels": 30.0,
+              "options": "#minecraft:exclusive_set/mining"
+            }
+          ],
+          "name": "minecraft:netherite_axe",
+          "weight": 80
         }
       ],
       "rolls": 1.0
@@ -30,7 +55,32 @@
               "options": "#minecraft:exclusive_set/mining"
             }
           ],
-          "name": "minecraft:netherite_shovel"
+          "name": "minecraft:iron_shovel",
+          "weight": 4
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:enchant_with_levels",
+              "levels": 30.0,
+              "options": "#minecraft:exclusive_set/mining"
+            }
+          ],
+          "name": "minecraft:diamond_shovel",
+          "weight": 16
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:enchant_with_levels",
+              "levels": 30.0,
+              "options": "#minecraft:exclusive_set/mining"
+            }
+          ],
+          "name": "minecraft:netherite_shovel",
+          "weight": 80
         }
       ],
       "rolls": 1.0
@@ -47,7 +97,32 @@
               "options": "#minecraft:exclusive_set/mining"
             }
           ],
-          "name": "minecraft:netherite_pickaxe"
+          "name": "minecraft:iron_pickaxe",
+          "weight": 4
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:enchant_with_levels",
+              "levels": 30.0,
+              "options": "#minecraft:exclusive_set/mining"
+            }
+          ],
+          "name": "minecraft:diamond_pickaxe",
+          "weight": 16
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:enchant_with_levels",
+              "levels": 30.0,
+              "options": "#minecraft:exclusive_set/mining"
+            }
+          ],
+          "name": "minecraft:netherite_pickaxe",
+          "weight": 80
         }
       ],
       "rolls": 1.0
@@ -64,7 +139,32 @@
               "options": "#minecraft:exclusive_set/mining"
             }
           ],
-          "name": "minecraft:netherite_hoe"
+          "name": "minecraft:iron_hoe",
+          "weight": 4
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:enchant_with_levels",
+              "levels": 30.0,
+              "options": "#minecraft:exclusive_set/mining"
+            }
+          ],
+          "name": "minecraft:diamond_hoe",
+          "weight": 16
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:enchant_with_levels",
+              "levels": 30.0,
+              "options": "#minecraft:exclusive_set/mining"
+            }
+          ],
+          "name": "minecraft:netherite_hoe",
+          "weight": 80
         }
       ],
       "rolls": 1.0

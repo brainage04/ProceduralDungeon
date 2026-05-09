@@ -32,6 +32,10 @@ public class LootTableUtils {
     }
 
     public static LootTable.Builder addEnchantedItemPool(LootTable.Builder input, Item item, TagKey<Enchantment> options, int levels, CompletableFuture<HolderLookup.Provider> registryLookup) {
+        return addWeightedEnchantedItemPool(input, new WeightedItem[]{new WeightedItem(item, 1)}, options, levels, registryLookup);
+    }
+
+    public static LootTable.Builder addWeightedEnchantedItemPool(LootTable.Builder input, WeightedItem[] items, TagKey<Enchantment> options, int levels, CompletableFuture<HolderLookup.Provider> registryLookup) {
         CompletableFuture<HolderSet<Enchantment>> listFuture = getRegistryEntryListCompletableFuture(options, registryLookup);
 
         HolderLookup.Provider registries;
@@ -43,17 +47,20 @@ public class LootTableUtils {
             return input;
         }
 
-        return input.withPool(
-                LootPool.lootPool()
-                        .add(
-                                LootItem.lootTableItem(item)
-                                        .apply(
-                                                EnchantWithLevelsFunction.enchantWithLevels(
-                                                        registries, ConstantValue.exactly(levels)
-                                                ).withOptions(options1)
-                                        )
-                        )
-        );
+        LootPool.Builder builder = LootPool.lootPool();
+        for (WeightedItem item : items) {
+            builder = builder.add(
+                    LootItem.lootTableItem(item.item)
+                            .setWeight(item.weight)
+                            .apply(
+                                    EnchantWithLevelsFunction.enchantWithLevels(
+                                            registries, ConstantValue.exactly(levels)
+                                    ).withOptions(options1)
+                            )
+            );
+        }
+
+        return input.withPool(builder);
     }
 
     public static LootTable.Builder addEnchantedBookPool(

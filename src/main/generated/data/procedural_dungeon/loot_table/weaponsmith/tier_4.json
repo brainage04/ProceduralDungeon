@@ -13,7 +13,44 @@
               "options": "#minecraft:exclusive_set/damage"
             }
           ],
-          "name": "minecraft:diamond_sword"
+          "name": "minecraft:copper_sword",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:enchant_with_levels",
+              "levels": 25.0,
+              "options": "#minecraft:exclusive_set/damage"
+            }
+          ],
+          "name": "minecraft:iron_sword",
+          "weight": 12
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:enchant_with_levels",
+              "levels": 25.0,
+              "options": "#minecraft:exclusive_set/damage"
+            }
+          ],
+          "name": "minecraft:diamond_sword",
+          "weight": 70
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:enchant_with_levels",
+              "levels": 25.0,
+              "options": "#minecraft:exclusive_set/damage"
+            }
+          ],
+          "name": "minecraft:netherite_sword",
+          "weight": 15
         }
       ],
       "rolls": 1.0
@@ -30,7 +67,44 @@
               "options": "#minecraft:exclusive_set/damage"
             }
           ],
-          "name": "minecraft:diamond_axe"
+          "name": "minecraft:copper_axe",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:enchant_with_levels",
+              "levels": 25.0,
+              "options": "#minecraft:exclusive_set/damage"
+            }
+          ],
+          "name": "minecraft:iron_axe",
+          "weight": 12
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:enchant_with_levels",
+              "levels": 25.0,
+              "options": "#minecraft:exclusive_set/damage"
+            }
+          ],
+          "name": "minecraft:diamond_axe",
+          "weight": 70
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:enchant_with_levels",
+              "levels": 25.0,
+              "options": "#minecraft:exclusive_set/damage"
+            }
+          ],
+          "name": "minecraft:netherite_axe",
+          "weight": 15
         }
       ],
       "rolls": 1.0

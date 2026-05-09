@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 
@@ -124,14 +125,26 @@ public class DungeonLootTableProvider extends SimpleFabricLootTableSubProvider {
 
         if (spec.has("tierItems")) {
             int[] count = countRange(spec);
-            return LootTableUtils.addPool(builder, tierItems(spec.get("tierItems").getAsString(), dungeonTier), count[0], count[1], intValue(spec.get("rolls"), dungeonTier));
+            return LootTableUtils.addWeightedPool(
+                    builder,
+                    weightedTierItems(spec.get("tierItems").getAsString(), dungeonTier),
+                    count[0],
+                    count[1],
+                    intValue(spec.get("rolls"), dungeonTier)
+            );
         }
 
         if (spec.has("tierEquipment")) {
             TagKey<Enchantment> enchant = enchantTag(spec.get("enchant").getAsString());
             int levels = intValue(spec.get("levels"), dungeonTier);
             for (JsonElement equipment : spec.getAsJsonArray("tierEquipment")) {
-                builder = LootTableUtils.addEnchantedItemPool(builder, tierItem(equipment.getAsString(), dungeonTier), enchant, levels, registryLookup);
+                builder = LootTableUtils.addWeightedEnchantedItemPool(
+                        builder,
+                        weightedTierItems(equipment.getAsString(), dungeonTier),
+                        enchant,
+                        levels,
+                        registryLookup
+                );
             }
             return builder;
         }
@@ -201,6 +214,25 @@ public class DungeonLootTableProvider extends SimpleFabricLootTableSubProvider {
             throw new IllegalArgumentException("Unknown loot table item: " + id);
         }
         return BuiltInRegistries.ITEM.getValue(identifier);
+    }
+
+    private static LootTableUtils.WeightedItem[] weightedTierItems(String key, DungeonTier dungeonTier) {
+        List<LootTableUtils.WeightedItem> items = new java.util.ArrayList<>();
+        for (DungeonTier.WeightedTier weightedTier : dungeonTier.weightedLootTiers()) {
+            addDistributedWeight(items, tierItems(key, weightedTier.tier()), weightedTier.weight());
+        }
+        return items.toArray(LootTableUtils.WeightedItem[]::new);
+    }
+
+    private static void addDistributedWeight(List<LootTableUtils.WeightedItem> output, Item[] items, int weight) {
+        int baseWeight = weight / items.length;
+        int remainder = weight % items.length;
+        for (int i = 0; i < items.length; i++) {
+            int itemWeight = baseWeight + (i < remainder ? 1 : 0);
+            if (itemWeight > 0) {
+                output.add(new LootTableUtils.WeightedItem(items[i], itemWeight));
+            }
+        }
     }
 
     private static Item[] tierItems(String key, DungeonTier dungeonTier) {

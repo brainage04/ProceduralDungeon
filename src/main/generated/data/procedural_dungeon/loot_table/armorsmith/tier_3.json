@@ -13,7 +13,56 @@
               "options": "#minecraft:exclusive_set/armor"
             }
           ],
-          "name": "minecraft:iron_helmet"
+          "name": "minecraft:leather_helmet",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:enchant_with_levels",
+              "levels": 20.0,
+              "options": "#minecraft:exclusive_set/armor"
+            }
+          ],
+          "name": "minecraft:copper_helmet",
+          "weight": 12
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:enchant_with_levels",
+              "levels": 20.0,
+              "options": "#minecraft:exclusive_set/armor"
+            }
+          ],
+          "name": "minecraft:iron_helmet",
+          "weight": 70
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:enchant_with_levels",
+              "levels": 20.0,
+              "options": "#minecraft:exclusive_set/armor"
+            }
+          ],
+          "name": "minecraft:diamond_helmet",
+          "weight": 12
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:enchant_with_levels",
+              "levels": 20.0,
+              "options": "#minecraft:exclusive_set/armor"
+            }
+          ],
+          "name": "minecraft:netherite_helmet",
+          "weight": 3
         }
       ],
       "rolls": 1.0
@@ -30,7 +79,56 @@
               "options": "#minecraft:exclusive_set/armor"
             }
           ],
-          "name": "minecraft:iron_chestplate"
+          "name": "minecraft:leather_chestplate",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:enchant_with_levels",
+              "levels": 20.0,
+              "options": "#minecraft:exclusive_set/armor"
+            }
+          ],
+          "name": "minecraft:copper_chestplate",
+          "weight": 12
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:enchant_with_levels",
+              "levels": 20.0,
+              "options": "#minecraft:exclusive_set/armor"
+            }
+          ],
+          "name": "minecraft:iron_chestplate",
+          "weight": 70
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:enchant_with_levels",
+              "levels": 20.0,
+              "options": "#minecraft:exclusive_set/armor"
+            }
+          ],
+          "name": "minecraft:diamond_chestplate",
+          "weight": 12
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:enchant_with_levels",
+              "levels": 20.0,
+              "options": "#minecraft:exclusive_set/armor"
+            }
+          ],
+          "name": "minecraft:netherite_chestplate",
+          "weight": 3
         }
       ],
       "rolls": 1.0
@@ -47,7 +145,56 @@
               "options": "#minecraft:exclusive_set/armor"
             }
           ],
-          "name": "minecraft:iron_leggings"
+          "name": "minecraft:leather_leggings",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:enchant_with_levels",
+              "levels": 20.0,
+              "options": "#minecraft:exclusive_set/armor"
+            }
+          ],
+          "name": "minecraft:copper_leggings",
+          "weight": 12
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:enchant_with_levels",
+              "levels": 20.0,
+              "options": "#minecraft:exclusive_set/armor"
+            }
+          ],
+          "name": "minecraft:iron_leggings",
+          "weight": 70
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:enchant_with_levels",
+              "levels": 20.0,
+              "options": "#minecraft:exclusive_set/armor"
+            }
+          ],
+          "name": "minecraft:diamond_leggings",
+          "weight": 12
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:enchant_with_levels",
+              "levels": 20.0,
+              "options": "#minecraft:exclusive_set/armor"
+            }
+          ],
+          "name": "minecraft:netherite_leggings",
+          "weight": 3
         }
       ],
       "rolls": 1.0
@@ -64,7 +211,56 @@
               "options": "#minecraft:exclusive_set/armor"
             }
           ],
-          "name": "minecraft:iron_boots"
+          "name": "minecraft:leather_boots",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:enchant_with_levels",
+              "levels": 20.0,
+              "options": "#minecraft:exclusive_set/armor"
+            }
+          ],
+          "name": "minecraft:copper_boots",
+          "weight": 12
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:enchant_with_levels",
+              "levels": 20.0,
+              "options": "#minecraft:exclusive_set/armor"
+            }
+          ],
+          "name": "minecraft:iron_boots",
+          "weight": 70
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:enchant_with_levels",
+              "levels": 20.0,
+              "options": "#minecraft:exclusive_set/armor"
+            }
+          ],
+          "name": "minecraft:diamond_boots",
+          "weight": 12
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:enchant_with_levels",
+              "levels": 20.0,
+              "options": "#minecraft:exclusive_set/armor"
+            }
+          ],
+          "name": "minecraft:netherite_boots",
+          "weight": 3
         }
       ],
       "rolls": 1.0

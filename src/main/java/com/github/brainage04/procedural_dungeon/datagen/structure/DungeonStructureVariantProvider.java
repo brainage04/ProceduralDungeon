@@ -100,17 +100,42 @@ public class DungeonStructureVariantProvider implements DataProvider {
     private static CompoundTag equipment(String room, DungeonTier tier, Random random) {
         CompoundTag equipment = new CompoundTag();
         if (room.equals("armorsmith")) {
-            putStack(equipment, "feet", random.nextBoolean() ? tier.boots : null);
-            putStack(equipment, "legs", random.nextInt(4) == 0 ? null : tier.leggings);
-            putStack(equipment, "chest", tier.chestplate);
-            putStack(equipment, "head", random.nextInt(3) == 0 ? null : tier.helmet);
+            putStack(equipment, "feet", random.nextBoolean() ? armorItem("boots", tier, random) : null);
+            putStack(equipment, "legs", random.nextInt(4) == 0 ? null : armorItem("leggings", tier, random));
+            putStack(equipment, "chest", armorItem("chestplate", tier, random));
+            putStack(equipment, "head", random.nextInt(3) == 0 ? null : armorItem("helmet", tier, random));
         } else if (room.equals("toolsmith")) {
-            Item[] tools = {tier.pickaxe, tier.axe, tier.shovel, tier.hoe};
-            putStack(equipment, "mainhand", tools[random.nextInt(tools.length)]);
+            putStack(equipment, "mainhand", toolItem(tier, random));
         } else if (room.equals("weaponsmith")) {
-            putStack(equipment, "mainhand", random.nextBoolean() ? tier.sword : tier.axe);
+            putStack(equipment, "mainhand", weaponItem(tier, random));
         }
         return equipment;
+    }
+
+    private static Item armorItem(String slot, DungeonTier tier, Random random) {
+        DungeonTier itemTier = tier.randomLootTier(random);
+        return switch (slot) {
+            case "helmet" -> itemTier.helmet;
+            case "chestplate" -> itemTier.chestplate;
+            case "leggings" -> itemTier.leggings;
+            case "boots" -> itemTier.boots;
+            default -> throw new IllegalArgumentException("Unknown armor slot: " + slot);
+        };
+    }
+
+    private static Item toolItem(DungeonTier tier, Random random) {
+        DungeonTier itemTier = tier.randomLootTier(random);
+        return switch (random.nextInt(4)) {
+            case 0 -> itemTier.pickaxe;
+            case 1 -> itemTier.axe;
+            case 2 -> itemTier.shovel;
+            default -> itemTier.hoe;
+        };
+    }
+
+    private static Item weaponItem(DungeonTier tier, Random random) {
+        DungeonTier itemTier = tier.randomLootTier(random);
+        return random.nextBoolean() ? itemTier.sword : itemTier.axe;
     }
 
     private static void putStack(CompoundTag equipment, String slot, Item item) {
