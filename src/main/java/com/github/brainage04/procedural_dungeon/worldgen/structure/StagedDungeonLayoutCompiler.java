@@ -1,5 +1,6 @@
 package com.github.brainage04.procedural_dungeon.worldgen.structure;
 
+import com.github.brainage04.procedural_dungeon.ProceduralDungeon;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,6 +31,8 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 
 public final class StagedDungeonLayoutCompiler {
     private static final int OCCUPANCY_BUCKET_SIZE = 32;
+    private static final String TRAP_POOL_SUFFIX = "/hallway/trap";
+    private static final String TRAP_TEMPLATE_PREFIX = "dungeon/hallway/trap/";
 
     private StagedDungeonLayoutCompiler() {}
 
@@ -261,7 +264,8 @@ public final class StagedDungeonLayoutCompiler {
                             DungeonGenerationProfiler.recordGraphCandidateTemplateRejectedOutOfBounds(candidateTemplate);
                             continue;
                         }
-                        if (occupancy.intersectsDeflated(placement.boundingBox())) {
+                        boolean allowContainedOverlap = allowsContainedOverlap(sourceJigsaw, parent.element());
+                        if (occupancy.intersectsDeflated(placement.boundingBox(), allowContainedOverlap)) {
                             rejectedByCollision = true;
                             DungeonGenerationProfiler.recordGraphRejectedCollision();
                             DungeonGenerationProfiler.recordGraphCandidateTemplateRejectedCollision(candidateTemplate);
@@ -309,6 +313,24 @@ public final class StagedDungeonLayoutCompiler {
                 }
             }
         }
+    }
+
+    private static boolean allowsContainedOverlap(StructureTemplate.JigsawBlockInfo sourceJigsaw, StructurePoolElement parentElement) {
+        return isTrapPool(sourceJigsaw.pool().identifier()) || isTrapTemplate(parentElement);
+    }
+
+    private static boolean isTrapPool(Identifier pool) {
+        String path = pool.getPath();
+        return path.equals("dungeon/hallway/trap") || path.endsWith(TRAP_POOL_SUFFIX);
+    }
+
+    private static boolean isTrapTemplate(StructurePoolElement element) {
+        return element instanceof VariantSinglePoolElement variantElement && isTrapTemplate(variantElement.templateLocation());
+    }
+
+    private static boolean isTrapTemplate(Identifier template) {
+        return template.getNamespace().equals(ProceduralDungeon.MOD_ID)
+                && template.getPath().startsWith(TRAP_TEMPLATE_PREFIX);
     }
 
     private static String candidateTemplate(StructurePoolElement element) {
@@ -437,7 +459,7 @@ public final class StagedDungeonLayoutCompiler {
             }
         }
 
-        private boolean intersectsDeflated(BoundingBox candidate) {
+        private boolean intersectsDeflated(BoundingBox candidate, boolean allowContainedOverlap) {
             for (int bucketX = bucket(candidate.minX()); bucketX <= bucket(candidate.maxX()); bucketX++) {
                 for (int bucketZ = bucket(candidate.minZ()); bucketZ <= bucket(candidate.maxZ()); bucketZ++) {
                     List<BoundingBox> nearby = buckets.get(pack(bucketX, bucketZ));
@@ -445,6 +467,9 @@ public final class StagedDungeonLayoutCompiler {
                         continue;
                     }
                     for (BoundingBox box : nearby) {
+                        if (allowContainedOverlap && contains(box, candidate)) {
+                            continue;
+                        }
                         if (intersectsDeflated(box, candidate)) {
                             return true;
                         }
@@ -461,6 +486,15 @@ public final class StagedDungeonLayoutCompiler {
                     && occupied.maxY() + 1.0 > candidate.minY() + 0.25
                     && occupied.minZ() < candidate.maxZ() + 0.75
                     && occupied.maxZ() + 1.0 > candidate.minZ() + 0.25;
+        }
+
+        private static boolean contains(BoundingBox occupied, BoundingBox candidate) {
+            return occupied.minX() <= candidate.minX()
+                    && occupied.minY() <= candidate.minY()
+                    && occupied.minZ() <= candidate.minZ()
+                    && occupied.maxX() >= candidate.maxX()
+                    && occupied.maxY() >= candidate.maxY()
+                    && occupied.maxZ() >= candidate.maxZ();
         }
 
         private static int bucket(int coordinate) {

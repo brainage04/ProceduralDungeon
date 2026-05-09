@@ -75,5 +75,8 @@ Depth must range from 1-20
 
 # Todo
 
-ensure structure voids are placed appropriately for all structures (they seem to be missing from staircases)
-add random tiered weapons/armor/tool pieces to armor stands in weaponsmith/armorsmith/toolsmith rooms (also they need a rework generally speaking they all look too similar)
+get "surface" piece above "starting" piece to generate properly
+add a bunch more room types (idk yet)
+add sandstone theme
+make loot tables less "flat"
+test natural generation in default world types (NOT superflat)
