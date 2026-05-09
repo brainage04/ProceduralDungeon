@@ -51,13 +51,7 @@
           ],
           "name": "minecraft:diamond_axe",
           "weight": 3
-        }
-      ],
-      "rolls": 1.0
-    },
-    {
-      "bonus_rolls": 0.0,
-      "entries": [
+        },
         {
           "type": "minecraft:item",
           "functions": [
@@ -105,13 +99,7 @@
           ],
           "name": "minecraft:diamond_shovel",
           "weight": 3
-        }
-      ],
-      "rolls": 1.0
-    },
-    {
-      "bonus_rolls": 0.0,
-      "entries": [
+        },
         {
           "type": "minecraft:item",
           "functions": [
@@ -159,13 +147,7 @@
           ],
           "name": "minecraft:diamond_pickaxe",
           "weight": 3
-        }
-      ],
-      "rolls": 1.0
-    },
-    {
-      "bonus_rolls": 0.0,
-      "entries": [
+        },
         {
           "type": "minecraft:item",
           "functions": [
@@ -215,7 +197,11 @@
           "weight": 3
         }
       ],
-      "rolls": 1.0
+      "rolls": {
+        "type": "minecraft:uniform",
+        "max": 3.0,
+        "min": 1.0
+      }
     }
   ]
 }

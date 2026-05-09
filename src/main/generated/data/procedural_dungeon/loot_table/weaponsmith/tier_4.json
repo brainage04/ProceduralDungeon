@@ -51,13 +51,7 @@
           ],
           "name": "minecraft:netherite_sword",
           "weight": 15
-        }
-      ],
-      "rolls": 1.0
-    },
-    {
-      "bonus_rolls": 0.0,
-      "entries": [
+        },
         {
           "type": "minecraft:item",
           "functions": [
@@ -105,13 +99,7 @@
           ],
           "name": "minecraft:netherite_axe",
           "weight": 15
-        }
-      ],
-      "rolls": 1.0
-    },
-    {
-      "bonus_rolls": 0.0,
-      "entries": [
+        },
         {
           "type": "minecraft:item",
           "functions": [
@@ -121,14 +109,9 @@
               "options": "#minecraft:exclusive_set/bow"
             }
           ],
-          "name": "minecraft:bow"
-        }
-      ],
-      "rolls": 1.0
-    },
-    {
-      "bonus_rolls": 0.0,
-      "entries": [
+          "name": "minecraft:bow",
+          "weight": 100
+        },
         {
           "type": "minecraft:item",
           "functions": [
@@ -138,10 +121,15 @@
               "options": "#minecraft:exclusive_set/crossbow"
             }
           ],
-          "name": "minecraft:crossbow"
+          "name": "minecraft:crossbow",
+          "weight": 100
         }
       ],
-      "rolls": 1.0
+      "rolls": {
+        "type": "minecraft:uniform",
+        "max": 3.0,
+        "min": 1.0
+      }
     }
   ]
 }

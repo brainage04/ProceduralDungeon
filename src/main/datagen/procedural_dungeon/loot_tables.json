@@ -55,15 +55,21 @@
       }
     ],
     "armorsmith": [
-      { "tierEquipment": ["helmet", "chestplate", "leggings", "boots"], "enchant": "armor", "levels": "$levels" }
+      { "tierEquipment": ["helmet", "chestplate", "leggings", "boots"], "enchant": "armor", "levels": "$levels", "rolls": [1, 3] }
     ],
     "weaponsmith": [
-      { "tierEquipment": ["sword", "axe"], "enchant": "damage", "levels": "$levels" },
-      { "item": "minecraft:bow", "enchant": "bow", "levels": "$levels" },
-      { "item": "minecraft:crossbow", "enchant": "crossbow", "levels": "$levels" }
+      {
+        "equipmentChoices": [
+          { "tierEquipment": ["sword", "axe"], "enchant": "damage" },
+          { "item": "minecraft:bow", "enchant": "bow" },
+          { "item": "minecraft:crossbow", "enchant": "crossbow" }
+        ],
+        "levels": "$levels",
+        "rolls": [1, 3]
+      }
     ],
     "toolsmith": [
-      { "tierEquipment": ["axe", "shovel", "pickaxe", "hoe"], "enchant": "mining", "levels": "$levels" }
+      { "tierEquipment": ["axe", "shovel", "pickaxe", "hoe"], "enchant": "mining", "levels": "$levels", "rolls": [1, 3] }
     ],
     "enchanter": [
       { "item": "minecraft:experience_bottle", "count": [4, 8], "rolls": "$goodRolls" },

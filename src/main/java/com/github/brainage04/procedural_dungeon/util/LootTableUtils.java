@@ -1,7 +1,7 @@
 package com.github.brainage04.procedural_dungeon.util;
 
-import org.jetbrains.annotations.NotNull;
-
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import net.minecraft.core.Holder;
@@ -26,36 +26,54 @@ import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 
 public class LootTableUtils {
-    private static @NotNull CompletableFuture<HolderSet<Enchantment>> getRegistryEntryListCompletableFuture(TagKey<Enchantment> options, CompletableFuture<HolderLookup.Provider> registryLookup) {
-        return registryLookup.thenApply(wrapperLookup ->
-                wrapperLookup.lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(options));
-    }
-
     public static LootTable.Builder addEnchantedItemPool(LootTable.Builder input, Item item, TagKey<Enchantment> options, int levels, CompletableFuture<HolderLookup.Provider> registryLookup) {
         return addWeightedEnchantedItemPool(input, new WeightedItem[]{new WeightedItem(item, 1)}, options, levels, registryLookup);
     }
 
     public static LootTable.Builder addWeightedEnchantedItemPool(LootTable.Builder input, WeightedItem[] items, TagKey<Enchantment> options, int levels, CompletableFuture<HolderLookup.Provider> registryLookup) {
-        CompletableFuture<HolderSet<Enchantment>> listFuture = getRegistryEntryListCompletableFuture(options, registryLookup);
+        WeightedEnchantedItem[] enchantedItems = new WeightedEnchantedItem[items.length];
+        for (int i = 0; i < items.length; i++) {
+            enchantedItems[i] = new WeightedEnchantedItem(items[i].item, items[i].weight, options);
+        }
+        return addWeightedEnchantedItemPool(input, enchantedItems, levels, 1, 1, registryLookup);
+    }
 
+    public static LootTable.Builder addWeightedEnchantedItemPool(
+            LootTable.Builder input,
+            WeightedEnchantedItem[] items,
+            int levels,
+            int minRolls,
+            int maxRolls,
+            CompletableFuture<HolderLookup.Provider> registryLookup
+    ) {
         HolderLookup.Provider registries;
-        HolderSet<Enchantment> options1;
         try {
             registries = registryLookup.get();
-            options1 = listFuture.get();
-        } catch (ExecutionException | InterruptedException e) {
+        } catch (ExecutionException e) {
+            return input;
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
             return input;
         }
 
-        LootPool.Builder builder = LootPool.lootPool();
-        for (WeightedItem item : items) {
+        Map<TagKey<Enchantment>, HolderSet<Enchantment>> enchantmentOptions = new HashMap<>();
+        LootPool.Builder builder = LootPool.lootPool()
+                .setRolls(minRolls == maxRolls ? ConstantValue.exactly(minRolls) : UniformGenerator.between(minRolls, maxRolls));
+        for (WeightedEnchantedItem item : items) {
+            HolderSet<Enchantment> options;
+            try {
+                options = enchantmentOptions.computeIfAbsent(item.enchantments, key ->
+                        registries.lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(key));
+            } catch (IllegalStateException e) {
+                return input;
+            }
             builder = builder.add(
                     LootItem.lootTableItem(item.item)
                             .setWeight(item.weight)
                             .apply(
                                     EnchantWithLevelsFunction.enchantWithLevels(
                                             registries, ConstantValue.exactly(levels)
-                                    ).withOptions(options1)
+                                    ).withOptions(options)
                             )
             );
         }
@@ -180,6 +198,8 @@ public class LootTableUtils {
     }
 
     public record WeightedItem(Item item, int weight) {}
+
+    public record WeightedEnchantedItem(Item item, int weight, TagKey<Enchantment> enchantments) {}
 
     public record WeightedEnchantment(Identifier id, int weight) {}
 }

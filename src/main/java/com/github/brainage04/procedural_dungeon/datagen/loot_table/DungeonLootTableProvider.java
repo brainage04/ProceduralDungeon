@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
@@ -137,16 +138,50 @@ public class DungeonLootTableProvider extends SimpleFabricLootTableSubProvider {
         if (spec.has("tierEquipment")) {
             TagKey<Enchantment> enchant = enchantTag(spec.get("enchant").getAsString());
             int levels = intValue(spec.get("levels"), dungeonTier);
+            int[] rolls = rollsRange(spec, dungeonTier);
+            List<LootTableUtils.WeightedEnchantedItem> items = new ArrayList<>();
             for (JsonElement equipment : spec.getAsJsonArray("tierEquipment")) {
-                builder = LootTableUtils.addWeightedEnchantedItemPool(
-                        builder,
-                        weightedTierItems(equipment.getAsString(), dungeonTier),
-                        enchant,
-                        levels,
-                        registryLookup
-                );
+                addEnchantedItems(items, weightedTierItems(equipment.getAsString(), dungeonTier), enchant);
             }
-            return builder;
+            return LootTableUtils.addWeightedEnchantedItemPool(
+                    builder,
+                    items.toArray(LootTableUtils.WeightedEnchantedItem[]::new),
+                    levels,
+                    rolls[0],
+                    rolls[1],
+                    registryLookup
+            );
+        }
+
+        if (spec.has("equipmentChoices")) {
+            int levels = intValue(spec.get("levels"), dungeonTier);
+            int[] rolls = rollsRange(spec, dungeonTier);
+            List<LootTableUtils.WeightedEnchantedItem> items = new ArrayList<>();
+            for (JsonElement choiceElement : spec.getAsJsonArray("equipmentChoices")) {
+                JsonObject choice = choiceElement.getAsJsonObject();
+                TagKey<Enchantment> enchant = enchantTag(choice.get("enchant").getAsString());
+                if (choice.has("tierEquipment")) {
+                    for (JsonElement equipment : choice.getAsJsonArray("tierEquipment")) {
+                        addEnchantedItems(items, weightedTierItems(equipment.getAsString(), dungeonTier), enchant);
+                    }
+                } else if (choice.has("item")) {
+                    items.add(new LootTableUtils.WeightedEnchantedItem(
+                            item(choice.get("item").getAsString()),
+                            choice.has("weight") ? intValue(choice.get("weight"), dungeonTier) : 100,
+                            enchant
+                    ));
+                } else {
+                    throw new IllegalArgumentException("Unsupported equipment choice: " + choice);
+                }
+            }
+            return LootTableUtils.addWeightedEnchantedItemPool(
+                    builder,
+                    items.toArray(LootTableUtils.WeightedEnchantedItem[]::new),
+                    levels,
+                    rolls[0],
+                    rolls[1],
+                    registryLookup
+            );
         }
 
         if (spec.has("enchantedBooks")) {
@@ -208,6 +243,21 @@ public class DungeonLootTableProvider extends SimpleFabricLootTableSubProvider {
         return new int[]{exactCount, exactCount};
     }
 
+    private static int[] rollsRange(JsonObject spec, DungeonTier dungeonTier) {
+        if (!spec.has("rolls")) {
+            return new int[]{1, 1};
+        }
+
+        JsonElement rolls = spec.get("rolls");
+        if (rolls.isJsonArray()) {
+            JsonArray range = rolls.getAsJsonArray();
+            return new int[]{range.get(0).getAsInt(), range.get(1).getAsInt()};
+        }
+
+        int exactRolls = intValue(rolls, dungeonTier);
+        return new int[]{exactRolls, exactRolls};
+    }
+
     private static Item item(String id) {
         Identifier identifier = Identifier.parse(id);
         if (!BuiltInRegistries.ITEM.containsKey(identifier)) {
@@ -217,11 +267,21 @@ public class DungeonLootTableProvider extends SimpleFabricLootTableSubProvider {
     }
 
     private static LootTableUtils.WeightedItem[] weightedTierItems(String key, DungeonTier dungeonTier) {
-        List<LootTableUtils.WeightedItem> items = new java.util.ArrayList<>();
+        List<LootTableUtils.WeightedItem> items = new ArrayList<>();
         for (DungeonTier.WeightedTier weightedTier : dungeonTier.weightedLootTiers()) {
             addDistributedWeight(items, tierItems(key, weightedTier.tier()), weightedTier.weight());
         }
         return items.toArray(LootTableUtils.WeightedItem[]::new);
+    }
+
+    private static void addEnchantedItems(
+            List<LootTableUtils.WeightedEnchantedItem> output,
+            LootTableUtils.WeightedItem[] items,
+            TagKey<Enchantment> enchant
+    ) {
+        for (LootTableUtils.WeightedItem item : items) {
+            output.add(new LootTableUtils.WeightedEnchantedItem(item.item(), item.weight(), enchant));
+        }
     }
 
     private static void addDistributedWeight(List<LootTableUtils.WeightedItem> output, Item[] items, int weight) {
