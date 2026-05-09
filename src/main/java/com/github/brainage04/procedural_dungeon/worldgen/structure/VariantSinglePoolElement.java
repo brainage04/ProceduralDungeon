@@ -1,5 +1,6 @@
 package com.github.brainage04.procedural_dungeon.worldgen.structure;
 
+import com.github.brainage04.procedural_dungeon.ProceduralDungeon;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -8,16 +9,23 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.ProblemReporter;
 import net.minecraft.util.Util;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.RandomizableContainer;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pools.SinglePoolElement;
@@ -25,8 +33,11 @@ import net.minecraft.world.level.levelgen.structure.pools.StructurePoolElement;
 import net.minecraft.world.level.levelgen.structure.pools.StructurePoolElementType;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import net.minecraft.world.level.levelgen.structure.templatesystem.LiquidSettings;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
+import net.minecraft.world.level.storage.TagValueInput;
 
 public class VariantSinglePoolElement extends StructurePoolElement {
     private static final Identifier EMPTY_POOL = Identifier.withDefaultNamespace("empty");
@@ -49,6 +60,7 @@ public class VariantSinglePoolElement extends StructurePoolElement {
             new ConcurrentHashMap<>();
     private final Map<Rotation, List<StructureTemplate.JigsawBlockInfo>> jigsawCache = new ConcurrentHashMap<>();
     private final Map<Rotation, BoundingBox> boundingBoxCache = new ConcurrentHashMap<>();
+    private final Map<Rotation, List<StructureTemplate.StructureBlockInfo>> dataMarkerCache = new ConcurrentHashMap<>();
 
     public VariantSinglePoolElement(SinglePoolElement delegate, Identifier variant, int spawnerTier, int branchLimit) {
         super(delegate.getProjection());
@@ -234,15 +246,209 @@ public class VariantSinglePoolElement extends StructurePoolElement {
             LiquidSettings liquidSettings,
             boolean keepJigsaws
     ) {
-        if (!DungeonGenerationProfiler.isActive()) {
+        BoundingBox boundingBox = getBoundingBox(structureTemplateManager, pos, rotation);
+        long placementStart = System.nanoTime();
+        boolean placed = placeFast(
+                structureTemplateManager,
+                world,
+                structureAccessor,
+                chunkGenerator,
+                pos,
+                pivot,
+                rotation,
+                box,
+                random,
+                liquidSettings,
+                keepJigsaws
+        );
+        if (DungeonGenerationProfiler.isActive()) {
+            DungeonGenerationProfiler.recordPiece(variant, delegate.getTemplateLocation(), boundingBox, placed, System.nanoTime() - placementStart);
+        }
+        return placed;
+    }
+
+    private boolean placeFast(
+            StructureTemplateManager structureTemplateManager,
+            WorldGenLevel world,
+            StructureManager structureAccessor,
+            ChunkGenerator chunkGenerator,
+            BlockPos pos,
+            BlockPos pivot,
+            Rotation rotation,
+            BoundingBox box,
+            RandomSource random,
+            LiquidSettings liquidSettings,
+            boolean keepJigsaws
+    ) {
+        StructureTemplate template = structureTemplateManager.getOrCreate(delegate.getTemplateLocation());
+        StructurePlaceSettings settings = delegate.getSettings(rotation, box, liquidSettings, keepJigsaws);
+        if (!canUseFastPlacement(template, settings)) {
             return delegate.place(structureTemplateManager, world, structureAccessor, chunkGenerator, pos, pivot, rotation, box, random, liquidSettings, keepJigsaws);
         }
 
-        BoundingBox boundingBox = getBoundingBox(structureTemplateManager, pos, rotation);
-        long placementStart = System.nanoTime();
-        boolean placed = delegate.place(structureTemplateManager, world, structureAccessor, chunkGenerator, pos, pivot, rotation, box, random, liquidSettings, keepJigsaws);
-        DungeonGenerationProfiler.recordPiece(variant, delegate.getTemplateLocation(), boundingBox, placed, System.nanoTime() - placementStart);
-        return placed;
+        List<StructureTemplate.StructureBlockInfo> blocks = settings.getRandomPalette(template.palettes, pos).blocks();
+        if (blocks.isEmpty() || template.getSize().getX() < 1 || template.getSize().getY() < 1 || template.getSize().getZ() < 1) {
+            return false;
+        }
+
+        BoundingBox boundingBox = settings.getBoundingBox();
+        try (ProblemReporter.ScopedCollector problems = new ProblemReporter.ScopedCollector(ProceduralDungeon.LOGGER)) {
+            placeProcessedBlocks(
+                    world,
+                    settings,
+                    processBlockInfos(world, pos, pivot, settings, blocks),
+                    boundingBox,
+                    random,
+                    problems
+            );
+        }
+
+        List<StructureTemplate.StructureBlockInfo> dataMarkerBlocks = getDataMarkerBlocks(
+                structureTemplateManager,
+                template,
+                pos,
+                rotation
+        );
+        if (!dataMarkerBlocks.isEmpty()) {
+            List<StructureTemplate.StructureBlockInfo> dataMarkers = StructureTemplate.processBlockInfos(
+                    world,
+                    pos,
+                    pivot,
+                    settings,
+                    dataMarkerBlocks
+            );
+            for (StructureTemplate.StructureBlockInfo marker : dataMarkers) {
+                handleDataMarker(world, marker, pos, rotation, random, box);
+            }
+        }
+        return true;
+    }
+
+    private List<StructureTemplate.StructureBlockInfo> getDataMarkerBlocks(
+            StructureTemplateManager structureTemplateManager,
+            StructureTemplate template,
+            BlockPos pos,
+            Rotation rotation
+    ) {
+        if (template.palettes.size() == 1) {
+            return dataMarkerCache.computeIfAbsent(
+                    rotation,
+                    key -> List.copyOf(delegate.getDataMarkers(structureTemplateManager, BlockPos.ZERO, key, false))
+            );
+        }
+        return delegate.getDataMarkers(structureTemplateManager, pos, rotation, false);
+    }
+
+    private static List<StructureTemplate.StructureBlockInfo> processBlockInfos(
+            WorldGenLevel world,
+            BlockPos pos,
+            BlockPos pivot,
+            StructurePlaceSettings settings,
+            List<StructureTemplate.StructureBlockInfo> blocks
+    ) {
+        List<StructureProcessor> processors = settings.getProcessors();
+        ArrayList<StructureTemplate.StructureBlockInfo> originalBlocks = new ArrayList<>(blocks.size());
+        List<StructureTemplate.StructureBlockInfo> processedBlocks = new ArrayList<>(blocks.size());
+        for (StructureTemplate.StructureBlockInfo original : blocks) {
+            BlockPos transformedPos = StructureTemplate.calculateRelativePosition(settings, original.pos()).offset(pos);
+            StructureTemplate.StructureBlockInfo current = new StructureTemplate.StructureBlockInfo(
+                    transformedPos,
+                    original.state(),
+                    original.nbt() == null ? null : original.nbt().copy()
+            );
+            for (StructureProcessor processor : processors) {
+                if (current == null) {
+                    break;
+                }
+                current = processor.processBlock(world, pos, pivot, original, current, settings);
+            }
+            if (current != null) {
+                originalBlocks.add(original);
+                processedBlocks.add(current);
+            }
+        }
+
+        for (StructureProcessor processor : processors) {
+            processedBlocks = processor.finalizeProcessing(world, pos, pivot, originalBlocks, processedBlocks, settings);
+        }
+        return processedBlocks;
+    }
+
+    private static void placeProcessedBlocks(
+            WorldGenLevel world,
+            StructurePlaceSettings settings,
+            List<StructureTemplate.StructureBlockInfo> blocks,
+            BoundingBox boundingBox,
+            RandomSource random,
+            ProblemReporter.ScopedCollector problems
+    ) {
+        ArrayList<BlockPos> nbtPositions = null;
+        for (StructureTemplate.StructureBlockInfo blockInfo : blocks) {
+            nbtPositions = placeProcessedBlock(world, settings, blockInfo, boundingBox, random, problems, nbtPositions);
+        }
+        markBlockEntitiesChanged(world, nbtPositions);
+    }
+
+    private static ArrayList<BlockPos> placeProcessedBlock(
+            WorldGenLevel world,
+            StructurePlaceSettings settings,
+            StructureTemplate.StructureBlockInfo blockInfo,
+            BoundingBox boundingBox,
+            RandomSource random,
+            ProblemReporter.ScopedCollector problems,
+            ArrayList<BlockPos> nbtPositions
+    ) {
+        BlockPos blockPos = blockInfo.pos();
+        if (boundingBox != null && !boundingBox.isInside(blockPos)) {
+            return nbtPositions;
+        }
+
+        BlockState state = blockInfo.state()
+                .mirror(settings.getMirror())
+                .rotate(settings.getRotation());
+        CompoundTag nbt = blockInfo.nbt();
+        if (nbt != null) {
+            world.setBlock(blockPos, Blocks.BARRIER.defaultBlockState(), 820);
+        }
+        if (!world.setBlock(blockPos, state, 18) || nbt == null) {
+            return nbtPositions;
+        }
+
+        if (nbtPositions == null) {
+            nbtPositions = new ArrayList<>();
+        }
+        nbtPositions.add(blockPos);
+        BlockEntity blockEntity = world.getBlockEntity(blockPos);
+        if (blockEntity == null) {
+            return nbtPositions;
+        }
+        if (!SharedConstants.DEBUG_STRUCTURE_EDIT_MODE && blockEntity instanceof RandomizableContainer) {
+            nbt.putLong("LootTableSeed", random.nextLong());
+        }
+        blockEntity.loadWithComponents(TagValueInput.create(
+                problems.forChild(blockEntity.problemPath()),
+                world.registryAccess(),
+                nbt
+        ));
+        return nbtPositions;
+    }
+
+    private static void markBlockEntitiesChanged(WorldGenLevel world, List<BlockPos> nbtPositions) {
+        if (nbtPositions == null) {
+            return;
+        }
+        for (BlockPos blockPos : nbtPositions) {
+            BlockEntity blockEntity = world.getBlockEntity(blockPos);
+            if (blockEntity != null) {
+                blockEntity.setChanged();
+            }
+        }
+    }
+
+    private static boolean canUseFastPlacement(StructureTemplate template, StructurePlaceSettings settings) {
+        return settings.getKnownShape()
+                && !settings.shouldApplyWaterlogging()
+                && (settings.isIgnoreEntities() || template.entityInfoList.isEmpty());
     }
 
     @Override

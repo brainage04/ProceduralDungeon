@@ -4,7 +4,7 @@
       "element": {
         "branch_limit": 2,
         "element_type": "procedural_dungeon:variant_single_pool_element",
-        "location": "procedural_dungeon:dungeon/hallway/room/armorsmith",
+        "location": "procedural_dungeon:dungeon/hallway/room/armorsmith/tier_4",
         "override_liquid_settings": "ignore_waterlogging",
         "processors": "procedural_dungeon:dungeon/profile/804e0dcb8cfcb082",
         "projection": "rigid",
@@ -95,7 +95,7 @@
       "element": {
         "branch_limit": 2,
         "element_type": "procedural_dungeon:variant_single_pool_element",
-        "location": "procedural_dungeon:dungeon/hallway/room/toolsmith",
+        "location": "procedural_dungeon:dungeon/hallway/room/toolsmith/tier_4",
         "override_liquid_settings": "ignore_waterlogging",
         "processors": "procedural_dungeon:dungeon/profile/804e0dcb8cfcb082",
         "projection": "rigid",
@@ -108,7 +108,7 @@
       "element": {
         "branch_limit": 2,
         "element_type": "procedural_dungeon:variant_single_pool_element",
-        "location": "procedural_dungeon:dungeon/hallway/room/weaponsmith",
+        "location": "procedural_dungeon:dungeon/hallway/room/weaponsmith/tier_4",
         "override_liquid_settings": "ignore_waterlogging",
         "processors": "procedural_dungeon:dungeon/profile/804e0dcb8cfcb082",
         "projection": "rigid",

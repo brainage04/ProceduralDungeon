@@ -96,15 +96,60 @@ public class DungeonWorldgenProvider implements DataProvider {
         ));
 
         addTemplatePool(writer, futures, "%s/hallway/room".formatted(key), List.of(
-                templatePoolElement(key, "dungeon/hallway/room/armorsmith", theme, tier, variantId, 2, secondaryBranchLimit(variantId)),
+                templatePoolElement(
+                        key,
+                        "dungeon/hallway/room/armorsmith",
+                        "dungeon/hallway/room/armorsmith/tier_%d".formatted(tier),
+                        theme,
+                        tier,
+                        variantId,
+                        2,
+                        secondaryBranchLimit(variantId)
+                ),
                 templatePoolElement(key, "dungeon/hallway/room/enchanter", theme, tier, variantId, 2, secondaryBranchLimit(variantId)),
                 templatePoolElement(key, "dungeon/hallway/room/spawner_corridor", theme, tier, variantId, 2, secondaryBranchLimit(variantId)),
                 templatePoolElement(key, "dungeon/hallway/room/staircase_diagonal_down", theme, tier, variantId, 16, secondaryBranchLimit(variantId)),
-                templatePoolElement(key, "dungeon/hallway/room/staircase_diagonal_up", theme, tier, variantId, 1, secondaryBranchLimit(variantId)),
+                templatePoolElement(
+                        key,
+                        "dungeon/hallway/room/staircase_diagonal_down",
+                        "dungeon/hallway/room/staircase_diagonal_up",
+                        theme,
+                        tier,
+                        variantId,
+                        1,
+                        secondaryBranchLimit(variantId)
+                ),
                 templatePoolElement(key, "dungeon/hallway/room/staircase_spiral_down", theme, tier, variantId, 16, secondaryBranchLimit(variantId)),
-                templatePoolElement(key, "dungeon/hallway/room/staircase_spiral_up", theme, tier, variantId, 1, secondaryBranchLimit(variantId)),
-                templatePoolElement(key, "dungeon/hallway/room/toolsmith", theme, tier, variantId, 2, secondaryBranchLimit(variantId)),
-                templatePoolElement(key, "dungeon/hallway/room/weaponsmith", theme, tier, variantId, 2, secondaryBranchLimit(variantId))
+                templatePoolElement(
+                        key,
+                        "dungeon/hallway/room/staircase_spiral_down",
+                        "dungeon/hallway/room/staircase_spiral_up",
+                        theme,
+                        tier,
+                        variantId,
+                        1,
+                        secondaryBranchLimit(variantId)
+                ),
+                templatePoolElement(
+                        key,
+                        "dungeon/hallway/room/toolsmith",
+                        "dungeon/hallway/room/toolsmith/tier_%d".formatted(tier),
+                        theme,
+                        tier,
+                        variantId,
+                        2,
+                        secondaryBranchLimit(variantId)
+                ),
+                templatePoolElement(
+                        key,
+                        "dungeon/hallway/room/weaponsmith",
+                        "dungeon/hallway/room/weaponsmith/tier_%d".formatted(tier),
+                        theme,
+                        tier,
+                        variantId,
+                        2,
+                        secondaryBranchLimit(variantId)
+                )
         ));
 
         addTemplatePool(writer, futures, "%s/hallway/trap".formatted(key), List.of(
@@ -144,6 +189,25 @@ public class DungeonWorldgenProvider implements DataProvider {
         return poolElement(
                 structure,
                 ProceduralDungeon.of(ProceduralDungeonGenerator.templateProcessorKey(key, structure, theme, tier)),
+                variantId,
+                weight,
+                branchLimit
+        );
+    }
+
+    private static JsonObject templatePoolElement(
+            String key,
+            String processorStructure,
+            String locationStructure,
+            DungeonTheme theme,
+            int tier,
+            Identifier variantId,
+            int weight,
+            int branchLimit
+    ) {
+        return poolElement(
+                locationStructure,
+                ProceduralDungeon.of(ProceduralDungeonGenerator.templateProcessorKey(key, processorStructure, theme, tier)),
                 variantId,
                 weight,
                 branchLimit
