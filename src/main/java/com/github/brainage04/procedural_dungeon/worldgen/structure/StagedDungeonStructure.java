@@ -125,7 +125,8 @@ public class StagedDungeonStructure extends Structure {
                 chunkPos,
                 generatedLayout.boundingBox(),
                 generatedLayout.pieces(),
-                liquidSettings
+                liquidSettings,
+                generatedLayout.lockPlan()
         );
         return Optional.of(new GenerationStub(generatedLayout.locator(), builder -> builder.addPiece(marker)));
     }

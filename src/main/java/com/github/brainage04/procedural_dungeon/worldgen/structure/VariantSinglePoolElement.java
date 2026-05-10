@@ -74,6 +74,10 @@ public class VariantSinglePoolElement extends StructurePoolElement {
         return delegate.getTemplateLocation();
     }
 
+    public int spawnerTier() {
+        return spawnerTier;
+    }
+
     @Override
     public Vec3i getSize(StructureTemplateManager structureTemplateManager, Rotation rotation) {
         return delegate.getSize(structureTemplateManager, rotation);

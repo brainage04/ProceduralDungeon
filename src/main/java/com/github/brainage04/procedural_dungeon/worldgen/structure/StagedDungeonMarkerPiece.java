@@ -1,5 +1,6 @@
 package com.github.brainage04.procedural_dungeon.worldgen.structure;
 
+import com.github.brainage04.procedural_dungeon.lock.DungeonLockPlan;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.core.BlockPos;
@@ -19,23 +20,27 @@ public class StagedDungeonMarkerPiece extends StructurePiece {
     private final ChunkPos startChunk;
     private final List<StagedDungeonPieceSpec> pieces;
     private final LiquidSettings liquidSettings;
+    private final DungeonLockPlan lockPlan;
 
     public StagedDungeonMarkerPiece(
             ChunkPos startChunk,
             BoundingBox boundingBox,
             List<StagedDungeonPieceSpec> pieces,
-            LiquidSettings liquidSettings
+            LiquidSettings liquidSettings,
+            DungeonLockPlan lockPlan
     ) {
         super(ModStructureTypes.STAGED_DUNGEON_MARKER, 0, boundingBox);
         this.startChunk = startChunk;
         this.pieces = List.copyOf(pieces);
         this.liquidSettings = liquidSettings;
+        this.lockPlan = lockPlan;
     }
 
     public StagedDungeonMarkerPiece(StructurePieceSerializationContext context, CompoundTag tag) {
         super(ModStructureTypes.STAGED_DUNGEON_MARKER, tag);
         this.startChunk = new ChunkPos(tag.getIntOr("start_chunk_x", 0), tag.getIntOr("start_chunk_z", 0));
         this.liquidSettings = tag.read("liquid_settings", LiquidSettings.CODEC).orElse(LiquidSettings.IGNORE_WATERLOGGING);
+        this.lockPlan = tag.read("lock_plan", DungeonLockPlan.CODEC).orElse(DungeonLockPlan.EMPTY);
 
         var ops = StagedDungeonPieceSpec.ops(context.registryAccess());
         ListTag pieceTags = tag.getListOrEmpty("pieces");
@@ -53,6 +58,7 @@ public class StagedDungeonMarkerPiece extends StructurePiece {
         tag.putInt("start_chunk_x", startChunk.x());
         tag.putInt("start_chunk_z", startChunk.z());
         tag.store("liquid_settings", LiquidSettings.CODEC, liquidSettings);
+        tag.store("lock_plan", DungeonLockPlan.CODEC, lockPlan);
 
         var ops = StagedDungeonPieceSpec.ops(context.registryAccess());
         ListTag pieceTags = new ListTag();
@@ -72,6 +78,6 @@ public class StagedDungeonMarkerPiece extends StructurePiece {
             ChunkPos chunkPos,
             BlockPos pivot
     ) {
-        StagedDungeonGenerationManager.enqueueFromWorldgenMarker(world.getLevel(), startChunk, pieces, liquidSettings);
+        StagedDungeonGenerationManager.enqueueFromWorldgenMarker(world.getLevel(), startChunk, pieces, liquidSettings, lockPlan);
     }
 }

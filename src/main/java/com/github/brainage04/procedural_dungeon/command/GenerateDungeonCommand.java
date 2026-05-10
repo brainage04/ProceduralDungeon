@@ -81,12 +81,21 @@ public class GenerateDungeonCommand {
                 source.getLevel(),
                 chunkPos,
                 layout.get().pieces(),
-                LiquidSettings.IGNORE_WATERLOGGING
+                LiquidSettings.IGNORE_WATERLOGGING,
+                layout.get().lockPlan()
         );
 
         source.sendSuccess(() -> Component.literal(
-                "Scheduled %s at %d %d %d with %d pieces."
-                        .formatted(key, pos.getX(), pos.getY(), pos.getZ(), layout.get().pieces().size())
+                "Scheduled %s at %d %d %d with %d pieces, %d locked chest(s), and %d key chest(s)."
+                        .formatted(
+                                key,
+                                pos.getX(),
+                                pos.getY(),
+                                pos.getZ(),
+                                layout.get().pieces().size(),
+                                layout.get().lockPlan().lockedChests().size(),
+                                layout.get().lockPlan().keySources().size()
+                        )
         ), true);
 
         return depth;

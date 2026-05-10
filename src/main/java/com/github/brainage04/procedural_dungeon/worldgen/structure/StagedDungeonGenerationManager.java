@@ -1,6 +1,8 @@
 package com.github.brainage04.procedural_dungeon.worldgen.structure;
 
 import com.github.brainage04.procedural_dungeon.ProceduralDungeon;
+import com.github.brainage04.procedural_dungeon.lock.DungeonLockManager;
+import com.github.brainage04.procedural_dungeon.lock.DungeonLockPlan;
 import java.util.ArrayDeque;
 import java.util.HashMap;
 import java.util.List;
@@ -45,16 +47,27 @@ public final class StagedDungeonGenerationManager {
             List<StagedDungeonPieceSpec> pieces,
             LiquidSettings liquidSettings
     ) {
-        enqueue(level, startChunk, pieces, liquidSettings, false);
+        enqueue(level, startChunk, pieces, liquidSettings, DungeonLockPlan.EMPTY, false);
+    }
+
+    public static void enqueue(
+            ServerLevel level,
+            ChunkPos startChunk,
+            List<StagedDungeonPieceSpec> pieces,
+            LiquidSettings liquidSettings,
+            DungeonLockPlan lockPlan
+    ) {
+        enqueue(level, startChunk, pieces, liquidSettings, lockPlan, false);
     }
 
     public static void enqueueFromWorldgenMarker(
             ServerLevel level,
             ChunkPos startChunk,
             List<StagedDungeonPieceSpec> pieces,
-            LiquidSettings liquidSettings
+            LiquidSettings liquidSettings,
+            DungeonLockPlan lockPlan
     ) {
-        enqueue(level, startChunk, pieces, liquidSettings, true);
+        enqueue(level, startChunk, pieces, liquidSettings, lockPlan, true);
     }
 
     private static void enqueue(
@@ -62,6 +75,7 @@ public final class StagedDungeonGenerationManager {
             ChunkPos startChunk,
             List<StagedDungeonPieceSpec> pieces,
             LiquidSettings liquidSettings,
+            DungeonLockPlan lockPlan,
             boolean tracked
     ) {
         if (tracked && data(level).isComplete(startChunk.pack())) {
@@ -69,7 +83,7 @@ public final class StagedDungeonGenerationManager {
         }
 
         Map<Long, Job> jobs = JOBS.computeIfAbsent(level.dimension(), ignored -> new HashMap<>());
-        jobs.computeIfAbsent(startChunk.pack(), ignored -> new Job(startChunk, pieces, liquidSettings, tracked));
+        jobs.computeIfAbsent(startChunk.pack(), ignored -> new Job(startChunk, pieces, liquidSettings, lockPlan, tracked));
     }
 
     public static Status status(ServerLevel level) {
@@ -206,6 +220,7 @@ public final class StagedDungeonGenerationManager {
         private final ChunkPos startChunk;
         private final ArrayDeque<StagedDungeonPieceSpec> pending;
         private final LiquidSettings liquidSettings;
+        private final DungeonLockPlan lockPlan;
         private final boolean tracked;
         private final java.util.Set<Long> ticketedChunks = new java.util.HashSet<>();
         private final RandomSource placementRandom = RandomSource.create(0L);
@@ -214,11 +229,13 @@ public final class StagedDungeonGenerationManager {
                 ChunkPos startChunk,
                 List<StagedDungeonPieceSpec> pieces,
                 LiquidSettings liquidSettings,
+                DungeonLockPlan lockPlan,
                 boolean tracked
         ) {
             this.startChunk = startChunk;
             this.pending = new ArrayDeque<>(pieces);
             this.liquidSettings = liquidSettings;
+            this.lockPlan = lockPlan;
             this.tracked = tracked;
         }
 
@@ -239,6 +256,7 @@ public final class StagedDungeonGenerationManager {
 
             pending.removeFirst();
             placePiece(level, level.structureManager(), level.getChunkSource().getGenerator(), piece, liquidSettings, placementRandom);
+            DungeonLockManager.applyPlanForPiece(level, lockPlan, piece.boundingBox());
             return true;
         }
 

@@ -75,8 +75,9 @@ Depth must range from 1-20
 
 # Todo
 
-get "surface" piece above "starting" piece to generate properly
-add a bunch more room types (idk yet)
+figure out why negative potions trap is not working (potions shoot straight up but don't actually splash on the ceiling)
+add a bunch more room types (wip)
+make loot tables less "flat" (wip)
 add sandstone theme
-make loot tables less "flat"
+get "surface" piece above "starting" piece to generate properly
 test natural generation in default world types (NOT superflat)

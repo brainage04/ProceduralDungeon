@@ -35,7 +35,9 @@ public class DungeonLootTableProvider extends SimpleFabricLootTableSubProvider {
     private static final Path SPEC_PATH = Path.of("src/main/datagen/procedural_dungeon/loot_tables.json");
     private static final String[] TABLE_ORDER = {
             "hallway_end",
+            "hallway_end/key_source",
             "hallway_loot",
+            "hallway_loot/key_source",
             "armorsmith",
             "weaponsmith",
             "toolsmith",
@@ -87,17 +89,24 @@ public class DungeonLootTableProvider extends SimpleFabricLootTableSubProvider {
         throw new IllegalStateException("Failed to find loot table spec: " + SPEC_PATH);
     }
 
-    private static LootTable.Builder fromSpec(JsonArray specs, DungeonTier dungeonTier, CompletableFuture<HolderLookup.Provider> registryLookup) {
+    private static LootTable.Builder fromSpec(JsonObject allSpecs, JsonArray specs, DungeonTier dungeonTier, CompletableFuture<HolderLookup.Provider> registryLookup) {
         LootTable.Builder builder = new LootTable.Builder();
 
         for (JsonElement element : specs) {
-            builder = applySpec(builder, element.getAsJsonObject(), dungeonTier, registryLookup);
+            builder = applySpec(allSpecs, builder, element.getAsJsonObject(), dungeonTier, registryLookup);
         }
 
         return builder;
     }
 
-    private static LootTable.Builder applySpec(LootTable.Builder builder, JsonObject spec, DungeonTier dungeonTier, CompletableFuture<HolderLookup.Provider> registryLookup) {
+    private static LootTable.Builder applySpec(JsonObject allSpecs, LootTable.Builder builder, JsonObject spec, DungeonTier dungeonTier, CompletableFuture<HolderLookup.Provider> registryLookup) {
+        if (spec.has("copy")) {
+            for (JsonElement element : allSpecs.getAsJsonArray(spec.get("copy").getAsString())) {
+                builder = applySpec(allSpecs, builder, element.getAsJsonObject(), dungeonTier, registryLookup);
+            }
+            return builder;
+        }
+
         if (spec.has("each")) {
             int[] count = countRange(spec);
             int[] rolls = rollsRange(spec, dungeonTier);
@@ -363,7 +372,7 @@ public class DungeonLootTableProvider extends SimpleFabricLootTableSubProvider {
             for (String tableName : TABLE_ORDER) {
                 biConsumer.accept(
                         getLootTableRegistryKey(tableName, dungeonTier),
-                        fromSpec(lootTableSpecs.getAsJsonArray(tableName), dungeonTier, registryLookup)
+                        fromSpec(lootTableSpecs, lootTableSpecs.getAsJsonArray(tableName), dungeonTier, registryLookup)
                 );
             }
         }

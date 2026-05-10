@@ -2,6 +2,8 @@ package com.github.brainage04.procedural_dungeon;
 
 import com.github.brainage04.procedural_dungeon.command.core.ModCommands;
 import com.github.brainage04.procedural_dungeon.command.StructureGalleryCommand;
+import com.github.brainage04.procedural_dungeon.item.ModItems;
+import com.github.brainage04.procedural_dungeon.lock.DungeonLockManager;
 import com.github.brainage04.procedural_dungeon.worldgen.processor.ModStructureProcessorTypes;
 import com.github.brainage04.procedural_dungeon.worldgen.structure.ModStructureTypes;
 import com.github.brainage04.procedural_dungeon.worldgen.structure.StagedDungeonGenerationManager;
@@ -23,6 +25,9 @@ public class ProceduralDungeon implements ModInitializer {
 	@Override
 	public void onInitialize() {
         LOGGER.info("{} initialising...", MOD_NAME);
+
+        ModItems.initialize();
+        DungeonLockManager.initialize();
 
         // Register runtime types referenced by generated worldgen JSON.
         ModStructureProcessorTypes.initialize();

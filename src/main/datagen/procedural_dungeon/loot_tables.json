@@ -36,6 +36,10 @@
         "rolls": [1, 2]
       }
     ],
+    "hallway_end/key_source": [
+      { "copy": "hallway_end" },
+      { "item": "procedural_dungeon:rusted_key", "count": 1, "rolls": 1 }
+    ],
     "hallway_loot": [
       { "item": "minecraft:stick", "count": [4, 8], "rolls": 1 },
       {
@@ -71,6 +75,10 @@
         ],
         "rolls": 1
       }
+    ],
+    "hallway_loot/key_source": [
+      { "copy": "hallway_loot" },
+      { "item": "procedural_dungeon:rusted_key", "count": 1, "rolls": 1 }
     ],
     "armorsmith": [
       { "tierEquipment": ["helmet", "chestplate", "leggings", "boots"], "enchant": "armor", "levels": "$levels", "rolls": [1, 3] }

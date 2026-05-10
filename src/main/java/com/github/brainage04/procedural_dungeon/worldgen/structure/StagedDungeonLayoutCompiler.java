@@ -1,6 +1,8 @@
 package com.github.brainage04.procedural_dungeon.worldgen.structure;
 
 import com.github.brainage04.procedural_dungeon.ProceduralDungeon;
+import com.github.brainage04.procedural_dungeon.lock.DungeonLockPlan;
+import com.github.brainage04.procedural_dungeon.lock.DungeonLockPlanner;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -147,7 +149,9 @@ public final class StagedDungeonLayoutCompiler {
                 .map(StagedDungeonPieceSpec::boundingBox)
                 .reduce(BoundingBox::encapsulating)
                 .orElseThrow();
-        return Optional.of(new StagedDungeonLayout(context.chunkPos(), locator, boundingBox, List.copyOf(pieces)));
+        StagedDungeonLayout baseLayout = new StagedDungeonLayout(context.chunkPos(), locator, boundingBox, List.copyOf(pieces));
+        DungeonLockPlan lockPlan = DungeonLockPlanner.create(baseLayout, templateManager, random);
+        return Optional.of(new StagedDungeonLayout(context.chunkPos(), locator, boundingBox, baseLayout.pieces(), lockPlan));
     }
 
     private static Optional<BlockPos> findNamedJigsaw(
