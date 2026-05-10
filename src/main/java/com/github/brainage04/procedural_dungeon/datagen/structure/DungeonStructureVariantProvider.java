@@ -100,14 +100,24 @@ public class DungeonStructureVariantProvider implements DataProvider {
     private static CompoundTag equipment(String room, DungeonTier tier, Random random) {
         CompoundTag equipment = new CompoundTag();
         if (room.equals("armorsmith")) {
-            putStack(equipment, "feet", random.nextBoolean() ? armorItem("boots", tier, random) : null);
-            putStack(equipment, "legs", random.nextInt(4) == 0 ? null : armorItem("leggings", tier, random));
-            putStack(equipment, "chest", armorItem("chestplate", tier, random));
-            putStack(equipment, "head", random.nextInt(3) == 0 ? null : armorItem("helmet", tier, random));
+            List<String> slots = new ArrayList<>(List.of("feet", "legs", "chest", "head"));
+            int itemCount = 1 + random.nextInt(2);
+            for (int i = 0; i < itemCount; i++) {
+                String slot = slots.remove(random.nextInt(slots.size()));
+                putStack(equipment, slot, armorItem(slot, tier, random));
+            }
         } else if (room.equals("toolsmith")) {
-            putStack(equipment, "mainhand", toolItem(tier, random));
+            List<String> toolSlots = new ArrayList<>(List.of("axe", "shovel", "pickaxe", "hoe"));
+            putStack(equipment, "mainhand", toolItem(toolSlots.remove(random.nextInt(toolSlots.size())), tier, random));
+            if (random.nextBoolean()) {
+                putStack(equipment, "offhand", toolItem(toolSlots.remove(random.nextInt(toolSlots.size())), tier, random));
+            }
         } else if (room.equals("weaponsmith")) {
-            putStack(equipment, "mainhand", weaponItem(tier, random));
+            List<String> weaponSlots = new ArrayList<>(List.of("sword", "axe"));
+            putStack(equipment, "mainhand", weaponItem(weaponSlots.remove(random.nextInt(weaponSlots.size())), tier, random));
+            if (random.nextBoolean()) {
+                putStack(equipment, "offhand", weaponItem(weaponSlots.remove(random.nextInt(weaponSlots.size())), tier, random));
+            }
         }
         return equipment;
     }
@@ -115,27 +125,32 @@ public class DungeonStructureVariantProvider implements DataProvider {
     private static Item armorItem(String slot, DungeonTier tier, Random random) {
         DungeonTier itemTier = tier.randomLootTier(random);
         return switch (slot) {
-            case "helmet" -> itemTier.helmet;
-            case "chestplate" -> itemTier.chestplate;
-            case "leggings" -> itemTier.leggings;
-            case "boots" -> itemTier.boots;
+            case "head" -> itemTier.helmet;
+            case "chest" -> itemTier.chestplate;
+            case "legs" -> itemTier.leggings;
+            case "feet" -> itemTier.boots;
             default -> throw new IllegalArgumentException("Unknown armor slot: " + slot);
         };
     }
 
-    private static Item toolItem(DungeonTier tier, Random random) {
+    private static Item toolItem(String tool, DungeonTier tier, Random random) {
         DungeonTier itemTier = tier.randomLootTier(random);
-        return switch (random.nextInt(4)) {
-            case 0 -> itemTier.pickaxe;
-            case 1 -> itemTier.axe;
-            case 2 -> itemTier.shovel;
-            default -> itemTier.hoe;
+        return switch (tool) {
+            case "axe" -> itemTier.axe;
+            case "shovel" -> itemTier.shovel;
+            case "pickaxe" -> itemTier.pickaxe;
+            case "hoe" -> itemTier.hoe;
+            default -> throw new IllegalArgumentException("Unknown tool: " + tool);
         };
     }
 
-    private static Item weaponItem(DungeonTier tier, Random random) {
+    private static Item weaponItem(String weapon, DungeonTier tier, Random random) {
         DungeonTier itemTier = tier.randomLootTier(random);
-        return random.nextBoolean() ? itemTier.sword : itemTier.axe;
+        return switch (weapon) {
+            case "sword" -> itemTier.sword;
+            case "axe" -> itemTier.axe;
+            default -> throw new IllegalArgumentException("Unknown weapon: " + weapon);
+        };
     }
 
     private static void putStack(CompoundTag equipment, String slot, Item item) {

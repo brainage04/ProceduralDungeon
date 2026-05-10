@@ -1,6 +1,8 @@
 package com.github.brainage04.procedural_dungeon.util;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -17,7 +19,10 @@ import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.EmptyLootItem;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
+import net.minecraft.world.level.storage.loot.entries.NestedLootTable;
 import net.minecraft.world.level.storage.loot.functions.EnchantWithLevelsFunction;
 import net.minecraft.world.level.storage.loot.functions.SetEnchantmentsFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
@@ -79,6 +84,129 @@ public class LootTableUtils {
         }
 
         return input.withPool(builder);
+    }
+
+    public static LootTable.Builder addDistinctWeightedEnchantedItemPool(
+            LootTable.Builder input,
+            WeightedEnchantedItem[] items,
+            int levels,
+            CompletableFuture<HolderLookup.Provider> registryLookup
+    ) {
+        List<WeightedEnchantedItem[]> itemGroups = new ArrayList<>();
+        for (WeightedEnchantedItem item : items) {
+            itemGroups.add(new WeightedEnchantedItem[]{item});
+        }
+        return addDistinctWeightedEnchantedItemGroups(input, itemGroups, levels, registryLookup);
+    }
+
+    public static LootTable.Builder addDistinctWeightedEnchantedItemGroups(
+            LootTable.Builder input,
+            List<WeightedEnchantedItem[]> itemGroups,
+            int levels,
+            CompletableFuture<HolderLookup.Provider> registryLookup
+    ) {
+        HolderLookup.Provider registries;
+        try {
+            registries = registryLookup.get();
+        } catch (ExecutionException e) {
+            return input;
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            return input;
+        }
+
+        if (itemGroups.isEmpty()) {
+            return input;
+        }
+
+        Map<TagKey<Enchantment>, HolderSet<Enchantment>> enchantmentOptions = new HashMap<>();
+        int singleWeightTotal = 0;
+        int pairWeightTotal = 0;
+        for (WeightedEnchantedItem[] group : itemGroups) {
+            for (WeightedEnchantedItem item : group) {
+                singleWeightTotal += item.weight;
+            }
+        }
+        for (int firstGroup = 0; firstGroup < itemGroups.size(); firstGroup++) {
+            for (int secondGroup = firstGroup + 1; secondGroup < itemGroups.size(); secondGroup++) {
+                for (WeightedEnchantedItem first : itemGroups.get(firstGroup)) {
+                    for (WeightedEnchantedItem second : itemGroups.get(secondGroup)) {
+                        pairWeightTotal += first.weight * second.weight;
+                    }
+                }
+            }
+        }
+
+        LootPool.Builder builder = LootPool.lootPool().setRolls(ConstantValue.exactly(1));
+        for (WeightedEnchantedItem[] group : itemGroups) {
+            for (WeightedEnchantedItem item : group) {
+                LootTable table = inlineTable(enchantmentOptions, registries, levels, item);
+                if (table == null) {
+                    return input;
+                }
+                builder = builder.add(NestedLootTable.inlineLootTable(table).setWeight(scaledWeight(item.weight, singleWeightTotal)));
+            }
+        }
+
+        if (pairWeightTotal > 0) {
+            for (int firstGroup = 0; firstGroup < itemGroups.size(); firstGroup++) {
+                for (int secondGroup = firstGroup + 1; secondGroup < itemGroups.size(); secondGroup++) {
+                    for (WeightedEnchantedItem first : itemGroups.get(firstGroup)) {
+                        for (WeightedEnchantedItem second : itemGroups.get(secondGroup)) {
+                            LootTable table = inlineTable(enchantmentOptions, registries, levels, first, second);
+                            if (table == null) {
+                                return input;
+                            }
+                            builder = builder.add(NestedLootTable.inlineLootTable(table)
+                                    .setWeight(scaledWeight(first.weight * second.weight, pairWeightTotal)));
+                        }
+                    }
+                }
+            }
+        }
+
+        return input.withPool(builder);
+    }
+
+    private static int scaledWeight(int weight, int total) {
+        if (total <= 0) {
+            return 1;
+        }
+        return Math.max(1, Math.round(weight * 1000.0F / total));
+    }
+
+    private static LootTable inlineTable(
+            Map<TagKey<Enchantment>, HolderSet<Enchantment>> enchantmentOptions,
+            HolderLookup.Provider registries,
+            int levels,
+            WeightedEnchantedItem... items
+    ) {
+        LootTable.Builder table = LootTable.lootTable();
+        for (WeightedEnchantedItem item : items) {
+            LootPoolEntryContainer.Builder<?> entry = enchantedEntry(enchantmentOptions, registries, levels, item);
+            if (entry == null) {
+                return null;
+            }
+            table = table.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(entry));
+        }
+        return table.build();
+    }
+
+    private static LootPoolEntryContainer.Builder<?> enchantedEntry(
+            Map<TagKey<Enchantment>, HolderSet<Enchantment>> enchantmentOptions,
+            HolderLookup.Provider registries,
+            int levels,
+            WeightedEnchantedItem item
+    ) {
+        HolderSet<Enchantment> options;
+        try {
+            options = enchantmentOptions.computeIfAbsent(item.enchantments, key ->
+                    registries.lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(key));
+        } catch (IllegalStateException e) {
+            return null;
+        }
+        return LootItem.lootTableItem(item.item)
+                .apply(EnchantWithLevelsFunction.enchantWithLevels(registries, ConstantValue.exactly(levels)).withOptions(options));
     }
 
     public static LootTable.Builder addEnchantedBookPool(
@@ -196,6 +324,24 @@ public class LootTableUtils {
                                                 )
                                         )
                         )
+        );
+    }
+
+    public static LootTable.Builder addChancePool(LootTable.Builder input, Item item, double chance) {
+        int precision = 10000;
+        int itemWeight = (int) Math.round(chance * precision);
+        if (itemWeight <= 0) {
+            return input;
+        }
+        if (itemWeight >= precision) {
+            return addPool(input, item, 1, 1, 1);
+        }
+
+        return input.withPool(
+                LootPool.lootPool()
+                        .setRolls(ConstantValue.exactly(1))
+                        .add(LootItem.lootTableItem(item).setWeight(itemWeight))
+                        .add(EmptyLootItem.emptyItem().setWeight(precision - itemWeight))
         );
     }
 

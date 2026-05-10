@@ -1,26 +1,26 @@
 {
   "tables": {
     "hallway_end": [
-      { "item": "minecraft:stick", "count": [4, 8], "rolls": 1 },
       {
         "items": [
+          { "item": "minecraft:stick", "weight": 2 },
           { "item": "minecraft:rotten_flesh", "weight": 1 },
           { "item": "minecraft:bone", "weight": 1 },
           { "item": "minecraft:string", "weight": 1 },
           { "item": "minecraft:spider_eye", "weight": 1 }
         ],
-        "count": [2, 4],
-        "rolls": [2, 4]
+        "count": [1, 3],
+        "rolls": 1
       },
       {
         "items": [
-          { "item": "minecraft:golden_apple", "weight": "$badRolls" },
-          { "item": "minecraft:enchanted_golden_apple", "weight": "$goodRolls" }
+          { "item": "minecraft:golden_apple", "weight": 12 },
+          { "item": "minecraft:enchanted_golden_apple", "weight": 1 }
         ],
         "count": 1,
-        "rolls": [1, 2]
+        "rolls": 1
       },
-      { "tierItems": "resources", "count": [1, 2], "rolls": [2, 3] },
+      { "tierItems": "resources", "count": [1, 2], "rolls": 4 },
       {
         "enchantedBooks": [
           { "enchantment": "minecraft:protection", "weight": 6 },
@@ -33,7 +33,7 @@
           { "enchantment": "minecraft:efficiency", "weight": 4 },
           { "enchantment": "minecraft:fortune", "weight": 2 }
         ],
-        "rolls": [1, 2]
+        "rolls": [0, 1]
       }
     ],
     "hallway_end/key_source": [
@@ -41,26 +41,26 @@
       { "item": "procedural_dungeon:rusted_key", "count": 1, "rolls": 1 }
     ],
     "hallway_loot": [
-      { "item": "minecraft:stick", "count": [4, 8], "rolls": 1 },
       {
         "items": [
+          { "item": "minecraft:stick", "weight": 2 },
           { "item": "minecraft:rotten_flesh", "weight": 1 },
           { "item": "minecraft:bone", "weight": 1 },
           { "item": "minecraft:string", "weight": 1 },
           { "item": "minecraft:spider_eye", "weight": 1 }
         ],
-        "count": [1, 2],
+        "count": [1, 3],
         "rolls": [2, 3]
       },
       {
         "items": [
-          { "item": "minecraft:golden_apple", "weight": "$badRolls" },
-          { "item": "minecraft:enchanted_golden_apple", "weight": "$goodRolls" }
+          { "item": "minecraft:golden_apple", "weight": 12 },
+          { "item": "minecraft:enchanted_golden_apple", "weight": 1 }
         ],
         "count": 1,
-        "rolls": [1, 2]
+        "rolls": 1
       },
-      { "tierItems": "resources", "count": [2, 4], "rolls": [2, 3] },
+      { "tierItems": "resources", "count": [1, 2], "rolls": 1 },
       {
         "enchantedBooks": [
           { "enchantment": "minecraft:protection", "weight": 6 },
@@ -73,7 +73,7 @@
           { "enchantment": "minecraft:efficiency", "weight": 4 },
           { "enchantment": "minecraft:fortune", "weight": 2 }
         ],
-        "rolls": 1
+        "rolls": [0, 1]
       }
     ],
     "hallway_loot/key_source": [
@@ -81,9 +81,30 @@
       { "item": "procedural_dungeon:rusted_key", "count": 1, "rolls": 1 }
     ],
     "armorsmith": [
-      { "tierEquipment": ["helmet", "chestplate", "leggings", "boots"], "enchant": "armor", "levels": "$levels", "rolls": [1, 3] }
+      {
+        "items": [
+          { "item": "minecraft:stick", "weight": 2 },
+          { "item": "minecraft:leather", "weight": 2 },
+          { "item": "minecraft:bone", "weight": 1 },
+          { "item": "minecraft:string", "weight": 1 }
+        ],
+        "count": [1, 2],
+        "rolls": [1, 2]
+      },
+      { "tierEquipment": ["helmet", "chestplate", "leggings", "boots"], "enchant": "armor", "levels": "$levels", "distinct": true },
+      { "netheriteUpgradeSmithingTemplate": true }
     ],
     "weaponsmith": [
+      {
+        "items": [
+          { "item": "minecraft:stick", "weight": 3 },
+          { "item": "minecraft:flint", "weight": 2 },
+          { "item": "minecraft:bone", "weight": 1 },
+          { "item": "minecraft:string", "weight": 1 }
+        ],
+        "count": [1, 2],
+        "rolls": [1, 2]
+      },
       {
         "equipmentChoices": [
           { "tierEquipment": ["sword", "axe"], "enchant": "damage" },
@@ -91,15 +112,27 @@
           { "item": "minecraft:crossbow", "enchant": "crossbow" }
         ],
         "levels": "$levels",
-        "rolls": [1, 3]
-      }
+        "distinct": true
+      },
+      { "netheriteUpgradeSmithingTemplate": true }
     ],
     "toolsmith": [
-      { "tierEquipment": ["axe", "shovel", "pickaxe", "hoe"], "enchant": "mining", "levels": "$levels", "rolls": [1, 3] }
+      {
+        "items": [
+          { "item": "minecraft:stick", "weight": 3 },
+          { "item": "minecraft:flint", "weight": 2 },
+          { "item": "minecraft:string", "weight": 1 },
+          { "item": "minecraft:bone", "weight": 1 }
+        ],
+        "count": [1, 2],
+        "rolls": [1, 2]
+      },
+      { "tierEquipment": ["axe", "shovel", "pickaxe", "hoe"], "enchant": "mining", "levels": "$levels", "distinct": true },
+      { "netheriteUpgradeSmithingTemplate": true }
     ],
     "enchanter": [
-      { "item": "minecraft:experience_bottle", "count": [3, 6], "rolls": [2, 3] },
-      { "item": "minecraft:lapis_lazuli", "count": [3, 6], "rolls": [2, 3] },
+      { "item": "minecraft:experience_bottle", "count": [2, 5], "rolls": 1 },
+      { "item": "minecraft:lapis_lazuli", "count": [2, 5], "rolls": 1 },
       {
         "enchantedBooks": [
           { "enchantment": "minecraft:protection", "weight": 6 },
@@ -120,7 +153,7 @@
           { "enchantment": "minecraft:piercing", "weight": 2 },
           { "enchantment": "minecraft:mending", "weight": 1 }
         ],
-        "rolls": [2, 3]
+        "rolls": [0, 1]
       }
     ],
     "hallway/trap/negative_potions": [

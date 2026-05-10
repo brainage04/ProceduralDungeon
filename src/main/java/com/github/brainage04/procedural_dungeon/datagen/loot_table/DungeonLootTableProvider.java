@@ -151,8 +151,20 @@ public class DungeonLootTableProvider extends SimpleFabricLootTableSubProvider {
             int levels = intValue(spec.get("levels"), dungeonTier);
             int[] rolls = rollsRange(spec, dungeonTier);
             List<LootTableUtils.WeightedEnchantedItem> items = new ArrayList<>();
+            List<LootTableUtils.WeightedEnchantedItem[]> itemGroups = new ArrayList<>();
             for (JsonElement equipment : spec.getAsJsonArray("tierEquipment")) {
-                addEnchantedItems(items, weightedTierItems(equipment.getAsString(), dungeonTier), enchant);
+                LootTableUtils.WeightedItem[] weightedItems = weightedTierItems(equipment.getAsString(), dungeonTier);
+                LootTableUtils.WeightedEnchantedItem[] enchantedItems = enchantedItems(weightedItems, enchant);
+                itemGroups.add(enchantedItems);
+                addEnchantedItems(items, enchantedItems);
+            }
+            if (spec.has("distinct") && spec.get("distinct").getAsBoolean()) {
+                return LootTableUtils.addDistinctWeightedEnchantedItemGroups(
+                        builder,
+                        itemGroups,
+                        levels,
+                        registryLookup
+                );
             }
             return LootTableUtils.addWeightedEnchantedItemPool(
                     builder,
@@ -168,22 +180,36 @@ public class DungeonLootTableProvider extends SimpleFabricLootTableSubProvider {
             int levels = intValue(spec.get("levels"), dungeonTier);
             int[] rolls = rollsRange(spec, dungeonTier);
             List<LootTableUtils.WeightedEnchantedItem> items = new ArrayList<>();
+            List<LootTableUtils.WeightedEnchantedItem[]> itemGroups = new ArrayList<>();
             for (JsonElement choiceElement : spec.getAsJsonArray("equipmentChoices")) {
                 JsonObject choice = choiceElement.getAsJsonObject();
                 TagKey<Enchantment> enchant = enchantTag(choice.get("enchant").getAsString());
                 if (choice.has("tierEquipment")) {
                     for (JsonElement equipment : choice.getAsJsonArray("tierEquipment")) {
-                        addEnchantedItems(items, weightedTierItems(equipment.getAsString(), dungeonTier), enchant);
+                        LootTableUtils.WeightedItem[] weightedItems = weightedTierItems(equipment.getAsString(), dungeonTier);
+                        LootTableUtils.WeightedEnchantedItem[] enchantedItems = enchantedItems(weightedItems, enchant);
+                        itemGroups.add(enchantedItems);
+                        addEnchantedItems(items, enchantedItems);
                     }
                 } else if (choice.has("item")) {
-                    items.add(new LootTableUtils.WeightedEnchantedItem(
+                    LootTableUtils.WeightedEnchantedItem enchantedItem = new LootTableUtils.WeightedEnchantedItem(
                             item(choice.get("item").getAsString()),
                             choice.has("weight") ? intValue(choice.get("weight"), dungeonTier) : 100,
                             enchant
-                    ));
+                    );
+                    items.add(enchantedItem);
+                    itemGroups.add(new LootTableUtils.WeightedEnchantedItem[]{enchantedItem});
                 } else {
                     throw new IllegalArgumentException("Unsupported equipment choice: " + choice);
                 }
+            }
+            if (spec.has("distinct") && spec.get("distinct").getAsBoolean()) {
+                return LootTableUtils.addDistinctWeightedEnchantedItemGroups(
+                        builder,
+                        itemGroups,
+                        levels,
+                        registryLookup
+                );
             }
             return LootTableUtils.addWeightedEnchantedItemPool(
                     builder,
@@ -193,6 +219,10 @@ public class DungeonLootTableProvider extends SimpleFabricLootTableSubProvider {
                     rolls[1],
                     registryLookup
             );
+        }
+
+        if (spec.has("netheriteUpgradeSmithingTemplate")) {
+            return LootTableUtils.addChancePool(builder, Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE, smithingTemplateChance(dungeonTier));
         }
 
         if (spec.has("enchantedBooks")) {
@@ -271,6 +301,25 @@ public class DungeonLootTableProvider extends SimpleFabricLootTableSubProvider {
         return new int[]{exactRolls, exactRolls};
     }
 
+    private static double smithingTemplateChance(DungeonTier dungeonTier) {
+        int totalWeight = 0;
+        int netheriteWeight = 0;
+        for (DungeonTier.WeightedTier weightedTier : dungeonTier.weightedLootTiers()) {
+            totalWeight += weightedTier.weight();
+            if (weightedTier.tier() == DungeonTier.TIER_5) {
+                netheriteWeight += weightedTier.weight();
+            }
+        }
+        if (netheriteWeight <= 0 || totalWeight <= 0) {
+            return 0.0D;
+        }
+
+        double netheriteItemChance = netheriteWeight / (double) totalWeight;
+        double oneItemChestChance = netheriteItemChance;
+        double twoItemChestChance = 1.0D - Math.pow(1.0D - netheriteItemChance, 2.0D);
+        return (oneItemChestChance + twoItemChestChance) * 0.05D;
+    }
+
     private static Item item(String id) {
         Identifier identifier = Identifier.parse(id);
         if (!BuiltInRegistries.ITEM.containsKey(identifier)) {
@@ -292,9 +341,26 @@ public class DungeonLootTableProvider extends SimpleFabricLootTableSubProvider {
             LootTableUtils.WeightedItem[] items,
             TagKey<Enchantment> enchant
     ) {
-        for (LootTableUtils.WeightedItem item : items) {
-            output.add(new LootTableUtils.WeightedEnchantedItem(item.item(), item.weight(), enchant));
+        addEnchantedItems(output, enchantedItems(items, enchant));
+    }
+
+    private static void addEnchantedItems(
+            List<LootTableUtils.WeightedEnchantedItem> output,
+            LootTableUtils.WeightedEnchantedItem[] items
+    ) {
+        output.addAll(List.of(items));
+    }
+
+    private static LootTableUtils.WeightedEnchantedItem[] enchantedItems(
+            LootTableUtils.WeightedItem[] items,
+            TagKey<Enchantment> enchant
+    ) {
+        LootTableUtils.WeightedEnchantedItem[] enchantedItems = new LootTableUtils.WeightedEnchantedItem[items.length];
+        for (int i = 0; i < items.length; i++) {
+            LootTableUtils.WeightedItem item = items[i];
+            enchantedItems[i] = new LootTableUtils.WeightedEnchantedItem(item.item(), item.weight(), enchant);
         }
+        return enchantedItems;
     }
 
     private static void addDistributedWeight(List<LootTableUtils.WeightedItem> output, Item[] items, int weight) {

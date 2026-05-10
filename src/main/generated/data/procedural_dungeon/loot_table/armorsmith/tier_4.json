@@ -8,200 +8,4493 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "minecraft:enchant_with_levels",
-              "levels": 25.0,
-              "options": "#minecraft:exclusive_set/armor"
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 2.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
             }
           ],
-          "name": "minecraft:copper_helmet",
-          "weight": 3
+          "name": "minecraft:stick",
+          "weight": 2
         },
         {
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "minecraft:enchant_with_levels",
-              "levels": 25.0,
-              "options": "#minecraft:exclusive_set/armor"
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 2.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
             }
           ],
-          "name": "minecraft:iron_helmet",
-          "weight": 12
+          "name": "minecraft:leather",
+          "weight": 2
         },
         {
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "minecraft:enchant_with_levels",
-              "levels": 25.0,
-              "options": "#minecraft:exclusive_set/armor"
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 2.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
             }
           ],
-          "name": "minecraft:diamond_helmet",
-          "weight": 70
+          "name": "minecraft:bone"
         },
         {
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "minecraft:enchant_with_levels",
-              "levels": 25.0,
-              "options": "#minecraft:exclusive_set/armor"
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 2.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
             }
           ],
-          "name": "minecraft:netherite_helmet",
-          "weight": 15
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "function": "minecraft:enchant_with_levels",
-              "levels": 25.0,
-              "options": "#minecraft:exclusive_set/armor"
-            }
-          ],
-          "name": "minecraft:copper_chestplate",
-          "weight": 3
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "function": "minecraft:enchant_with_levels",
-              "levels": 25.0,
-              "options": "#minecraft:exclusive_set/armor"
-            }
-          ],
-          "name": "minecraft:iron_chestplate",
-          "weight": 12
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "function": "minecraft:enchant_with_levels",
-              "levels": 25.0,
-              "options": "#minecraft:exclusive_set/armor"
-            }
-          ],
-          "name": "minecraft:diamond_chestplate",
-          "weight": 70
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "function": "minecraft:enchant_with_levels",
-              "levels": 25.0,
-              "options": "#minecraft:exclusive_set/armor"
-            }
-          ],
-          "name": "minecraft:netherite_chestplate",
-          "weight": 15
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "function": "minecraft:enchant_with_levels",
-              "levels": 25.0,
-              "options": "#minecraft:exclusive_set/armor"
-            }
-          ],
-          "name": "minecraft:copper_leggings",
-          "weight": 3
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "function": "minecraft:enchant_with_levels",
-              "levels": 25.0,
-              "options": "#minecraft:exclusive_set/armor"
-            }
-          ],
-          "name": "minecraft:iron_leggings",
-          "weight": 12
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "function": "minecraft:enchant_with_levels",
-              "levels": 25.0,
-              "options": "#minecraft:exclusive_set/armor"
-            }
-          ],
-          "name": "minecraft:diamond_leggings",
-          "weight": 70
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "function": "minecraft:enchant_with_levels",
-              "levels": 25.0,
-              "options": "#minecraft:exclusive_set/armor"
-            }
-          ],
-          "name": "minecraft:netherite_leggings",
-          "weight": 15
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "function": "minecraft:enchant_with_levels",
-              "levels": 25.0,
-              "options": "#minecraft:exclusive_set/armor"
-            }
-          ],
-          "name": "minecraft:copper_boots",
-          "weight": 3
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "function": "minecraft:enchant_with_levels",
-              "levels": 25.0,
-              "options": "#minecraft:exclusive_set/armor"
-            }
-          ],
-          "name": "minecraft:iron_boots",
-          "weight": 12
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "function": "minecraft:enchant_with_levels",
-              "levels": 25.0,
-              "options": "#minecraft:exclusive_set/armor"
-            }
-          ],
-          "name": "minecraft:diamond_boots",
-          "weight": 70
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "function": "minecraft:enchant_with_levels",
-              "levels": 25.0,
-              "options": "#minecraft:exclusive_set/armor"
-            }
-          ],
-          "name": "minecraft:netherite_boots",
-          "weight": 15
+          "name": "minecraft:string"
         }
       ],
       "rolls": {
         "type": "minecraft:uniform",
-        "max": 3.0,
+        "max": 2.0,
         "min": 1.0
       }
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:copper_helmet"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 8
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:iron_helmet"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 30
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:diamond_helmet"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 175
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:netherite_helmet"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 38
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:copper_chestplate"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 8
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:iron_chestplate"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 30
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:diamond_chestplate"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 175
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:netherite_chestplate"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 38
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:copper_leggings"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 8
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:iron_leggings"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 30
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:diamond_leggings"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 175
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:netherite_leggings"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 38
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:copper_boots"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 8
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:iron_boots"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 30
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:diamond_boots"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 175
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:netherite_boots"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 38
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:copper_helmet"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:copper_chestplate"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          }
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:copper_helmet"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:iron_chestplate"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          }
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:copper_helmet"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:diamond_chestplate"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 4
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:copper_helmet"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:netherite_chestplate"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          }
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:iron_helmet"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:copper_chestplate"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          }
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:iron_helmet"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:iron_chestplate"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 2
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:iron_helmet"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:diamond_chestplate"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 14
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:iron_helmet"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:netherite_chestplate"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 3
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:diamond_helmet"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:copper_chestplate"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 4
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:diamond_helmet"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:iron_chestplate"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 14
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:diamond_helmet"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:diamond_chestplate"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 82
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:diamond_helmet"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:netherite_chestplate"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 18
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:netherite_helmet"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:copper_chestplate"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          }
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:netherite_helmet"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:iron_chestplate"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 3
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:netherite_helmet"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:diamond_chestplate"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 18
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:netherite_helmet"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:netherite_chestplate"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 4
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:copper_helmet"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:copper_leggings"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          }
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:copper_helmet"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:iron_leggings"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          }
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:copper_helmet"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:diamond_leggings"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 4
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:copper_helmet"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:netherite_leggings"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          }
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:iron_helmet"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:copper_leggings"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          }
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:iron_helmet"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:iron_leggings"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 2
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:iron_helmet"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:diamond_leggings"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 14
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:iron_helmet"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:netherite_leggings"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 3
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:diamond_helmet"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:copper_leggings"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 4
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:diamond_helmet"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:iron_leggings"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 14
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:diamond_helmet"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:diamond_leggings"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 82
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:diamond_helmet"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:netherite_leggings"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 18
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:netherite_helmet"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:copper_leggings"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          }
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:netherite_helmet"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:iron_leggings"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 3
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:netherite_helmet"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:diamond_leggings"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 18
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:netherite_helmet"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:netherite_leggings"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 4
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:copper_helmet"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:copper_boots"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          }
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:copper_helmet"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:iron_boots"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          }
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:copper_helmet"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:diamond_boots"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 4
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:copper_helmet"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:netherite_boots"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          }
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:iron_helmet"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:copper_boots"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          }
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:iron_helmet"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:iron_boots"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 2
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:iron_helmet"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:diamond_boots"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 14
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:iron_helmet"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:netherite_boots"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 3
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:diamond_helmet"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:copper_boots"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 4
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:diamond_helmet"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:iron_boots"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 14
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:diamond_helmet"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:diamond_boots"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 82
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:diamond_helmet"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:netherite_boots"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 18
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:netherite_helmet"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:copper_boots"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          }
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:netherite_helmet"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:iron_boots"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 3
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:netherite_helmet"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:diamond_boots"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 18
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:netherite_helmet"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:netherite_boots"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 4
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:copper_chestplate"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:copper_leggings"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          }
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:copper_chestplate"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:iron_leggings"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          }
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:copper_chestplate"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:diamond_leggings"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 4
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:copper_chestplate"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:netherite_leggings"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          }
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:iron_chestplate"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:copper_leggings"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          }
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:iron_chestplate"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:iron_leggings"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 2
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:iron_chestplate"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:diamond_leggings"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 14
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:iron_chestplate"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:netherite_leggings"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 3
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:diamond_chestplate"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:copper_leggings"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 4
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:diamond_chestplate"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:iron_leggings"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 14
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:diamond_chestplate"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:diamond_leggings"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 82
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:diamond_chestplate"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:netherite_leggings"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 18
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:netherite_chestplate"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:copper_leggings"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          }
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:netherite_chestplate"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:iron_leggings"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 3
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:netherite_chestplate"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:diamond_leggings"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 18
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:netherite_chestplate"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:netherite_leggings"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 4
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:copper_chestplate"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:copper_boots"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          }
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:copper_chestplate"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:iron_boots"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          }
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:copper_chestplate"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:diamond_boots"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 4
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:copper_chestplate"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:netherite_boots"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          }
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:iron_chestplate"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:copper_boots"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          }
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:iron_chestplate"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:iron_boots"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 2
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:iron_chestplate"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:diamond_boots"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 14
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:iron_chestplate"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:netherite_boots"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 3
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:diamond_chestplate"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:copper_boots"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 4
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:diamond_chestplate"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:iron_boots"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 14
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:diamond_chestplate"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:diamond_boots"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 82
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:diamond_chestplate"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:netherite_boots"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 18
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:netherite_chestplate"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:copper_boots"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          }
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:netherite_chestplate"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:iron_boots"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 3
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:netherite_chestplate"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:diamond_boots"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 18
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:netherite_chestplate"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:netherite_boots"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 4
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:copper_leggings"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:copper_boots"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          }
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:copper_leggings"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:iron_boots"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          }
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:copper_leggings"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:diamond_boots"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 4
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:copper_leggings"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:netherite_boots"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          }
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:iron_leggings"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:copper_boots"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          }
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:iron_leggings"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:iron_boots"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 2
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:iron_leggings"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:diamond_boots"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 14
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:iron_leggings"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:netherite_boots"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 3
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:diamond_leggings"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:copper_boots"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 4
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:diamond_leggings"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:iron_boots"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 14
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:diamond_leggings"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:diamond_boots"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 82
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:diamond_leggings"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:netherite_boots"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 18
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:netherite_leggings"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:copper_boots"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          }
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:netherite_leggings"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:iron_boots"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 3
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:netherite_leggings"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:diamond_boots"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 18
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:netherite_leggings"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "function": "minecraft:enchant_with_levels",
+                        "levels": 25.0,
+                        "options": "#minecraft:exclusive_set/armor"
+                      }
+                    ],
+                    "name": "minecraft:netherite_boots"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          },
+          "weight": 4
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:netherite_upgrade_smithing_template",
+          "weight": 214
+        },
+        {
+          "type": "minecraft:empty",
+          "weight": 9786
+        }
+      ],
+      "rolls": 1.0
     }
   ]
 }
