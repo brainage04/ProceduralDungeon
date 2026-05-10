@@ -218,9 +218,11 @@ public class LootTableUtils {
             int maxRolls,
             CompletableFuture<HolderLookup.Provider> registryLookup
     ) {
+        HolderLookup.Provider registries;
         HolderLookup.RegistryLookup<Enchantment> registry;
         try {
-            registry = registryLookup.get().lookupOrThrow(Registries.ENCHANTMENT);
+            registries = registryLookup.get();
+            registry = registries.lookupOrThrow(Registries.ENCHANTMENT);
         } catch (ExecutionException e) {
             throw new IllegalStateException("Failed to look up enchantment registry", e);
         } catch (InterruptedException e) {
@@ -230,8 +232,10 @@ public class LootTableUtils {
 
         LootPool.Builder builder = LootPool.lootPool()
                 .setRolls(rolls(minRolls, maxRolls));
+        int curatedWeight = 0;
         for (WeightedEnchantment enchantment : enchantments) {
             Holder<Enchantment> holder = registry.getOrThrow(ResourceKey.create(Registries.ENCHANTMENT, enchantment.id));
+            curatedWeight += enchantment.weight;
             builder = builder.add(
                     LootItem.lootTableItem(Items.BOOK)
                             .setWeight(enchantment.weight)
@@ -239,6 +243,11 @@ public class LootTableUtils {
                                     .withEnchantment(holder, ConstantValue.exactly(bookLevel(holder.value(), tier, tierCount))))
             );
         }
+        builder = builder.add(
+                LootItem.lootTableItem(Items.BOOK)
+                        .setWeight(curatedWeight)
+                        .apply(EnchantWithLevelsFunction.enchantWithLevels(registries, ConstantValue.exactly(tier * 10)))
+        );
 
         return input.withPool(builder);
     }
