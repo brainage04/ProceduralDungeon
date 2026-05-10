@@ -1,0 +1,44 @@
+{
+  "elements": [
+    {
+      "element": {
+        "branch_limit": 1,
+        "element_type": "procedural_dungeon:variant_single_pool_element",
+        "location": "procedural_dungeon:dungeon/hallway/loot/small",
+        "override_liquid_settings": "ignore_waterlogging",
+        "processors": "procedural_dungeon:dungeon/profile/dcab362a34e308bc",
+        "projection": "rigid",
+        "spawner_tier": 2,
+        "variant": "procedural_dungeon:dungeon/overworld/copper/tier_2"
+      },
+      "weight": 3
+    },
+    {
+      "element": {
+        "branch_limit": 1,
+        "element_type": "procedural_dungeon:variant_single_pool_element",
+        "location": "procedural_dungeon:dungeon/hallway/loot/medium",
+        "override_liquid_settings": "ignore_waterlogging",
+        "processors": "procedural_dungeon:dungeon/profile/87f10a0fbd0a22c5",
+        "projection": "rigid",
+        "spawner_tier": 2,
+        "variant": "procedural_dungeon:dungeon/overworld/copper/tier_2"
+      },
+      "weight": 2
+    },
+    {
+      "element": {
+        "branch_limit": 1,
+        "element_type": "procedural_dungeon:variant_single_pool_element",
+        "location": "procedural_dungeon:dungeon/hallway/loot/large",
+        "override_liquid_settings": "ignore_waterlogging",
+        "processors": "procedural_dungeon:dungeon/profile/e47e3f9dd399639e",
+        "projection": "rigid",
+        "spawner_tier": 2,
+        "variant": "procedural_dungeon:dungeon/overworld/copper/tier_2"
+      },
+      "weight": 1
+    }
+  ],
+  "fallback": "minecraft:empty"
+}

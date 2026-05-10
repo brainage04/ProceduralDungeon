@@ -1,0 +1,44 @@
+{
+  "elements": [
+    {
+      "element": {
+        "branch_limit": 4,
+        "element_type": "procedural_dungeon:variant_single_pool_element",
+        "location": "procedural_dungeon:dungeon/hallway/small",
+        "override_liquid_settings": "ignore_waterlogging",
+        "processors": "procedural_dungeon:dungeon/profile/c18258df97e2a0b7",
+        "projection": "rigid",
+        "spawner_tier": 5,
+        "variant": "procedural_dungeon:dungeon/overworld/desert_tomb/tier_5"
+      },
+      "weight": 6
+    },
+    {
+      "element": {
+        "branch_limit": 4,
+        "element_type": "procedural_dungeon:variant_single_pool_element",
+        "location": "procedural_dungeon:dungeon/hallway/medium",
+        "override_liquid_settings": "ignore_waterlogging",
+        "processors": "procedural_dungeon:dungeon/profile/c18258df97e2a0b7",
+        "projection": "rigid",
+        "spawner_tier": 5,
+        "variant": "procedural_dungeon:dungeon/overworld/desert_tomb/tier_5"
+      },
+      "weight": 3
+    },
+    {
+      "element": {
+        "branch_limit": 4,
+        "element_type": "procedural_dungeon:variant_single_pool_element",
+        "location": "procedural_dungeon:dungeon/hallway/large",
+        "override_liquid_settings": "ignore_waterlogging",
+        "processors": "procedural_dungeon:dungeon/profile/c18258df97e2a0b7",
+        "projection": "rigid",
+        "spawner_tier": 5,
+        "variant": "procedural_dungeon:dungeon/overworld/desert_tomb/tier_5"
+      },
+      "weight": 1
+    }
+  ],
+  "fallback": "minecraft:empty"
+}

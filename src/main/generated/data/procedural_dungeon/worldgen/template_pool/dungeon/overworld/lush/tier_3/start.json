@@ -1,0 +1,18 @@
+{
+  "elements": [
+    {
+      "element": {
+        "branch_limit": 3,
+        "element_type": "procedural_dungeon:variant_single_pool_element",
+        "location": "procedural_dungeon:dungeon/start",
+        "override_liquid_settings": "ignore_waterlogging",
+        "processors": "procedural_dungeon:dungeon/profile/7bfbba58767a70f2",
+        "projection": "rigid",
+        "spawner_tier": 3,
+        "variant": "procedural_dungeon:dungeon/overworld/lush/tier_3"
+      },
+      "weight": 1
+    }
+  ],
+  "fallback": "minecraft:empty"
+}

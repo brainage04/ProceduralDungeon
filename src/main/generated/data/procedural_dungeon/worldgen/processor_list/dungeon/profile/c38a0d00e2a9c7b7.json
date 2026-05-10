@@ -1,0 +1,61 @@
+{
+  "processors": [
+    {
+      "age_chance": 0.4,
+      "loot_table_replacements": {
+        "procedural_dungeon:armorsmith": "procedural_dungeon:armorsmith/tier_2",
+        "procedural_dungeon:enchanter": "procedural_dungeon:enchanter/tier_2",
+        "procedural_dungeon:hallway/trap/negative_potions": "procedural_dungeon:hallway/trap/negative_potions/tier_2",
+        "procedural_dungeon:hallway_end": "procedural_dungeon:hallway_end/tier_2",
+        "procedural_dungeon:hallway_loot": "procedural_dungeon:hallway_loot/tier_2",
+        "procedural_dungeon:toolsmith": "procedural_dungeon:toolsmith/tier_2",
+        "procedural_dungeon:weaponsmith": "procedural_dungeon:weaponsmith/tier_2"
+      },
+      "post_rule_groups": [
+        [
+          {
+            "input": "minecraft:cobblestone",
+            "output": "minecraft:copper_grate",
+            "probability": 0.08
+          },
+          {
+            "input": "minecraft:cobblestone",
+            "output": "minecraft:chiseled_copper",
+            "probability": 0.08
+          },
+          {
+            "input": "minecraft:cobblestone",
+            "output": "minecraft:copper_bulb",
+            "probability": 0.08
+          },
+          {
+            "input": "minecraft:cobblestone",
+            "output": "minecraft:oxidized_copper",
+            "probability": 0.08
+          },
+          {
+            "input": "minecraft:cobblestone",
+            "output": "minecraft:exposed_copper",
+            "probability": 0.08
+          },
+          {
+            "input": "minecraft:cobblestone",
+            "output": "minecraft:tuff_bricks",
+            "probability": 1.0
+          }
+        ]
+      ],
+      "pre_rule_groups": [
+        [
+          {
+            "input": "minecraft:air",
+            "output": "minecraft:cobweb",
+            "probability": 0.01
+          }
+        ]
+      ],
+      "processor_type": "procedural_dungeon:fused_dungeon_processor",
+      "rot_chance": 0.98
+    }
+  ]
+}

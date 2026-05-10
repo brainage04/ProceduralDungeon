@@ -74,6 +74,146 @@
       }
     },
     {
+      "name": "desert_tomb",
+      "dimension": "minecraft:overworld",
+      "rules": [
+        { "input": "minecraft:cobblestone", "probability": 0.05, "output": "minecraft:chiseled_sandstone" },
+        { "input": "minecraft:cobblestone", "probability": 0.08, "output": "minecraft:cut_sandstone" },
+        { "input": "minecraft:cobblestone", "probability": 0.08, "output": "minecraft:smooth_sandstone" },
+        { "input": "minecraft:cobblestone", "probability": 0.04, "output": "minecraft:terracotta" },
+        { "input": "minecraft:cobblestone", "probability": 0.02, "output": "minecraft:red_sandstone" },
+        { "input": "minecraft:cobblestone", "probability": 1.0, "output": "minecraft:sandstone" }
+      ],
+      "shapes": {
+        "fallback": "minecraft:sandstone",
+        "stairs": "minecraft:sandstone_stairs",
+        "slab": "minecraft:sandstone_slab",
+        "wall": "minecraft:sandstone_wall"
+      }
+    },
+    {
+      "name": "lush",
+      "dimension": "minecraft:overworld",
+      "rules": [
+        { "input": "minecraft:cobblestone", "probability": 0.14, "output": "minecraft:moss_block" },
+        { "input": "minecraft:cobblestone", "probability": 0.10, "output": "minecraft:rooted_dirt" },
+        { "input": "minecraft:cobblestone", "probability": 0.08, "output": "minecraft:mud" },
+        { "input": "minecraft:cobblestone", "probability": 0.12, "output": "minecraft:mossy_stone_bricks" },
+        { "input": "minecraft:cobblestone", "probability": 1.0, "output": "minecraft:mossy_cobblestone" }
+      ],
+      "shapes": {
+        "fallback": "minecraft:mossy_cobblestone",
+        "stairs": "minecraft:mossy_cobblestone_stairs",
+        "slab": "minecraft:mossy_cobblestone_slab",
+        "wall": "minecraft:mossy_cobblestone_wall"
+      }
+    },
+    {
+      "name": "dripstone",
+      "dimension": "minecraft:overworld",
+      "rules": [
+        { "input": "minecraft:cobblestone", "probability": 0.12, "output": "minecraft:dripstone_block" },
+        { "input": "minecraft:cobblestone", "probability": 0.10, "output": "minecraft:tuff" },
+        { "input": "minecraft:cobblestone", "probability": 0.08, "output": "minecraft:calcite" },
+        { "input": "minecraft:cobblestone", "probability": 0.08, "output": "minecraft:cobbled_deepslate" },
+        { "input": "minecraft:cobblestone", "probability": 1.0, "output": "minecraft:stone" }
+      ],
+      "shapes": {
+        "fallback": "minecraft:tuff_bricks",
+        "stairs": "minecraft:tuff_brick_stairs",
+        "slab": "minecraft:tuff_brick_slab",
+        "wall": "minecraft:tuff_brick_wall"
+      }
+    },
+    {
+      "name": "frozen",
+      "dimension": "minecraft:overworld",
+      "rules": [
+        { "input": "minecraft:cobblestone", "probability": 0.08, "output": "minecraft:blue_ice" },
+        { "input": "minecraft:cobblestone", "probability": 0.16, "output": "minecraft:packed_ice" },
+        { "input": "minecraft:cobblestone", "probability": 0.08, "output": "minecraft:ice" },
+        { "input": "minecraft:cobblestone", "probability": 0.10, "output": "minecraft:snow_block" },
+        { "input": "minecraft:cobblestone", "probability": 0.08, "output": "minecraft:light_blue_stained_glass" },
+        { "input": "minecraft:cobblestone", "probability": 1.0, "output": "minecraft:diorite" }
+      ],
+      "shapes": {
+        "fallback": "minecraft:diorite",
+        "stairs": "minecraft:diorite_stairs",
+        "slab": "minecraft:diorite_slab",
+        "wall": "minecraft:diorite_wall"
+      }
+    },
+    {
+      "name": "ocean_ruin",
+      "dimension": "minecraft:overworld",
+      "rules": [
+        { "input": "minecraft:cobblestone", "probability": 0.12, "output": "minecraft:prismarine_bricks" },
+        { "input": "minecraft:cobblestone", "probability": 0.08, "output": "minecraft:dark_prismarine" },
+        { "input": "minecraft:cobblestone", "probability": 0.04, "output": "minecraft:sea_lantern" },
+        { "input": "minecraft:cobblestone", "probability": 0.08, "output": "minecraft:mossy_cobblestone" },
+        { "input": "minecraft:cobblestone", "probability": 1.0, "output": "minecraft:prismarine" }
+      ],
+      "shapes": {
+        "fallback": "minecraft:prismarine",
+        "stairs": "minecraft:prismarine_stairs",
+        "slab": "minecraft:prismarine_slab",
+        "wall": "minecraft:prismarine_wall"
+      }
+    },
+    {
+      "name": "amethyst_geode",
+      "dimension": "minecraft:overworld",
+      "rules": [
+        { "input": "minecraft:cobblestone", "probability": 0.08, "output": "minecraft:amethyst_block" },
+        { "input": "minecraft:cobblestone", "probability": 0.03, "output": "minecraft:budding_amethyst" },
+        { "input": "minecraft:cobblestone", "probability": 0.08, "output": "minecraft:smooth_basalt" },
+        { "input": "minecraft:cobblestone", "probability": 0.06, "output": "minecraft:tinted_glass" },
+        { "input": "minecraft:cobblestone", "probability": 1.0, "output": "minecraft:calcite" }
+      ],
+      "shapes": {
+        "fallback": "minecraft:calcite",
+        "stairs": "minecraft:tuff_brick_stairs",
+        "slab": "minecraft:tuff_brick_slab",
+        "wall": "minecraft:tuff_brick_wall"
+      }
+    },
+    {
+      "name": "copper",
+      "dimension": "minecraft:overworld",
+      "rules": [
+        { "input": "minecraft:cobblestone", "probability": 0.08, "output": "minecraft:copper_grate" },
+        { "input": "minecraft:cobblestone", "probability": 0.08, "output": "minecraft:chiseled_copper" },
+        { "input": "minecraft:cobblestone", "probability": 0.08, "output": "minecraft:copper_bulb" },
+        { "input": "minecraft:cobblestone", "probability": 0.08, "output": "minecraft:oxidized_copper" },
+        { "input": "minecraft:cobblestone", "probability": 0.08, "output": "minecraft:exposed_copper" },
+        { "input": "minecraft:cobblestone", "probability": 1.0, "output": "minecraft:tuff_bricks" }
+      ],
+      "shapes": {
+        "fallback": "minecraft:tuff_bricks",
+        "stairs": "minecraft:tuff_brick_stairs",
+        "slab": "minecraft:tuff_brick_slab",
+        "wall": "minecraft:tuff_brick_wall"
+      }
+    },
+    {
+      "name": "stronghold",
+      "dimension": "minecraft:overworld",
+      "rules": [
+        { "input": "minecraft:cobblestone", "probability": 0.03, "output": "minecraft:infested_stone_bricks" },
+        { "input": "minecraft:cobblestone", "probability": 0.02, "output": "minecraft:infested_cracked_stone_bricks" },
+        { "input": "minecraft:cobblestone", "probability": 0.08, "output": "minecraft:mossy_stone_bricks" },
+        { "input": "minecraft:cobblestone", "probability": 0.08, "output": "minecraft:cracked_stone_bricks" },
+        { "input": "minecraft:cobblestone", "probability": 0.04, "output": "minecraft:chiseled_stone_bricks" },
+        { "input": "minecraft:cobblestone", "probability": 1.0, "output": "minecraft:stone_bricks" }
+      ],
+      "shapes": {
+        "fallback": "minecraft:stone_bricks",
+        "stairs": "minecraft:stone_brick_stairs",
+        "slab": "minecraft:stone_brick_slab",
+        "wall": "minecraft:stone_brick_wall"
+      }
+    },
+    {
       "name": "nether_wastes",
       "dimension": "minecraft:the_nether",
       "rules": [

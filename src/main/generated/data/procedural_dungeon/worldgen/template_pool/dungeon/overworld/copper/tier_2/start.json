@@ -1,0 +1,18 @@
+{
+  "elements": [
+    {
+      "element": {
+        "branch_limit": 2,
+        "element_type": "procedural_dungeon:variant_single_pool_element",
+        "location": "procedural_dungeon:dungeon/start",
+        "override_liquid_settings": "ignore_waterlogging",
+        "processors": "procedural_dungeon:dungeon/profile/a4ca4cb7c9fcaa2e",
+        "projection": "rigid",
+        "spawner_tier": 2,
+        "variant": "procedural_dungeon:dungeon/overworld/copper/tier_2"
+      },
+      "weight": 1
+    }
+  ],
+  "fallback": "minecraft:empty"
+}
