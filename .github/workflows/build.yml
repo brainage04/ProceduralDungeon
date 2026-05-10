@@ -41,6 +41,9 @@ jobs:
       - name: make gradle wrapper executable
         run: chmod +x ./gradlew
 
+      - name: generate data
+        run: ./gradlew runDatagen
+
       - name: build
         run: ./gradlew build
 

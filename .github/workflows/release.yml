@@ -43,8 +43,14 @@ jobs:
             exit 1
           fi
 
+      - name: clean
+        run: ./gradlew clean
+
+      - name: generate data
+        run: ./gradlew runDatagen
+
       - name: build
-        run: ./gradlew clean build
+        run: ./gradlew build
 
       - name: collect release artifacts
         run: |
