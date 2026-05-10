@@ -75,6 +75,13 @@ Depth must range from 1-20
 
 # Todo
 
+Loot tables still have too much loot tbh. What needs changing:
+- Too many armour stands in armor/weapon/toolsmith rooms. Remove the left and right one, leaving only the one in the middle (see image 1)
+- Too many items in the chests. We should remove the chest on the left (see image 2) and we should make it so each chest has 1-2 armor/weapon/tool items. Add some junk/"bad rolls" in there as well like the other chests have.
+- The other loot tables (besides armor/weapon/toolsmith) have too much stuff generally speaking. Chests that contain books should have 0-1 books, and we should probably stop scaling good/bad rolls with tier. 2-3 good rolls, 2-3 bad rolls for unlocked chests, and 5 good rolls/1 bad roll for locked chests.
+
+Images: 
+
 figure out why negative potions trap is not working (potions shoot straight up but don't actually splash on the ceiling)
 add a bunch more room types (wip)
 make loot tables less "flat" (wip)

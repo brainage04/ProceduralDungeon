@@ -15,7 +15,9 @@ public class DungeonLockSaveData extends SavedData {
             Codec.LONG.listOf().optionalFieldOf("locked_chests", List.of())
                     .forGetter(DungeonLockSaveData::lockedChests),
             Codec.LONG.listOf().optionalFieldOf("locked_doors", List.of())
-                    .forGetter(DungeonLockSaveData::lockedDoors)
+                    .forGetter(DungeonLockSaveData::lockedDoors),
+            Codec.LONG.listOf().optionalFieldOf("key_source_chests", List.of())
+                    .forGetter(DungeonLockSaveData::keySourceChests)
     ).apply(instance, DungeonLockSaveData::new));
 
     public static final SavedDataType<DungeonLockSaveData> TYPE = new SavedDataType<>(
@@ -27,12 +29,14 @@ public class DungeonLockSaveData extends SavedData {
 
     private final LongSet lockedChests = new LongOpenHashSet();
     private final LongSet lockedDoors = new LongOpenHashSet();
+    private final LongSet keySourceChests = new LongOpenHashSet();
 
     public DungeonLockSaveData() {}
 
-    private DungeonLockSaveData(List<Long> lockedChests, List<Long> lockedDoors) {
+    private DungeonLockSaveData(List<Long> lockedChests, List<Long> lockedDoors, List<Long> keySourceChests) {
         this.lockedChests.addAll(lockedChests);
         this.lockedDoors.addAll(lockedDoors);
+        this.keySourceChests.addAll(keySourceChests);
     }
 
     public boolean isLocked(long pos) {
@@ -43,12 +47,20 @@ public class DungeonLockSaveData extends SavedData {
         return lockedChests.contains(pos);
     }
 
+    public boolean isExplosionProtected(long pos) {
+        return isLocked(pos) || keySourceChests.contains(pos);
+    }
+
     public List<Long> getLockedChests() {
         return lockedChests();
     }
 
     public List<Long> getLockedDoors() {
         return lockedDoors();
+    }
+
+    public List<Long> getKeySourceChests() {
+        return keySourceChests();
     }
 
     public boolean addLockedChest(long pos) {
@@ -61,6 +73,14 @@ public class DungeonLockSaveData extends SavedData {
 
     public boolean addLockedDoor(long pos) {
         if (lockedDoors.add(pos)) {
+            setDirty();
+            return true;
+        }
+        return false;
+    }
+
+    public boolean addKeySourceChest(long pos) {
+        if (keySourceChests.add(pos)) {
             setDirty();
             return true;
         }
@@ -81,5 +101,9 @@ public class DungeonLockSaveData extends SavedData {
 
     private List<Long> lockedDoors() {
         return lockedDoors.longStream().boxed().toList();
+    }
+
+    private List<Long> keySourceChests() {
+        return keySourceChests.longStream().boxed().toList();
     }
 }

@@ -87,6 +87,7 @@ public final class DungeonLockManager {
 
             BlockEntity blockEntity = level.getBlockEntity(pos);
             if (blockEntity instanceof RandomizableContainer container) {
+                data.addKeySourceChest(keySource.pos());
                 ResourceKey<LootTable> lootTable = ResourceKey.create(Registries.LOOT_TABLE, keySource.lootTable());
                 container.setLootTable(lootTable, level.getSeed() ^ pos.asLong() ^ 0x5EED5EEDL);
                 blockEntity.setChanged();
@@ -96,6 +97,10 @@ public final class DungeonLockManager {
 
     public static void registerLockedDoor(ServerLevel level, BlockPos pos) {
         data(level).addLockedDoor(pos.asLong());
+    }
+
+    public static boolean isExplosionProtected(ServerLevel level, BlockPos pos) {
+        return data(level).isExplosionProtected(pos.asLong());
     }
 
     private static DungeonLockSaveData data(ServerLevel level) {
