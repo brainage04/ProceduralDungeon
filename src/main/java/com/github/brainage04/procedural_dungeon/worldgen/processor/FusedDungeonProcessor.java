@@ -1,5 +1,6 @@
 package com.github.brainage04.procedural_dungeon.worldgen.processor;
 
+import com.github.brainage04.procedural_dungeon.dungeon.DungeonTier;
 import com.github.brainage04.procedural_dungeon.worldgen.structure.DungeonGenerationProfiler;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
@@ -38,6 +39,9 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProc
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 
 public class FusedDungeonProcessor extends StructureProcessor {
+    public static final String SPAWNER_MARKER_TAG = "procedural_dungeon_spawner_marker";
+    public static final String SPAWNER_TIER_TAG = "procedural_dungeon_spawner_tier";
+
     private static final Map<Block, Shape> INPUT_SHAPES = inputShapes();
     private static final BlockState[] NON_MOSSY_SLAB_REPLACEMENTS = new BlockState[] {
             Blocks.STONE_SLAB.defaultBlockState(),
@@ -64,7 +68,10 @@ public class FusedDungeonProcessor extends StructureProcessor {
                             .forGetter(processor -> processor.shapeReplacements),
                     Codec.unboundedMap(Identifier.CODEC, Identifier.CODEC)
                             .optionalFieldOf("loot_table_replacements", Map.of())
-                            .forGetter(processor -> processor.lootTableReplacements)
+                            .forGetter(processor -> processor.lootTableReplacements),
+                    Identifier.CODEC.listOf()
+                            .optionalFieldOf("spawner_entities", List.of())
+                            .forGetter(processor -> processor.spawnerEntities)
             ).apply(instance, FusedDungeonProcessor::new));
 
     private final List<List<FusedRule>> preRuleGroups;
@@ -73,6 +80,7 @@ public class FusedDungeonProcessor extends StructureProcessor {
     private final float rotChance;
     private final Optional<ShapeReplacements> shapeReplacements;
     private final Map<Identifier, Identifier> lootTableReplacements;
+    private final List<Identifier> spawnerEntities;
     private final RuleStage preRuleStage;
     private final RuleStage postRuleStage;
     private final ShapeStates shapeStates;
@@ -82,6 +90,7 @@ public class FusedDungeonProcessor extends StructureProcessor {
     private final boolean hasPostRules;
     private final boolean hasShapes;
     private final boolean hasLoot;
+    private final boolean hasSpawnerMarkers;
 
     public FusedDungeonProcessor(
             List<List<FusedRule>> preRuleGroups,
@@ -89,7 +98,8 @@ public class FusedDungeonProcessor extends StructureProcessor {
             float ageChance,
             float rotChance,
             Optional<ShapeReplacements> shapeReplacements,
-            Map<Identifier, Identifier> lootTableReplacements
+            Map<Identifier, Identifier> lootTableReplacements,
+            List<Identifier> spawnerEntities
     ) {
         this.preRuleGroups = preRuleGroups.stream()
                 .map(List::copyOf)
@@ -101,6 +111,7 @@ public class FusedDungeonProcessor extends StructureProcessor {
         this.rotChance = rotChance;
         this.shapeReplacements = shapeReplacements;
         this.lootTableReplacements = Map.copyOf(lootTableReplacements);
+        this.spawnerEntities = List.copyOf(spawnerEntities);
         this.preRuleStage = new RuleStage(this.preRuleGroups);
         this.postRuleStage = new RuleStage(this.postRuleGroups);
         this.shapeStates = shapeReplacements.map(ShapeStates::new).orElse(null);
@@ -112,6 +123,7 @@ public class FusedDungeonProcessor extends StructureProcessor {
         this.hasPostRules = !this.postRuleStage.isEmpty();
         this.hasShapes = this.shapeStates != null;
         this.hasLoot = !this.lootTableReplacementStrings.isEmpty();
+        this.hasSpawnerMarkers = !this.spawnerEntities.isEmpty();
     }
 
     @Override
@@ -124,6 +136,10 @@ public class FusedDungeonProcessor extends StructureProcessor {
             StructurePlaceSettings data
     ) {
         StructureTemplate.StructureBlockInfo result = currentBlockInfo;
+        if (hasSpawnerMarkers && isSpawnerMarker(result.state(), result.nbt())) {
+            return createSpawner(result, data.getRandom(result.pos()));
+        }
+
         if (hasPreRules && preRuleStage.mayApply(result.state().getBlock())) {
             result = preRuleStage.apply(result);
         }
@@ -154,6 +170,60 @@ public class FusedDungeonProcessor extends StructureProcessor {
             return null;
         }
         return hasLoot ? applyLootAndBlockEntity(result, data) : result;
+    }
+
+    public static boolean isSpawnerMarker(BlockState state, CompoundTag nbt) {
+        return state.is(Blocks.SPAWNER) && isSpawnerMarkerNbt(nbt);
+    }
+
+    public static boolean isSpawnerMarkerNbt(CompoundTag nbt) {
+        if (nbt == null) {
+            return false;
+        }
+        return nbt.getBooleanOr(SPAWNER_MARKER_TAG, false) || isBlankSpawnerNbt(nbt);
+    }
+
+    private static boolean isBlankSpawnerNbt(CompoundTag nbt) {
+        String blockEntityId = nbt.getString("id").orElse("");
+        if (!blockEntityId.isEmpty() && !blockEntityId.equals("minecraft:mob_spawner")) {
+            return false;
+        }
+        String entityId = nbt.getCompoundOrEmpty("SpawnData")
+                .getCompoundOrEmpty("entity")
+                .getString("id")
+                .orElse("");
+        return entityId.isBlank() && nbt.getListOrEmpty("SpawnPotentials").isEmpty();
+    }
+
+    private StructureTemplate.StructureBlockInfo createSpawner(
+            StructureTemplate.StructureBlockInfo blockInfo,
+            RandomSource random
+    ) {
+        Identifier entity = spawnerEntities.get(random.nextInt(spawnerEntities.size()));
+        int spawnerTier = blockInfo.nbt() == null ? 1 : blockInfo.nbt().getIntOr(SPAWNER_TIER_TAG, 1);
+        DungeonTier tier = DungeonTier.values()[Math.clamp(spawnerTier, 1, DungeonTier.values().length) - 1];
+
+        CompoundTag nbt = new CompoundTag();
+        nbt.put("components", new CompoundTag());
+        nbt.putInt("MaxNearbyEntities", tier.spawnerMaxNearbyEntities);
+        nbt.putInt("RequiredPlayerRange", tier.spawnerRequiredPlayerRange);
+        nbt.putInt("SpawnCount", tier.spawnerSpawnCount);
+        nbt.put("SpawnData", spawnData(entity));
+        nbt.putInt("MaxSpawnDelay", tier.spawnerMaxSpawnDelay);
+        nbt.putString("id", "minecraft:mob_spawner");
+        nbt.putInt("SpawnRange", tier.spawnerSpawnRange);
+        nbt.putInt("Delay", 0);
+        nbt.putInt("MinSpawnDelay", tier.spawnerMinSpawnDelay);
+        nbt.put("SpawnPotentials", new net.minecraft.nbt.ListTag());
+        return new StructureTemplate.StructureBlockInfo(blockInfo.pos(), Blocks.SPAWNER.defaultBlockState(), nbt);
+    }
+
+    private static CompoundTag spawnData(Identifier entity) {
+        CompoundTag spawnData = new CompoundTag();
+        CompoundTag entityTag = new CompoundTag();
+        entityTag.putString("id", entity.toString());
+        spawnData.put("entity", entityTag);
+        return spawnData;
     }
 
     private StateClassification classify(BlockState state) {

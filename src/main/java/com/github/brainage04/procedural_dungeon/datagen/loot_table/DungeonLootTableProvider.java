@@ -33,7 +33,10 @@ import java.util.function.BiConsumer;
 public class DungeonLootTableProvider extends SimpleFabricLootTableSubProvider {
     private static final Gson GSON = new Gson();
     private static final Path SPEC_PATH = Path.of("src/main/datagen/procedural_dungeon/loot_tables.json");
-    private static final String[] TABLE_ORDER = {
+    private static final String[] NON_TIERED_TABLE_ORDER = {
+            "starter_loot"
+    };
+    private static final String[] TIERED_TABLE_ORDER = {
             "hallway_end",
             "hallway_end/key_source",
             "hallway_loot",
@@ -60,6 +63,10 @@ public class DungeonLootTableProvider extends SimpleFabricLootTableSubProvider {
 
     public static Identifier getLootTableId(String tableName, DungeonTier tier) {
         return ProceduralDungeon.of("%s/tier_%d".formatted(tableName, tier.tier));
+    }
+
+    private static ResourceKey<LootTable> getLootTableRegistryKey(String tableName) {
+        return ResourceKey.create(Registries.LOOT_TABLE, getLootTableId(tableName));
     }
 
     private static ResourceKey<LootTable> getLootTableRegistryKey(String tableName, DungeonTier tier) {
@@ -434,8 +441,15 @@ public class DungeonLootTableProvider extends SimpleFabricLootTableSubProvider {
 
     @Override
     public void generate(BiConsumer<ResourceKey<LootTable>, LootTable.Builder> biConsumer) {
+        for (String tableName : NON_TIERED_TABLE_ORDER) {
+            biConsumer.accept(
+                    getLootTableRegistryKey(tableName),
+                    fromSpec(lootTableSpecs, lootTableSpecs.getAsJsonArray(tableName), DungeonTier.TIER_1, registryLookup)
+            );
+        }
+
         for (DungeonTier dungeonTier : DungeonTier.values()) {
-            for (String tableName : TABLE_ORDER) {
+            for (String tableName : TIERED_TABLE_ORDER) {
                 biConsumer.accept(
                         getLootTableRegistryKey(tableName, dungeonTier),
                         fromSpec(lootTableSpecs, lootTableSpecs.getAsJsonArray(tableName), dungeonTier, registryLookup)

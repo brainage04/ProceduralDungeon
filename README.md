@@ -75,7 +75,6 @@ Depth must range from 1-20
 
 # Todo
 
-figure out why negative potions trap is not working (potions shoot straight up but don't actually splash on the ceiling)
 add a bunch more room types (wip)
 add sandstone theme
 get "surface" piece above "starting" piece to generate properly

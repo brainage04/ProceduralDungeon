@@ -7,9 +7,16 @@ import com.github.brainage04.procedural_dungeon.worldgen.processor.FusedDungeonP
 import com.github.brainage04.procedural_dungeon.worldgen.processor.LootTableAndBlockEntityProcessor;
 import com.github.brainage04.procedural_dungeon.worldgen.processor.ThemeShapeReplacementProcessor;
 import com.github.brainage04.procedural_dungeon.util.RegistryKeyUtils;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Reader;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -43,6 +50,9 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProc
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorList;
 
 public class ProceduralDungeonGenerator extends FabricDynamicRegistryProvider {
+    private static final Gson GSON = new Gson();
+    private static final Path SPAWNER_SPEC_PATH = Path.of("src/main/datagen/procedural_dungeon/spawners.json");
+
     public static final List<String> BASE_STRUCTURES = List.of(
             "dungeon/start",
             "dungeon/hallway/small",
@@ -79,6 +89,7 @@ public class ProceduralDungeonGenerator extends FabricDynamicRegistryProvider {
     );
     private static final Map<String, TemplateCapabilities> TEMPLATE_CAPABILITIES = BASE_STRUCTURES.stream()
             .collect(Collectors.toUnmodifiableMap(structure -> structure, ProceduralDungeonGenerator::readTemplateCapabilities));
+    private static final List<Identifier> SPAWNER_ENTITIES = loadSpawnerEntities();
 
     private static final List<String> TIERED_LOOT_TABLES = List.of(
             "hallway_end",
@@ -201,7 +212,8 @@ public class ProceduralDungeonGenerator extends FabricDynamicRegistryProvider {
                 DungeonTheme.ageChance(),
                 DungeonTheme.rotChance(),
                 capabilities.hasThemeShapes() ? Optional.of(fusedShapes(theme)) : Optional.empty(),
-                capabilities.hasNbt() ? createLootTableReplacements(tier) : Map.of()
+                capabilities.hasLootNbt() ? createLootTableReplacements(tier) : Map.of(),
+                capabilities.hasSpawnerMarkers() ? SPAWNER_ENTITIES : List.of()
         )));
     }
 
@@ -252,7 +264,7 @@ public class ProceduralDungeonGenerator extends FabricDynamicRegistryProvider {
 
         addRuleComponent(entries, generatedKeys, components, "theme/%s/rules".formatted(theme.getSerializedName()), theme.processorRules, capabilities);
 
-        if (capabilities.hasNbt()) {
+        if (capabilities.hasLootNbt()) {
             String lootKey = "dungeon/component/loot/tier_%d".formatted(tier.tier);
             addProcessorList(entries, generatedKeys, lootKey, createLootTable(tier));
             components.add(lootKey);
@@ -304,11 +316,20 @@ public class ProceduralDungeonGenerator extends FabricDynamicRegistryProvider {
             components.add("dungeon/component/theme/%s/shapes".formatted(theme.getSerializedName()));
         }
         addRuleComponentKey(components, "theme/%s/rules".formatted(theme.getSerializedName()), theme.processorRules, capabilities);
-        if (capabilities.hasNbt()) {
+        if (capabilities.hasLootNbt()) {
             components.add("dungeon/component/loot/tier_%d".formatted(tier));
+        }
+        if (capabilities.hasSpawnerMarkers()) {
+            components.add(spawnerComponentKey());
         }
 
         return List.copyOf(components);
+    }
+
+    private static String spawnerComponentKey() {
+        return "dungeon/component/spawner/%s".formatted(shortHash(SPAWNER_ENTITIES.stream()
+                .map(Identifier::toString)
+                .collect(Collectors.joining("\n"))));
     }
 
     private static void addRuleComponentKey(
@@ -378,24 +399,35 @@ public class ProceduralDungeonGenerator extends FabricDynamicRegistryProvider {
                 paletteBlockList.add(block);
             }
 
-            boolean needsNbtProcessor = false;
+            boolean hasLootNbt = false;
+            boolean hasSpawnerMarkers = false;
             ListTag blocks = tag.getListOrEmpty("blocks");
             for (int i = 0; i < blocks.size(); i++) {
                 CompoundTag block = blocks.getCompoundOrEmpty(i);
                 int stateIndex = block.getIntOr("state", -1);
-                if (block.contains("nbt")
-                        && stateIndex >= 0
-                        && stateIndex < paletteBlockList.size()
-                        && isRelevantNbtBlock(paletteBlockList.get(stateIndex))) {
-                    needsNbtProcessor = true;
-                    break;
+                if (!block.contains("nbt") || stateIndex < 0 || stateIndex >= paletteBlockList.size()) {
+                    continue;
+                }
+
+                String blockId = paletteBlockList.get(stateIndex);
+                CompoundTag nbt = block.getCompoundOrEmpty("nbt");
+                if (isSpawnerMarker(blockId, nbt)) {
+                    hasSpawnerMarkers = true;
+                } else if (isRelevantNbtBlock(blockId)) {
+                    hasLootNbt = true;
                 }
             }
 
-            return new TemplateCapabilities(Set.copyOf(paletteBlocks), needsNbtProcessor);
+            return new TemplateCapabilities(Set.copyOf(paletteBlocks), hasLootNbt, hasSpawnerMarkers);
         } catch (IOException e) {
             throw new IllegalStateException("Failed to read source structure resource: " + resource, e);
         }
+    }
+
+    private static boolean isSpawnerMarker(String blockId, CompoundTag nbt) {
+        return blockId != null
+                && blockId.equals("minecraft:spawner")
+                && FusedDungeonProcessor.isSpawnerMarkerNbt(nbt);
     }
 
     private static boolean isRelevantNbtBlock(String blockId) {
@@ -409,9 +441,42 @@ public class ProceduralDungeonGenerator extends FabricDynamicRegistryProvider {
         return "Procedural Dungeon Generator";
     }
 
-    private record TemplateCapabilities(Set<String> paletteBlocks, boolean hasNbt) {
+    private static List<Identifier> loadSpawnerEntities() {
+        Path specPath = resolveSpawnerSpecPath();
+        try (Reader reader = Files.newBufferedReader(specPath)) {
+            JsonObject spec = GSON.fromJson(reader, JsonObject.class);
+            JsonArray entities = spec.getAsJsonArray("entities");
+            List<Identifier> result = new ArrayList<>(entities.size());
+            for (JsonElement entity : entities) {
+                result.add(normalizeEntityId(entity.getAsString()));
+            }
+            return List.copyOf(result);
+        } catch (IOException e) {
+            throw new IllegalStateException("Failed to read spawner spec: " + specPath, e);
+        }
+    }
+
+    private static Identifier normalizeEntityId(String id) {
+        return Identifier.parse(id.contains(":") ? id : "minecraft:" + id);
+    }
+
+    private static Path resolveSpawnerSpecPath() {
+        Path currentDirectory = Path.of("").toAbsolutePath();
+        while (currentDirectory != null) {
+            Path specPath = currentDirectory.resolve(SPAWNER_SPEC_PATH);
+            if (Files.exists(specPath)) {
+                return specPath;
+            }
+
+            currentDirectory = currentDirectory.getParent();
+        }
+
+        throw new IllegalStateException("Failed to find spawner spec: " + SPAWNER_SPEC_PATH);
+    }
+
+    private record TemplateCapabilities(Set<String> paletteBlocks, boolean hasLootNbt, boolean hasSpawnerMarkers) {
         private static TemplateCapabilities full() {
-            return new TemplateCapabilities(Set.of(), true);
+            return new TemplateCapabilities(Set.of(), true, false);
         }
 
         private boolean hasBlock(String id) {

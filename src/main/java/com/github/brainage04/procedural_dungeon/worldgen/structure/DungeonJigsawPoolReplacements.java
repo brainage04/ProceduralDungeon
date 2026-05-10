@@ -11,7 +11,6 @@ public final class DungeonJigsawPoolReplacements {
     private static final String DUNGEON_PREFIX = "dungeon/";
     private static final String START_POOL = "dungeon/start";
     private static final String HALLWAY_PREFIX = "dungeon/hallway";
-    private static final String BASE_SPAWNER_POOL = "dungeon/spawner/tier_1";
 
     private static final List<Identifier> BASE_POOLS = List.of(
             ProceduralDungeon.of(START_POOL),
@@ -19,8 +18,7 @@ public final class DungeonJigsawPoolReplacements {
             ProceduralDungeon.of("dungeon/hallway/end"),
             ProceduralDungeon.of("dungeon/hallway/loot"),
             ProceduralDungeon.of("dungeon/hallway/room"),
-            ProceduralDungeon.of("dungeon/hallway/trap"),
-            ProceduralDungeon.of(BASE_SPAWNER_POOL)
+            ProceduralDungeon.of("dungeon/hallway/trap")
     );
 
     private DungeonJigsawPoolReplacements() {
@@ -45,10 +43,6 @@ public final class DungeonJigsawPoolReplacements {
 
         if (path.equals(HALLWAY_PREFIX) || path.startsWith(HALLWAY_PREFIX + "/")) {
             return Identifier.fromNamespaceAndPath(variant.getNamespace(), "%s/%s".formatted(variant.getPath(), path.substring(DUNGEON_PREFIX.length())));
-        }
-
-        if (path.equals(BASE_SPAWNER_POOL)) {
-            return ProceduralDungeon.of("dungeon/spawner/tier_%d".formatted(spawnerTier));
         }
 
         return pool;

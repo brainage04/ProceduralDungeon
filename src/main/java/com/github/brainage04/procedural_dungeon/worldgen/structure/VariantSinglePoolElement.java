@@ -1,6 +1,7 @@
 package com.github.brainage04.procedural_dungeon.worldgen.structure;
 
 import com.github.brainage04.procedural_dungeon.ProceduralDungeon;
+import com.github.brainage04.procedural_dungeon.worldgen.processor.FusedDungeonProcessor;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -300,7 +301,7 @@ public class VariantSinglePoolElement extends StructurePoolElement {
             placeProcessedBlocks(
                     world,
                     settings,
-                    processBlockInfos(world, pos, pivot, settings, blocks),
+                    processBlockInfos(world, pos, pivot, settings, blocks, spawnerTier),
                     boundingBox,
                     random,
                     problems
@@ -348,17 +349,22 @@ public class VariantSinglePoolElement extends StructurePoolElement {
             BlockPos pos,
             BlockPos pivot,
             StructurePlaceSettings settings,
-            List<StructureTemplate.StructureBlockInfo> blocks
+            List<StructureTemplate.StructureBlockInfo> blocks,
+            int spawnerTier
     ) {
         List<StructureProcessor> processors = settings.getProcessors();
         ArrayList<StructureTemplate.StructureBlockInfo> originalBlocks = new ArrayList<>(blocks.size());
         List<StructureTemplate.StructureBlockInfo> processedBlocks = new ArrayList<>(blocks.size());
         for (StructureTemplate.StructureBlockInfo original : blocks) {
             BlockPos transformedPos = StructureTemplate.calculateRelativePosition(settings, original.pos()).offset(pos);
+            CompoundTag nbt = original.nbt() == null ? null : original.nbt().copy();
+            if (FusedDungeonProcessor.isSpawnerMarker(original.state(), nbt)) {
+                nbt.putInt(FusedDungeonProcessor.SPAWNER_TIER_TAG, spawnerTier);
+            }
             StructureTemplate.StructureBlockInfo current = new StructureTemplate.StructureBlockInfo(
                     transformedPos,
                     original.state(),
-                    original.nbt() == null ? null : original.nbt().copy()
+                    nbt
             );
             for (StructureProcessor processor : processors) {
                 if (current == null) {
