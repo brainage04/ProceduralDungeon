@@ -95,69 +95,85 @@ public class DungeonWorldgenProvider implements DataProvider {
                 templatePoolElement(key, "dungeon/hallway/loot/large", theme, tier, variantId, 1, secondaryBranchLimit(variantId))
         ));
 
-        addTemplatePool(writer, futures, "%s/hallway/room".formatted(key), List.of(
-                templatePoolElement(
-                        key,
-                        "dungeon/hallway/room/armorsmith",
-                        "dungeon/hallway/room/armorsmith/tier_%d".formatted(tier),
-                        theme,
-                        tier,
-                        variantId,
-                        2,
-                        secondaryBranchLimit(variantId)
-                ),
-                templatePoolElement(key, "dungeon/hallway/room/enchanter", theme, tier, variantId, 2, secondaryBranchLimit(variantId)),
-                templatePoolElement(key, "dungeon/hallway/room/spawner_corridor", theme, tier, variantId, 2, secondaryBranchLimit(variantId)),
-                templatePoolElement(key, "dungeon/hallway/room/staircase_diagonal_down", theme, tier, variantId, 16, secondaryBranchLimit(variantId)),
-                templatePoolElement(
-                        key,
-                        "dungeon/hallway/room/staircase_diagonal_down",
-                        "dungeon/hallway/room/staircase_diagonal_up",
-                        theme,
-                        tier,
-                        variantId,
-                        1,
-                        secondaryBranchLimit(variantId)
-                ),
-                templatePoolElement(key, "dungeon/hallway/room/staircase_spiral_down", theme, tier, variantId, 16, secondaryBranchLimit(variantId)),
-                templatePoolElement(
-                        key,
-                        "dungeon/hallway/room/staircase_spiral_down",
-                        "dungeon/hallway/room/staircase_spiral_up",
-                        theme,
-                        tier,
-                        variantId,
-                        1,
-                        secondaryBranchLimit(variantId)
-                ),
-                templatePoolElement(
-                        key,
-                        "dungeon/hallway/room/toolsmith",
-                        "dungeon/hallway/room/toolsmith/tier_%d".formatted(tier),
-                        theme,
-                        tier,
-                        variantId,
-                        2,
-                        secondaryBranchLimit(variantId)
-                ),
-                templatePoolElement(
-                        key,
-                        "dungeon/hallway/room/weaponsmith",
-                        "dungeon/hallway/room/weaponsmith/tier_%d".formatted(tier),
-                        theme,
-                        tier,
-                        variantId,
-                        2,
-                        secondaryBranchLimit(variantId)
-                )
-        ));
+        List<JsonObject> roomElements = new ArrayList<>();
+        addRoomElement(roomElements, key, "armorsmith", "dungeon/hallway/room/armorsmith", "dungeon/hallway/room/armorsmith/tier_%d".formatted(tier), theme, tier, variantId, 2);
+        addRoomElement(roomElements, key, "enchanter", "dungeon/hallway/room/enchanter", theme, tier, variantId, 2);
+        addRoomElement(roomElements, key, "spawner_corridor", "dungeon/hallway/room/spawner_corridor", theme, tier, variantId, 2);
+        addRoomElement(roomElements, key, "staircase_diagonal_down", "dungeon/hallway/room/staircase_diagonal_down", theme, tier, variantId, 16);
+        addRoomElement(roomElements, key, "staircase_diagonal_up", "dungeon/hallway/room/staircase_diagonal_down", "dungeon/hallway/room/staircase_diagonal_up", theme, tier, variantId, 1);
+        addRoomElement(roomElements, key, "staircase_spiral_down", "dungeon/hallway/room/staircase_spiral_down", theme, tier, variantId, 16);
+        addRoomElement(roomElements, key, "staircase_spiral_up", "dungeon/hallway/room/staircase_spiral_down", "dungeon/hallway/room/staircase_spiral_up", theme, tier, variantId, 1);
+        addRoomElement(roomElements, key, "toolsmith", "dungeon/hallway/room/toolsmith", "dungeon/hallway/room/toolsmith/tier_%d".formatted(tier), theme, tier, variantId, 2);
+        addRoomElement(roomElements, key, "weaponsmith", "dungeon/hallway/room/weaponsmith", "dungeon/hallway/room/weaponsmith/tier_%d".formatted(tier), theme, tier, variantId, 2);
+        addTemplatePool(writer, futures, "%s/hallway/room".formatted(key), roomElements);
 
-        addTemplatePool(writer, futures, "%s/hallway/trap".formatted(key), List.of(
-                templatePoolElement(key, "dungeon/hallway/trap/dripstone", theme, tier, variantId, 1, secondaryBranchLimit(variantId)),
-                templatePoolElement(key, "dungeon/hallway/trap/lava", theme, tier, variantId, 1, secondaryBranchLimit(variantId)),
-                templatePoolElement(key, "dungeon/hallway/trap/negative_potions", theme, tier, variantId, 1, secondaryBranchLimit(variantId)),
-                templatePoolElement(key, "dungeon/hallway/trap/spawners", theme, tier, variantId, 1, secondaryBranchLimit(variantId))
-        ));
+        List<JsonObject> trapElements = new ArrayList<>();
+        addTrapElement(trapElements, key, "dripstone", theme, tier, variantId);
+        addTrapElement(trapElements, key, "lava", theme, tier, variantId);
+        addTrapElement(trapElements, key, "negative_potions", theme, tier, variantId);
+        addTrapElement(trapElements, key, "spawners", theme, tier, variantId);
+        addTemplatePool(writer, futures, "%s/hallway/trap".formatted(key), trapElements);
+    }
+
+    private static void addRoomElement(
+            List<JsonObject> elements,
+            String key,
+            String room,
+            String structure,
+            DungeonTheme theme,
+            int tier,
+            Identifier variantId,
+            int defaultWeight
+    ) {
+        addRoomElement(elements, key, room, structure, structure, theme, tier, variantId, defaultWeight);
+    }
+
+    private static void addRoomElement(
+            List<JsonObject> elements,
+            String key,
+            String room,
+            String processorStructure,
+            String locationStructure,
+            DungeonTheme theme,
+            int tier,
+            Identifier variantId,
+            int defaultWeight
+    ) {
+        int weight = theme.profile.roomWeight(room, defaultWeight);
+        if (weight > 0) {
+            elements.add(templatePoolElement(
+                    key,
+                    processorStructure,
+                    locationStructure,
+                    theme,
+                    tier,
+                    variantId,
+                    weight,
+                    secondaryBranchLimit(variantId)
+            ));
+        }
+    }
+
+    private static void addTrapElement(
+            List<JsonObject> elements,
+            String key,
+            String trap,
+            DungeonTheme theme,
+            int tier,
+            Identifier variantId
+    ) {
+        int weight = theme.profile.trapWeight(trap);
+        if (weight > 0) {
+            elements.add(templatePoolElement(
+                    key,
+                    "dungeon/hallway/trap/%s".formatted(trap),
+                    theme,
+                    tier,
+                    variantId,
+                    weight,
+                    secondaryBranchLimit(variantId)
+            ));
+        }
     }
 
     private void addTemplatePool(CachedOutput writer, List<CompletableFuture<?>> futures, String path, List<JsonObject> elements) {

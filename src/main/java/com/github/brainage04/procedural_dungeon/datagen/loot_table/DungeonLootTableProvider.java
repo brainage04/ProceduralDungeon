@@ -1,6 +1,7 @@
 package com.github.brainage04.procedural_dungeon.datagen.loot_table;
 
 import com.github.brainage04.procedural_dungeon.ProceduralDungeon;
+import com.github.brainage04.procedural_dungeon.dungeon.DungeonTheme;
 import com.github.brainage04.procedural_dungeon.dungeon.DungeonTier;
 import com.github.brainage04.procedural_dungeon.util.LootTableUtils;
 import com.google.gson.Gson;
@@ -27,6 +28,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 
@@ -47,6 +49,13 @@ public class DungeonLootTableProvider extends SimpleFabricLootTableSubProvider {
             "enchanter",
             "hallway/trap/negative_potions"
     };
+    private static final Set<String> THEME_FLAVOURED_TABLES = Set.of(
+            "hallway_end",
+            "hallway_end/key_source",
+            "hallway_loot",
+            "hallway_loot/key_source",
+            "enchanter"
+    );
 
     private final CompletableFuture<HolderLookup.Provider> registryLookup;
     private final JsonObject lootTableSpecs;
@@ -65,12 +74,30 @@ public class DungeonLootTableProvider extends SimpleFabricLootTableSubProvider {
         return ProceduralDungeon.of("%s/tier_%d".formatted(tableName, tier.tier));
     }
 
+    public static Identifier getLootTableId(String tableName, DungeonTheme theme, DungeonTier tier) {
+        return ProceduralDungeon.of("%s/%s/tier_%d".formatted(tableName, theme.getSerializedName(), tier.tier));
+    }
+
+    public static Identifier getLootTableReplacementId(String tableName, DungeonTheme theme, int tier) {
+        return getLootTableReplacementId(tableName, theme, DungeonTier.values()[tier - 1]);
+    }
+
+    public static Identifier getLootTableReplacementId(String tableName, DungeonTheme theme, DungeonTier tier) {
+        return THEME_FLAVOURED_TABLES.contains(tableName) && !theme.profile.lootFlavour().isEmpty()
+                ? getLootTableId(tableName, theme, tier)
+                : getLootTableId(tableName, tier);
+    }
+
     private static ResourceKey<LootTable> getLootTableRegistryKey(String tableName) {
         return ResourceKey.create(Registries.LOOT_TABLE, getLootTableId(tableName));
     }
 
     private static ResourceKey<LootTable> getLootTableRegistryKey(String tableName, DungeonTier tier) {
         return ResourceKey.create(Registries.LOOT_TABLE, getLootTableId(tableName, tier));
+    }
+
+    private static ResourceKey<LootTable> getLootTableRegistryKey(String tableName, DungeonTheme theme, DungeonTier tier) {
+        return ResourceKey.create(Registries.LOOT_TABLE, getLootTableId(tableName, theme, tier));
     }
 
     private static JsonObject loadLootTableSpecs() {
@@ -97,13 +124,24 @@ public class DungeonLootTableProvider extends SimpleFabricLootTableSubProvider {
     }
 
     private static LootTable.Builder fromSpec(JsonObject allSpecs, JsonArray specs, DungeonTier dungeonTier, CompletableFuture<HolderLookup.Provider> registryLookup) {
+        return fromSpec(allSpecs, specs, dungeonTier, registryLookup, null, null);
+    }
+
+    private static LootTable.Builder fromSpec(
+            JsonObject allSpecs,
+            JsonArray specs,
+            DungeonTier dungeonTier,
+            CompletableFuture<HolderLookup.Provider> registryLookup,
+            DungeonTheme theme,
+            String tableName
+    ) {
         LootTable.Builder builder = new LootTable.Builder();
 
         for (JsonElement element : specs) {
             builder = applySpec(allSpecs, builder, element.getAsJsonObject(), dungeonTier, registryLookup);
         }
 
-        return builder;
+        return theme == null ? builder : addThemeFlavour(builder, theme, tableName);
     }
 
     private static LootTable.Builder applySpec(JsonObject allSpecs, LootTable.Builder builder, JsonObject spec, DungeonTier dungeonTier, CompletableFuture<HolderLookup.Provider> registryLookup) {
@@ -335,6 +373,27 @@ public class DungeonLootTableProvider extends SimpleFabricLootTableSubProvider {
         return BuiltInRegistries.ITEM.getValue(identifier);
     }
 
+    private static LootTable.Builder addThemeFlavour(LootTable.Builder builder, DungeonTheme theme, String tableName) {
+        List<DungeonTheme.WeightedItemSpec> flavour = theme.profile.lootFlavour();
+        if (flavour.isEmpty()) {
+            return builder;
+        }
+
+        LootTableUtils.WeightedItem[] items = new LootTableUtils.WeightedItem[flavour.size()];
+        for (int i = 0; i < flavour.size(); i++) {
+            DungeonTheme.WeightedItemSpec item = flavour.get(i);
+            items[i] = new LootTableUtils.WeightedItem(item(item.item()), item.weight());
+        }
+
+        if (tableName.startsWith("hallway_end")) {
+            return LootTableUtils.addWeightedPool(builder, items, 1, 2, 1, 1);
+        }
+        if (tableName.equals("enchanter")) {
+            return LootTableUtils.addWeightedPool(builder, items, 1, 1, 0, 1);
+        }
+        return LootTableUtils.addWeightedPool(builder, items, 1, 2, 0, 1);
+    }
+
     private static LootTableUtils.WeightedItem[] weightedTierItems(String key, DungeonTier dungeonTier) {
         List<LootTableUtils.WeightedItem> items = new ArrayList<>();
         for (DungeonTier.WeightedTier weightedTier : dungeonTier.weightedLootTiers()) {
@@ -454,6 +513,15 @@ public class DungeonLootTableProvider extends SimpleFabricLootTableSubProvider {
                         getLootTableRegistryKey(tableName, dungeonTier),
                         fromSpec(lootTableSpecs, lootTableSpecs.getAsJsonArray(tableName), dungeonTier, registryLookup)
                 );
+            }
+
+            for (DungeonTheme theme : DungeonTheme.values()) {
+                for (String tableName : THEME_FLAVOURED_TABLES) {
+                    biConsumer.accept(
+                            getLootTableRegistryKey(tableName, theme, dungeonTier),
+                            fromSpec(lootTableSpecs, lootTableSpecs.getAsJsonArray(tableName), dungeonTier, registryLookup, theme, tableName)
+                    );
+                }
             }
         }
     }

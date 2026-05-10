@@ -84,7 +84,7 @@ public final class DungeonLockPlanner {
             if (usedPositions.add(chest.pos().asLong())) {
                 keySources.add(new DungeonLockPlan.KeySource(
                         chest.pos().asLong(),
-                        keySourceLootTable(chest.lootTable(), chest.tier())
+                        keySourceLootTable(chest.lootTable(), chest.theme(), chest.tier())
                 ));
             }
         }
@@ -114,7 +114,7 @@ public final class DungeonLockPlanner {
                     if (lootTable == null || (!HALLWAY_LOOT.equals(lootTable) && !HALLWAY_END.equals(lootTable))) {
                         continue;
                     }
-                    targets.add(new ChestTarget(info.pos(), lootTable, variantElement.spawnerTier()));
+                    targets.add(new ChestTarget(info.pos(), lootTable, themeName(variantElement.variant()), variantElement.spawnerTier()));
                 }
             }
         }
@@ -128,8 +128,16 @@ public final class DungeonLockPlanner {
         return info.nbt().getString("LootTable").map(Identifier::parse).orElse(null);
     }
 
-    private static Identifier keySourceLootTable(Identifier baseLootTable, int tier) {
-        return ProceduralDungeon.of("%s/key_source/tier_%d".formatted(baseLootTable.getPath(), tier));
+    private static String themeName(Identifier variant) {
+        String[] parts = variant.getPath().split("/");
+        if (parts.length < 4) {
+            throw new IllegalArgumentException("Dungeon variant id does not include a theme path: " + variant);
+        }
+        return parts[parts.length - 2];
+    }
+
+    private static Identifier keySourceLootTable(Identifier baseLootTable, String theme, int tier) {
+        return ProceduralDungeon.of("%s/key_source/%s/tier_%d".formatted(baseLootTable.getPath(), theme, tier));
     }
 
     private static <T> List<T> shuffled(List<T> input, RandomSource random) {
@@ -138,5 +146,5 @@ public final class DungeonLockPlanner {
         return output;
     }
 
-    private record ChestTarget(BlockPos pos, Identifier lootTable, int tier) {}
+    private record ChestTarget(BlockPos pos, Identifier lootTable, String theme, int tier) {}
 }

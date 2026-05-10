@@ -75,6 +75,10 @@ public class VariantSinglePoolElement extends StructurePoolElement {
         return delegate.getTemplateLocation();
     }
 
+    public Identifier variant() {
+        return variant;
+    }
+
     public int spawnerTier() {
         return spawnerTier;
     }

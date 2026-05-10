@@ -1,26 +1,90 @@
 {
   "generic": {
     "bookshelf": [
-      { "input": "minecraft:bookshelf", "probability": 0.3, "output": "minecraft:chiseled_bookshelf" },
-      { "input": "minecraft:oak_log", "probability": 0.3, "output": "minecraft:stripped_oak_log" }
+      {
+        "input": "minecraft:bookshelf",
+        "probability": 0.3,
+        "output": "minecraft:chiseled_bookshelf"
+      },
+      {
+        "input": "minecraft:oak_log",
+        "probability": 0.3,
+        "output": "minecraft:stripped_oak_log"
+      }
     ],
     "minerals": [
-      { "input": "minecraft:copper_block", "probability": 0.1, "output": "minecraft:raw_copper_block" },
-      { "input": "minecraft:copper_block", "probability": 0.1, "output": "minecraft:copper_ore" },
-      { "input": "minecraft:copper_block", "probability": 0.1, "output": "minecraft:deepslate_copper_ore" },
-      { "input": "minecraft:iron_block", "probability": 0.1, "output": "minecraft:raw_iron_block" },
-      { "input": "minecraft:iron_block", "probability": 0.1, "output": "minecraft:iron_ore" },
-      { "input": "minecraft:iron_block", "probability": 0.1, "output": "minecraft:deepslate_iron_ore" },
-      { "input": "minecraft:gold_block", "probability": 0.1, "output": "minecraft:raw_gold_block" },
-      { "input": "minecraft:gold_block", "probability": 0.1, "output": "minecraft:gold_ore" },
-      { "input": "minecraft:gold_block", "probability": 0.1, "output": "minecraft:deepslate_gold_ore" },
-      { "input": "minecraft:diamond_block", "probability": 0.15, "output": "minecraft:diamond_ore" },
-      { "input": "minecraft:diamond_block", "probability": 0.15, "output": "minecraft:deepslate_diamond_ore" },
-      { "input": "minecraft:lapis_block", "probability": 0.15, "output": "minecraft:lapis_ore" },
-      { "input": "minecraft:lapis_block", "probability": 0.15, "output": "minecraft:deepslate_lapis_ore" }
+      {
+        "input": "minecraft:copper_block",
+        "probability": 0.1,
+        "output": "minecraft:raw_copper_block"
+      },
+      {
+        "input": "minecraft:copper_block",
+        "probability": 0.1,
+        "output": "minecraft:copper_ore"
+      },
+      {
+        "input": "minecraft:copper_block",
+        "probability": 0.1,
+        "output": "minecraft:deepslate_copper_ore"
+      },
+      {
+        "input": "minecraft:iron_block",
+        "probability": 0.1,
+        "output": "minecraft:raw_iron_block"
+      },
+      {
+        "input": "minecraft:iron_block",
+        "probability": 0.1,
+        "output": "minecraft:iron_ore"
+      },
+      {
+        "input": "minecraft:iron_block",
+        "probability": 0.1,
+        "output": "minecraft:deepslate_iron_ore"
+      },
+      {
+        "input": "minecraft:gold_block",
+        "probability": 0.1,
+        "output": "minecraft:raw_gold_block"
+      },
+      {
+        "input": "minecraft:gold_block",
+        "probability": 0.1,
+        "output": "minecraft:gold_ore"
+      },
+      {
+        "input": "minecraft:gold_block",
+        "probability": 0.1,
+        "output": "minecraft:deepslate_gold_ore"
+      },
+      {
+        "input": "minecraft:diamond_block",
+        "probability": 0.15,
+        "output": "minecraft:diamond_ore"
+      },
+      {
+        "input": "minecraft:diamond_block",
+        "probability": 0.15,
+        "output": "minecraft:deepslate_diamond_ore"
+      },
+      {
+        "input": "minecraft:lapis_block",
+        "probability": 0.15,
+        "output": "minecraft:lapis_ore"
+      },
+      {
+        "input": "minecraft:lapis_block",
+        "probability": 0.15,
+        "output": "minecraft:deepslate_lapis_ore"
+      }
     ],
     "air": [
-      { "input": "minecraft:air", "probability": 0.01, "output": "minecraft:cobweb" }
+      {
+        "input": "minecraft:air",
+        "probability": 0.01,
+        "output": "minecraft:cobweb"
+      }
     ],
     "decay": {
       "age": 0.4,
@@ -32,316 +96,1727 @@
       "name": "cobblestone",
       "dimension": "minecraft:overworld",
       "rules": [
-        { "input": "minecraft:cobblestone", "probability": 0.1, "output": "minecraft:stone_bricks" },
-        { "input": "minecraft:cobblestone", "probability": 0.1, "output": "minecraft:cracked_stone_bricks" },
-        { "input": "minecraft:cobblestone", "probability": 0.1, "output": "minecraft:chiseled_stone_bricks" }
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 0.1,
+          "output": "minecraft:stone_bricks"
+        },
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 0.1,
+          "output": "minecraft:cracked_stone_bricks"
+        },
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 0.1,
+          "output": "minecraft:chiseled_stone_bricks"
+        }
       ],
       "shapes": {
         "fallback": "minecraft:cobblestone",
         "stairs": "minecraft:cobblestone_stairs",
         "slab": "minecraft:cobblestone_slab",
         "wall": "minecraft:cobblestone_wall"
+      },
+      "profile": {
+        "traps": [
+          {
+            "name": "dripstone",
+            "weight": 1
+          },
+          {
+            "name": "lava",
+            "weight": 1
+          },
+          {
+            "name": "negative_potions",
+            "weight": 1
+          },
+          {
+            "name": "spawners",
+            "weight": 1
+          }
+        ],
+        "room_weights": {
+          "spawner_corridor": 2
+        },
+        "spawner_mobs": [
+          {
+            "entity": "minecraft:zombie",
+            "weight": 5
+          },
+          {
+            "entity": "minecraft:skeleton",
+            "weight": 3
+          },
+          {
+            "entity": "minecraft:spider",
+            "weight": 2
+          }
+        ],
+        "loot_flavour": [
+          {
+            "item": "minecraft:cobblestone",
+            "weight": 5
+          },
+          {
+            "item": "minecraft:stone_bricks",
+            "weight": 3
+          },
+          {
+            "item": "minecraft:mossy_cobblestone",
+            "weight": 2
+          },
+          {
+            "item": "minecraft:iron_nugget",
+            "weight": 1
+          }
+        ]
       }
     },
     {
       "name": "deepslate",
       "dimension": "minecraft:overworld",
       "rules": [
-        { "input": "minecraft:cobblestone", "probability": 0.1, "output": "minecraft:polished_deepslate" },
-        { "input": "minecraft:cobblestone", "probability": 0.1, "output": "minecraft:cracked_deepslate_bricks" },
-        { "input": "minecraft:cobblestone", "probability": 0.1, "output": "minecraft:deepslate_bricks" },
-        { "input": "minecraft:cobblestone", "probability": 1.0, "output": "minecraft:deepslate" }
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 0.1,
+          "output": "minecraft:polished_deepslate"
+        },
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 0.1,
+          "output": "minecraft:cracked_deepslate_bricks"
+        },
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 0.1,
+          "output": "minecraft:deepslate_bricks"
+        },
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 1.0,
+          "output": "minecraft:deepslate"
+        }
       ],
       "shapes": {
         "fallback": "minecraft:deepslate",
         "stairs": "minecraft:cobbled_deepslate_stairs",
         "slab": "minecraft:cobbled_deepslate_slab",
         "wall": "minecraft:cobbled_deepslate_wall"
+      },
+      "profile": {
+        "traps": [
+          {
+            "name": "dripstone",
+            "weight": 1
+          },
+          {
+            "name": "lava",
+            "weight": 1
+          },
+          {
+            "name": "negative_potions",
+            "weight": 1
+          },
+          {
+            "name": "spawners",
+            "weight": 2
+          }
+        ],
+        "room_weights": {
+          "spawner_corridor": 3
+        },
+        "spawner_mobs": [
+          {
+            "entity": "minecraft:zombie",
+            "weight": 4
+          },
+          {
+            "entity": "minecraft:skeleton",
+            "weight": 3
+          },
+          {
+            "entity": "minecraft:cave_spider",
+            "weight": 2
+          },
+          {
+            "entity": "minecraft:silverfish",
+            "weight": 1
+          }
+        ],
+        "loot_flavour": [
+          {
+            "item": "minecraft:cobbled_deepslate",
+            "weight": 5
+          },
+          {
+            "item": "minecraft:deepslate_bricks",
+            "weight": 3
+          },
+          {
+            "item": "minecraft:coal",
+            "weight": 2
+          },
+          {
+            "item": "minecraft:raw_iron",
+            "weight": 1
+          }
+        ]
       }
     },
     {
       "name": "sculk",
       "dimension": "minecraft:overworld",
       "rules": [
-        { "input": "minecraft:cobblestone", "probability": 0.001, "output": "minecraft:sculk_shrieker" },
-        { "input": "minecraft:cobblestone", "probability": 0.001, "output": "minecraft:reinforced_deepslate" },
-        { "input": "minecraft:cobblestone", "probability": 0.1, "output": "minecraft:sculk_sensor" },
-        { "input": "minecraft:cobblestone", "probability": 0.1, "output": "minecraft:sculk_catalyst" },
-        { "input": "minecraft:cobblestone", "probability": 1.0, "output": "minecraft:sculk" }
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 0.001,
+          "output": "minecraft:sculk_shrieker"
+        },
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 0.001,
+          "output": "minecraft:reinforced_deepslate"
+        },
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 0.1,
+          "output": "minecraft:sculk_sensor"
+        },
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 0.1,
+          "output": "minecraft:sculk_catalyst"
+        },
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 1.0,
+          "output": "minecraft:sculk"
+        }
       ],
       "shapes": {
         "fallback": "minecraft:sculk"
+      },
+      "profile": {
+        "traps": [
+          {
+            "name": "dripstone",
+            "weight": 1
+          },
+          {
+            "name": "negative_potions",
+            "weight": 2
+          },
+          {
+            "name": "spawners",
+            "weight": 2
+          }
+        ],
+        "room_weights": {
+          "spawner_corridor": 3,
+          "enchanter": 3
+        },
+        "spawner_mobs": [
+          {
+            "entity": "minecraft:skeleton",
+            "weight": 4
+          },
+          {
+            "entity": "minecraft:zombie",
+            "weight": 3
+          },
+          {
+            "entity": "minecraft:spider",
+            "weight": 2
+          }
+        ],
+        "loot_flavour": [
+          {
+            "item": "minecraft:sculk",
+            "weight": 5
+          },
+          {
+            "item": "minecraft:bone",
+            "weight": 3
+          },
+          {
+            "item": "minecraft:echo_shard",
+            "weight": 1
+          },
+          {
+            "item": "minecraft:amethyst_shard",
+            "weight": 1
+          }
+        ]
       }
     },
     {
       "name": "desert_tomb",
       "dimension": "minecraft:overworld",
       "rules": [
-        { "input": "minecraft:cobblestone", "probability": 0.05, "output": "minecraft:chiseled_sandstone" },
-        { "input": "minecraft:cobblestone", "probability": 0.08, "output": "minecraft:cut_sandstone" },
-        { "input": "minecraft:cobblestone", "probability": 0.08, "output": "minecraft:smooth_sandstone" },
-        { "input": "minecraft:cobblestone", "probability": 0.04, "output": "minecraft:terracotta" },
-        { "input": "minecraft:cobblestone", "probability": 0.02, "output": "minecraft:red_sandstone" },
-        { "input": "minecraft:cobblestone", "probability": 1.0, "output": "minecraft:sandstone" }
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 0.05,
+          "output": "minecraft:chiseled_sandstone"
+        },
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 0.08,
+          "output": "minecraft:cut_sandstone"
+        },
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 0.08,
+          "output": "minecraft:smooth_sandstone"
+        },
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 0.04,
+          "output": "minecraft:terracotta"
+        },
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 0.02,
+          "output": "minecraft:red_sandstone"
+        },
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 1.0,
+          "output": "minecraft:sandstone"
+        }
       ],
       "shapes": {
         "fallback": "minecraft:sandstone",
         "stairs": "minecraft:sandstone_stairs",
         "slab": "minecraft:sandstone_slab",
         "wall": "minecraft:sandstone_wall"
+      },
+      "profile": {
+        "traps": [
+          {
+            "name": "lava",
+            "weight": 1
+          },
+          {
+            "name": "negative_potions",
+            "weight": 2
+          },
+          {
+            "name": "spawners",
+            "weight": 2
+          }
+        ],
+        "room_weights": {
+          "spawner_corridor": 2
+        },
+        "spawner_mobs": [
+          {
+            "entity": "minecraft:husk",
+            "weight": 6
+          },
+          {
+            "entity": "minecraft:skeleton",
+            "weight": 3
+          },
+          {
+            "entity": "minecraft:spider",
+            "weight": 1
+          }
+        ],
+        "loot_flavour": [
+          {
+            "item": "minecraft:sand",
+            "weight": 5
+          },
+          {
+            "item": "minecraft:sandstone",
+            "weight": 4
+          },
+          {
+            "item": "minecraft:bone",
+            "weight": 3
+          },
+          {
+            "item": "minecraft:gold_nugget",
+            "weight": 2
+          },
+          {
+            "item": "minecraft:cactus",
+            "weight": 1
+          }
+        ]
       }
     },
     {
       "name": "lush",
       "dimension": "minecraft:overworld",
       "rules": [
-        { "input": "minecraft:cobblestone", "probability": 0.14, "output": "minecraft:moss_block" },
-        { "input": "minecraft:cobblestone", "probability": 0.10, "output": "minecraft:rooted_dirt" },
-        { "input": "minecraft:cobblestone", "probability": 0.08, "output": "minecraft:mud" },
-        { "input": "minecraft:cobblestone", "probability": 0.12, "output": "minecraft:mossy_stone_bricks" },
-        { "input": "minecraft:cobblestone", "probability": 1.0, "output": "minecraft:mossy_cobblestone" }
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 0.14,
+          "output": "minecraft:moss_block"
+        },
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 0.1,
+          "output": "minecraft:rooted_dirt"
+        },
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 0.08,
+          "output": "minecraft:mud"
+        },
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 0.12,
+          "output": "minecraft:mossy_stone_bricks"
+        },
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 1.0,
+          "output": "minecraft:mossy_cobblestone"
+        }
       ],
       "shapes": {
         "fallback": "minecraft:mossy_cobblestone",
         "stairs": "minecraft:mossy_cobblestone_stairs",
         "slab": "minecraft:mossy_cobblestone_slab",
         "wall": "minecraft:mossy_cobblestone_wall"
+      },
+      "profile": {
+        "traps": [
+          {
+            "name": "dripstone",
+            "weight": 1
+          },
+          {
+            "name": "negative_potions",
+            "weight": 2
+          },
+          {
+            "name": "spawners",
+            "weight": 2
+          }
+        ],
+        "room_weights": {
+          "spawner_corridor": 2,
+          "enchanter": 3
+        },
+        "spawner_mobs": [
+          {
+            "entity": "minecraft:bogged",
+            "weight": 5
+          },
+          {
+            "entity": "minecraft:spider",
+            "weight": 3
+          },
+          {
+            "entity": "minecraft:cave_spider",
+            "weight": 2
+          },
+          {
+            "entity": "minecraft:zombie",
+            "weight": 1
+          }
+        ],
+        "loot_flavour": [
+          {
+            "item": "minecraft:moss_block",
+            "weight": 5
+          },
+          {
+            "item": "minecraft:clay_ball",
+            "weight": 3
+          },
+          {
+            "item": "minecraft:glow_berries",
+            "weight": 3
+          },
+          {
+            "item": "minecraft:vine",
+            "weight": 2
+          },
+          {
+            "item": "minecraft:slime_ball",
+            "weight": 1
+          }
+        ]
       }
     },
     {
       "name": "dripstone",
       "dimension": "minecraft:overworld",
       "rules": [
-        { "input": "minecraft:cobblestone", "probability": 0.12, "output": "minecraft:dripstone_block" },
-        { "input": "minecraft:cobblestone", "probability": 0.10, "output": "minecraft:tuff" },
-        { "input": "minecraft:cobblestone", "probability": 0.08, "output": "minecraft:calcite" },
-        { "input": "minecraft:cobblestone", "probability": 0.08, "output": "minecraft:cobbled_deepslate" },
-        { "input": "minecraft:cobblestone", "probability": 1.0, "output": "minecraft:stone" }
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 0.12,
+          "output": "minecraft:dripstone_block"
+        },
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 0.1,
+          "output": "minecraft:tuff"
+        },
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 0.08,
+          "output": "minecraft:calcite"
+        },
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 0.08,
+          "output": "minecraft:cobbled_deepslate"
+        },
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 1.0,
+          "output": "minecraft:stone"
+        }
       ],
       "shapes": {
         "fallback": "minecraft:tuff_bricks",
         "stairs": "minecraft:tuff_brick_stairs",
         "slab": "minecraft:tuff_brick_slab",
         "wall": "minecraft:tuff_brick_wall"
+      },
+      "profile": {
+        "traps": [
+          {
+            "name": "dripstone",
+            "weight": 3
+          },
+          {
+            "name": "lava",
+            "weight": 1
+          },
+          {
+            "name": "negative_potions",
+            "weight": 1
+          },
+          {
+            "name": "spawners",
+            "weight": 1
+          }
+        ],
+        "room_weights": {
+          "spawner_corridor": 2
+        },
+        "spawner_mobs": [
+          {
+            "entity": "minecraft:skeleton",
+            "weight": 3
+          },
+          {
+            "entity": "minecraft:zombie",
+            "weight": 3
+          },
+          {
+            "entity": "minecraft:cave_spider",
+            "weight": 2
+          },
+          {
+            "entity": "minecraft:spider",
+            "weight": 1
+          }
+        ],
+        "loot_flavour": [
+          {
+            "item": "minecraft:pointed_dripstone",
+            "weight": 5
+          },
+          {
+            "item": "minecraft:dripstone_block",
+            "weight": 3
+          },
+          {
+            "item": "minecraft:tuff",
+            "weight": 3
+          },
+          {
+            "item": "minecraft:calcite",
+            "weight": 2
+          },
+          {
+            "item": "minecraft:clay_ball",
+            "weight": 2
+          }
+        ]
       }
     },
     {
       "name": "frozen",
       "dimension": "minecraft:overworld",
       "rules": [
-        { "input": "minecraft:cobblestone", "probability": 0.08, "output": "minecraft:blue_ice" },
-        { "input": "minecraft:cobblestone", "probability": 0.16, "output": "minecraft:packed_ice" },
-        { "input": "minecraft:cobblestone", "probability": 0.08, "output": "minecraft:ice" },
-        { "input": "minecraft:cobblestone", "probability": 0.10, "output": "minecraft:snow_block" },
-        { "input": "minecraft:cobblestone", "probability": 0.08, "output": "minecraft:light_blue_stained_glass" },
-        { "input": "minecraft:cobblestone", "probability": 1.0, "output": "minecraft:diorite" }
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 0.08,
+          "output": "minecraft:blue_ice"
+        },
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 0.16,
+          "output": "minecraft:packed_ice"
+        },
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 0.08,
+          "output": "minecraft:ice"
+        },
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 0.1,
+          "output": "minecraft:snow_block"
+        },
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 0.08,
+          "output": "minecraft:light_blue_stained_glass"
+        },
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 1.0,
+          "output": "minecraft:diorite"
+        }
       ],
       "shapes": {
         "fallback": "minecraft:diorite",
         "stairs": "minecraft:diorite_stairs",
         "slab": "minecraft:diorite_slab",
         "wall": "minecraft:diorite_wall"
+      },
+      "profile": {
+        "traps": [
+          {
+            "name": "dripstone",
+            "weight": 1
+          },
+          {
+            "name": "negative_potions",
+            "weight": 2
+          },
+          {
+            "name": "spawners",
+            "weight": 2
+          }
+        ],
+        "room_weights": {
+          "spawner_corridor": 2
+        },
+        "spawner_mobs": [
+          {
+            "entity": "minecraft:stray",
+            "weight": 6
+          },
+          {
+            "entity": "minecraft:skeleton",
+            "weight": 2
+          },
+          {
+            "entity": "minecraft:zombie",
+            "weight": 1
+          }
+        ],
+        "loot_flavour": [
+          {
+            "item": "minecraft:snowball",
+            "weight": 5
+          },
+          {
+            "item": "minecraft:packed_ice",
+            "weight": 3
+          },
+          {
+            "item": "minecraft:ice",
+            "weight": 2
+          },
+          {
+            "item": "minecraft:blue_ice",
+            "weight": 1
+          }
+        ]
       }
     },
     {
       "name": "ocean_ruin",
       "dimension": "minecraft:overworld",
       "rules": [
-        { "input": "minecraft:cobblestone", "probability": 0.12, "output": "minecraft:prismarine_bricks" },
-        { "input": "minecraft:cobblestone", "probability": 0.08, "output": "minecraft:dark_prismarine" },
-        { "input": "minecraft:cobblestone", "probability": 0.04, "output": "minecraft:sea_lantern" },
-        { "input": "minecraft:cobblestone", "probability": 0.08, "output": "minecraft:mossy_cobblestone" },
-        { "input": "minecraft:cobblestone", "probability": 1.0, "output": "minecraft:prismarine" }
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 0.12,
+          "output": "minecraft:prismarine_bricks"
+        },
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 0.08,
+          "output": "minecraft:dark_prismarine"
+        },
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 0.04,
+          "output": "minecraft:sea_lantern"
+        },
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 0.08,
+          "output": "minecraft:mossy_cobblestone"
+        },
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 1.0,
+          "output": "minecraft:prismarine"
+        }
       ],
       "shapes": {
         "fallback": "minecraft:prismarine",
         "stairs": "minecraft:prismarine_stairs",
         "slab": "minecraft:prismarine_slab",
         "wall": "minecraft:prismarine_wall"
+      },
+      "profile": {
+        "traps": [
+          {
+            "name": "negative_potions",
+            "weight": 2
+          },
+          {
+            "name": "spawners",
+            "weight": 2
+          }
+        ],
+        "room_weights": {
+          "spawner_corridor": 2
+        },
+        "spawner_mobs": [
+          {
+            "entity": "minecraft:drowned",
+            "weight": 6
+          },
+          {
+            "entity": "minecraft:skeleton",
+            "weight": 2
+          },
+          {
+            "entity": "minecraft:guardian",
+            "weight": 1
+          }
+        ],
+        "loot_flavour": [
+          {
+            "item": "minecraft:prismarine_shard",
+            "weight": 5
+          },
+          {
+            "item": "minecraft:prismarine_crystals",
+            "weight": 3
+          },
+          {
+            "item": "minecraft:kelp",
+            "weight": 3
+          },
+          {
+            "item": "minecraft:nautilus_shell",
+            "weight": 1
+          }
+        ]
       }
     },
     {
       "name": "amethyst_geode",
       "dimension": "minecraft:overworld",
       "rules": [
-        { "input": "minecraft:cobblestone", "probability": 0.08, "output": "minecraft:amethyst_block" },
-        { "input": "minecraft:cobblestone", "probability": 0.03, "output": "minecraft:budding_amethyst" },
-        { "input": "minecraft:cobblestone", "probability": 0.08, "output": "minecraft:smooth_basalt" },
-        { "input": "minecraft:cobblestone", "probability": 0.06, "output": "minecraft:tinted_glass" },
-        { "input": "minecraft:cobblestone", "probability": 1.0, "output": "minecraft:calcite" }
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 0.08,
+          "output": "minecraft:amethyst_block"
+        },
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 0.03,
+          "output": "minecraft:budding_amethyst"
+        },
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 0.08,
+          "output": "minecraft:smooth_basalt"
+        },
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 0.06,
+          "output": "minecraft:tinted_glass"
+        },
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 1.0,
+          "output": "minecraft:calcite"
+        }
       ],
       "shapes": {
         "fallback": "minecraft:calcite",
         "stairs": "minecraft:tuff_brick_stairs",
         "slab": "minecraft:tuff_brick_slab",
         "wall": "minecraft:tuff_brick_wall"
+      },
+      "profile": {
+        "traps": [
+          {
+            "name": "dripstone",
+            "weight": 1
+          },
+          {
+            "name": "lava",
+            "weight": 1
+          },
+          {
+            "name": "negative_potions",
+            "weight": 1
+          },
+          {
+            "name": "spawners",
+            "weight": 1
+          }
+        ],
+        "room_weights": {
+          "enchanter": 3
+        },
+        "spawner_mobs": [
+          {
+            "entity": "minecraft:skeleton",
+            "weight": 4
+          },
+          {
+            "entity": "minecraft:zombie",
+            "weight": 2
+          },
+          {
+            "entity": "minecraft:spider",
+            "weight": 1
+          },
+          {
+            "entity": "minecraft:silverfish",
+            "weight": 1
+          }
+        ],
+        "loot_flavour": [
+          {
+            "item": "minecraft:amethyst_shard",
+            "weight": 5
+          },
+          {
+            "item": "minecraft:calcite",
+            "weight": 4
+          },
+          {
+            "item": "minecraft:smooth_basalt",
+            "weight": 3
+          },
+          {
+            "item": "minecraft:tinted_glass",
+            "weight": 1
+          }
+        ]
       }
     },
     {
       "name": "copper",
       "dimension": "minecraft:overworld",
       "rules": [
-        { "input": "minecraft:cobblestone", "probability": 0.08, "output": "minecraft:copper_grate" },
-        { "input": "minecraft:cobblestone", "probability": 0.08, "output": "minecraft:chiseled_copper" },
-        { "input": "minecraft:cobblestone", "probability": 0.08, "output": "minecraft:copper_bulb" },
-        { "input": "minecraft:cobblestone", "probability": 0.08, "output": "minecraft:oxidized_copper" },
-        { "input": "minecraft:cobblestone", "probability": 0.08, "output": "minecraft:exposed_copper" },
-        { "input": "minecraft:cobblestone", "probability": 1.0, "output": "minecraft:tuff_bricks" }
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 0.08,
+          "output": "minecraft:copper_grate"
+        },
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 0.08,
+          "output": "minecraft:chiseled_copper"
+        },
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 0.08,
+          "output": "minecraft:copper_bulb"
+        },
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 0.08,
+          "output": "minecraft:oxidized_copper"
+        },
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 0.08,
+          "output": "minecraft:exposed_copper"
+        },
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 1.0,
+          "output": "minecraft:tuff_bricks"
+        }
       ],
       "shapes": {
         "fallback": "minecraft:tuff_bricks",
         "stairs": "minecraft:tuff_brick_stairs",
         "slab": "minecraft:tuff_brick_slab",
         "wall": "minecraft:tuff_brick_wall"
+      },
+      "profile": {
+        "traps": [
+          {
+            "name": "dripstone",
+            "weight": 1
+          },
+          {
+            "name": "lava",
+            "weight": 1
+          },
+          {
+            "name": "negative_potions",
+            "weight": 1
+          },
+          {
+            "name": "spawners",
+            "weight": 1
+          }
+        ],
+        "room_weights": {
+          "toolsmith": 3
+        },
+        "spawner_mobs": [
+          {
+            "entity": "minecraft:zombie",
+            "weight": 4
+          },
+          {
+            "entity": "minecraft:skeleton",
+            "weight": 3
+          },
+          {
+            "entity": "minecraft:cave_spider",
+            "weight": 1
+          }
+        ],
+        "loot_flavour": [
+          {
+            "item": "minecraft:copper_ingot",
+            "weight": 5
+          },
+          {
+            "item": "minecraft:raw_copper",
+            "weight": 4
+          },
+          {
+            "item": "minecraft:oxidized_copper",
+            "weight": 2
+          },
+          {
+            "item": "minecraft:lightning_rod",
+            "weight": 1
+          }
+        ]
       }
     },
     {
       "name": "stronghold",
       "dimension": "minecraft:overworld",
       "rules": [
-        { "input": "minecraft:cobblestone", "probability": 0.03, "output": "minecraft:infested_stone_bricks" },
-        { "input": "minecraft:cobblestone", "probability": 0.02, "output": "minecraft:infested_cracked_stone_bricks" },
-        { "input": "minecraft:cobblestone", "probability": 0.08, "output": "minecraft:mossy_stone_bricks" },
-        { "input": "minecraft:cobblestone", "probability": 0.08, "output": "minecraft:cracked_stone_bricks" },
-        { "input": "minecraft:cobblestone", "probability": 0.04, "output": "minecraft:chiseled_stone_bricks" },
-        { "input": "minecraft:cobblestone", "probability": 1.0, "output": "minecraft:stone_bricks" }
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 0.03,
+          "output": "minecraft:infested_stone_bricks"
+        },
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 0.02,
+          "output": "minecraft:infested_cracked_stone_bricks"
+        },
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 0.08,
+          "output": "minecraft:mossy_stone_bricks"
+        },
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 0.08,
+          "output": "minecraft:cracked_stone_bricks"
+        },
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 0.04,
+          "output": "minecraft:chiseled_stone_bricks"
+        },
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 1.0,
+          "output": "minecraft:stone_bricks"
+        }
       ],
       "shapes": {
         "fallback": "minecraft:stone_bricks",
         "stairs": "minecraft:stone_brick_stairs",
         "slab": "minecraft:stone_brick_slab",
         "wall": "minecraft:stone_brick_wall"
+      },
+      "profile": {
+        "traps": [
+          {
+            "name": "dripstone",
+            "weight": 1
+          },
+          {
+            "name": "lava",
+            "weight": 1
+          },
+          {
+            "name": "negative_potions",
+            "weight": 1
+          },
+          {
+            "name": "spawners",
+            "weight": 3
+          }
+        ],
+        "room_weights": {
+          "spawner_corridor": 4,
+          "enchanter": 3
+        },
+        "spawner_mobs": [
+          {
+            "entity": "minecraft:silverfish",
+            "weight": 6
+          },
+          {
+            "entity": "minecraft:skeleton",
+            "weight": 3
+          },
+          {
+            "entity": "minecraft:zombie",
+            "weight": 1
+          }
+        ],
+        "loot_flavour": [
+          {
+            "item": "minecraft:stone_bricks",
+            "weight": 5
+          },
+          {
+            "item": "minecraft:cracked_stone_bricks",
+            "weight": 3
+          },
+          {
+            "item": "minecraft:paper",
+            "weight": 2
+          },
+          {
+            "item": "minecraft:ender_pearl",
+            "weight": 1
+          }
+        ]
       }
     },
     {
       "name": "nether_wastes",
       "dimension": "minecraft:the_nether",
       "rules": [
-        { "input": "minecraft:cobblestone", "probability": 0.001, "output": "minecraft:ancient_debris" },
-        { "input": "minecraft:cobblestone", "probability": 0.005, "output": "minecraft:lava" },
-        { "input": "minecraft:cobblestone", "probability": 0.025, "output": "minecraft:nether_gold_ore" },
-        { "input": "minecraft:cobblestone", "probability": 0.025, "output": "minecraft:nether_quartz_ore" },
-        { "input": "minecraft:cobblestone", "probability": 1.0, "output": "minecraft:netherrack" }
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 0.001,
+          "output": "minecraft:ancient_debris"
+        },
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 0.005,
+          "output": "minecraft:lava"
+        },
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 0.025,
+          "output": "minecraft:nether_gold_ore"
+        },
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 0.025,
+          "output": "minecraft:nether_quartz_ore"
+        },
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 1.0,
+          "output": "minecraft:netherrack"
+        }
       ],
       "shapes": {
         "fallback": "minecraft:netherrack"
+      },
+      "profile": {
+        "traps": [
+          {
+            "name": "lava",
+            "weight": 3
+          },
+          {
+            "name": "negative_potions",
+            "weight": 1
+          },
+          {
+            "name": "spawners",
+            "weight": 2
+          }
+        ],
+        "room_weights": {
+          "spawner_corridor": 3
+        },
+        "spawner_mobs": [
+          {
+            "entity": "minecraft:zombified_piglin",
+            "weight": 4
+          },
+          {
+            "entity": "minecraft:magma_cube",
+            "weight": 3
+          },
+          {
+            "entity": "minecraft:skeleton",
+            "weight": 1
+          }
+        ],
+        "loot_flavour": [
+          {
+            "item": "minecraft:quartz",
+            "weight": 5
+          },
+          {
+            "item": "minecraft:gold_nugget",
+            "weight": 4
+          },
+          {
+            "item": "minecraft:nether_wart",
+            "weight": 2
+          },
+          {
+            "item": "minecraft:magma_cream",
+            "weight": 1
+          }
+        ]
       }
     },
     {
       "name": "crimson_forest",
       "dimension": "minecraft:the_nether",
       "rules": [
-        { "input": "minecraft:cobblestone", "probability": 0.1, "output": "minecraft:crimson_planks" },
-        { "input": "minecraft:cobblestone", "probability": 0.1, "output": "minecraft:crimson_nylium" },
-        { "input": "minecraft:cobblestone", "probability": 0.1, "output": "minecraft:crimson_hyphae" },
-        { "input": "minecraft:cobblestone", "probability": 1.0, "output": "minecraft:nether_wart_block" }
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 0.1,
+          "output": "minecraft:crimson_planks"
+        },
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 0.1,
+          "output": "minecraft:crimson_nylium"
+        },
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 0.1,
+          "output": "minecraft:crimson_hyphae"
+        },
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 1.0,
+          "output": "minecraft:nether_wart_block"
+        }
       ],
       "shapes": {
         "fallback": "minecraft:nether_wart_block",
         "stairs": "minecraft:crimson_stairs",
         "slab": "minecraft:crimson_slab",
         "wall": "minecraft:crimson_fence"
+      },
+      "profile": {
+        "traps": [
+          {
+            "name": "lava",
+            "weight": 1
+          },
+          {
+            "name": "negative_potions",
+            "weight": 1
+          },
+          {
+            "name": "spawners",
+            "weight": 2
+          }
+        ],
+        "room_weights": {
+          "spawner_corridor": 3
+        },
+        "spawner_mobs": [
+          {
+            "entity": "minecraft:piglin",
+            "weight": 4
+          },
+          {
+            "entity": "minecraft:zombified_piglin",
+            "weight": 3
+          },
+          {
+            "entity": "minecraft:magma_cube",
+            "weight": 1
+          }
+        ],
+        "loot_flavour": [
+          {
+            "item": "minecraft:crimson_fungus",
+            "weight": 4
+          },
+          {
+            "item": "minecraft:crimson_roots",
+            "weight": 3
+          },
+          {
+            "item": "minecraft:nether_wart",
+            "weight": 3
+          },
+          {
+            "item": "minecraft:leather",
+            "weight": 1
+          }
+        ]
       }
     },
     {
       "name": "warped_forest",
       "dimension": "minecraft:the_nether",
       "rules": [
-        { "input": "minecraft:cobblestone", "probability": 0.1, "output": "minecraft:warped_planks" },
-        { "input": "minecraft:cobblestone", "probability": 0.1, "output": "minecraft:warped_nylium" },
-        { "input": "minecraft:cobblestone", "probability": 0.1, "output": "minecraft:warped_hyphae" },
-        { "input": "minecraft:cobblestone", "probability": 1.0, "output": "minecraft:warped_wart_block" }
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 0.1,
+          "output": "minecraft:warped_planks"
+        },
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 0.1,
+          "output": "minecraft:warped_nylium"
+        },
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 0.1,
+          "output": "minecraft:warped_hyphae"
+        },
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 1.0,
+          "output": "minecraft:warped_wart_block"
+        }
       ],
       "shapes": {
         "fallback": "minecraft:warped_wart_block",
         "stairs": "minecraft:warped_stairs",
         "slab": "minecraft:warped_slab",
         "wall": "minecraft:warped_fence"
+      },
+      "profile": {
+        "traps": [
+          {
+            "name": "negative_potions",
+            "weight": 2
+          },
+          {
+            "name": "spawners",
+            "weight": 2
+          }
+        ],
+        "room_weights": {
+          "spawner_corridor": 2,
+          "enchanter": 3
+        },
+        "spawner_mobs": [
+          {
+            "entity": "minecraft:enderman",
+            "weight": 4
+          },
+          {
+            "entity": "minecraft:zombified_piglin",
+            "weight": 2
+          },
+          {
+            "entity": "minecraft:magma_cube",
+            "weight": 1
+          }
+        ],
+        "loot_flavour": [
+          {
+            "item": "minecraft:warped_fungus",
+            "weight": 4
+          },
+          {
+            "item": "minecraft:warped_roots",
+            "weight": 3
+          },
+          {
+            "item": "minecraft:twisting_vines",
+            "weight": 2
+          },
+          {
+            "item": "minecraft:ender_pearl",
+            "weight": 1
+          }
+        ]
       }
     },
     {
       "name": "basalt_deltas",
       "dimension": "minecraft:the_nether",
       "rules": [
-        { "input": "minecraft:cobblestone", "probability": 0.1, "output": "minecraft:polished_basalt" },
-        { "input": "minecraft:cobblestone", "probability": 0.1, "output": "minecraft:smooth_basalt" },
-        { "input": "minecraft:cobblestone", "probability": 1.0, "output": "minecraft:basalt" }
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 0.1,
+          "output": "minecraft:polished_basalt"
+        },
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 0.1,
+          "output": "minecraft:smooth_basalt"
+        },
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 1.0,
+          "output": "minecraft:basalt"
+        }
       ],
       "shapes": {
         "fallback": "minecraft:basalt"
+      },
+      "profile": {
+        "traps": [
+          {
+            "name": "lava",
+            "weight": 3
+          },
+          {
+            "name": "negative_potions",
+            "weight": 1
+          },
+          {
+            "name": "spawners",
+            "weight": 2
+          }
+        ],
+        "room_weights": {
+          "spawner_corridor": 3
+        },
+        "spawner_mobs": [
+          {
+            "entity": "minecraft:magma_cube",
+            "weight": 5
+          },
+          {
+            "entity": "minecraft:skeleton",
+            "weight": 2
+          },
+          {
+            "entity": "minecraft:zombified_piglin",
+            "weight": 1
+          }
+        ],
+        "loot_flavour": [
+          {
+            "item": "minecraft:basalt",
+            "weight": 5
+          },
+          {
+            "item": "minecraft:blackstone",
+            "weight": 3
+          },
+          {
+            "item": "minecraft:magma_cream",
+            "weight": 2
+          },
+          {
+            "item": "minecraft:quartz",
+            "weight": 1
+          }
+        ]
       }
     },
     {
       "name": "soul_sand_valley",
       "dimension": "minecraft:the_nether",
       "rules": [
-        { "input": "minecraft:cobblestone", "probability": 0.1, "output": "minecraft:soul_sand" },
-        { "input": "minecraft:cobblestone", "probability": 1.0, "output": "minecraft:soul_soil" }
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 0.1,
+          "output": "minecraft:soul_sand"
+        },
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 1.0,
+          "output": "minecraft:soul_soil"
+        }
       ],
       "shapes": {
         "fallback": "minecraft:soul_soil"
+      },
+      "profile": {
+        "traps": [
+          {
+            "name": "lava",
+            "weight": 1
+          },
+          {
+            "name": "negative_potions",
+            "weight": 2
+          },
+          {
+            "name": "spawners",
+            "weight": 2
+          }
+        ],
+        "room_weights": {
+          "spawner_corridor": 3
+        },
+        "spawner_mobs": [
+          {
+            "entity": "minecraft:skeleton",
+            "weight": 5
+          },
+          {
+            "entity": "minecraft:wither_skeleton",
+            "weight": 2
+          },
+          {
+            "entity": "minecraft:zombified_piglin",
+            "weight": 1
+          }
+        ],
+        "loot_flavour": [
+          {
+            "item": "minecraft:soul_sand",
+            "weight": 4
+          },
+          {
+            "item": "minecraft:soul_soil",
+            "weight": 4
+          },
+          {
+            "item": "minecraft:bone",
+            "weight": 3
+          },
+          {
+            "item": "minecraft:coal",
+            "weight": 1
+          }
+        ]
       }
     },
     {
       "name": "nether_fortress",
       "dimension": "minecraft:the_nether",
       "rules": [
-        { "input": "minecraft:cobblestone", "probability": 0.1, "output": "minecraft:red_nether_bricks" },
-        { "input": "minecraft:cobblestone", "probability": 0.1, "output": "minecraft:chiseled_nether_bricks" },
-        { "input": "minecraft:cobblestone", "probability": 0.1, "output": "minecraft:cracked_nether_bricks" },
-        { "input": "minecraft:cobblestone", "probability": 1.0, "output": "minecraft:nether_bricks" }
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 0.1,
+          "output": "minecraft:red_nether_bricks"
+        },
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 0.1,
+          "output": "minecraft:chiseled_nether_bricks"
+        },
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 0.1,
+          "output": "minecraft:cracked_nether_bricks"
+        },
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 1.0,
+          "output": "minecraft:nether_bricks"
+        }
       ],
       "shapes": {
         "fallback": "minecraft:nether_bricks",
         "stairs": "minecraft:nether_brick_stairs",
         "slab": "minecraft:nether_brick_slab",
         "wall": "minecraft:nether_brick_fence"
+      },
+      "profile": {
+        "traps": [
+          {
+            "name": "lava",
+            "weight": 2
+          },
+          {
+            "name": "negative_potions",
+            "weight": 1
+          },
+          {
+            "name": "spawners",
+            "weight": 3
+          }
+        ],
+        "room_weights": {
+          "spawner_corridor": 4
+        },
+        "spawner_mobs": [
+          {
+            "entity": "minecraft:wither_skeleton",
+            "weight": 5
+          },
+          {
+            "entity": "minecraft:blaze",
+            "weight": 3
+          },
+          {
+            "entity": "minecraft:magma_cube",
+            "weight": 1
+          }
+        ],
+        "loot_flavour": [
+          {
+            "item": "minecraft:nether_wart",
+            "weight": 5
+          },
+          {
+            "item": "minecraft:blaze_powder",
+            "weight": 3
+          },
+          {
+            "item": "minecraft:coal",
+            "weight": 2
+          },
+          {
+            "item": "minecraft:gold_nugget",
+            "weight": 1
+          }
+        ]
       }
     },
     {
       "name": "bastion",
       "dimension": "minecraft:the_nether",
       "rules": [
-        { "input": "minecraft:cobblestone", "probability": 0.01, "output": "minecraft:gilded_blackstone" },
-        { "input": "minecraft:cobblestone", "probability": 0.1, "output": "minecraft:polished_blackstone" },
-        { "input": "minecraft:cobblestone", "probability": 0.1, "output": "minecraft:chiseled_polished_blackstone" },
-        { "input": "minecraft:cobblestone", "probability": 0.1, "output": "minecraft:cracked_polished_blackstone_bricks" },
-        { "input": "minecraft:cobblestone", "probability": 1.0, "output": "minecraft:blackstone" }
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 0.01,
+          "output": "minecraft:gilded_blackstone"
+        },
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 0.1,
+          "output": "minecraft:polished_blackstone"
+        },
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 0.1,
+          "output": "minecraft:chiseled_polished_blackstone"
+        },
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 0.1,
+          "output": "minecraft:cracked_polished_blackstone_bricks"
+        },
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 1.0,
+          "output": "minecraft:blackstone"
+        }
       ],
       "shapes": {
         "fallback": "minecraft:blackstone",
         "stairs": "minecraft:blackstone_stairs",
         "slab": "minecraft:blackstone_slab",
         "wall": "minecraft:blackstone_wall"
+      },
+      "profile": {
+        "traps": [
+          {
+            "name": "lava",
+            "weight": 2
+          },
+          {
+            "name": "negative_potions",
+            "weight": 1
+          },
+          {
+            "name": "spawners",
+            "weight": 3
+          }
+        ],
+        "room_weights": {
+          "spawner_corridor": 4,
+          "weaponsmith": 3
+        },
+        "spawner_mobs": [
+          {
+            "entity": "minecraft:piglin",
+            "weight": 4
+          },
+          {
+            "entity": "minecraft:piglin_brute",
+            "weight": 2
+          },
+          {
+            "entity": "minecraft:magma_cube",
+            "weight": 1
+          }
+        ],
+        "loot_flavour": [
+          {
+            "item": "minecraft:gold_nugget",
+            "weight": 5
+          },
+          {
+            "item": "minecraft:blackstone",
+            "weight": 4
+          },
+          {
+            "item": "minecraft:gilded_blackstone",
+            "weight": 1
+          },
+          {
+            "item": "minecraft:iron_nugget",
+            "weight": 1
+          }
+        ]
       }
     },
     {
       "name": "end_stone",
       "dimension": "minecraft:the_end",
       "rules": [
-        { "input": "minecraft:cobblestone", "probability": 0.1, "output": "minecraft:end_stone_bricks" },
-        { "input": "minecraft:cobblestone", "probability": 1.0, "output": "minecraft:end_stone" }
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 0.1,
+          "output": "minecraft:end_stone_bricks"
+        },
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 1.0,
+          "output": "minecraft:end_stone"
+        }
       ],
       "shapes": {
         "fallback": "minecraft:end_stone",
         "stairs": "minecraft:end_stone_brick_stairs",
         "slab": "minecraft:end_stone_brick_slab",
         "wall": "minecraft:end_stone_brick_wall"
+      },
+      "profile": {
+        "traps": [
+          {
+            "name": "negative_potions",
+            "weight": 2
+          },
+          {
+            "name": "spawners",
+            "weight": 2
+          }
+        ],
+        "room_weights": {
+          "spawner_corridor": 2,
+          "enchanter": 3
+        },
+        "spawner_mobs": [
+          {
+            "entity": "minecraft:endermite",
+            "weight": 4
+          },
+          {
+            "entity": "minecraft:silverfish",
+            "weight": 2
+          },
+          {
+            "entity": "minecraft:enderman",
+            "weight": 1
+          }
+        ],
+        "loot_flavour": [
+          {
+            "item": "minecraft:end_stone",
+            "weight": 5
+          },
+          {
+            "item": "minecraft:chorus_fruit",
+            "weight": 3
+          },
+          {
+            "item": "minecraft:ender_pearl",
+            "weight": 2
+          }
+        ]
       }
     },
     {
       "name": "end_city",
       "dimension": "minecraft:the_end",
       "rules": [
-        { "input": "minecraft:cobblestone", "probability": 0.01, "output": "minecraft:purple_stained_glass" },
-        { "input": "minecraft:cobblestone", "probability": 0.1, "output": "minecraft:purpur_pillar" },
-        { "input": "minecraft:cobblestone", "probability": 1.0, "output": "minecraft:purpur_block" }
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 0.01,
+          "output": "minecraft:purple_stained_glass"
+        },
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 0.1,
+          "output": "minecraft:purpur_pillar"
+        },
+        {
+          "input": "minecraft:cobblestone",
+          "probability": 1.0,
+          "output": "minecraft:purpur_block"
+        }
       ],
       "shapes": {
         "fallback": "minecraft:purpur_block",
         "stairs": "minecraft:purpur_stairs",
         "slab": "minecraft:purpur_slab",
         "wall": "minecraft:purple_stained_glass_pane"
+      },
+      "profile": {
+        "traps": [
+          {
+            "name": "negative_potions",
+            "weight": 2
+          },
+          {
+            "name": "spawners",
+            "weight": 2
+          }
+        ],
+        "room_weights": {
+          "spawner_corridor": 2,
+          "enchanter": 3
+        },
+        "spawner_mobs": [
+          {
+            "entity": "minecraft:shulker",
+            "weight": 3
+          },
+          {
+            "entity": "minecraft:endermite",
+            "weight": 2
+          },
+          {
+            "entity": "minecraft:enderman",
+            "weight": 1
+          }
+        ],
+        "loot_flavour": [
+          {
+            "item": "minecraft:chorus_fruit",
+            "weight": 4
+          },
+          {
+            "item": "minecraft:popped_chorus_fruit",
+            "weight": 3
+          },
+          {
+            "item": "minecraft:purpur_block",
+            "weight": 2
+          },
+          {
+            "item": "minecraft:shulker_shell",
+            "weight": 1
+          }
+        ]
       }
     }
   ]
