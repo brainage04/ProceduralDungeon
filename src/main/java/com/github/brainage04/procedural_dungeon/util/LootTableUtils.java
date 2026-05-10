@@ -86,7 +86,8 @@ public class LootTableUtils {
             WeightedEnchantment[] enchantments,
             int tier,
             int tierCount,
-            int rolls,
+            int minRolls,
+            int maxRolls,
             CompletableFuture<HolderLookup.Provider> registryLookup
     ) {
         HolderLookup.RegistryLookup<Enchantment> registry;
@@ -100,7 +101,7 @@ public class LootTableUtils {
         }
 
         LootPool.Builder builder = LootPool.lootPool()
-                .setRolls(ConstantValue.exactly(rolls));
+                .setRolls(rolls(minRolls, maxRolls));
         for (WeightedEnchantment enchantment : enchantments) {
             Holder<Enchantment> holder = registry.getOrThrow(ResourceKey.create(Registries.ENCHANTMENT, enchantment.id));
             builder = builder.add(
@@ -114,6 +115,17 @@ public class LootTableUtils {
         return input.withPool(builder);
     }
 
+    public static LootTable.Builder addEnchantedBookPool(
+            LootTable.Builder input,
+            WeightedEnchantment[] enchantments,
+            int tier,
+            int tierCount,
+            int rolls,
+            CompletableFuture<HolderLookup.Provider> registryLookup
+    ) {
+        return addEnchantedBookPool(input, enchantments, tier, tierCount, rolls, rolls, registryLookup);
+    }
+
     private static int bookLevel(Enchantment enchantment, int tier, int tierCount) {
         if (tierCount <= 1 || enchantment.getMinLevel() == enchantment.getMaxLevel()) {
             return enchantment.getMinLevel();
@@ -124,8 +136,12 @@ public class LootTableUtils {
     }
 
     public static LootTable.Builder addWeightedPool(LootTable.Builder input, WeightedItem[] items, int min, int max, int rolls) {
+        return addWeightedPool(input, items, min, max, rolls, rolls);
+    }
+
+    public static LootTable.Builder addWeightedPool(LootTable.Builder input, WeightedItem[] items, int min, int max, int minRolls, int maxRolls) {
         LootPool.Builder builder = LootPool.lootPool()
-                .setRolls(ConstantValue.exactly(rolls));
+                .setRolls(rolls(minRolls, maxRolls));
 
         for (WeightedItem item : items) {
             builder = builder.add(
@@ -143,8 +159,12 @@ public class LootTableUtils {
     }
 
     public static LootTable.Builder addPool(LootTable.Builder input, Item[] items, int min, int max, int rolls) {
+        return addPool(input, items, min, max, rolls, rolls);
+    }
+
+    public static LootTable.Builder addPool(LootTable.Builder input, Item[] items, int min, int max, int minRolls, int maxRolls) {
         LootPool.Builder builder = LootPool.lootPool()
-                .setRolls(ConstantValue.exactly(rolls));
+                .setRolls(rolls(minRolls, maxRolls));
 
         for (Item item : items) {
             builder = builder.add(
@@ -161,9 +181,13 @@ public class LootTableUtils {
     }
 
     public static LootTable.Builder addPool(LootTable.Builder input, Item item, int min, int max, int rolls) {
+        return addPool(input, item, min, max, rolls, rolls);
+    }
+
+    public static LootTable.Builder addPool(LootTable.Builder input, Item item, int min, int max, int minRolls, int maxRolls) {
         return input.withPool(
                 LootPool.lootPool()
-                        .setRolls(ConstantValue.exactly(rolls))
+                        .setRolls(rolls(minRolls, maxRolls))
                         .add(
                                 LootItem.lootTableItem(item)
                                         .apply(
@@ -173,6 +197,10 @@ public class LootTableUtils {
                                         )
                         )
         );
+    }
+
+    private static net.minecraft.world.level.storage.loot.providers.number.NumberProvider rolls(int minRolls, int maxRolls) {
+        return minRolls == maxRolls ? ConstantValue.exactly(minRolls) : UniformGenerator.between(minRolls, maxRolls);
     }
 
     public static LootTable.Builder addPotionPool(LootTable.Builder input, Item item, Identifier potionId, CompletableFuture<HolderLookup.Provider> registryLookup) {

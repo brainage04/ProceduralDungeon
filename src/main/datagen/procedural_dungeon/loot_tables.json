@@ -2,16 +2,25 @@
   "tables": {
     "hallway_end": [
       { "item": "minecraft:stick", "count": [4, 8], "rolls": 1 },
-      { "each": ["minecraft:rotten_flesh", "minecraft:bone", "minecraft:string", "minecraft:spider_eye"], "count": [2, 4], "rolls": "$badRolls" },
+      {
+        "items": [
+          { "item": "minecraft:rotten_flesh", "weight": 1 },
+          { "item": "minecraft:bone", "weight": 1 },
+          { "item": "minecraft:string", "weight": 1 },
+          { "item": "minecraft:spider_eye", "weight": 1 }
+        ],
+        "count": [2, 4],
+        "rolls": [2, 4]
+      },
       {
         "items": [
           { "item": "minecraft:golden_apple", "weight": "$badRolls" },
           { "item": "minecraft:enchanted_golden_apple", "weight": "$goodRolls" }
         ],
         "count": 1,
-        "rolls": "$goodRolls"
+        "rolls": [1, 2]
       },
-      { "tierItems": "resources", "count": [1, 2], "rolls": "$goodRolls" },
+      { "tierItems": "resources", "count": [1, 2], "rolls": [2, 3] },
       {
         "enchantedBooks": [
           { "enchantment": "minecraft:protection", "weight": 6 },
@@ -24,21 +33,30 @@
           { "enchantment": "minecraft:efficiency", "weight": 4 },
           { "enchantment": "minecraft:fortune", "weight": 2 }
         ],
-        "rolls": 3
+        "rolls": [1, 2]
       }
     ],
     "hallway_loot": [
       { "item": "minecraft:stick", "count": [4, 8], "rolls": 1 },
-      { "each": ["minecraft:rotten_flesh", "minecraft:bone", "minecraft:string", "minecraft:spider_eye"], "count": [1, 2], "rolls": "$badRolls" },
+      {
+        "items": [
+          { "item": "minecraft:rotten_flesh", "weight": 1 },
+          { "item": "minecraft:bone", "weight": 1 },
+          { "item": "minecraft:string", "weight": 1 },
+          { "item": "minecraft:spider_eye", "weight": 1 }
+        ],
+        "count": [1, 2],
+        "rolls": [2, 3]
+      },
       {
         "items": [
           { "item": "minecraft:golden_apple", "weight": "$badRolls" },
           { "item": "minecraft:enchanted_golden_apple", "weight": "$goodRolls" }
         ],
         "count": 1,
-        "rolls": "$goodRolls"
+        "rolls": [1, 2]
       },
-      { "tierItems": "resources", "count": [2, 4], "rolls": "$goodRolls" },
+      { "tierItems": "resources", "count": [2, 4], "rolls": [2, 3] },
       {
         "enchantedBooks": [
           { "enchantment": "minecraft:protection", "weight": 6 },
@@ -51,7 +69,7 @@
           { "enchantment": "minecraft:efficiency", "weight": 4 },
           { "enchantment": "minecraft:fortune", "weight": 2 }
         ],
-        "rolls": 3
+        "rolls": 1
       }
     ],
     "armorsmith": [
@@ -72,8 +90,8 @@
       { "tierEquipment": ["axe", "shovel", "pickaxe", "hoe"], "enchant": "mining", "levels": "$levels", "rolls": [1, 3] }
     ],
     "enchanter": [
-      { "item": "minecraft:experience_bottle", "count": [4, 8], "rolls": "$goodRolls" },
-      { "item": "minecraft:lapis_lazuli", "count": [4, 8], "rolls": "$goodRolls" },
+      { "item": "minecraft:experience_bottle", "count": [3, 6], "rolls": [2, 3] },
+      { "item": "minecraft:lapis_lazuli", "count": [3, 6], "rolls": [2, 3] },
       {
         "enchantedBooks": [
           { "enchantment": "minecraft:protection", "weight": 6 },
@@ -94,7 +112,7 @@
           { "enchantment": "minecraft:piercing", "weight": 2 },
           { "enchantment": "minecraft:mending", "weight": 1 }
         ],
-        "rolls": 5
+        "rolls": [2, 3]
       }
     ],
     "hallway/trap/negative_potions": [

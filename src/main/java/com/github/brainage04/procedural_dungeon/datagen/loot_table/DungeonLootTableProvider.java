@@ -100,16 +100,16 @@ public class DungeonLootTableProvider extends SimpleFabricLootTableSubProvider {
     private static LootTable.Builder applySpec(LootTable.Builder builder, JsonObject spec, DungeonTier dungeonTier, CompletableFuture<HolderLookup.Provider> registryLookup) {
         if (spec.has("each")) {
             int[] count = countRange(spec);
-            int rolls = intValue(spec.get("rolls"), dungeonTier);
+            int[] rolls = rollsRange(spec, dungeonTier);
             for (JsonElement item : spec.getAsJsonArray("each")) {
-                builder = LootTableUtils.addPool(builder, item(item.getAsString()), count[0], count[1], rolls);
+                builder = LootTableUtils.addPool(builder, item(item.getAsString()), count[0], count[1], rolls[0], rolls[1]);
             }
             return builder;
         }
 
         if (spec.has("items")) {
             int[] count = countRange(spec);
-            int rolls = intValue(spec.get("rolls"), dungeonTier);
+            int[] rolls = rollsRange(spec, dungeonTier);
             JsonArray items = spec.getAsJsonArray("items");
             LootTableUtils.WeightedItem[] weightedItems = new LootTableUtils.WeightedItem[items.size()];
 
@@ -121,17 +121,19 @@ public class DungeonLootTableProvider extends SimpleFabricLootTableSubProvider {
                 );
             }
 
-            return LootTableUtils.addWeightedPool(builder, weightedItems, count[0], count[1], rolls);
+            return LootTableUtils.addWeightedPool(builder, weightedItems, count[0], count[1], rolls[0], rolls[1]);
         }
 
         if (spec.has("tierItems")) {
             int[] count = countRange(spec);
+            int[] rolls = rollsRange(spec, dungeonTier);
             return LootTableUtils.addWeightedPool(
                     builder,
                     weightedTierItems(spec.get("tierItems").getAsString(), dungeonTier),
                     count[0],
                     count[1],
-                    intValue(spec.get("rolls"), dungeonTier)
+                    rolls[0],
+                    rolls[1]
             );
         }
 
@@ -194,13 +196,14 @@ public class DungeonLootTableProvider extends SimpleFabricLootTableSubProvider {
                         intValue(enchantment.get("weight"), dungeonTier)
                 );
             }
-            int rolls = spec.has("rolls") ? intValue(spec.get("rolls"), dungeonTier) : 1;
+            int[] rolls = rollsRange(spec, dungeonTier);
             return LootTableUtils.addEnchantedBookPool(
                     builder,
                     weightedEnchantments,
                     dungeonTier.tier,
                     DungeonTier.values().length,
-                    rolls,
+                    rolls[0],
+                    rolls[1],
                     registryLookup
             );
         }
@@ -225,7 +228,8 @@ public class DungeonLootTableProvider extends SimpleFabricLootTableSubProvider {
 
         if (spec.has("item")) {
             int[] count = countRange(spec);
-            return LootTableUtils.addPool(builder, item(spec.get("item").getAsString()), count[0], count[1], intValue(spec.get("rolls"), dungeonTier));
+            int[] rolls = rollsRange(spec, dungeonTier);
+            return LootTableUtils.addPool(builder, item(spec.get("item").getAsString()), count[0], count[1], rolls[0], rolls[1]);
         }
 
         throw new IllegalArgumentException("Unsupported loot table spec: " + spec);

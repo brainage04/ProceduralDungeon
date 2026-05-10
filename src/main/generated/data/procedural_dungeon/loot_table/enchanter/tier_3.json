@@ -11,8 +11,8 @@
               "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "max": 8.0,
-                "min": 4.0
+                "max": 6.0,
+                "min": 3.0
               },
               "function": "minecraft:set_count"
             }
@@ -20,7 +20,11 @@
           "name": "minecraft:experience_bottle"
         }
       ],
-      "rolls": 3.0
+      "rolls": {
+        "type": "minecraft:uniform",
+        "max": 3.0,
+        "min": 2.0
+      }
     },
     {
       "bonus_rolls": 0.0,
@@ -32,8 +36,8 @@
               "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "max": 8.0,
-                "min": 4.0
+                "max": 6.0,
+                "min": 3.0
               },
               "function": "minecraft:set_count"
             }
@@ -41,7 +45,11 @@
           "name": "minecraft:lapis_lazuli"
         }
       ],
-      "rolls": 3.0
+      "rolls": {
+        "type": "minecraft:uniform",
+        "max": 3.0,
+        "min": 2.0
+      }
     },
     {
       "bonus_rolls": 0.0,
@@ -281,7 +289,11 @@
           "name": "minecraft:book"
         }
       ],
-      "rolls": 5.0
+      "rolls": {
+        "type": "minecraft:uniform",
+        "max": 3.0,
+        "min": 2.0
+      }
     }
   ]
 }

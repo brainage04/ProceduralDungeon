@@ -39,13 +39,7 @@
             }
           ],
           "name": "minecraft:rotten_flesh"
-        }
-      ],
-      "rolls": 3.0
-    },
-    {
-      "bonus_rolls": 0.0,
-      "entries": [
+        },
         {
           "type": "minecraft:item",
           "functions": [
@@ -60,13 +54,7 @@
             }
           ],
           "name": "minecraft:bone"
-        }
-      ],
-      "rolls": 3.0
-    },
-    {
-      "bonus_rolls": 0.0,
-      "entries": [
+        },
         {
           "type": "minecraft:item",
           "functions": [
@@ -81,13 +69,7 @@
             }
           ],
           "name": "minecraft:string"
-        }
-      ],
-      "rolls": 3.0
-    },
-    {
-      "bonus_rolls": 0.0,
-      "entries": [
+        },
         {
           "type": "minecraft:item",
           "functions": [
@@ -104,7 +86,11 @@
           "name": "minecraft:spider_eye"
         }
       ],
-      "rolls": 3.0
+      "rolls": {
+        "type": "minecraft:uniform",
+        "max": 3.0,
+        "min": 2.0
+      }
     },
     {
       "bonus_rolls": 0.0,
@@ -142,7 +128,11 @@
           "weight": 3
         }
       ],
-      "rolls": 3.0
+      "rolls": {
+        "type": "minecraft:uniform",
+        "max": 2.0,
+        "min": 1.0
+      }
     },
     {
       "bonus_rolls": 0.0,
@@ -258,7 +248,11 @@
           "name": "minecraft:gold_ingot"
         }
       ],
-      "rolls": 3.0
+      "rolls": {
+        "type": "minecraft:uniform",
+        "max": 3.0,
+        "min": 2.0
+      }
     },
     {
       "bonus_rolls": 0.0,
@@ -390,7 +384,7 @@
           "weight": 2
         }
       ],
-      "rolls": 3.0
+      "rolls": 1.0
     }
   ]
 }
