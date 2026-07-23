@@ -214,6 +214,7 @@ public final class StagedDungeonLayoutCompiler {
                 candidates.addAll(poolHolder.get().value().getShuffledTemplates(random));
             }
             candidates.addAll(fallback.value().getShuffledTemplates(random));
+            candidates.sort(StagedDungeonLayoutCompiler::compareVerticalPreference);
 
             int placementPriority = sourceJigsaw.placementPriority();
             boolean acceptedForSource = false;
@@ -342,6 +343,23 @@ public final class StagedDungeonLayoutCompiler {
             return variantElement.templateLocation().toString();
         }
         return element.toString();
+    }
+
+    private static int compareVerticalPreference(StructurePoolElement first, StructurePoolElement second) {
+        return Integer.compare(verticalPreference(first), verticalPreference(second));
+    }
+
+    private static int verticalPreference(StructurePoolElement element) {
+        if (element == EmptyPoolElement.INSTANCE) {
+            return 2;
+        }
+        return isUpStairTemplate(element) ? 1 : 0;
+    }
+
+    private static boolean isUpStairTemplate(StructurePoolElement element) {
+        return element instanceof VariantSinglePoolElement variantElement
+                && variantElement.templateLocation().getPath().startsWith("dungeon/hallway/room/staircase_")
+                && variantElement.templateLocation().getPath().endsWith("_up");
     }
 
     private static boolean isUnexpectedEmptyPool(Holder<StructureTemplatePool> pool) {
