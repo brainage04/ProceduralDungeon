@@ -20,9 +20,6 @@ repositories {
 	// DevAuth
 	maven { url = "https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1" }
 
-	// ModMenu
-	maven { url "https://maven.terraformersmc.com/" }
-
 	// Polymer
 	maven { url "https://maven.nucleoid.xyz/" }
 }
@@ -42,9 +39,6 @@ dependencies {
 
 	// DevAuth
 	runtimeOnly("me.djtheredstoner:DevAuth-fabric:1.2.2")
-
-	// ModMenu
-	runtimeOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
 
 	// Polymer
 	implementation "eu.pb4:polymer-core:${project.polymer_version}"
