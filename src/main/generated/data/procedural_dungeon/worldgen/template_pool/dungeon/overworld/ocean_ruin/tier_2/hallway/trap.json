@@ -1,0 +1,31 @@
+{
+  "elements": [
+    {
+      "element": {
+        "branch_limit": 1,
+        "element_type": "procedural_dungeon:variant_single_pool_element",
+        "location": "procedural_dungeon:dungeon/hallway/trap/negative_potions",
+        "override_liquid_settings": "ignore_waterlogging",
+        "processors": "procedural_dungeon:dungeon/profile/ba2d4c1cea4263c4",
+        "projection": "rigid",
+        "spawner_tier": 2,
+        "variant": "procedural_dungeon:dungeon/overworld/ocean_ruin/tier_2"
+      },
+      "weight": 2
+    },
+    {
+      "element": {
+        "branch_limit": 1,
+        "element_type": "procedural_dungeon:variant_single_pool_element",
+        "location": "procedural_dungeon:dungeon/hallway/trap/spawners",
+        "override_liquid_settings": "ignore_waterlogging",
+        "processors": "procedural_dungeon:dungeon/profile/c9ccf548f7a77a39",
+        "projection": "rigid",
+        "spawner_tier": 2,
+        "variant": "procedural_dungeon:dungeon/overworld/ocean_ruin/tier_2"
+      },
+      "weight": 2
+    }
+  ],
+  "fallback": "minecraft:empty"
+}

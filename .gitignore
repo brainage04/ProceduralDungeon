@@ -2,7 +2,6 @@
 
 .gradle/
 build/
-src/main/generated/
 out/
 classes/
 
