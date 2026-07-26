@@ -14,64 +14,63 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProc
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 
-public class ReplaceLootTableProcessor extends StructureProcessor {
-    public static final MapCodec<ReplaceLootTableProcessor> CODEC =
-            RecordCodecBuilder.mapCodec(instance -> instance.group(
-                    Codec.unboundedMap(Identifier.CODEC, Identifier.CODEC)
-                            .fieldOf("replacements")
-                            .forGetter(processor -> processor.replacements)
-            ).apply(instance, ReplaceLootTableProcessor::new));
+public class ReplaceLootTableProcessor implements StructureProcessor { public static final MapCodec<ReplaceLootTableProcessor> CODEC =
+        RecordCodecBuilder.mapCodec(instance -> instance.group(
+                Codec.unboundedMap(Identifier.CODEC, Identifier.CODEC)
+                        .fieldOf("replacements")
+                        .forGetter(processor -> processor.replacements)
+        ).apply(instance, ReplaceLootTableProcessor::new));
 
-    private final Map<Identifier, Identifier> replacements;
+private final Map<Identifier, Identifier> replacements;
 
-    public ReplaceLootTableProcessor(Map<Identifier, Identifier> replacements) {
-        this.replacements = replacements;
-    }
+public ReplaceLootTableProcessor(Map<Identifier, Identifier> replacements) {
+    this.replacements = replacements;
+}
 
-    @Override
-    public StructureTemplate.StructureBlockInfo processBlock(
-            LevelReader world,
-            BlockPos pos,
-            BlockPos pivot,
-            StructureTemplate.StructureBlockInfo originalBlockInfo,
-            StructureTemplate.StructureBlockInfo currentBlockInfo,
-            StructurePlaceSettings data
-    ) {
-        long start = DungeonGenerationProfiler.start();
-        try {
-            CompoundTag nbt = currentBlockInfo.nbt();
-            if (nbt == null) {
-                return currentBlockInfo;
-            }
+@Override
+public StructureTemplate.StructureBlockInfo processBlock(
+        LevelReader world,
+        BlockPos pos,
+        BlockPos pivot,
+        BlockPos originalBlockPos,
+        StructureTemplate.StructureBlockInfo currentBlockInfo,
+        StructurePlaceSettings data
+) {
+    long start = DungeonGenerationProfiler.start();
+    try {
+        CompoundTag nbt = currentBlockInfo.nbt();
+        if (nbt == null) {
+            return currentBlockInfo;
+        }
 
-            String oldLootTable = nbt.getString("LootTable").orElse(null);
-            if (oldLootTable == null) {
-                return currentBlockInfo;
-            }
+        String oldLootTable = nbt.getString("LootTable").orElse(null);
+        if (oldLootTable == null) {
+            return currentBlockInfo;
+        }
 
-            Identifier oldId = Identifier.tryParse(oldLootTable);
-            if (oldId == null) {
-                return currentBlockInfo;
-            }
+        Identifier oldId = Identifier.tryParse(oldLootTable);
+        if (oldId == null) {
+            return currentBlockInfo;
+        }
 
-            Identifier newId = replacements.get(oldId);
-            if (newId == null) {
-                return currentBlockInfo;
-            }
+        Identifier newId = replacements.get(oldId);
+        if (newId == null) {
+            return currentBlockInfo;
+        }
 
-            CompoundTag copy = nbt.copy();
-            copy.putString("LootTable", newId.toString());
-            copy.putLong("LootTableSeed", data.getRandom(currentBlockInfo.pos()).nextLong());
-            return new StructureTemplate.StructureBlockInfo(currentBlockInfo.pos(), currentBlockInfo.state(), copy);
-        } finally {
-            if (start != 0L) {
-                DungeonGenerationProfiler.recordProcessor("procedural_dungeon:replace_loot_tables", System.nanoTime() - start);
-            }
+        CompoundTag copy = nbt.copy();
+        copy.putString("LootTable", newId.toString());
+        copy.putLong("LootTableSeed", data.getRandom(currentBlockInfo.pos()).nextLong());
+        return new StructureTemplate.StructureBlockInfo(currentBlockInfo.pos(), currentBlockInfo.state(), copy);
+    } finally {
+        if (start != 0L) {
+            DungeonGenerationProfiler.recordProcessor("procedural_dungeon:replace_loot_tables", System.nanoTime() - start);
         }
     }
+}
 
-    @Override
-    protected StructureProcessorType<?> getType() {
-        return ModStructureProcessorTypes.REPLACE_LOOT_TABLES;
-    }
+@Override
+public MapCodec<? extends StructureProcessor> codec() {
+    return CODEC;
+}
 }

@@ -15,73 +15,72 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProc
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 
-public class ReplaceJigsawPoolProcessor extends StructureProcessor {
-    public static final MapCodec<ReplaceJigsawPoolProcessor> CODEC =
-            RecordCodecBuilder.mapCodec(instance -> instance.group(
-                    Codec.unboundedMap(Identifier.CODEC, Identifier.CODEC)
-                            .fieldOf("replacements")
-                            .forGetter(processor -> processor.replacements)
-            ).apply(instance, ReplaceJigsawPoolProcessor::new));
+public class ReplaceJigsawPoolProcessor implements StructureProcessor { public static final MapCodec<ReplaceJigsawPoolProcessor> CODEC =
+        RecordCodecBuilder.mapCodec(instance -> instance.group(
+                Codec.unboundedMap(Identifier.CODEC, Identifier.CODEC)
+                        .fieldOf("replacements")
+                        .forGetter(processor -> processor.replacements)
+        ).apply(instance, ReplaceJigsawPoolProcessor::new));
 
-    private final Map<Identifier, Identifier> replacements;
+private final Map<Identifier, Identifier> replacements;
 
-    public ReplaceJigsawPoolProcessor(Map<Identifier, Identifier> replacements) {
-        this.replacements = replacements;
-    }
+public ReplaceJigsawPoolProcessor(Map<Identifier, Identifier> replacements) {
+    this.replacements = replacements;
+}
 
-    @Override
-    public StructureTemplate.StructureBlockInfo processBlock(
-            LevelReader world,
-            BlockPos pos,
-            BlockPos pivot,
-            StructureTemplate.StructureBlockInfo originalBlockInfo,
-            StructureTemplate.StructureBlockInfo currentBlockInfo,
-            StructurePlaceSettings data
-    ) {
-        long start = DungeonGenerationProfiler.start();
-        try {
-            if (!currentBlockInfo.state().is(Blocks.JIGSAW) || currentBlockInfo.nbt() == null) {
-                return currentBlockInfo;
-            }
-
-            CompoundTag copy = currentBlockInfo.nbt().copy();
-            boolean changed = replacePool(copy, "pool");
-            changed |= replacePool(copy, "target_pool");
-
-            if (!changed) {
-                return currentBlockInfo;
-            }
-
-            return new StructureTemplate.StructureBlockInfo(currentBlockInfo.pos(), currentBlockInfo.state(), copy);
-        } finally {
-            if (start != 0L) {
-                DungeonGenerationProfiler.recordProcessor("procedural_dungeon:replace_jigsaw_pools", System.nanoTime() - start);
-            }
-        }
-    }
-
-    private boolean replacePool(CompoundTag nbt, String key) {
-        String oldPool = nbt.getString(key).orElse(null);
-        if (oldPool == null) {
-            return false;
+@Override
+public StructureTemplate.StructureBlockInfo processBlock(
+        LevelReader world,
+        BlockPos pos,
+        BlockPos pivot,
+        BlockPos originalBlockPos,
+        StructureTemplate.StructureBlockInfo currentBlockInfo,
+        StructurePlaceSettings data
+) {
+    long start = DungeonGenerationProfiler.start();
+    try {
+        if (!currentBlockInfo.state().is(Blocks.JIGSAW) || currentBlockInfo.nbt() == null) {
+            return currentBlockInfo;
         }
 
-        Identifier oldId = Identifier.tryParse(oldPool);
-        if (oldId == null) {
-            return false;
+        CompoundTag copy = currentBlockInfo.nbt().copy();
+        boolean changed = replacePool(copy, "pool");
+        changed |= replacePool(copy, "target_pool");
+
+        if (!changed) {
+            return currentBlockInfo;
         }
 
-        Identifier newId = replacements.get(oldId);
-        if (newId == null) {
-            return false;
+        return new StructureTemplate.StructureBlockInfo(currentBlockInfo.pos(), currentBlockInfo.state(), copy);
+    } finally {
+        if (start != 0L) {
+            DungeonGenerationProfiler.recordProcessor("procedural_dungeon:replace_jigsaw_pools", System.nanoTime() - start);
         }
+    }
+}
 
-        nbt.putString(key, newId.toString());
-        return true;
+private boolean replacePool(CompoundTag nbt, String key) {
+    String oldPool = nbt.getString(key).orElse(null);
+    if (oldPool == null) {
+        return false;
     }
 
-    @Override
-    protected StructureProcessorType<?> getType() {
-        return ModStructureProcessorTypes.REPLACE_JIGSAW_POOLS;
+    Identifier oldId = Identifier.tryParse(oldPool);
+    if (oldId == null) {
+        return false;
     }
+
+    Identifier newId = replacements.get(oldId);
+    if (newId == null) {
+        return false;
+    }
+
+    nbt.putString(key, newId.toString());
+    return true;
+}
+
+@Override
+public MapCodec<? extends StructureProcessor> codec() {
+    return CODEC;
+}
 }

@@ -17,7 +17,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Display;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -188,7 +188,7 @@ public final class DungeonLocksCommand {
     private static boolean mark(ServerLevel level, BlockPos pos) {
         removeExistingMarker(level, pos);
 
-        Display.BlockDisplay marker = new Display.BlockDisplay(EntityType.BLOCK_DISPLAY, level);
+        Display.BlockDisplay marker = new Display.BlockDisplay(EntityTypes.BLOCK_DISPLAY, level);
         marker.setPos(pos.getX(), pos.getY(), pos.getZ());
         marker.setBlockState(markerBlockState(level, pos));
         marker.setTransformation(new Transformation(

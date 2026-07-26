@@ -1,162 +1,34 @@
 plugins {
-	id 'net.fabricmc.fabric-loom' version "${loom_version}"
-	id 'maven-publish'
-}
-
-version = project.mod_version
-group = project.maven_group
-
-base {
-	archivesName = project.archives_base_name
+	id 'io.github.brainage04.client-gametest-recorder' version "${fabricmoddingconventions_version}"
+	id 'io.github.brainage04.production-gametests' version "${fabricmoddingconventions_version}"
+	id 'io.github.brainage04.workspace-dependencies' version "${fabricmoddingconventions_version}"
+	id 'io.github.brainage04.mod-publishing' version "${fabricmoddingconventions_version}"
 }
 
 repositories {
-	// Loom / Minecraft / Fabric
-	mavenCentral()
 	mavenLocal()
-	maven { url "https://libraries.minecraft.net" }
-	maven { url "https://maven.fabricmc.net/" }
-
-	// DevAuth
-	maven { url = "https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1" }
-
-	// Polymer
 	maven { url "https://maven.nucleoid.xyz/" }
 }
 
-configurations {
-	chunkyLauncher {
-		canBeConsumed = false
-		canBeResolved = true
-	}
-}
-
 dependencies {
-	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-	implementation "net.fabricmc:fabric-loader:${project.loader_version}"
-	implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
-	testImplementation "net.fabricmc:fabric-loader-junit:${project.loader_version}"
-
-	// DevAuth
-	runtimeOnly("me.djtheredstoner:DevAuth-fabric:1.2.2")
-
-	// Polymer
 	implementation "eu.pb4:polymer-core:${project.polymer_version}"
 	include "eu.pb4:polymer-bundled:${project.polymer_version}"
-
-	chunkyLauncher files("tools/chunky/ChunkyLauncher.jar")
 }
 
-processResources {
-	inputs.property "mod_id", project.properties.mod_id
-	inputs.property "mod_version", project.version
-	inputs.property "mod_name", project.properties.mod_name
-	inputs.property "loader_version", project.properties.loader_version
-	inputs.property "minecraft_version", project.properties.minecraft_version
-	inputs.property "java_version", project.properties.java_version
-
-	filesMatching("fabric.mod.json") {
-		expand([
-				"mod_id": inputs.properties.mod_id,
-				"mod_version": inputs.properties.mod_version,
-				"mod_name": inputs.properties.mod_name,
-				"loader_version": inputs.properties.loader_version,
-				"minecraft_version": inputs.properties.minecraft_version,
-				"java_version": inputs.properties.java_version,
-		])
+workspaceDependencies {
+	siblingMaven("FabricModdingConventions") {
+		coordinate.set("io.github.brainage04:fabricmoddingconventions:${project.fabricmoddingconventions_version}")
 	}
-}
-
-loom {
-	accessWidenerPath = file("src/main/resources/procedural_dungeon.accesswidener")
 }
 
 fabricApi {
-	configureDataGeneration() {
+	configureDataGeneration {
 		client = false
 	}
 }
 
-tasks.withType(JavaCompile).configureEach {
-	it.options.release = project.java_version.toInteger()
-}
-
-java {
-	withSourcesJar()
-
-	sourceCompatibility = JavaVersion.toVersion(project.java_version)
-	targetCompatibility = JavaVersion.toVersion(project.java_version)
-}
-
-jar {
-	inputs.property "archivesName", project.base.archivesName
-
-	from("LICENSE") {
-		rename { "${it}_${inputs.properties.archivesName}"}
+pluginManager.withPlugin("io.github.brainage04.client-gametest-recorder") {
+	clientGameTestRecorder {
+		guiScale.set("3")
 	}
-}
-
-publishing {
-	publications {
-		create("mavenJava", MavenPublication) {
-			artifactId = project.archives_base_name
-			from components.java
-		}
-	}
-}
-
-test {
-	useJUnitPlatform()
-	systemProperty "fabric.side", "server"
-}
-
-def setEnvironmentOverride = { task, envName, propertyName ->
-	def property = providers.gradleProperty(propertyName)
-	if (property.present) {
-		task.environment envName, property.get()
-	}
-}
-
-tasks.register("benchmarkDungeonsVoidFlatJfr", Exec) {
-	group = "profiling"
-	description = "Runs the tier 5 all-theme dungeon benchmark in a fresh void flat world with JFR profiling."
-
-	dependsOn("classes", "configureLaunch")
-
-	def javaLauncher = javaToolchains.launcherFor {
-		languageVersion = JavaLanguageVersion.of(project.java_version.toInteger())
-	}
-
-	environment "JAVA_EXE", javaLauncher.get().executablePath.asFile.absolutePath
-	setEnvironmentOverride(it, "DUNGEON_BENCHMARK_SAMPLES", "dungeonBenchmarkSamples")
-	setEnvironmentOverride(it, "DUNGEON_BENCHMARK_SPACING", "dungeonBenchmarkSpacing")
-	setEnvironmentOverride(it, "DUNGEON_BENCHMARK_CHUNK_RADIUS", "dungeonBenchmarkChunkRadius")
-	setEnvironmentOverride(it, "DUNGEON_BENCHMARK_SEED", "dungeonBenchmarkSeed")
-	setEnvironmentOverride(it, "DUNGEON_BENCHMARK_ORIGIN_Y", "dungeonBenchmarkOriginY")
-	setEnvironmentOverride(it, "DUNGEON_BENCHMARK_WORLD", "dungeonBenchmarkWorld")
-
-	commandLine "bash", "gradle/scripts/benchmark_dungeons_void_flat_jfr.sh"
-}
-
-tasks.register("renderBenchmarkDungeonsChunky", Exec) {
-	group = "rendering"
-	description = "Runs the void-flat dungeon benchmark and renders the generated grid with Chunky."
-
-	dependsOn("benchmarkDungeonsVoidFlatJfr")
-
-	environment "CHUNKY_LAUNCHER_JAR", configurations.chunkyLauncher.singleFile.absolutePath
-	setEnvironmentOverride(it, "DUNGEON_BENCHMARK_SAMPLES", "dungeonBenchmarkSamples")
-	setEnvironmentOverride(it, "DUNGEON_BENCHMARK_SPACING", "dungeonBenchmarkSpacing")
-	setEnvironmentOverride(it, "DUNGEON_BENCHMARK_CHUNK_RADIUS", "dungeonBenchmarkChunkRadius")
-	setEnvironmentOverride(it, "DUNGEON_BENCHMARK_WORLD", "dungeonBenchmarkWorld")
-	setEnvironmentOverride(it, "CHUNKY_RENDER_TARGET", "chunkyRenderTarget")
-	setEnvironmentOverride(it, "CHUNKY_RENDER_THREADS", "chunkyRenderThreads")
-	setEnvironmentOverride(it, "CHUNKY_RENDER_WIDTH", "chunkyRenderWidth")
-	setEnvironmentOverride(it, "CHUNKY_RENDER_HEIGHT", "chunkyRenderHeight")
-	setEnvironmentOverride(it, "CHUNKY_SCENE_NAME", "chunkySceneName")
-	setEnvironmentOverride(it, "CHUNKY_RENDER_FOV", "chunkyRenderFov")
-	setEnvironmentOverride(it, "CHUNKY_RENDER_SHIFT_X", "chunkyRenderShiftX")
-	setEnvironmentOverride(it, "CHUNKY_RENDER_SHIFT_Y", "chunkyRenderShiftY")
-
-	commandLine "bash", "gradle/scripts/render_benchmark_dungeons_chunky.sh"
 }

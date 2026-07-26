@@ -374,7 +374,7 @@ public class VariantSinglePoolElement extends StructurePoolElement {
                 if (current == null) {
                     break;
                 }
-                current = processor.processBlock(world, pos, pivot, original, current, settings);
+                current = processor.processBlock(world, pos, pivot, original.pos(), current, settings);
             }
             if (current != null) {
                 originalBlocks.add(original);

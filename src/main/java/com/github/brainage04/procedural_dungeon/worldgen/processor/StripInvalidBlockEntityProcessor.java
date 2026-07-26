@@ -10,38 +10,37 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProc
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 
-public class StripInvalidBlockEntityProcessor extends StructureProcessor {
-    public static final StripInvalidBlockEntityProcessor INSTANCE = new StripInvalidBlockEntityProcessor();
-    public static final MapCodec<StripInvalidBlockEntityProcessor> CODEC = MapCodec.unit(INSTANCE);
+public class StripInvalidBlockEntityProcessor implements StructureProcessor { public static final StripInvalidBlockEntityProcessor INSTANCE = new StripInvalidBlockEntityProcessor();
+public static final MapCodec<StripInvalidBlockEntityProcessor> CODEC = MapCodec.unit(INSTANCE);
 
-    private StripInvalidBlockEntityProcessor() {
-    }
+private StripInvalidBlockEntityProcessor() {
+}
 
-    @Override
-    public StructureTemplate.StructureBlockInfo processBlock(
-            LevelReader world,
-            BlockPos pos,
-            BlockPos pivot,
-            StructureTemplate.StructureBlockInfo originalBlockInfo,
-            StructureTemplate.StructureBlockInfo currentBlockInfo,
-            StructurePlaceSettings data
-    ) {
-        long start = DungeonGenerationProfiler.start();
-        try {
-            if (currentBlockInfo.nbt() == null || currentBlockInfo.state().getBlock() instanceof EntityBlock) {
-                return currentBlockInfo;
-            }
+@Override
+public StructureTemplate.StructureBlockInfo processBlock(
+        LevelReader world,
+        BlockPos pos,
+        BlockPos pivot,
+        BlockPos originalBlockPos,
+        StructureTemplate.StructureBlockInfo currentBlockInfo,
+        StructurePlaceSettings data
+) {
+    long start = DungeonGenerationProfiler.start();
+    try {
+        if (currentBlockInfo.nbt() == null || currentBlockInfo.state().getBlock() instanceof EntityBlock) {
+            return currentBlockInfo;
+        }
 
-            return new StructureTemplate.StructureBlockInfo(currentBlockInfo.pos(), currentBlockInfo.state(), null);
-        } finally {
-            if (start != 0L) {
-                DungeonGenerationProfiler.recordProcessor("procedural_dungeon:strip_invalid_block_entity", System.nanoTime() - start);
-            }
+        return new StructureTemplate.StructureBlockInfo(currentBlockInfo.pos(), currentBlockInfo.state(), null);
+    } finally {
+        if (start != 0L) {
+            DungeonGenerationProfiler.recordProcessor("procedural_dungeon:strip_invalid_block_entity", System.nanoTime() - start);
         }
     }
+}
 
-    @Override
-    protected StructureProcessorType<?> getType() {
-        return ModStructureProcessorTypes.STRIP_INVALID_BLOCK_ENTITY;
-    }
+@Override
+public MapCodec<? extends StructureProcessor> codec() {
+    return CODEC;
+}
 }

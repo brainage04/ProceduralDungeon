@@ -17,100 +17,99 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProc
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 
-public class IncludeProcessorListProcessor extends StructureProcessor {
-    public static final MapCodec<IncludeProcessorListProcessor> CODEC =
-            RecordCodecBuilder.mapCodec(instance -> instance.group(
-                    ResourceKey.codec(Registries.PROCESSOR_LIST)
-                            .listOf()
-                            .fieldOf("processors")
-                            .forGetter(processor -> processor.processorLists)
-            ).apply(instance, IncludeProcessorListProcessor::new));
+public class IncludeProcessorListProcessor implements StructureProcessor { public static final MapCodec<IncludeProcessorListProcessor> CODEC =
+        RecordCodecBuilder.mapCodec(instance -> instance.group(
+                ResourceKey.codec(Registries.PROCESSOR_LIST)
+                        .listOf()
+                        .fieldOf("processors")
+                        .forGetter(processor -> processor.processorLists)
+        ).apply(instance, IncludeProcessorListProcessor::new));
 
-    private final List<ResourceKey<StructureProcessorList>> processorLists;
-    private volatile List<StructureProcessor> cachedProcessors;
+private final List<ResourceKey<StructureProcessorList>> processorLists;
+private volatile List<StructureProcessor> cachedProcessors;
 
-    public IncludeProcessorListProcessor(List<ResourceKey<StructureProcessorList>> processorLists) {
-        this.processorLists = List.copyOf(processorLists);
+public IncludeProcessorListProcessor(List<ResourceKey<StructureProcessorList>> processorLists) {
+    this.processorLists = List.copyOf(processorLists);
+}
+
+@Override
+public StructureTemplate.StructureBlockInfo processBlock(
+        LevelReader world,
+        BlockPos pos,
+        BlockPos pivot,
+        BlockPos originalBlockPos,
+        StructureTemplate.StructureBlockInfo currentBlockInfo,
+        StructurePlaceSettings data
+) {
+    StructureTemplate.StructureBlockInfo result = currentBlockInfo;
+    for (StructureProcessor processor : resolveProcessors(world)) {
+        if (result == null) {
+            return null;
+        }
+        result = processor.processBlock(world, pos, pivot, originalBlockPos, result, data);
+    }
+    return result;
+}
+
+@Override
+public List<StructureTemplate.StructureBlockInfo> finalizeProcessing(
+        ServerLevelAccessor world,
+        BlockPos pos,
+        BlockPos pivot,
+        List<StructureTemplate.StructureBlockInfo> originalBlockInfos,
+        List<StructureTemplate.StructureBlockInfo> processedBlockInfos,
+        StructurePlaceSettings data
+) {
+    List<StructureTemplate.StructureBlockInfo> result = processedBlockInfos;
+    for (StructureProcessor processor : resolveProcessors(world)) {
+        result = processor.finalizeProcessing(world, pos, pivot, originalBlockInfos, result, data);
+    }
+    return result;
+}
+
+private List<StructureProcessor> resolveProcessors(LevelReader world) {
+    List<StructureProcessor> processors = cachedProcessors;
+    if (processors == null) {
+        var registry = world.registryAccess().lookupOrThrow(Registries.PROCESSOR_LIST);
+        List<StructureProcessor> resolved = new ArrayList<>();
+        Deque<ResourceKey<StructureProcessorList>> stack = new ArrayDeque<>();
+        for (ResourceKey<StructureProcessorList> key : processorLists) {
+            flatten(registry, key, stack, resolved);
+        }
+        processors = List.copyOf(resolved);
+        cachedProcessors = processors;
+    }
+    return processors;
+}
+
+private static void flatten(
+        net.minecraft.core.Registry<StructureProcessorList> registry,
+        ResourceKey<StructureProcessorList> processorList,
+        Deque<ResourceKey<StructureProcessorList>> stack,
+        List<StructureProcessor> output
+) {
+    if (stack.contains(processorList)) {
+        throw new IllegalStateException("Recursive processor list include: " + stack + " -> " + processorList);
     }
 
-    @Override
-    public StructureTemplate.StructureBlockInfo processBlock(
-            LevelReader world,
-            BlockPos pos,
-            BlockPos pivot,
-            StructureTemplate.StructureBlockInfo originalBlockInfo,
-            StructureTemplate.StructureBlockInfo currentBlockInfo,
-            StructurePlaceSettings data
-    ) {
-        StructureTemplate.StructureBlockInfo result = currentBlockInfo;
-        for (StructureProcessor processor : resolveProcessors(world)) {
-            if (result == null) {
-                return null;
-            }
-            result = processor.processBlock(world, pos, pivot, originalBlockInfo, result, data);
-        }
-        return result;
-    }
-
-    @Override
-    public List<StructureTemplate.StructureBlockInfo> finalizeProcessing(
-            ServerLevelAccessor world,
-            BlockPos pos,
-            BlockPos pivot,
-            List<StructureTemplate.StructureBlockInfo> originalBlockInfos,
-            List<StructureTemplate.StructureBlockInfo> processedBlockInfos,
-            StructurePlaceSettings data
-    ) {
-        List<StructureTemplate.StructureBlockInfo> result = processedBlockInfos;
-        for (StructureProcessor processor : resolveProcessors(world)) {
-            result = processor.finalizeProcessing(world, pos, pivot, originalBlockInfos, result, data);
-        }
-        return result;
-    }
-
-    private List<StructureProcessor> resolveProcessors(LevelReader world) {
-        List<StructureProcessor> processors = cachedProcessors;
-        if (processors == null) {
-            var registry = world.registryAccess().lookupOrThrow(Registries.PROCESSOR_LIST);
-            List<StructureProcessor> resolved = new ArrayList<>();
-            Deque<ResourceKey<StructureProcessorList>> stack = new ArrayDeque<>();
-            for (ResourceKey<StructureProcessorList> key : processorLists) {
-                flatten(registry, key, stack, resolved);
-            }
-            processors = List.copyOf(resolved);
-            cachedProcessors = processors;
-        }
-        return processors;
-    }
-
-    private static void flatten(
-            net.minecraft.core.Registry<StructureProcessorList> registry,
-            ResourceKey<StructureProcessorList> processorList,
-            Deque<ResourceKey<StructureProcessorList>> stack,
-            List<StructureProcessor> output
-    ) {
-        if (stack.contains(processorList)) {
-            throw new IllegalStateException("Recursive processor list include: " + stack + " -> " + processorList);
-        }
-
-        stack.push(processorList);
-        try {
-            for (StructureProcessor processor : registry.getValueOrThrow(processorList).list()) {
-                if (processor instanceof IncludeProcessorListProcessor include) {
-                    for (ResourceKey<StructureProcessorList> nestedKey : include.processorLists) {
-                        flatten(registry, nestedKey, stack, output);
-                    }
-                } else {
-                    output.add(processor);
+    stack.push(processorList);
+    try {
+        for (StructureProcessor processor : registry.getValueOrThrow(processorList).list()) {
+            if (processor instanceof IncludeProcessorListProcessor include) {
+                for (ResourceKey<StructureProcessorList> nestedKey : include.processorLists) {
+                    flatten(registry, nestedKey, stack, output);
                 }
+            } else {
+                output.add(processor);
             }
-        } finally {
-            stack.pop();
         }
+    } finally {
+        stack.pop();
     }
+}
 
-    @Override
-    protected StructureProcessorType<?> getType() {
-        return ModStructureProcessorTypes.INCLUDE_PROCESSOR_LIST;
-    }
+@Override
+public MapCodec<? extends StructureProcessor> codec() {
+    return CODEC;
+}
 }

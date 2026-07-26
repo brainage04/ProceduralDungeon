@@ -25,166 +25,164 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProc
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 
-public class ThemeShapeReplacementProcessor extends StructureProcessor {
-    private static final Map<Block, Shape> INPUT_SHAPES = inputShapes();
+public class ThemeShapeReplacementProcessor implements StructureProcessor { private static final Map<Block, Shape> INPUT_SHAPES = inputShapes();
 
-    public static final MapCodec<ThemeShapeReplacementProcessor> CODEC =
-            RecordCodecBuilder.mapCodec(instance -> instance.group(
-                    Identifier.CODEC.fieldOf("fallback").forGetter(processor -> processor.fallback),
-                    Identifier.CODEC.optionalFieldOf("stairs").forGetter(processor -> processor.stairs),
-                    Identifier.CODEC.optionalFieldOf("slab").forGetter(processor -> processor.slab),
-                    Identifier.CODEC.optionalFieldOf("wall").forGetter(processor -> processor.wall)
-            ).apply(instance, ThemeShapeReplacementProcessor::new));
+public static final MapCodec<ThemeShapeReplacementProcessor> CODEC =
+        RecordCodecBuilder.mapCodec(instance -> instance.group(
+                Identifier.CODEC.fieldOf("fallback").forGetter(processor -> processor.fallback),
+                Identifier.CODEC.optionalFieldOf("stairs").forGetter(processor -> processor.stairs),
+                Identifier.CODEC.optionalFieldOf("slab").forGetter(processor -> processor.slab),
+                Identifier.CODEC.optionalFieldOf("wall").forGetter(processor -> processor.wall)
+        ).apply(instance, ThemeShapeReplacementProcessor::new));
 
-    private final Identifier fallback;
-    private final Optional<Identifier> stairs;
-    private final Optional<Identifier> slab;
-    private final Optional<Identifier> wall;
-    private final BlockState fallbackState;
-    private final BlockState stairsState;
-    private final BlockState slabState;
-    private final BlockState wallState;
+private final Identifier fallback;
+private final Optional<Identifier> stairs;
+private final Optional<Identifier> slab;
+private final Optional<Identifier> wall;
+private final BlockState fallbackState;
+private final BlockState stairsState;
+private final BlockState slabState;
+private final BlockState wallState;
 
-    public ThemeShapeReplacementProcessor(
-            Identifier fallback,
-            Optional<Identifier> stairs,
-            Optional<Identifier> slab,
-            Optional<Identifier> wall
-    ) {
-        this.fallback = fallback;
-        this.stairs = stairs;
-        this.slab = slab;
-        this.wall = wall;
-        this.fallbackState = defaultState(fallback);
-        this.stairsState = stairs.map(ThemeShapeReplacementProcessor::defaultState).orElse(null);
-        this.slabState = slab.map(ThemeShapeReplacementProcessor::defaultState).orElse(null);
-        this.wallState = wall.map(ThemeShapeReplacementProcessor::defaultState).orElse(null);
-    }
+public ThemeShapeReplacementProcessor(
+        Identifier fallback,
+        Optional<Identifier> stairs,
+        Optional<Identifier> slab,
+        Optional<Identifier> wall
+) {
+    this.fallback = fallback;
+    this.stairs = stairs;
+    this.slab = slab;
+    this.wall = wall;
+    this.fallbackState = defaultState(fallback);
+    this.stairsState = stairs.map(ThemeShapeReplacementProcessor::defaultState).orElse(null);
+    this.slabState = slab.map(ThemeShapeReplacementProcessor::defaultState).orElse(null);
+    this.wallState = wall.map(ThemeShapeReplacementProcessor::defaultState).orElse(null);
+}
 
-    @Override
-    public StructureTemplate.StructureBlockInfo processBlock(
-            LevelReader world,
-            BlockPos pos,
-            BlockPos pivot,
-            StructureTemplate.StructureBlockInfo originalBlockInfo,
-            StructureTemplate.StructureBlockInfo currentBlockInfo,
-            StructurePlaceSettings data
-    ) {
-        long start = DungeonGenerationProfiler.start();
-        try {
-            BlockState state = currentBlockInfo.state();
-            Shape shape = INPUT_SHAPES.get(state.getBlock());
-            if (shape == null) {
-                return currentBlockInfo;
-            }
-
-            BlockState replacement = switch (shape) {
-                case STAIR -> replaceStairs(state);
-                case SLAB -> replaceSlab(state);
-                case WALL -> replaceWall(state);
-            };
-
-            return new StructureTemplate.StructureBlockInfo(currentBlockInfo.pos(), replacement, currentBlockInfo.nbt());
-        } finally {
-            if (start != 0L) {
-                DungeonGenerationProfiler.recordProcessor("procedural_dungeon:theme_shape_replacements", System.nanoTime() - start);
-            }
-        }
-    }
-
-    private BlockState replaceStairs(BlockState input) {
-        return stairsState == null ? fallbackState : copyStairProperties(input, stairsState);
-    }
-
-    private BlockState replaceSlab(BlockState input) {
-        return slabState == null ? fallbackState : copySlabProperties(input, slabState);
-    }
-
-    private BlockState replaceWall(BlockState input) {
-        return wallState == null ? fallbackState : copyWallProperties(input, wallState);
-    }
-
-    private static Map<Block, Shape> inputShapes() {
-        IdentityHashMap<Block, Shape> shapes = new IdentityHashMap<>();
-        shapes.put(Blocks.COBBLESTONE_STAIRS, Shape.STAIR);
-        shapes.put(Blocks.STONE_BRICK_STAIRS, Shape.STAIR);
-        shapes.put(Blocks.MOSSY_STONE_BRICK_STAIRS, Shape.STAIR);
-        shapes.put(Blocks.COBBLESTONE_SLAB, Shape.SLAB);
-        shapes.put(Blocks.STONE_SLAB, Shape.SLAB);
-        shapes.put(Blocks.STONE_BRICK_SLAB, Shape.SLAB);
-        shapes.put(Blocks.MOSSY_STONE_BRICK_SLAB, Shape.SLAB);
-        shapes.put(Blocks.COBBLESTONE_WALL, Shape.WALL);
-        shapes.put(Blocks.MOSSY_STONE_BRICK_WALL, Shape.WALL);
-        return Collections.unmodifiableMap(shapes);
-    }
-
-    private static BlockState defaultState(Identifier id) {
-        return block(id).defaultBlockState();
-    }
-
-    private static Block block(Identifier id) {
-        if (!BuiltInRegistries.BLOCK.containsKey(id)) {
-            throw new IllegalArgumentException("Unknown theme shape replacement block: " + id);
-        }
-        return BuiltInRegistries.BLOCK.getValue(id);
-    }
-
-    private static BlockState copyStairProperties(BlockState input, BlockState output) {
-        output = copyProperty(input, output, StairBlock.FACING);
-        output = copyProperty(input, output, StairBlock.HALF);
-        output = copyProperty(input, output, StairBlock.SHAPE);
-        return copyProperty(input, output, StairBlock.WATERLOGGED);
-    }
-
-    private static BlockState copySlabProperties(BlockState input, BlockState output) {
-        output = copyProperty(input, output, SlabBlock.TYPE);
-        return copyProperty(input, output, SlabBlock.WATERLOGGED);
-    }
-
-    private static BlockState copyWallProperties(BlockState input, BlockState output) {
-        output = copyWallSide(input, output, Direction.NORTH);
-        output = copyWallSide(input, output, Direction.EAST);
-        output = copyWallSide(input, output, Direction.SOUTH);
-        output = copyWallSide(input, output, Direction.WEST);
-        output = copyProperty(input, output, WallBlock.UP);
-        output = copyProperty(input, output, WallBlock.WATERLOGGED);
-        return copyProperty(input, output, CrossCollisionBlock.WATERLOGGED);
-    }
-
-    private static BlockState copyWallSide(BlockState input, BlockState output, Direction direction) {
-        WallSide side = input.getValue(WallBlock.PROPERTY_BY_DIRECTION.get(direction));
-
-        if (output.hasProperty(WallBlock.PROPERTY_BY_DIRECTION.get(direction))) {
-            return output.setValue(WallBlock.PROPERTY_BY_DIRECTION.get(direction), side);
+@Override
+public StructureTemplate.StructureBlockInfo processBlock(
+        LevelReader world,
+        BlockPos pos,
+        BlockPos pivot,
+        BlockPos originalBlockPos,
+        StructureTemplate.StructureBlockInfo currentBlockInfo,
+        StructurePlaceSettings data
+) {
+    long start = DungeonGenerationProfiler.start();
+    try {
+        BlockState state = currentBlockInfo.state();
+        Shape shape = INPUT_SHAPES.get(state.getBlock());
+        if (shape == null) {
+            return currentBlockInfo;
         }
 
-        if (output.hasProperty(CrossCollisionBlock.PROPERTY_BY_DIRECTION.get(direction))) {
-            return output.setValue(CrossCollisionBlock.PROPERTY_BY_DIRECTION.get(direction), side != WallSide.NONE);
+        BlockState replacement = switch (shape) {
+            case STAIR -> replaceStairs(state);
+            case SLAB -> replaceSlab(state);
+            case WALL -> replaceWall(state);
+        };
+
+        return new StructureTemplate.StructureBlockInfo(currentBlockInfo.pos(), replacement, currentBlockInfo.nbt());
+    } finally {
+        if (start != 0L) {
+            DungeonGenerationProfiler.recordProcessor("procedural_dungeon:theme_shape_replacements", System.nanoTime() - start);
         }
-
-        return output;
-    }
-
-    private static <T extends Comparable<T>> BlockState copyProperty(
-            BlockState input,
-            BlockState output,
-            net.minecraft.world.level.block.state.properties.Property<T> property
-    ) {
-        if (input.hasProperty(property) && output.hasProperty(property)) {
-            return output.setValue(property, input.getValue(property));
-        }
-
-        return output;
-    }
-
-    @Override
-    protected StructureProcessorType<?> getType() {
-        return ModStructureProcessorTypes.THEME_SHAPE_REPLACEMENTS;
-    }
-
-    private enum Shape {
-        STAIR,
-        SLAB,
-        WALL
     }
 }
+
+private BlockState replaceStairs(BlockState input) {
+    return stairsState == null ? fallbackState : copyStairProperties(input, stairsState);
+}
+
+private BlockState replaceSlab(BlockState input) {
+    return slabState == null ? fallbackState : copySlabProperties(input, slabState);
+}
+
+private BlockState replaceWall(BlockState input) {
+    return wallState == null ? fallbackState : copyWallProperties(input, wallState);
+}
+
+private static Map<Block, Shape> inputShapes() {
+    IdentityHashMap<Block, Shape> shapes = new IdentityHashMap<>();
+    shapes.put(Blocks.COBBLESTONE_STAIRS, Shape.STAIR);
+    shapes.put(Blocks.STONE_BRICK_STAIRS, Shape.STAIR);
+    shapes.put(Blocks.MOSSY_STONE_BRICK_STAIRS, Shape.STAIR);
+    shapes.put(Blocks.COBBLESTONE_SLAB, Shape.SLAB);
+    shapes.put(Blocks.STONE_SLAB, Shape.SLAB);
+    shapes.put(Blocks.STONE_BRICK_SLAB, Shape.SLAB);
+    shapes.put(Blocks.MOSSY_STONE_BRICK_SLAB, Shape.SLAB);
+    shapes.put(Blocks.COBBLESTONE_WALL, Shape.WALL);
+    shapes.put(Blocks.MOSSY_STONE_BRICK_WALL, Shape.WALL);
+    return Collections.unmodifiableMap(shapes);
+}
+
+private static BlockState defaultState(Identifier id) {
+    return block(id).defaultBlockState();
+}
+
+private static Block block(Identifier id) {
+    if (!BuiltInRegistries.BLOCK.containsKey(id)) {
+        throw new IllegalArgumentException("Unknown theme shape replacement block: " + id);
+    }
+    return BuiltInRegistries.BLOCK.getValue(id);
+}
+
+private static BlockState copyStairProperties(BlockState input, BlockState output) {
+    output = copyProperty(input, output, StairBlock.FACING);
+    output = copyProperty(input, output, StairBlock.HALF);
+    output = copyProperty(input, output, StairBlock.SHAPE);
+    return copyProperty(input, output, StairBlock.WATERLOGGED);
+}
+
+private static BlockState copySlabProperties(BlockState input, BlockState output) {
+    output = copyProperty(input, output, SlabBlock.TYPE);
+    return copyProperty(input, output, SlabBlock.WATERLOGGED);
+}
+
+private static BlockState copyWallProperties(BlockState input, BlockState output) {
+    output = copyWallSide(input, output, Direction.NORTH);
+    output = copyWallSide(input, output, Direction.EAST);
+    output = copyWallSide(input, output, Direction.SOUTH);
+    output = copyWallSide(input, output, Direction.WEST);
+    output = copyProperty(input, output, WallBlock.UP);
+    output = copyProperty(input, output, WallBlock.WATERLOGGED);
+    return copyProperty(input, output, CrossCollisionBlock.WATERLOGGED);
+}
+
+private static BlockState copyWallSide(BlockState input, BlockState output, Direction direction) {
+    WallSide side = input.getValue(WallBlock.PROPERTY_BY_DIRECTION.get(direction));
+
+    if (output.hasProperty(WallBlock.PROPERTY_BY_DIRECTION.get(direction))) {
+        return output.setValue(WallBlock.PROPERTY_BY_DIRECTION.get(direction), side);
+    }
+
+    if (output.hasProperty(CrossCollisionBlock.PROPERTY_BY_DIRECTION.get(direction))) {
+        return output.setValue(CrossCollisionBlock.PROPERTY_BY_DIRECTION.get(direction), side != WallSide.NONE);
+    }
+
+    return output;
+}
+
+private static <T extends Comparable<T>> BlockState copyProperty(
+        BlockState input,
+        BlockState output,
+        net.minecraft.world.level.block.state.properties.Property<T> property
+) {
+    if (input.hasProperty(property) && output.hasProperty(property)) {
+        return output.setValue(property, input.getValue(property));
+    }
+
+    return output;
+}
+
+@Override
+public MapCodec<? extends StructureProcessor> codec() {
+    return CODEC;
+}
+
+private enum Shape {
+    STAIR,
+    SLAB,
+    WALL
+} }
