@@ -13,7 +13,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.core.BlockPos;
@@ -72,8 +71,7 @@ public class StructureGalleryCommand {
         );
     }
 
-    public static void initializeAutobuild() {
-        ServerLifecycleEvents.SERVER_STARTED.register(server -> {
+    public static void initializeAutobuild(MinecraftServer server) {
             if (!Boolean.getBoolean(AUTOBUILD_PROPERTY)) {
                 return;
             }
@@ -106,7 +104,6 @@ public class StructureGalleryCommand {
             } catch (Exception e) {
                 ProceduralDungeon.LOGGER.error("Failed to autobuild structure gallery.", e);
             }
-        });
     }
 
     private static int build(CommandSourceStack source, int spacing) {

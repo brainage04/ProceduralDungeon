@@ -1,0 +1,21 @@
+plugins {
+    id 'dev.architectury.loom-no-remap'
+    id 'dev.architectury.loom'
+}
+sourceSets {
+    main {
+        java.srcDir rootProject.file('src/main/java')
+        java.srcDir rootProject.file('src/gametest/java')
+        java.exclude 'com/github/brainage04/procedural_dungeon/ProceduralDungeonGameTest.java', 'com/github/brainage04/procedural_dungeon/ProceduralDungeonClientGameTest.java'
+        java.exclude 'com/github/brainage04/procedural_dungeon/datagen/**'
+        resources.srcDir rootProject.file('src/main/resources')
+        resources.srcDir rootProject.file('src/main/generated')
+        resources.exclude 'fabric.mod.json', 'procedural_dungeon.accesswidener'
+    }
+}
+loom { accessWidenerPath = rootProject.file('src/main/resources/procedural_dungeon.accesswidener') }
+dependencies {
+    minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
+    compileOnly "net.fabricmc:fabric-loader:${rootProject.loader_version}"
+    compileOnly "net.fabricmc.fabric-api:fabric-api:${rootProject.fabric_api_version}"
+}

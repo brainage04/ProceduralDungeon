@@ -1,0 +1,27 @@
+modLoader="javafml"
+loaderVersion="[11,)"
+license="MIT"
+
+[[mods]]
+modId="procedural_dungeon"
+version="${version}"
+displayName="ProceduralDungeon"
+description='''Adds a procedurally generated dungeon to Minecraft with many different themes and loot/difficulty tiers.'''
+authors="brainage04"
+
+[[mixins]]
+config="procedural_dungeon.mixins.json"
+
+[[dependencies.procedural_dungeon]]
+modId="neoforge"
+type="required"
+versionRange="[${neoforge_version},)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.procedural_dungeon]]
+modId="minecraft"
+type="required"
+versionRange="[${minecraft_version},${minecraft_version}]"
+ordering="NONE"
+side="BOTH"

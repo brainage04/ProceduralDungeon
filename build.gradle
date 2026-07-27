@@ -1,34 +1,36 @@
 plugins {
-	id 'io.github.brainage04.client-gametest-recorder' version "${fabricmoddingconventions_version}"
-	id 'io.github.brainage04.production-gametests' version "${fabricmoddingconventions_version}"
-	id 'io.github.brainage04.workspace-dependencies' version "${fabricmoddingconventions_version}"
-	id 'io.github.brainage04.mod-publishing' version "${fabricmoddingconventions_version}"
+    id 'dev.architectury.loom-no-remap' version "${architectury_loom_version}" apply false
+    id 'dev.architectury.loom' version "${architectury_loom_version}" apply false
 }
 
-repositories {
-	mavenLocal()
-	maven { url "https://maven.nucleoid.xyz/" }
+allprojects { group = rootProject.maven_group; version = rootProject.mod_version }
+subprojects {
+    apply plugin: 'java'
+    base { archivesName = "${rootProject.archives_base_name}-${project.name}" }
+    repositories {
+        mavenLocal()
+        maven { url = uri('https://maven.nucleoid.xyz/') }
+        maven { url = uri('https://maven.architectury.dev/') }
+        maven { url = uri('https://maven.neoforged.net/releases/') }
+        maven { url = uri('https://maven.fabricmc.net/') }
+        mavenCentral()
+    }
+    java { toolchain.languageVersion = JavaLanguageVersion.of(rootProject.java_version as int); withSourcesJar() }
+    tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8'; options.release = rootProject.java_version as int }
+    tasks.withType(ProcessResources).configureEach {
+        def properties = [version: rootProject.mod_version, minecraft_version: rootProject.minecraft_version, neoforge_version: rootProject.neoforge_version, java_version: rootProject.java_version]
+        inputs.properties(properties)
+        filesMatching('META-INF/neoforge.mods.toml') { expand(properties) }
+    }
 }
 
-dependencies {
-	implementation "eu.pb4:polymer-core:${project.polymer_version}"
-	include "eu.pb4:polymer-bundled:${project.polymer_version}"
+tasks.register('runNeoForgeGameTests') { group = 'verification'; dependsOn ':neoforge:runGameTestServer' }
+tasks.register('runAllProductionGameTests') { group = 'verification'; dependsOn ':fabric:runAllProductionGameTests', tasks.named('runNeoForgeGameTests') }
+def fabricJar = project(':fabric').tasks.named('jar', org.gradle.api.tasks.bundling.AbstractArchiveTask)
+def neoForgeJar = project(':neoforge').tasks.named('jar', org.gradle.api.tasks.bundling.AbstractArchiveTask)
+tasks.register('collectReleaseArtifacts', Sync) {
+    group = 'build'; dependsOn fabricJar, neoForgeJar
+    from fabricJar.flatMap { it.archiveFile }; from neoForgeJar.flatMap { it.archiveFile }
+    into layout.buildDirectory.dir('libs')
 }
-
-workspaceDependencies {
-	siblingMaven("FabricModdingConventions") {
-		coordinate.set("io.github.brainage04:fabricmoddingconventions:${project.fabricmoddingconventions_version}")
-	}
-}
-
-fabricApi {
-	configureDataGeneration {
-		client = false
-	}
-}
-
-pluginManager.withPlugin("io.github.brainage04.client-gametest-recorder") {
-	clientGameTestRecorder {
-		guiScale.set("3")
-	}
-}
+tasks.register('build') { group = 'build'; dependsOn subprojects.collect { it.tasks.named('build') }; dependsOn tasks.named('collectReleaseArtifacts') }

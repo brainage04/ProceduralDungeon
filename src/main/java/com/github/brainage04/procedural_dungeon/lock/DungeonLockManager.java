@@ -1,8 +1,6 @@
 package com.github.brainage04.procedural_dungeon.lock;
 
 import com.github.brainage04.procedural_dungeon.item.ModItems;
-import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
-import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -31,39 +29,31 @@ public final class DungeonLockManager {
             return;
         }
         initialized = true;
+    }
 
-        UseBlockCallback.EVENT.register((player, world, hand, hitResult) -> {
-            if (!(world instanceof ServerLevel level)) {
-                return InteractionResult.PASS;
-            }
-
-            BlockPos pos = hitResult.getBlockPos();
-            DungeonLockSaveData data = data(level);
-            if (!data.isLocked(pos.asLong())) {
-                return InteractionResult.PASS;
-            }
-
-            if (!consumeKey(player)) {
-                displayMessage(player, "This lock needs a Rusted Key.");
-                return InteractionResult.FAIL;
-            }
-
-            unlock(level, data, pos);
-            displayMessage(player, "Unlocked with a Rusted Key.");
+    public static InteractionResult useBlock(Player player, ServerLevel level, BlockPos pos) {
+        DungeonLockSaveData data = data(level);
+        if (!data.isLocked(pos.asLong())) {
             return InteractionResult.PASS;
-        });
+        }
 
-        PlayerBlockBreakEvents.BEFORE.register((world, player, pos, state, blockEntity) -> {
-            if (!(world instanceof ServerLevel level)) {
-                return true;
-            }
-            if (!data(level).isLocked(pos.asLong())) {
-                return true;
-            }
-
+        if (!consumeKey(player)) {
             displayMessage(player, "This lock needs a Rusted Key.");
-            return false;
-        });
+            return InteractionResult.FAIL;
+        }
+
+        unlock(level, data, pos);
+        displayMessage(player, "Unlocked with a Rusted Key.");
+        return InteractionResult.PASS;
+    }
+
+    public static boolean canBreak(Player player, ServerLevel level, BlockPos pos) {
+        if (!data(level).isLocked(pos.asLong())) {
+            return true;
+        }
+
+        displayMessage(player, "This lock needs a Rusted Key.");
+        return false;
     }
 
     public static void applyPlanForPiece(ServerLevel level, DungeonLockPlan plan, BoundingBox pieceBox) {
@@ -138,7 +128,7 @@ public final class DungeonLockManager {
         Inventory inventory = player.getInventory();
         for (int slot = 0; slot < inventory.getContainerSize(); slot++) {
             ItemStack stack = inventory.getItem(slot);
-            if (!stack.is(ModItems.RUSTED_KEY)) {
+            if (!stack.is(ModItems.rustedKey())) {
                 continue;
             }
 

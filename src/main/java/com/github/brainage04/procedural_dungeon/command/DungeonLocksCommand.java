@@ -8,8 +8,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.core.BlockPos;
@@ -39,11 +37,7 @@ public final class DungeonLocksCommand {
     private DungeonLocksCommand() {}
 
     public static void initialize(CommandDispatcher<CommandSourceStack> dispatcher) {
-        if (!revealTickRegistered) {
-            revealTickRegistered = true;
-            ServerTickEvents.END_SERVER_TICK.register(server -> tickRevealMarkers());
-            ServerLifecycleEvents.SERVER_STOPPING.register(server -> clearRevealMarkers());
-        }
+        registerRevealLifecycle();
 
         dispatcher.register(literal("dungeonlocks")
                 .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
@@ -218,8 +212,12 @@ public final class DungeonLocksCommand {
         }
         return Blocks.CHEST.defaultBlockState();
     }
+    public static void registerRevealLifecycle() {
+        revealTickRegistered = true;
+    }
 
-    private static void tickRevealMarkers() {
+
+    public static void tickRevealMarkers() {
         Iterator<RevealMarker> iterator = REVEAL_MARKERS.iterator();
         while (iterator.hasNext()) {
             RevealMarker marker = iterator.next();
@@ -241,7 +239,7 @@ public final class DungeonLocksCommand {
         }
     }
 
-    private static void clearRevealMarkers() {
+    public static void clearRevealMarkers() {
         for (RevealMarker marker : REVEAL_MARKERS) {
             marker.entity().discard();
         }

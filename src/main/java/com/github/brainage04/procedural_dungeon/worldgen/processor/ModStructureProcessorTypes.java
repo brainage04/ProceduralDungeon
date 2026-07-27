@@ -1,24 +1,19 @@
 package com.github.brainage04.procedural_dungeon.worldgen.processor;
 
-import com.github.brainage04.procedural_dungeon.ProceduralDungeon;
-import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
+import com.mojang.serialization.MapCodec;
+import java.util.function.BiConsumer;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 
 public final class ModStructureProcessorTypes {
-    private ModStructureProcessorTypes() {
-    }
+    private ModStructureProcessorTypes() {}
 
-    public static void initialize() {
-        register("replace_jigsaw_pools", ReplaceJigsawPoolProcessor.CODEC);
-        register("replace_loot_tables", ReplaceLootTableProcessor.CODEC);
-        register("strip_invalid_block_entity", StripInvalidBlockEntityProcessor.CODEC);
-        register("loot_tables_and_block_entities", LootTableAndBlockEntityProcessor.CODEC);
-        register("theme_shape_replacements", ThemeShapeReplacementProcessor.CODEC);
-        register("include_processor_list", IncludeProcessorListProcessor.CODEC);
-        register("fused_dungeon_processor", FusedDungeonProcessor.CODEC);
-    }
-
-    private static void register(String name, com.mojang.serialization.MapCodec<? extends net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor> codec) {
-        Registry.register(BuiltInRegistries.STRUCTURE_PROCESSOR, ProceduralDungeon.of(name), codec);
+    public static void registerAll(BiConsumer<String, MapCodec<? extends StructureProcessor>> registrar) {
+        registrar.accept("replace_jigsaw_pools", ReplaceJigsawPoolProcessor.CODEC);
+        registrar.accept("replace_loot_tables", ReplaceLootTableProcessor.CODEC);
+        registrar.accept("strip_invalid_block_entity", StripInvalidBlockEntityProcessor.CODEC);
+        registrar.accept("loot_tables_and_block_entities", LootTableAndBlockEntityProcessor.CODEC);
+        registrar.accept("theme_shape_replacements", ThemeShapeReplacementProcessor.CODEC);
+        registrar.accept("include_processor_list", IncludeProcessorListProcessor.CODEC);
+        registrar.accept("fused_dungeon_processor", FusedDungeonProcessor.CODEC);
     }
 }

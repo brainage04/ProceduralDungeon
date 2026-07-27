@@ -431,7 +431,10 @@ public final class StagedDungeonLayoutCompiler {
         BlockPos movedPos = candidatePos.offset(0, moveY, 0);
         if (expansionHeight > 0) {
             int height = Math.max(expansionHeight + 1, movedBox.maxY() - movedBox.minY());
-            movedBox.encapsulate(new BlockPos(movedBox.minX(), movedBox.minY() + height, movedBox.minZ()));
+            movedBox = BoundingBox.encapsulating(
+                    movedBox,
+                    new BoundingBox(new BlockPos(movedBox.minX(), movedBox.minY() + height, movedBox.minZ()))
+            );
         }
 
         int groundLevelDelta = candidateRigid

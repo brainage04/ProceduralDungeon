@@ -19,7 +19,6 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.Identifier;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.Util;
 import net.minecraft.world.level.LevelReader;
@@ -537,7 +536,8 @@ private record IndexedRuleGroup(Map<Block, List<CompiledRule>> rulesByInput) {
             return blockInfo;
         }
 
-        long seed = Mth.getSeed(blockInfo.pos());
+        BlockPos position = blockInfo.pos();
+        long seed = seedForPosition(position);
         for (int i = 0; i < rules.size(); i++) {
             CompiledRule rule = rules.get(i);
             if (unitFloat(seed, i) < rule.probability()) {
@@ -546,6 +546,13 @@ private record IndexedRuleGroup(Map<Block, List<CompiledRule>> rulesByInput) {
         }
 
         return blockInfo;
+    }
+
+    private static long seedForPosition(BlockPos position) {
+        long mixed = (long) (position.getX() * 3129871)
+                ^ (long) position.getZ() * 116129781L
+                ^ position.getY();
+        return (mixed * mixed * 42317861L + mixed * 11L) >> 16;
     }
 
     private static Map<Block, List<CompiledRule>> indexRules(List<FusedRule> rules) {

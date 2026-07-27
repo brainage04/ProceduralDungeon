@@ -7,7 +7,6 @@ import java.util.ArrayDeque;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.resources.ResourceKey;
@@ -36,10 +35,10 @@ public final class StagedDungeonGenerationManager {
 
     private StagedDungeonGenerationManager() {}
 
-    public static void initialize() {
-        ServerTickEvents.START_SERVER_TICK.register(server -> serverTickStartNanos = System.nanoTime());
-        ServerTickEvents.END_SERVER_TICK.register(StagedDungeonGenerationManager::runServerTick);
+    public static void beginServerTick() {
+        serverTickStartNanos = System.nanoTime();
     }
+
 
     public static void enqueue(
             ServerLevel level,
@@ -99,7 +98,7 @@ public final class StagedDungeonGenerationManager {
         return new Status(jobs.size(), pendingPieces);
     }
 
-    private static void runServerTick(MinecraftServer server) {
+    public static void runServerTick(MinecraftServer server) {
         recordServerTickTime();
         if (JOBS.isEmpty()) {
             return;

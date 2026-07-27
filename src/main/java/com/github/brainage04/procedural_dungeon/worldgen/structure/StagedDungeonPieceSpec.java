@@ -1,5 +1,7 @@
 package com.github.brainage04.procedural_dungeon.worldgen.structure;
 
+import com.mojang.serialization.Codec;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
@@ -17,6 +19,10 @@ public record StagedDungeonPieceSpec(
         int groundLevelDelta,
         boolean startPiece
 ) {
+    private static final Codec<Rotation> ROTATION_CODEC = Rotation.CODEC.withAlternative(
+            Codec.STRING.xmap(Rotation::valueOf, Rotation::name)
+    );
+
     public StagedDungeonPieceSpec(
             StructurePoolElement element,
             BlockPos position,
@@ -33,7 +39,7 @@ public record StagedDungeonPieceSpec(
         tag.putInt("x", position.getX());
         tag.putInt("y", position.getY());
         tag.putInt("z", position.getZ());
-        tag.store("rotation", Rotation.LEGACY_CODEC, rotation);
+        tag.store("rotation", ROTATION_CODEC, rotation);
         tag.store("bounding_box", BoundingBox.CODEC, boundingBox);
         tag.putInt("ground_level_delta", groundLevelDelta);
         tag.putBoolean("start_piece", startPiece);
@@ -47,7 +53,7 @@ public record StagedDungeonPieceSpec(
                 tag.getIntOr("y", 0),
                 tag.getIntOr("z", 0)
         );
-        Rotation rotation = tag.read("rotation", Rotation.LEGACY_CODEC).orElse(Rotation.NONE);
+        Rotation rotation = tag.read("rotation", ROTATION_CODEC).orElse(Rotation.NONE);
         BoundingBox boundingBox = tag.read("bounding_box", BoundingBox.CODEC).orElseThrow();
         int groundLevelDelta = tag.getIntOr("ground_level_delta", element.getGroundLevelDelta());
         boolean startPiece = tag.getBooleanOr("start_piece", false);

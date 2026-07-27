@@ -5,20 +5,15 @@ import com.github.brainage04.procedural_dungeon.command.DungeonLocksCommand;
 import com.github.brainage04.procedural_dungeon.command.GenerateDungeonCommand;
 import com.github.brainage04.procedural_dungeon.command.StructureGalleryCommand;
 import com.github.brainage04.procedural_dungeon.command.TestDungeonVariantsCommand;
-import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import com.mojang.brigadier.CommandDispatcher;
+import net.minecraft.commands.CommandSourceStack;
 
 public class ModCommands {
-    public static void initialize() {
-        CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
-            GenerateDungeonCommand.initialize(dispatcher);
-
-            TestDungeonVariantsCommand.initialize(dispatcher);
-
-            BenchmarkDungeonCommand.initialize(dispatcher);
-
-            StructureGalleryCommand.initialize(dispatcher);
-
-            DungeonLocksCommand.initialize(dispatcher);
-        });
+    public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
+        GenerateDungeonCommand.initialize(dispatcher);
+        TestDungeonVariantsCommand.initialize(dispatcher);
+        BenchmarkDungeonCommand.initialize(dispatcher);
+        StructureGalleryCommand.initialize(dispatcher);
+        DungeonLocksCommand.initialize(dispatcher);
     }
 }

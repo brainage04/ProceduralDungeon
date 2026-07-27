@@ -2,6 +2,14 @@
 
 Adds a procedurally generated dungeon to Minecraft.
 
+## Loaders and builds
+
+ProceduralDungeon supports both Fabric and NeoForge on Minecraft 26.2. `./gradlew build` creates one production JAR per loader under `build/libs`; Fabric data generation and production GameTests remain available, and NeoForge GameTests run with `./gradlew runNeoForgeGameTests`.
+
+## Migrating from the Fabric-only release
+
+Install exactly one ProceduralDungeon JAR matching your loader—Fabric or NeoForge—and remove the old Fabric-only JAR before switching. The mod ID remains `procedural_dungeon`, so existing world data and datapack paths under that namespace are retained. Because dungeon content is required on both sides, install the same loader-specific JAR on the client and server. Fabric installations also require Fabric API; NeoForge installations use NeoForge without Fabric API. Building from source with `./gradlew build` emits both loader artifacts under `build/libs`.
+
 The structures that can spawn within this dungeon are as follows:
 - todo: guaranteed path to boss key (north)
 - todo: guaranteed path to boss room (south)
