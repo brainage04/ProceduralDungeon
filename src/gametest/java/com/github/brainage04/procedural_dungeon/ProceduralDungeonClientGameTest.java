@@ -7,7 +7,7 @@ import io.github.brainage04.fabricmoddingconventions.ClientGameTestRecorder;
 import io.github.brainage04.fabricmoddingconventions.ClientGameTestServers;
 import net.fabricmc.fabric.api.client.gametest.v1.FabricClientGameTest;
 import net.fabricmc.fabric.api.client.gametest.v1.context.ClientGameTestContext;
-import net.fabricmc.fabric.api.client.gametest.v1.context.TestDedicatedServerContext;
+
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
@@ -36,58 +36,55 @@ public final class ProceduralDungeonClientGameTest implements FabricClientGameTe
         Properties serverProperties = ClientGameTestServers.flatServerProperties();
         AtomicReference<GeneratedDungeon> generated = new AtomicReference<>();
 
-        try (TestDedicatedServerContext server = context.worldBuilder().createServer(serverProperties)) {
-            ClientGameTestServers.connectToDedicatedServer(context, server, "Procedural Dungeon generated fixture GameTest");
-            try {
-                server.runOnServer(minecraftServer -> scheduleDungeon(minecraftServer.overworld(), minecraftServer));
-                ClientGameTestServers.assertClientWorldAndPlayerAvailable(context);
-                context.waitTicks(240);
-                server.runOnServer(minecraftServer -> generated.set(assertGeneratedDungeon(
-                        minecraftServer.overworld(), minecraftServer, minecraftServer.getPlayerList().getPlayers().getFirst())));
-                context.waitTicks(20);
-                GeneratedDungeon dungeon = generated.get();
-                if (dungeon == null) {
-                    throw new AssertionError("Generated dungeon inspection state was not captured");
-                }
-
-                ClientGameTestRecorder.startRecording(context);
-                ClientGameTestRecorder.showStep(
-                        context,
-                        "dungeon.generated",
-                        "Generated Tier 3 deepslate dungeon",
-                        "This chamber was placed through the production staged dungeon generator"
-                );
-                context.waitTicks(45);
-                server.runOnServer(minecraftServer -> positionPlayer(
-                        minecraftServer.overworld(),
-                        minecraftServer.getPlayerList().getPlayers().getFirst(),
-                        dungeon.chest()
-                ));
-                context.waitTicks(20);
-                ClientGameTestRecorder.showStep(
-                        context,
-                        "dungeon.loot",
-                        "Generated loot room",
-                        "The visible chest was generated from the selected dungeon layout"
-                );
-                context.waitTicks(45);
-                server.runOnServer(minecraftServer -> positionPlayer(
-                        minecraftServer.overworld(),
-                        minecraftServer.getPlayerList().getPlayers().getFirst(),
-                        dungeon.spawner()
-                ));
-                context.waitTicks(20);
-                ClientGameTestRecorder.showStep(
-                        context,
-                        "dungeon.difficulty",
-                        "Generated dungeon threat",
-                        "The visible spawner is configured under hard server difficulty"
-                );
-                context.waitTicks(45);
-            } finally {
-                ClientGameTestServers.disconnectFromDedicatedServer(context);
+        ClientGameTestServers.withDedicatedServer(context, serverProperties, "Procedural Dungeon generated fixture GameTest", server -> { try {
+            server.runOnServer(minecraftServer -> scheduleDungeon(minecraftServer.overworld(), minecraftServer));
+            ClientGameTestServers.assertClientWorldAndPlayerAvailable(context);
+            context.waitTicks(240);
+            server.runOnServer(minecraftServer -> generated.set(assertGeneratedDungeon(
+                    minecraftServer.overworld(), minecraftServer, minecraftServer.getPlayerList().getPlayers().getFirst())));
+            context.waitTicks(20);
+            GeneratedDungeon dungeon = generated.get();
+            if (dungeon == null) {
+                throw new AssertionError("Generated dungeon inspection state was not captured");
             }
-        }
+        
+            ClientGameTestRecorder.startRecording(context);
+            ClientGameTestRecorder.showStep(
+                    context,
+                    "dungeon.generated",
+                    "Generated Tier 3 deepslate dungeon",
+                    "This chamber was placed through the production staged dungeon generator"
+            );
+            context.waitTicks(45);
+            server.runOnServer(minecraftServer -> positionPlayer(
+                    minecraftServer.overworld(),
+                    minecraftServer.getPlayerList().getPlayers().getFirst(),
+                    dungeon.chest()
+            ));
+            context.waitTicks(20);
+            ClientGameTestRecorder.showStep(
+                    context,
+                    "dungeon.loot",
+                    "Generated loot room",
+                    "The visible chest was generated from the selected dungeon layout"
+            );
+            context.waitTicks(45);
+            server.runOnServer(minecraftServer -> positionPlayer(
+                    minecraftServer.overworld(),
+                    minecraftServer.getPlayerList().getPlayers().getFirst(),
+                    dungeon.spawner()
+            ));
+            context.waitTicks(20);
+            ClientGameTestRecorder.showStep(
+                    context,
+                    "dungeon.difficulty",
+                    "Generated dungeon threat",
+                    "The visible spawner is configured under hard server difficulty"
+            );
+            context.waitTicks(45);
+        } finally {
+            ;
+        } });
     }
 
     private static void scheduleDungeon(ServerLevel level, MinecraftServer server) {
