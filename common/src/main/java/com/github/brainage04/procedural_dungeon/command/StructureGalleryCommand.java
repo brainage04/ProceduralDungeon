@@ -44,8 +44,8 @@ public class StructureGalleryCommand {
     private static final String SHUTDOWN_AFTER_BUILD_PROPERTY = "procedural_dungeon.structureGallery.shutdownAfterBuild";
     private static final String MARKER_FILE = "procedural_dungeon_structure_gallery_built.marker";
     private static final List<Path> SOURCE_STRUCTURE_ROOTS = List.of(
-            Path.of("src/main/resources/data/procedural_dungeon/structure"),
-            Path.of("src/main/generated/data/procedural_dungeon/structure")
+            Path.of("common/src/main/resources/data/procedural_dungeon/structure"),
+            Path.of("common/src/main/generated/data/procedural_dungeon/structure")
     );
     private static final int DEFAULT_Y = -60;
     private static final int DEFAULT_SPACING = 4;

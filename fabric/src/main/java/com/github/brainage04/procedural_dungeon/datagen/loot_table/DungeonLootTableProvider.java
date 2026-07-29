@@ -34,7 +34,7 @@ import java.util.function.BiConsumer;
 
 public class DungeonLootTableProvider extends SimpleFabricLootTableSubProvider {
     private static final Gson GSON = new Gson();
-    private static final Path SPEC_PATH = Path.of("src/main/datagen/procedural_dungeon/loot_tables.json");
+    private static final Path SPEC_PATH = Path.of("common/src/main/datagen/procedural_dungeon/loot_tables.json");
     private static final String[] NON_TIERED_TABLE_ORDER = {
             "starter_loot"
     };

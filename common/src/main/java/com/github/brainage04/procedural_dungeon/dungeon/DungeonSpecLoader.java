@@ -12,7 +12,7 @@ import java.nio.charset.StandardCharsets;
 final class DungeonSpecLoader {
     private static final Gson GSON = new Gson();
     private static final String RESOURCE_ROOT = "/procedural_dungeon/";
-    private static final Path SOURCE_ROOT = Path.of("src/main/resources/procedural_dungeon");
+    private static final Path SOURCE_ROOT = Path.of("common/src/main/resources/procedural_dungeon");
 
     private DungeonSpecLoader() {
     }
