@@ -7,6 +7,9 @@ plugins {
 }
 base { archivesName = rootProject.archives_base_name }
 sourceSets {
+    main {
+        resources.srcDir project(':common').file('src/main/resources')
+    }
     gametest {
         java.srcDir project(':common').file('src/gametest/java')
     }
@@ -21,7 +24,6 @@ fabricApi {
     configureDataGeneration {
         client = false
         outputDirectory.set(project(':common').layout.projectDirectory.file('src/main/generated'))
-        addToResources = false
     }
 }
 clientGameTestRecorder { runDir.set(layout.buildDirectory.dir('run/productionClientGameTest')); guiScale.set('3') }
