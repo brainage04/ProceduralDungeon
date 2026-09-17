@@ -7,9 +7,9 @@ import java.util.ArrayDeque;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.TicketType;
@@ -26,7 +26,6 @@ public final class StagedDungeonGenerationManager {
     private static final long MIN_BUDGET_NANOS = 2_000_000L;
     private static final long MAX_BUDGET_NANOS = 20_000_000L;
     private static final int TICK_AVERAGE_WINDOW = 20;
-    private static final Map<ResourceKey<net.minecraft.world.level.Level>, Map<Long, Job>> JOBS = new HashMap<>();
     private static final long[] TICK_TIMES = new long[TICK_AVERAGE_WINDOW];
     private static int tickTimeIndex;
     private static int tickTimeCount;
@@ -81,12 +80,18 @@ public final class StagedDungeonGenerationManager {
             return;
         }
 
-        Map<Long, Job> jobs = JOBS.computeIfAbsent(level.dimension(), ignored -> new HashMap<>());
-        jobs.computeIfAbsent(startChunk.pack(), ignored -> new Job(startChunk, pieces, liquidSettings, lockPlan, tracked));
+        StagedDungeonSaveData saveData = data(level);
+        Map<Long, Job> jobs = saveData.jobs(level);
+        if (jobs.putIfAbsent(
+                startChunk.pack(),
+                new Job(startChunk, pieces, liquidSettings, lockPlan, tracked)
+        ) == null) {
+            saveData.syncJobs(level);
+        }
     }
 
     public static Status status(ServerLevel level) {
-        Map<Long, Job> jobs = JOBS.get(level.dimension());
+        Map<Long, Job> jobs = data(level).jobs(level);
         if (jobs == null || jobs.isEmpty()) {
             return new Status(0, 0);
         }
@@ -100,53 +105,52 @@ public final class StagedDungeonGenerationManager {
 
     public static void runServerTick(MinecraftServer server) {
         recordServerTickTime();
-        if (JOBS.isEmpty()) {
-            return;
-        }
 
         long budgetNanos = dynamicBudgetNanos();
         long start = System.nanoTime();
-        long deadline = System.nanoTime() + budgetNanos;
+        long deadline = start + budgetNanos;
         int placedPieces = 0;
-        while (!JOBS.isEmpty() && System.nanoTime() < deadline) {
+        while (System.nanoTime() < deadline) {
+            boolean foundJob = false;
             boolean placedAnyPiece = false;
-            var dimensionIterator = JOBS.entrySet().iterator();
-            while (dimensionIterator.hasNext() && System.nanoTime() < deadline) {
-                var dimensionEntry = dimensionIterator.next();
-                ServerLevel level = server.getLevel(dimensionEntry.getKey());
-                Map<Long, Job> jobs = dimensionEntry.getValue();
-                if (level == null || jobs.isEmpty()) {
-                    dimensionIterator.remove();
+            for (ServerLevel level : server.getAllLevels()) {
+                StagedDungeonSaveData saveData = data(level);
+                Map<Long, Job> jobs = saveData.jobs(level);
+                if (jobs.isEmpty()) {
                     continue;
                 }
 
+                foundJob = true;
+                boolean changed = false;
                 var jobIterator = jobs.entrySet().iterator();
                 while (jobIterator.hasNext() && System.nanoTime() < deadline) {
                     Job job = jobIterator.next().getValue();
                     if (job.placeNextReadyPiece(level)) {
                         placedAnyPiece = true;
+                        changed = true;
                         placedPieces++;
                     }
                     if (job.isComplete()) {
                         if (job.tracked) {
-                            data(level).markComplete(job.startChunk.pack());
+                            saveData.markComplete(job.startChunk.pack());
                         }
                         job.releaseTickets(level);
                         jobIterator.remove();
+                        changed = true;
                     }
                 }
-
-                if (jobs.isEmpty()) {
-                    dimensionIterator.remove();
+                if (changed) {
+                    saveData.syncJobs(level);
                 }
             }
-            if (!placedAnyPiece) {
-                logBudgetUse(budgetNanos, System.nanoTime() - start, placedPieces);
+
+            if (!foundJob || !placedAnyPiece) {
+                logBudgetUse(server, budgetNanos, System.nanoTime() - start, placedPieces);
                 return;
             }
         }
 
-        logBudgetUse(budgetNanos, System.nanoTime() - start, placedPieces);
+        logBudgetUse(server, budgetNanos, System.nanoTime() - start, placedPieces);
     }
 
     private static void recordServerTickTime() {
@@ -181,12 +185,17 @@ public final class StagedDungeonGenerationManager {
         return tickTimeTotal / tickTimeCount;
     }
 
-    private static void logBudgetUse(long budgetNanos, long usedNanos, int placedPieces) {
+    private static void logBudgetUse(
+            MinecraftServer server,
+            long budgetNanos,
+            long usedNanos,
+            int placedPieces
+    ) {
         if (!ProceduralDungeon.LOGGER.isDebugEnabled()) {
             return;
         }
 
-        Status status = globalStatus();
+        Status status = globalStatus(server);
         ProceduralDungeon.LOGGER.debug(
                 "Staged dungeon generation tick: avg MSPT {}, budget {} ms, used {} ms, placed {} piece(s), jobs {}, pending pieces {}.",
                 "%.2f".formatted(averageTickNanos() / 1_000_000.0),
@@ -198,10 +207,11 @@ public final class StagedDungeonGenerationManager {
         );
     }
 
-    private static Status globalStatus() {
+    private static Status globalStatus(MinecraftServer server) {
         int jobCount = 0;
         int pendingPieces = 0;
-        for (Map<Long, Job> jobs : JOBS.values()) {
+        for (ServerLevel level : server.getAllLevels()) {
+            Map<Long, Job> jobs = data(level).jobs(level);
             jobCount += jobs.size();
             for (Job job : jobs.values()) {
                 pendingPieces += job.pending.size();
@@ -215,7 +225,7 @@ public final class StagedDungeonGenerationManager {
         return level.getDataStorage().computeIfAbsent(StagedDungeonSaveData.TYPE);
     }
 
-    private static final class Job {
+    static final class Job {
         private final ChunkPos startChunk;
         private final ArrayDeque<StagedDungeonPieceSpec> pending;
         private final LiquidSettings liquidSettings;
@@ -236,6 +246,55 @@ public final class StagedDungeonGenerationManager {
             this.liquidSettings = liquidSettings;
             this.lockPlan = lockPlan;
             this.tracked = tracked;
+        }
+
+        ChunkPos startChunk() {
+            return startChunk;
+        }
+
+        CompoundTag save(ServerLevel level) {
+            CompoundTag tag = new CompoundTag();
+            tag.putLong("start_chunk", startChunk.pack());
+            tag.store("liquid_settings", LiquidSettings.CODEC, liquidSettings);
+            tag.store("lock_plan", DungeonLockPlan.CODEC, lockPlan);
+            tag.putBoolean("tracked", tracked);
+            tag.store(
+                    "pending_pieces",
+                    CompoundTag.CODEC.listOf(),
+                    pending.stream()
+                            .map(piece -> piece.save(StagedDungeonPieceSpec.ops(level.registryAccess())))
+                            .toList()
+            );
+            return tag;
+        }
+
+        static Job load(ServerLevel level, CompoundTag tag) {
+            ChunkPos startChunk = ChunkPos.unpack(tag.getLongOr("start_chunk", 0L));
+            LiquidSettings liquidSettings = tag.read("liquid_settings", LiquidSettings.CODEC)
+                    .orElse(LiquidSettings.IGNORE_WATERLOGGING);
+            DungeonLockPlan lockPlan = tag.read("lock_plan", DungeonLockPlan.CODEC)
+                    .orElse(DungeonLockPlan.EMPTY);
+            List<StagedDungeonPieceSpec> pieces = tag.read(
+                            "pending_pieces",
+                            CompoundTag.CODEC.listOf()
+                    )
+                    .orElse(List.of())
+                    .stream()
+                    .map(piece -> StagedDungeonPieceSpec.load(
+                            StagedDungeonPieceSpec.ops(level.registryAccess()),
+                            piece
+                    ))
+                    .toList();
+            if (pieces.isEmpty()) {
+                throw new IllegalStateException("Staged dungeon job has no pending pieces");
+            }
+            return new Job(
+                    startChunk,
+                    pieces,
+                    liquidSettings,
+                    lockPlan,
+                    tag.getBooleanOr("tracked", false)
+            );
         }
 
         private boolean isComplete() {
