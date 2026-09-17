@@ -49,3 +49,7 @@ replay_*.log
 
 .chunky/
 scratch/
+
+# data generation
+
+common/src/main/generated/.cache/
