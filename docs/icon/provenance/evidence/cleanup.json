@@ -1,0 +1,21 @@
+{
+ "sink": "dungeon2_capture",
+ "display": ":247",
+ "steps": [],
+ "sink_before": [
+  "21646\tdungeon2_capture\tPipeWire\tfloat32le 2ch 48000Hz\tSUSPENDED"
+ ],
+ "sink_inputs_before": [
+  "21630\t21590\t21624\tPipeWire\tfloat32le 2ch 48000Hz",
+  "22117\t68\t22116\tPipeWire\tfloat32le 2ch 48000Hz",
+  "22388\t68\t22387\tPipeWire\tfloat32le 2ch 44100Hz"
+ ],
+ "module_ids": [
+  "536870918"
+ ],
+ "sink_after": [],
+ "client_processes": [],
+ "xvfb_processes": [],
+ "display_socket_present": false,
+ "display_still_accepts_connections": false
+}

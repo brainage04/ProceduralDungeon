@@ -1,0 +1,1664 @@
+{
+ "method": {
+  "world_seed": 20260910,
+  "rng_derivation": "the command builds Structure.GenerationContext(seed=level seed, chunkPos=chunk of the command position), whose WorldgenRandom is seeded with setLargeFeatureSeed(seed, chunkX, chunkZ) - captures/generation-seed-bytecode.txt; a candidate is therefore an independent layout RNG realized at /execute position chunk (cx, cz)",
+  "command_per_candidate": "/tp @s <cx*16+0.5> <start_y> <cz*16+0.5> 0 0 then /generatedungeon cobblestone <tier> <depth>",
+  "measurement": "after /generatedungeonstatus drains the staged job the world is saved through the pause menu and the occupied voxels are read back from the saved region files inside a +-100 block window (scripts/analyze_candidates.py)",
+  "control_group": "chunk (0,0) at start heights 150/200/250 was meant to isolate the placement height, but those three dungeons share one chunk and therefore overlap in the saved world: their measurements are unions of two/three layouts and are reported as contaminated and excluded from the ranking (evidence: overlapping_dungeons).  The tier/depth candidates use their own chunk each and are clean.",
+  "winner_criterion": "smallest |projected width - projected height| of the dungeon silhouette in the render image plane (MC yaw 45 / pitch 30); the crop margins are equal exactly when that difference is 0"
+ },
+ "baseline_round3": {
+  "description": "round-3 dungeon (chunk 0,0, y=200, tier 5 depth 20): the three same-chunk control dungeons generated later in this world overlap it, so its re-measurement here is a union; the honest baseline is the round-3 render log itself",
+  "candidate": {
+   "label": "cx0cz0y200t5d20",
+   "world_seed": 20260910,
+   "chunk_x": 0,
+   "chunk_z": 0,
+   "start_y": 200,
+   "tier": 5,
+   "depth": 20,
+   "theme_for_measurement": "cobblestone",
+   "rng_seed": 20260910,
+   "pieces": 752,
+   "bbox": [
+    -71,
+    127,
+    -72,
+    72,
+    205,
+    71
+   ],
+   "size_blocks": [
+    144,
+    79,
+    144
+   ],
+   "non_air_blocks": 236535,
+   "projected_width_blocks": 192.33,
+   "projected_height_blocks": 150.12,
+   "height_over_width": 0.7805,
+   "margins_px_at_1024": {
+    "left_right_px": 61.0,
+    "top_bottom_px": 160.0,
+    "side_px_at_1024": 1024.0
+   },
+   "control": "",
+   "seconds": 30.8,
+   "squareness_error_blocks": 42.21,
+   "measurable": false
+  },
+  "rendered_margins": {
+   "themes": 20,
+   "left": [
+    62.66,
+    63.31
+   ],
+   "right": [
+    62.66,
+    63.31
+   ],
+   "top": [
+    225.27,
+    225.59
+   ],
+   "bottom": [
+    225.59,
+    226.0
+   ],
+   "source": "captures-chunky/evidence/chunky-render-log.json"
+  }
+ },
+ "candidates": [
+  {
+   "label": "cx0cz0y200t5d20",
+   "world_seed": 20260910,
+   "chunk_x": 0,
+   "chunk_z": 0,
+   "start_y": 200,
+   "tier": 5,
+   "depth": 20,
+   "theme_for_measurement": "cobblestone",
+   "rng_seed": 20260910,
+   "pieces": 752,
+   "bbox": [
+    -71,
+    127,
+    -72,
+    72,
+    205,
+    71
+   ],
+   "size_blocks": [
+    144,
+    79,
+    144
+   ],
+   "non_air_blocks": 236535,
+   "projected_width_blocks": 192.33,
+   "projected_height_blocks": 150.12,
+   "height_over_width": 0.7805,
+   "margins_px_at_1024": {
+    "left_right_px": 61.0,
+    "top_bottom_px": 160.0,
+    "side_px_at_1024": 1024.0
+   },
+   "control": "",
+   "seconds": 30.8,
+   "squareness_error_blocks": 42.21,
+   "measurable": false
+  },
+  {
+   "label": "cx12cz0y200t5d20",
+   "world_seed": 20260910,
+   "chunk_x": 12,
+   "chunk_z": 0,
+   "start_y": 200,
+   "tier": 5,
+   "depth": 20,
+   "theme_for_measurement": "cobblestone",
+   "rng_seed": -5836962205850835850,
+   "pieces": 983,
+   "bbox": [
+    120,
+    129,
+    -72,
+    264,
+    205,
+    73
+   ],
+   "size_blocks": [
+    145,
+    77,
+    146
+   ],
+   "non_air_blocks": 300402,
+   "projected_width_blocks": 195.87,
+   "projected_height_blocks": 139.2,
+   "height_over_width": 0.7107,
+   "margins_px_at_1024": {
+    "left_right_px": 64.0,
+    "top_bottom_px": 193.6,
+    "side_px_at_1024": 1024.0
+   },
+   "control": "",
+   "seconds": 30.3,
+   "squareness_error_blocks": 56.67,
+   "measurable": true
+  },
+  {
+   "label": "cx24cz0y200t5d20",
+   "world_seed": 20260910,
+   "chunk_x": 24,
+   "chunk_z": 0,
+   "start_y": 200,
+   "tier": 5,
+   "depth": 20,
+   "theme_for_measurement": "cobblestone",
+   "rng_seed": 6772819662022226078,
+   "pieces": 921,
+   "bbox": [
+    312,
+    126,
+    -72,
+    455,
+    205,
+    71
+   ],
+   "size_blocks": [
+    144,
+    80,
+    144
+   ],
+   "non_air_blocks": 282462,
+   "projected_width_blocks": 194.45,
+   "projected_height_blocks": 130.87,
+   "height_over_width": 0.673,
+   "margins_px_at_1024": {
+    "left_right_px": 64.4,
+    "top_bottom_px": 210.8,
+    "side_px_at_1024": 1024.0
+   },
+   "control": "",
+   "seconds": 33.4,
+   "squareness_error_blocks": 63.58,
+   "measurable": true
+  },
+  {
+   "label": "cx36cz0y200t5d20",
+   "world_seed": 20260910,
+   "chunk_x": 36,
+   "chunk_z": 0,
+   "start_y": 200,
+   "tier": 5,
+   "depth": 20,
+   "theme_for_measurement": "cobblestone",
+   "rng_seed": 935857456184675622,
+   "pieces": 988,
+   "bbox": [
+    504,
+    128,
+    -72,
+    648,
+    205,
+    72
+   ],
+   "size_blocks": [
+    145,
+    78,
+    145
+   ],
+   "non_air_blocks": 305996,
+   "projected_width_blocks": 195.16,
+   "projected_height_blocks": 130.77,
+   "height_over_width": 0.6701,
+   "margins_px_at_1024": {
+    "left_right_px": 64.2,
+    "top_bottom_px": 212.0,
+    "side_px_at_1024": 1024.0
+   },
+   "control": "",
+   "seconds": 38.3,
+   "squareness_error_blocks": 64.39,
+   "measurable": true
+  },
+  {
+   "label": "cx48cz0y200t5d20",
+   "world_seed": 20260910,
+   "chunk_x": 48,
+   "chunk_z": 0,
+   "start_y": 200,
+   "tier": 5,
+   "depth": 20,
+   "theme_for_measurement": "cobblestone",
+   "rng_seed": -4901104749645653682,
+   "pieces": 825,
+   "bbox": [
+    697,
+    127,
+    -72,
+    840,
+    205,
+    71
+   ],
+   "size_blocks": [
+    144,
+    79,
+    144
+   ],
+   "non_air_blocks": 258307,
+   "projected_width_blocks": 177.48,
+   "projected_height_blocks": 126.28,
+   "height_over_width": 0.7115,
+   "margins_px_at_1024": {
+    "left_right_px": 61.0,
+    "top_bottom_px": 191.1,
+    "side_px_at_1024": 1024.0
+   },
+   "control": "",
+   "seconds": 30.2,
+   "squareness_error_blocks": 51.2,
+   "measurable": true
+  },
+  {
+   "label": "cx60cz0y200t5d20",
+   "world_seed": 20260910,
+   "chunk_x": 60,
+   "chunk_z": 0,
+   "start_y": 200,
+   "tier": 5,
+   "depth": 20,
+   "theme_for_measurement": "cobblestone",
+   "rng_seed": 7708677118226355606,
+   "pieces": 770,
+   "bbox": [
+    889,
+    126,
+    -72,
+    1032,
+    205,
+    71
+   ],
+   "size_blocks": [
+    144,
+    80,
+    144
+   ],
+   "non_air_blocks": 239925,
+   "projected_width_blocks": 189.5,
+   "projected_height_blocks": 137.54,
+   "height_over_width": 0.7258,
+   "margins_px_at_1024": {
+    "left_right_px": 61.8,
+    "top_bottom_px": 185.2,
+    "side_px_at_1024": 1024.0
+   },
+   "control": "",
+   "seconds": 30.7,
+   "squareness_error_blocks": 51.96,
+   "measurable": true
+  },
+  {
+   "label": "cx72cz0y200t5d20",
+   "world_seed": 20260910,
+   "chunk_x": 72,
+   "chunk_z": 0,
+   "start_y": 200,
+   "tier": 5,
+   "depth": 20,
+   "theme_for_measurement": "cobblestone",
+   "rng_seed": 1871714912423436862,
+   "pieces": 1161,
+   "bbox": [
+    1080,
+    126,
+    -72,
+    1223,
+    254,
+    70
+   ],
+   "size_blocks": [
+    144,
+    129,
+    143
+   ],
+   "non_air_blocks": 364692,
+   "projected_width_blocks": 183.85,
+   "projected_height_blocks": 162.35,
+   "height_over_width": 0.8831,
+   "margins_px_at_1024": {
+    "left_right_px": 63.4,
+    "top_bottom_px": 115.9,
+    "side_px_at_1024": 1024.0
+   },
+   "control": "",
+   "seconds": 31.2,
+   "squareness_error_blocks": 21.5,
+   "measurable": true
+  },
+  {
+   "label": "cx84cz0y200t5d20",
+   "world_seed": 20260910,
+   "chunk_x": 84,
+   "chunk_z": 0,
+   "start_y": 200,
+   "tier": 5,
+   "depth": 20,
+   "theme_for_measurement": "cobblestone",
+   "rng_seed": -3965247293405577658,
+   "pieces": 1089,
+   "bbox": [
+    1272,
+    127,
+    -72,
+    1416,
+    205,
+    72
+   ],
+   "size_blocks": [
+    145,
+    79,
+    145
+   ],
+   "non_air_blocks": 334873,
+   "projected_width_blocks": 196.58,
+   "projected_height_blocks": 145.57,
+   "height_over_width": 0.7405,
+   "margins_px_at_1024": {
+    "left_right_px": 63.8,
+    "top_bottom_px": 180.1,
+    "side_px_at_1024": 1024.0
+   },
+   "control": "",
+   "seconds": 25.6,
+   "squareness_error_blocks": 51.01,
+   "measurable": true
+  },
+  {
+   "label": "cx96cz0y200t5d20",
+   "world_seed": 20260910,
+   "chunk_x": 96,
+   "chunk_z": 0,
+   "start_y": 200,
+   "tier": 5,
+   "depth": 20,
+   "theme_for_measurement": "cobblestone",
+   "rng_seed": 8644534574465370862,
+   "pieces": 944,
+   "bbox": [
+    1464,
+    126,
+    -72,
+    1608,
+    219,
+    72
+   ],
+   "size_blocks": [
+    145,
+    94,
+    145
+   ],
+   "non_air_blocks": 297198,
+   "projected_width_blocks": 200.11,
+   "projected_height_blocks": 134.71,
+   "height_over_width": 0.6732,
+   "margins_px_at_1024": {
+    "left_right_px": 62.8,
+    "top_bottom_px": 209.6,
+    "side_px_at_1024": 1024.0
+   },
+   "control": "",
+   "seconds": 25.9,
+   "squareness_error_blocks": 65.4,
+   "measurable": true
+  },
+  {
+   "label": "cx108cz0y200t5d20",
+   "world_seed": 20260910,
+   "chunk_x": 108,
+   "chunk_z": 0,
+   "start_y": 200,
+   "tier": 5,
+   "depth": 20,
+   "theme_for_measurement": "cobblestone",
+   "rng_seed": 2807572368627828534,
+   "pieces": 837,
+   "bbox": [
+    1656,
+    129,
+    -72,
+    1800,
+    240,
+    71
+   ],
+   "size_blocks": [
+    145,
+    112,
+    144
+   ],
+   "non_air_blocks": 259838,
+   "projected_width_blocks": 183.14,
+   "projected_height_blocks": 163.66,
+   "height_over_width": 0.8936,
+   "margins_px_at_1024": {
+    "left_right_px": 63.7,
+    "top_bottom_px": 111.3,
+    "side_px_at_1024": 1024.0
+   },
+   "control": "",
+   "seconds": 20.3,
+   "squareness_error_blocks": 19.48,
+   "measurable": true
+  },
+  {
+   "label": "cx120cz0y200t5d20",
+   "world_seed": 20260910,
+   "chunk_x": 120,
+   "chunk_z": 0,
+   "start_y": 200,
+   "tier": 5,
+   "depth": 20,
+   "theme_for_measurement": "cobblestone",
+   "rng_seed": -3029389837200272546,
+   "pieces": 1148,
+   "bbox": [
+    1848,
+    127,
+    -72,
+    1992,
+    261,
+    72
+   ],
+   "size_blocks": [
+    145,
+    135,
+    145
+   ],
+   "non_air_blocks": 364699,
+   "projected_width_blocks": 183.85,
+   "projected_height_blocks": 188.86,
+   "height_over_width": 1.0273,
+   "margins_px_at_1024": {
+    "left_right_px": 73.9,
+    "top_bottom_px": 62.0,
+    "side_px_at_1024": 1024.0
+   },
+   "control": "",
+   "seconds": 25.8,
+   "squareness_error_blocks": 5.01,
+   "measurable": true
+  },
+  {
+   "label": "cx132cz0y200t5d20",
+   "world_seed": 20260910,
+   "chunk_x": 132,
+   "chunk_z": 0,
+   "start_y": 200,
+   "tier": 5,
+   "depth": 20,
+   "theme_for_measurement": "cobblestone",
+   "rng_seed": -8866352043037921306,
+   "pieces": 959,
+   "bbox": [
+    2040,
+    127,
+    -72,
+    2184,
+    205,
+    72
+   ],
+   "size_blocks": [
+    145,
+    79,
+    145
+   ],
+   "non_air_blocks": 303676,
+   "projected_width_blocks": 198.7,
+   "projected_height_blocks": 127.43,
+   "height_over_width": 0.6413,
+   "margins_px_at_1024": {
+    "left_right_px": 63.2,
+    "top_bottom_px": 224.2,
+    "side_px_at_1024": 1024.0
+   },
+   "control": "",
+   "seconds": 26.2,
+   "squareness_error_blocks": 71.27,
+   "measurable": true
+  },
+  {
+   "label": "cx144cz0y200t5d20",
+   "world_seed": 20260910,
+   "chunk_x": 144,
+   "chunk_z": 0,
+   "start_y": 200,
+   "tier": 5,
+   "depth": 20,
+   "theme_for_measurement": "cobblestone",
+   "rng_seed": 3743429824799489038,
+   "pieces": 961,
+   "bbox": [
+    2232,
+    126,
+    -72,
+    2376,
+    219,
+    72
+   ],
+   "size_blocks": [
+    145,
+    94,
+    145
+   ],
+   "non_air_blocks": 304876,
+   "projected_width_blocks": 191.63,
+   "projected_height_blocks": 133.6,
+   "height_over_width": 0.6972,
+   "margins_px_at_1024": {
+    "left_right_px": 61.2,
+    "top_bottom_px": 197.7,
+    "side_px_at_1024": 1024.0
+   },
+   "control": "",
+   "seconds": 25.4,
+   "squareness_error_blocks": 58.03,
+   "measurable": true
+  },
+  {
+   "label": "cx156cz0y200t5d20",
+   "world_seed": 20260910,
+   "chunk_x": 156,
+   "chunk_z": 0,
+   "start_y": 200,
+   "tier": 5,
+   "depth": 20,
+   "theme_for_measurement": "cobblestone",
+   "rng_seed": -2093532381029676970,
+   "pieces": 965,
+   "bbox": [
+    2424,
+    126,
+    -72,
+    2568,
+    205,
+    71
+   ],
+   "size_blocks": [
+    145,
+    80,
+    144
+   ],
+   "non_air_blocks": 302208,
+   "projected_width_blocks": 182.43,
+   "projected_height_blocks": 124.35,
+   "height_over_width": 0.6816,
+   "margins_px_at_1024": {
+    "left_right_px": 63.9,
+    "top_bottom_px": 206.5,
+    "side_px_at_1024": 1024.0
+   },
+   "control": "",
+   "seconds": 25.8,
+   "squareness_error_blocks": 58.08,
+   "measurable": true
+  },
+  {
+   "label": "cx168cz0y200t5d20",
+   "world_seed": 20260910,
+   "chunk_x": 168,
+   "chunk_z": 0,
+   "start_y": 200,
+   "tier": 5,
+   "depth": 20,
+   "theme_for_measurement": "cobblestone",
+   "rng_seed": -7930494586866563842,
+   "pieces": 1043,
+   "bbox": [
+    2616,
+    129,
+    -72,
+    2760,
+    219,
+    72
+   ],
+   "size_blocks": [
+    145,
+    91,
+    145
+   ],
+   "non_air_blocks": 323955,
+   "projected_width_blocks": 177.48,
+   "projected_height_blocks": 137.64,
+   "height_over_width": 0.7755,
+   "margins_px_at_1024": {
+    "left_right_px": 61.0,
+    "top_bottom_px": 162.2,
+    "side_px_at_1024": 1024.0
+   },
+   "control": "",
+   "seconds": 25.2,
+   "squareness_error_blocks": 39.84,
+   "measurable": true
+  },
+  {
+   "label": "cx180cz0y200t5d20",
+   "world_seed": 20260910,
+   "chunk_x": 180,
+   "chunk_z": 0,
+   "start_y": 200,
+   "tier": 5,
+   "depth": 20,
+   "theme_for_measurement": "cobblestone",
+   "rng_seed": 4679287281004400902,
+   "pieces": 1007,
+   "bbox": [
+    2808,
+    127,
+    -72,
+    2952,
+    205,
+    72
+   ],
+   "size_blocks": [
+    145,
+    79,
+    145
+   ],
+   "non_air_blocks": 312689,
+   "projected_width_blocks": 195.16,
+   "projected_height_blocks": 131.93,
+   "height_over_width": 0.676,
+   "margins_px_at_1024": {
+    "left_right_px": 64.2,
+    "top_bottom_px": 209.3,
+    "side_px_at_1024": 1024.0
+   },
+   "control": "",
+   "seconds": 25.5,
+   "squareness_error_blocks": 63.23,
+   "measurable": true
+  },
+  {
+   "label": "cx12cz12y200t5d20",
+   "world_seed": 20260910,
+   "chunk_x": 12,
+   "chunk_z": 12,
+   "start_y": 200,
+   "tier": 5,
+   "depth": 20,
+   "theme_for_measurement": "cobblestone",
+   "rng_seed": 851316457238018830,
+   "pieces": 1089,
+   "bbox": [
+    120,
+    128,
+    120,
+    264,
+    219,
+    263
+   ],
+   "size_blocks": [
+    145,
+    92,
+    144
+   ],
+   "non_air_blocks": 336405,
+   "projected_width_blocks": 192.33,
+   "projected_height_blocks": 148.85,
+   "height_over_width": 0.7739,
+   "margins_px_at_1024": {
+    "left_right_px": 61.0,
+    "top_bottom_px": 162.9,
+    "side_px_at_1024": 1024.0
+   },
+   "control": "",
+   "seconds": 25.8,
+   "squareness_error_blocks": 43.48,
+   "measurable": true
+  },
+  {
+   "label": "cx24cz12y200t5d20",
+   "world_seed": 20260910,
+   "chunk_x": 24,
+   "chunk_z": 12,
+   "start_y": 200,
+   "tier": 5,
+   "depth": 20,
+   "theme_for_measurement": "cobblestone",
+   "rng_seed": -516953416377733146,
+   "pieces": 1038,
+   "bbox": [
+    312,
+    129,
+    120,
+    456,
+    219,
+    264
+   ],
+   "size_blocks": [
+    145,
+    91,
+    145
+   ],
+   "non_air_blocks": 321048,
+   "projected_width_blocks": 197.99,
+   "projected_height_blocks": 161.38,
+   "height_over_width": 0.8151,
+   "margins_px_at_1024": {
+    "left_right_px": 63.4,
+    "top_bottom_px": 146.4,
+    "side_px_at_1024": 1024.0
+   },
+   "control": "",
+   "seconds": 26.2,
+   "squareness_error_blocks": 36.61,
+   "measurable": true
+  },
+  {
+   "label": "cx36cz12y200t5d20",
+   "world_seed": 20260910,
+   "chunk_x": 36,
+   "chunk_z": 12,
+   "start_y": 200,
+   "tier": 5,
+   "depth": 20,
+   "theme_for_measurement": "cobblestone",
+   "rng_seed": -6209796036081937826,
+   "pieces": 806,
+   "bbox": [
+    504,
+    129,
+    122,
+    648,
+    205,
+    264
+   ],
+   "size_blocks": [
+    145,
+    77,
+    143
+   ],
+   "non_air_blocks": 259814,
+   "projected_width_blocks": 188.09,
+   "projected_height_blocks": 126.98,
+   "height_over_width": 0.6751,
+   "margins_px_at_1024": {
+    "left_right_px": 62.2,
+    "top_bottom_px": 208.3,
+    "side_px_at_1024": 1024.0
+   },
+   "control": "",
+   "seconds": 27.4,
+   "squareness_error_blocks": 61.11,
+   "measurable": true
+  },
+  {
+   "label": "cx48cz12y200t5d20",
+   "world_seed": 20260910,
+   "chunk_x": 48,
+   "chunk_z": 12,
+   "start_y": 200,
+   "tier": 5,
+   "depth": 20,
+   "theme_for_measurement": "cobblestone",
+   "rng_seed": 2221766862274348598,
+   "pieces": 1276,
+   "bbox": [
+    696,
+    126,
+    122,
+    840,
+    254,
+    264
+   ],
+   "size_blocks": [
+    145,
+    129,
+    143
+   ],
+   "non_air_blocks": 397169,
+   "projected_width_blocks": 193.04,
+   "projected_height_blocks": 163.5,
+   "height_over_width": 0.847,
+   "margins_px_at_1024": {
+    "left_right_px": 64.9,
+    "top_bottom_px": 133.3,
+    "side_px_at_1024": 1024.0
+   },
+   "control": "",
+   "seconds": 31.5,
+   "squareness_error_blocks": 29.54,
+   "measurable": true
+  },
+  {
+   "label": "cx60cz12y200t5d20",
+   "world_seed": 20260910,
+   "chunk_x": 60,
+   "chunk_z": 12,
+   "start_y": 200,
+   "tier": 5,
+   "depth": 20,
+   "theme_for_measurement": "cobblestone",
+   "rng_seed": -3471093349615891730,
+   "pieces": 813,
+   "bbox": [
+    889,
+    129,
+    120,
+    1032,
+    205,
+    264
+   ],
+   "size_blocks": [
+    144,
+    77,
+    145
+   ],
+   "non_air_blocks": 250660,
+   "projected_width_blocks": 167.58,
+   "projected_height_blocks": 130.11,
+   "height_over_width": 0.7764,
+   "margins_px_at_1024": {
+    "left_right_px": 64.1,
+    "top_bottom_px": 164.3,
+    "side_px_at_1024": 1024.0
+   },
+   "control": "",
+   "seconds": 27.7,
+   "squareness_error_blocks": 37.47,
+   "measurable": true
+  },
+  {
+   "label": "cx72cz12y200t5d20",
+   "world_seed": 20260910,
+   "chunk_x": 72,
+   "chunk_z": 12,
+   "start_y": 200,
+   "tier": 5,
+   "depth": 20,
+   "theme_for_measurement": "cobblestone",
+   "rng_seed": -4839363223265198778,
+   "pieces": 978,
+   "bbox": [
+    1080,
+    127,
+    120,
+    1224,
+    205,
+    264
+   ],
+   "size_blocks": [
+    145,
+    79,
+    145
+   ],
+   "non_air_blocks": 302184,
+   "projected_width_blocks": 193.75,
+   "projected_height_blocks": 142.74,
+   "height_over_width": 0.7367,
+   "margins_px_at_1024": {
+    "left_right_px": 64.6,
+    "top_bottom_px": 182.4,
+    "side_px_at_1024": 1024.0
+   },
+   "control": "",
+   "seconds": 26.0,
+   "squareness_error_blocks": 51.01,
+   "measurable": true
+  },
+  {
+   "label": "cx12cz24y200t5d20",
+   "world_seed": 20260910,
+   "chunk_x": 12,
+   "chunk_z": 24,
+   "start_y": 200,
+   "tier": 5,
+   "depth": 20,
+   "theme_for_measurement": "cobblestone",
+   "rng_seed": -1971479562502481274,
+   "pieces": 854,
+   "bbox": [
+    120,
+    126,
+    312,
+    263,
+    205,
+    456
+   ],
+   "size_blocks": [
+    144,
+    80,
+    145
+   ],
+   "non_air_blocks": 267973,
+   "projected_width_blocks": 184.55,
+   "projected_height_blocks": 135.01,
+   "height_over_width": 0.7315,
+   "margins_px_at_1024": {
+    "left_right_px": 63.2,
+    "top_bottom_px": 183.7,
+    "side_px_at_1024": 1024.0
+   },
+   "control": "",
+   "seconds": 26.6,
+   "squareness_error_blocks": 49.54,
+   "measurable": true
+  },
+  {
+   "label": "cx24cz24y200t5d20",
+   "world_seed": 20260910,
+   "chunk_x": 24,
+   "chunk_z": 24,
+   "start_y": 200,
+   "tier": 5,
+   "depth": 20,
+   "theme_for_measurement": "cobblestone",
+   "rng_seed": 1702632914461920878,
+   "pieces": 855,
+   "bbox": [
+    312,
+    127,
+    312,
+    456,
+    205,
+    456
+   ],
+   "size_blocks": [
+    145,
+    79,
+    145
+   ],
+   "non_air_blocks": 270195,
+   "projected_width_blocks": 173.24,
+   "projected_height_blocks": 143.44,
+   "height_over_width": 0.828,
+   "margins_px_at_1024": {
+    "left_right_px": 62.3,
+    "top_bottom_px": 139.7,
+    "side_px_at_1024": 1024.0
+   },
+   "control": "",
+   "seconds": 26.7,
+   "squareness_error_blocks": 29.8,
+   "measurable": true
+  },
+  {
+   "label": "cx36cz24y200t5d20",
+   "world_seed": 20260910,
+   "chunk_x": 36,
+   "chunk_z": 24,
+   "start_y": 200,
+   "tier": 5,
+   "depth": 20,
+   "theme_for_measurement": "cobblestone",
+   "rng_seed": 5089561679611589590,
+   "pieces": 939,
+   "bbox": [
+    504,
+    129,
+    312,
+    648,
+    205,
+    456
+   ],
+   "size_blocks": [
+    145,
+    77,
+    145
+   ],
+   "non_air_blocks": 291780,
+   "projected_width_blocks": 200.11,
+   "projected_height_blocks": 132.79,
+   "height_over_width": 0.6636,
+   "margins_px_at_1024": {
+    "left_right_px": 62.8,
+    "top_bottom_px": 213.9,
+    "side_px_at_1024": 1024.0
+   },
+   "control": "",
+   "seconds": 23.7,
+   "squareness_error_blocks": 67.32,
+   "measurable": true
+  },
+  {
+   "label": "cx48cz24y200t5d20",
+   "world_seed": 20260910,
+   "chunk_x": 48,
+   "chunk_z": 24,
+   "start_y": 200,
+   "tier": 5,
+   "depth": 20,
+   "theme_for_measurement": "cobblestone",
+   "rng_seed": -1033906832774682690,
+   "pieces": 971,
+   "bbox": [
+    696,
+    127,
+    312,
+    840,
+    205,
+    456
+   ],
+   "size_blocks": [
+    145,
+    79,
+    145
+   ],
+   "non_air_blocks": 302843,
+   "projected_width_blocks": 181.73,
+   "projected_height_blocks": 135.77,
+   "height_over_width": 0.7471,
+   "margins_px_at_1024": {
+    "left_right_px": 64.1,
+    "top_bottom_px": 177.4,
+    "side_px_at_1024": 1024.0
+   },
+   "control": "",
+   "seconds": 26.7,
+   "squareness_error_blocks": 45.96,
+   "measurable": true
+  },
+  {
+   "label": "cx0cz0y150t5d20",
+   "world_seed": 20260910,
+   "chunk_x": 0,
+   "chunk_z": 0,
+   "start_y": 150,
+   "tier": 5,
+   "depth": 20,
+   "theme_for_measurement": "cobblestone",
+   "rng_seed": 20260910,
+   "pieces": 752,
+   "bbox": [
+    -71,
+    79,
+    -72,
+    72,
+    205,
+    71
+   ],
+   "size_blocks": [
+    144,
+    127,
+    144
+   ],
+   "non_air_blocks": 453848,
+   "projected_width_blocks": 192.33,
+   "projected_height_blocks": 193.42,
+   "height_over_width": 1.0057,
+   "margins_px_at_1024": {
+    "left_right_px": 67.3,
+    "top_bottom_px": 64.7,
+    "side_px_at_1024": 1024.0
+   },
+   "control": "start height 150 (RNG of chunk 0,0)",
+   "seconds": 22.8,
+   "squareness_error_blocks": 1.09,
+   "measurable": false
+  },
+  {
+   "label": "cx0cz0y250t5d20",
+   "world_seed": 20260910,
+   "chunk_x": 0,
+   "chunk_z": 0,
+   "start_y": 250,
+   "tier": 5,
+   "depth": 20,
+   "theme_for_measurement": "cobblestone",
+   "rng_seed": 20260910,
+   "pieces": 752,
+   "bbox": [
+    -71,
+    65,
+    -72,
+    72,
+    255,
+    71
+   ],
+   "size_blocks": [
+    144,
+    191,
+    144
+   ],
+   "non_air_blocks": 671536,
+   "projected_width_blocks": 192.33,
+   "projected_height_blocks": 208.64,
+   "height_over_width": 1.0848,
+   "margins_px_at_1024": {
+    "left_right_px": 99.4,
+    "top_bottom_px": 64.4,
+    "side_px_at_1024": 1024.0
+   },
+   "control": "start height 250 (RNG of chunk 0,0)",
+   "seconds": 22.9,
+   "squareness_error_blocks": 16.31,
+   "measurable": false
+  },
+  {
+   "label": "cx60cz24y200t5d16",
+   "world_seed": 20260910,
+   "chunk_x": 60,
+   "chunk_z": 24,
+   "start_y": 200,
+   "tier": 5,
+   "depth": 16,
+   "theme_for_measurement": "cobblestone",
+   "rng_seed": 2353039524561021798,
+   "pieces": 920,
+   "bbox": [
+    888,
+    129,
+    312,
+    1032,
+    205,
+    456
+   ],
+   "size_blocks": [
+    145,
+    77,
+    145
+   ],
+   "non_air_blocks": 288998,
+   "projected_width_blocks": 196.58,
+   "projected_height_blocks": 132.84,
+   "height_over_width": 0.6758,
+   "margins_px_at_1024": {
+    "left_right_px": 63.8,
+    "top_bottom_px": 209.1,
+    "side_px_at_1024": 1024.0
+   },
+   "control": "tier 5 depth 16",
+   "seconds": 22.8,
+   "squareness_error_blocks": 63.74,
+   "measurable": true
+  },
+  {
+   "label": "cx72cz24y200t5d12",
+   "world_seed": 20260910,
+   "chunk_x": 72,
+   "chunk_z": 24,
+   "start_y": 200,
+   "tier": 5,
+   "depth": 12,
+   "theme_for_measurement": "cobblestone",
+   "rng_seed": 6027152001491885262,
+   "pieces": 332,
+   "bbox": [
+    1089,
+    136,
+    313,
+    1224,
+    205,
+    454
+   ],
+   "size_blocks": [
+    136,
+    70,
+    142
+   ],
+   "non_air_blocks": 107546,
+   "projected_width_blocks": 157.68,
+   "projected_height_blocks": 109.56,
+   "height_over_width": 0.6948,
+   "margins_px_at_1024": {
+    "left_right_px": 62.7,
+    "top_bottom_px": 199.8,
+    "side_px_at_1024": 1024.0
+   },
+   "control": "tier 5 depth 12",
+   "seconds": 20.8,
+   "squareness_error_blocks": 48.12,
+   "measurable": true
+  },
+  {
+   "label": "cx84cz24y200t5d8",
+   "world_seed": 20260910,
+   "chunk_x": 84,
+   "chunk_z": 24,
+   "start_y": 200,
+   "tier": 5,
+   "depth": 8,
+   "theme_for_measurement": "cobblestone",
+   "rng_seed": -9032663272716599114,
+   "pieces": 182,
+   "bbox": [
+    1291,
+    164,
+    325,
+    1415,
+    205,
+    436
+   ],
+   "size_blocks": [
+    125,
+    42,
+    112
+   ],
+   "non_air_blocks": 60887,
+   "projected_width_blocks": 127.99,
+   "projected_height_blocks": 78.54,
+   "height_over_width": 0.6136,
+   "margins_px_at_1024": {
+    "left_right_px": 63.1,
+    "top_bottom_px": 236.6,
+    "side_px_at_1024": 1024.0
+   },
+   "control": "tier 5 depth 8",
+   "seconds": 20.8,
+   "squareness_error_blocks": 49.45,
+   "measurable": true
+  },
+  {
+   "label": "cx96cz24y200t4d20",
+   "world_seed": 20260910,
+   "chunk_x": 96,
+   "chunk_z": 24,
+   "start_y": 200,
+   "tier": 4,
+   "depth": 20,
+   "theme_for_measurement": "cobblestone",
+   "rng_seed": 4443533724502389790,
+   "pieces": 344,
+   "bbox": [
+    1464,
+    128,
+    314,
+    1607,
+    205,
+    456
+   ],
+   "size_blocks": [
+    144,
+    78,
+    143
+   ],
+   "non_air_blocks": 117709,
+   "projected_width_blocks": 176.78,
+   "projected_height_blocks": 113.44,
+   "height_over_width": 0.6417,
+   "margins_px_at_1024": {
+    "left_right_px": 61.2,
+    "top_bottom_px": 222.7,
+    "side_px_at_1024": 1024.0
+   },
+   "control": "tier 4 depth 20",
+   "seconds": 21.8,
+   "squareness_error_blocks": 63.34,
+   "measurable": true
+  },
+  {
+   "label": "cx108cz24y200t4d16",
+   "world_seed": 20260910,
+   "chunk_x": 108,
+   "chunk_z": 24,
+   "start_y": 200,
+   "tier": 4,
+   "depth": 16,
+   "theme_for_measurement": "cobblestone",
+   "rng_seed": 7830515334929594822,
+   "pieces": 253,
+   "bbox": [
+    1669,
+    129,
+    314,
+    1789,
+    205,
+    455
+   ],
+   "size_blocks": [
+    121,
+    77,
+    142
+   ],
+   "non_air_blocks": 86329,
+   "projected_width_blocks": 148.49,
+   "projected_height_blocks": 100.36,
+   "height_over_width": 0.6759,
+   "margins_px_at_1024": {
+    "left_right_px": 60.8,
+    "top_bottom_px": 207.0,
+    "side_px_at_1024": 1024.0
+   },
+   "control": "tier 4 depth 16",
+   "seconds": 20.6,
+   "squareness_error_blocks": 48.13,
+   "measurable": true
+  },
+  {
+   "label": "cx120cz24y200t3d20",
+   "world_seed": 20260910,
+   "chunk_x": 120,
+   "chunk_z": 24,
+   "start_y": 200,
+   "tier": 3,
+   "depth": 20,
+   "theme_for_measurement": "cobblestone",
+   "rng_seed": -6942186699287532114,
+   "pieces": 127,
+   "bbox": [
+    1869,
+    135,
+    345,
+    1984,
+    205,
+    447
+   ],
+   "size_blocks": [
+    116,
+    71,
+    103
+   ],
+   "non_air_blocks": 47312,
+   "projected_width_blocks": 120.92,
+   "projected_height_blocks": 102.79,
+   "height_over_width": 0.8501,
+   "margins_px_at_1024": {
+    "left_right_px": 59.8,
+    "top_bottom_px": 127.6,
+    "side_px_at_1024": 1024.0
+   },
+   "control": "tier 3 depth 20",
+   "seconds": 20.8,
+   "squareness_error_blocks": 18.13,
+   "measurable": true
+  },
+  {
+   "label": "cx132cz24y200t3d14",
+   "world_seed": 20260910,
+   "chunk_x": 132,
+   "chunk_z": 24,
+   "start_y": 200,
+   "tier": 3,
+   "depth": 14,
+   "theme_for_measurement": "cobblestone",
+   "rng_seed": -3555178700581121770,
+   "pieces": 67,
+   "bbox": [
+    2064,
+    150,
+    370,
+    2172,
+    205,
+    435
+   ],
+   "size_blocks": [
+    109,
+    56,
+    66
+   ],
+   "non_air_blocks": 23074,
+   "projected_width_blocks": 115.97,
+   "projected_height_blocks": 63.03,
+   "height_over_width": 0.5435,
+   "margins_px_at_1024": {
+    "left_right_px": 62.1,
+    "top_bottom_px": 267.5,
+    "side_px_at_1024": 1024.0
+   },
+   "control": "tier 3 depth 14",
+   "seconds": 21.5,
+   "squareness_error_blocks": 52.94,
+   "measurable": true
+  }
+ ],
+ "ranking": [
+  "cx120cz0y200t5d20",
+  "cx120cz24y200t3d20",
+  "cx108cz0y200t5d20",
+  "cx72cz0y200t5d20",
+  "cx48cz12y200t5d20",
+  "cx24cz24y200t5d20",
+  "cx24cz12y200t5d20",
+  "cx60cz12y200t5d20",
+  "cx168cz0y200t5d20",
+  "cx12cz12y200t5d20",
+  "cx48cz24y200t5d20",
+  "cx72cz24y200t5d12",
+  "cx108cz24y200t4d16",
+  "cx84cz24y200t5d8",
+  "cx12cz24y200t5d20",
+  "cx84cz0y200t5d20",
+  "cx72cz12y200t5d20",
+  "cx48cz0y200t5d20",
+  "cx60cz0y200t5d20",
+  "cx132cz24y200t3d14",
+  "cx12cz0y200t5d20",
+  "cx144cz0y200t5d20",
+  "cx156cz0y200t5d20",
+  "cx36cz12y200t5d20",
+  "cx180cz0y200t5d20",
+  "cx96cz24y200t4d20",
+  "cx24cz0y200t5d20",
+  "cx60cz24y200t5d16",
+  "cx36cz0y200t5d20",
+  "cx96cz0y200t5d20",
+  "cx36cz24y200t5d20",
+  "cx132cz0y200t5d20"
+ ],
+ "overlapping_dungeons": [
+  [
+   "cx0cz0y200t5d20",
+   "cx0cz0y150t5d20"
+  ],
+  [
+   "cx0cz0y200t5d20",
+   "cx0cz0y250t5d20"
+  ],
+  [
+   "cx0cz0y150t5d20",
+   "cx0cz0y250t5d20"
+  ]
+ ],
+ "contaminated_candidates": [
+  "cx0cz0y150t5d20",
+  "cx0cz0y200t5d20",
+  "cx0cz0y250t5d20"
+ ],
+ "winner": {
+  "label": "cx120cz0y200t5d20",
+  "world_seed": 20260910,
+  "chunk_x": 120,
+  "chunk_z": 0,
+  "start_y": 200,
+  "tier": 5,
+  "depth": 20,
+  "theme_for_measurement": "cobblestone",
+  "rng_seed": -3029389837200272546,
+  "pieces": 1148,
+  "bbox": [
+   1848,
+   127,
+   -72,
+   1992,
+   261,
+   72
+  ],
+  "size_blocks": [
+   145,
+   135,
+   145
+  ],
+  "non_air_blocks": 364699,
+  "projected_width_blocks": 183.85,
+  "projected_height_blocks": 188.86,
+  "height_over_width": 1.0273,
+  "margins_px_at_1024": {
+   "left_right_px": 73.9,
+   "top_bottom_px": 62.0,
+   "side_px_at_1024": 1024.0
+  },
+  "control": "",
+  "seconds": 25.8,
+  "squareness_error_blocks": 5.01,
+  "measurable": true,
+  "position": [
+   1920.5,
+   200.0,
+   0.5
+  ]
+ },
+ "findings": {
+  "vertical_extent_blocks": {
+   "min": 42,
+   "max": 191
+  },
+  "footprint_blocks_x": {
+   "min": 109,
+   "max": 145
+  },
+  "vertical_bound": "the jigsaw expansion is bounded by JigsawStructure.MaxDistance(horizontal, vertical) = tier.maxDistanceFromCenter for both axes (tiers.json tier 5 = 72; MaxDistance(int) sets both fields, verified with javap on the 26.2 merged jar), so the vertical extent is capped at 145 blocks around the placement height",
+  "top_level": "the canonical room pool weights the downward staircases 16+16 against 1+1 upward, so most layouts sink to the bottom bound (~77-80 blocks tall); seeds whose graph also climbs above the start reach 90-135 blocks, which is what the search selects",
+  "margins_definition": "crop margins are computed by the same rule as captures-chunky (square crop of span + 2*7% margin, rescaled to 1024 px)"
+ },
+ "rendered_margins": {
+  "themes": 20,
+  "content_wh_px": {
+   "min": [
+    1256,
+    1290
+   ],
+   "max": [
+    1257,
+    1292
+   ]
+  },
+  "left": {
+   "min": 74.43,
+   "max": 75.13
+  },
+  "right": {
+   "min": 74.43,
+   "max": 75.13
+  },
+  "top": {
+   "min": 62.61,
+   "max": 62.69
+  },
+  "bottom": {
+   "min": 62.61,
+   "max": 62.69
+  },
+  "per_theme": {
+   "amethyst_geode": {
+    "left": 75.13,
+    "right": 75.13,
+    "top": 62.61,
+    "bottom": 62.61
+   },
+   "basalt_deltas": {
+    "left": 75.13,
+    "right": 75.13,
+    "top": 62.61,
+    "bottom": 62.61
+   },
+   "bastion": {
+    "left": 75.13,
+    "right": 75.13,
+    "top": 62.61,
+    "bottom": 62.61
+   },
+   "cobblestone": {
+    "left": 75.13,
+    "right": 75.13,
+    "top": 62.61,
+    "bottom": 62.61
+   },
+   "copper": {
+    "left": 75.13,
+    "right": 75.13,
+    "top": 62.61,
+    "bottom": 62.61
+   },
+   "crimson_forest": {
+    "left": 75.13,
+    "right": 75.13,
+    "top": 62.61,
+    "bottom": 62.61
+   },
+   "deepslate": {
+    "left": 75.13,
+    "right": 75.13,
+    "top": 62.61,
+    "bottom": 62.61
+   },
+   "desert_tomb": {
+    "left": 75.13,
+    "right": 75.13,
+    "top": 62.61,
+    "bottom": 62.61
+   },
+   "dripstone": {
+    "left": 74.54,
+    "right": 74.54,
+    "top": 62.69,
+    "bottom": 62.69
+   },
+   "end_city": {
+    "left": 74.43,
+    "right": 74.43,
+    "top": 62.61,
+    "bottom": 62.61
+   },
+   "end_stone": {
+    "left": 75.13,
+    "right": 75.13,
+    "top": 62.61,
+    "bottom": 62.61
+   },
+   "frozen": {
+    "left": 74.54,
+    "right": 74.54,
+    "top": 62.69,
+    "bottom": 62.69
+   },
+   "lush": {
+    "left": 75.13,
+    "right": 75.13,
+    "top": 62.61,
+    "bottom": 62.61
+   },
+   "nether_fortress": {
+    "left": 75.13,
+    "right": 75.13,
+    "top": 62.61,
+    "bottom": 62.61
+   },
+   "nether_wastes": {
+    "left": 75.13,
+    "right": 75.13,
+    "top": 62.61,
+    "bottom": 62.61
+   },
+   "ocean_ruin": {
+    "left": 75.13,
+    "right": 75.13,
+    "top": 62.61,
+    "bottom": 62.61
+   },
+   "sculk": {
+    "left": 75.13,
+    "right": 75.13,
+    "top": 62.61,
+    "bottom": 62.61
+   },
+   "soul_sand_valley": {
+    "left": 75.13,
+    "right": 75.13,
+    "top": 62.61,
+    "bottom": 62.61
+   },
+   "stronghold": {
+    "left": 75.13,
+    "right": 75.13,
+    "top": 62.61,
+    "bottom": 62.61
+   },
+   "warped_forest": {
+    "left": 75.13,
+    "right": 75.13,
+    "top": 62.61,
+    "bottom": 62.61
+   }
+  },
+  "equality": "left/right and top/bottom are equal up to the 1 px integer parity of the content extents (a square crop can only give identical margins when the content width and height have the same parity); the crop is never clamped to the frame, so the margins are exact"
+ }
+}

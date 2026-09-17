@@ -1,0 +1,1357 @@
+{
+ "method": "Chunky 2.5.0-SNAPSHOT.478.g527cb4a standalone, PARALLEL (orthographic) projection",
+ "model": {
+  "winner": "cx120cz0y200t5d20",
+  "bbox": [
+   1848,
+   129,
+   -72,
+   1992,
+   261,
+   72
+  ],
+  "silhouette_blocks": [
+   183.85,
+   188.86
+  ],
+  "camera_center": [
+   1920.0,
+   195.0,
+   0.0
+  ],
+  "camera_shift": [
+   3.5716,
+   -7.524,
+   -2.5717
+  ],
+  "camera_position": [
+   2107.2833,
+   337.476,
+   -186.2835
+  ],
+  "fov_blocks": 236.08,
+  "chunk_list_entries": 196,
+  "y_clip": [
+   129,
+   319
+  ],
+  "size_px": 1600,
+  "spp": 64,
+  "out_size": 1024,
+  "margin_frac": 0.07
+ },
+ "camera": {
+  "mc_yaw_deg": 45.0,
+  "mc_pitch_deg": 30.0,
+  "chunky_yaw_rad": 0.7853981633974483,
+  "chunky_pitch_rad": -1.0471975511965976,
+  "position": [
+   2107.2833,
+   337.476,
+   -186.2835
+  ],
+  "camera_shift": [
+   3.5716,
+   -7.524,
+   -2.5717
+  ],
+  "target_center": [
+   1920.0,
+   195.0,
+   0.0
+  ],
+  "distance_blocks": 300.0,
+  "projectionMode": "PARALLEL",
+  "fov_blocks": 236.08,
+  "sun_altitude_deg": 50,
+  "sun_azimuth_deg": 225,
+  "clouds": false,
+  "yClipMin": 129,
+  "yClipMax": 319,
+  "drawSunTexture": true
+ },
+ "render": {
+  "size_px": 1600,
+  "spp": 64,
+  "threads": 8,
+  "chunkList_entries": 196
+ },
+ "themes": {
+  "_empty": {
+   "command": "/nix/store/b7hzgfqk2jfcbncp0vpabf73j0riqgq4-openjdk-25.0.4.1+1/bin/java -Xmx6G -Dchunky.home=/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-home -cp /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/chunky-core-2.5.0-SNAPSHOT.478.g527cb4a.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/commons-math3-3.2.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/fastutil-8.4.4.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/gson-2.9.0.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/lz4-java-1.8.0.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/maven-artifact-3.9.9.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/plexus-utils-3.5.1.jar -Djava.awt.headless=true se.llbit.chunky.main.Chunky -texture /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon/chunky/round3-mc26.2-block-textures.zip -render /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/scenes/_empty.json -reload-chunks -f -target 64 -threads 8",
+   "returncode": 0,
+   "chunksLoaded": 394,
+   "errors": [
+    "Failed to load chunk data!",
+    "java.io.FileNotFoundException: /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-home/chunky.json (No such file or directory)",
+    "java.io.FileNotFoundException: /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/scenes/_empty.octree2 (No such file or directory)"
+   ],
+   "fov_blocks": 236.08,
+   "size_px": 1600,
+   "spp": 64,
+   "threads": 8,
+   "frame": "work/scenes/snapshots/_empty-70.png",
+   "frame_copy": "renders/frames/_empty.png"
+  },
+  "amethyst_geode": {
+   "resumed_from": "renders/frames/amethyst_geode.png",
+   "fov_blocks": 236.08,
+   "size_px": 1600,
+   "spp": 64,
+   "threads": 8,
+   "frame": "renders/frames/amethyst_geode.png",
+   "frame_copy": "renders/frames/amethyst_geode.png",
+   "content_bbox": [
+    167,
+    151,
+    1422,
+    1442
+   ],
+   "content_touches_frame_edge": false,
+   "crop": {
+    "crop_box": [
+     59,
+     61,
+     1531,
+     1533
+    ],
+    "crop_side_px": 1472,
+    "crop_clamped_to_frame": false,
+    "content_wh_px": [
+     1256,
+     1292
+    ],
+    "crop_content_wh_px": [
+     1256,
+     1292
+    ],
+    "square_crop_padding_px": [
+     0,
+     0
+    ],
+    "content_aspect_h_over_w": 1.0287,
+    "margins_px_in_crop": {
+     "left": 108,
+     "right": 108,
+     "top": 90,
+     "bottom": 90
+    },
+    "margins_equal_in_crop": true,
+    "margins_px_in_output": {
+     "left": 75.13,
+     "right": 75.13,
+     "top": 62.61,
+     "bottom": 62.61
+    },
+    "output": "/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/renders/crops/amethyst_geode-chunky-ortho-1024.png",
+    "output_size": 1024
+   },
+   "render_log": "work/logs/amethyst_geode.log",
+   "chunksLoaded": 394,
+   "errors": [
+    "Failed to load chunk data!",
+    "java.io.FileNotFoundException: /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-home/chunky.json (No such file or directory)",
+    "java.io.FileNotFoundException: /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/scenes/amethyst_geode.octree2 (No such file or directory)"
+   ],
+   "command": "/nix/store/b7hzgfqk2jfcbncp0vpabf73j0riqgq4-openjdk-25.0.4.1+1/bin/java -Xmx6G -Dchunky.home=/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-home -cp /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/chunky-core-2.5.0-SNAPSHOT.478.g527cb4a.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/commons-math3-3.2.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/fastutil-8.4.4.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/gson-2.9.0.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/lz4-java-1.8.0.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/maven-artifact-3.9.9.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/plexus-utils-3.5.1.jar -Djava.awt.headless=true se.llbit.chunky.main.Chunky -texture /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon/chunky/round3-mc26.2-block-textures.zip -render /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/scenes/amethyst_geode.json -reload-chunks -f -target 64 -threads 8",
+   "render_details_rebuilt": "command/errors/chunksLoaded rebuilt from the saved renderer log and the settings below; the exit code of the original run was not recorded"
+  },
+  "basalt_deltas": {
+   "resumed_from": "renders/frames/basalt_deltas.png",
+   "fov_blocks": 236.08,
+   "size_px": 1600,
+   "spp": 64,
+   "threads": 8,
+   "frame": "renders/frames/basalt_deltas.png",
+   "frame_copy": "renders/frames/basalt_deltas.png",
+   "content_bbox": [
+    167,
+    152,
+    1422,
+    1442
+   ],
+   "content_touches_frame_edge": false,
+   "crop": {
+    "crop_box": [
+     59,
+     62,
+     1531,
+     1534
+    ],
+    "crop_side_px": 1472,
+    "crop_clamped_to_frame": false,
+    "content_wh_px": [
+     1256,
+     1291
+    ],
+    "crop_content_wh_px": [
+     1256,
+     1292
+    ],
+    "square_crop_padding_px": [
+     0,
+     1
+    ],
+    "content_aspect_h_over_w": 1.0279,
+    "margins_px_in_crop": {
+     "left": 108,
+     "right": 108,
+     "top": 90,
+     "bottom": 90
+    },
+    "margins_equal_in_crop": true,
+    "margins_px_in_output": {
+     "left": 75.13,
+     "right": 75.13,
+     "top": 62.61,
+     "bottom": 62.61
+    },
+    "output": "/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/renders/crops/basalt_deltas-chunky-ortho-1024.png",
+    "output_size": 1024
+   },
+   "render_log": "work/logs/basalt_deltas.log",
+   "chunksLoaded": 394,
+   "errors": [
+    "Failed to load chunk data!",
+    "java.io.FileNotFoundException: /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-home/chunky.json (No such file or directory)",
+    "java.io.FileNotFoundException: /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/scenes/basalt_deltas.octree2 (No such file or directory)"
+   ],
+   "command": "/nix/store/b7hzgfqk2jfcbncp0vpabf73j0riqgq4-openjdk-25.0.4.1+1/bin/java -Xmx6G -Dchunky.home=/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-home -cp /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/chunky-core-2.5.0-SNAPSHOT.478.g527cb4a.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/commons-math3-3.2.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/fastutil-8.4.4.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/gson-2.9.0.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/lz4-java-1.8.0.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/maven-artifact-3.9.9.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/plexus-utils-3.5.1.jar -Djava.awt.headless=true se.llbit.chunky.main.Chunky -texture /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon/chunky/round3-mc26.2-block-textures.zip -render /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/scenes/basalt_deltas.json -reload-chunks -f -target 64 -threads 8",
+   "render_details_rebuilt": "command/errors/chunksLoaded rebuilt from the saved renderer log and the settings below; the exit code of the original run was not recorded"
+  },
+  "bastion": {
+   "resumed_from": "renders/frames/bastion.png",
+   "fov_blocks": 236.08,
+   "size_px": 1600,
+   "spp": 64,
+   "threads": 8,
+   "frame": "renders/frames/bastion.png",
+   "frame_copy": "renders/frames/bastion.png",
+   "content_bbox": [
+    167,
+    152,
+    1422,
+    1442
+   ],
+   "content_touches_frame_edge": false,
+   "crop": {
+    "crop_box": [
+     59,
+     62,
+     1531,
+     1534
+    ],
+    "crop_side_px": 1472,
+    "crop_clamped_to_frame": false,
+    "content_wh_px": [
+     1256,
+     1291
+    ],
+    "crop_content_wh_px": [
+     1256,
+     1292
+    ],
+    "square_crop_padding_px": [
+     0,
+     1
+    ],
+    "content_aspect_h_over_w": 1.0279,
+    "margins_px_in_crop": {
+     "left": 108,
+     "right": 108,
+     "top": 90,
+     "bottom": 90
+    },
+    "margins_equal_in_crop": true,
+    "margins_px_in_output": {
+     "left": 75.13,
+     "right": 75.13,
+     "top": 62.61,
+     "bottom": 62.61
+    },
+    "output": "/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/renders/crops/bastion-chunky-ortho-1024.png",
+    "output_size": 1024
+   },
+   "render_log": "work/logs/bastion.log",
+   "chunksLoaded": 394,
+   "errors": [
+    "Failed to load chunk data!",
+    "java.io.FileNotFoundException: /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-home/chunky.json (No such file or directory)",
+    "java.io.FileNotFoundException: /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/scenes/bastion.octree2 (No such file or directory)"
+   ],
+   "command": "/nix/store/b7hzgfqk2jfcbncp0vpabf73j0riqgq4-openjdk-25.0.4.1+1/bin/java -Xmx6G -Dchunky.home=/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-home -cp /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/chunky-core-2.5.0-SNAPSHOT.478.g527cb4a.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/commons-math3-3.2.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/fastutil-8.4.4.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/gson-2.9.0.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/lz4-java-1.8.0.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/maven-artifact-3.9.9.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/plexus-utils-3.5.1.jar -Djava.awt.headless=true se.llbit.chunky.main.Chunky -texture /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon/chunky/round3-mc26.2-block-textures.zip -render /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/scenes/bastion.json -reload-chunks -f -target 64 -threads 8",
+   "render_details_rebuilt": "command/errors/chunksLoaded rebuilt from the saved renderer log and the settings below; the exit code of the original run was not recorded"
+  },
+  "cobblestone": {
+   "resumed_from": "renders/frames/cobblestone.png",
+   "fov_blocks": 236.08,
+   "size_px": 1600,
+   "spp": 64,
+   "threads": 8,
+   "frame": "renders/frames/cobblestone.png",
+   "frame_copy": "renders/frames/cobblestone.png",
+   "content_bbox": [
+    167,
+    152,
+    1422,
+    1442
+   ],
+   "content_touches_frame_edge": false,
+   "crop": {
+    "crop_box": [
+     59,
+     62,
+     1531,
+     1534
+    ],
+    "crop_side_px": 1472,
+    "crop_clamped_to_frame": false,
+    "content_wh_px": [
+     1256,
+     1291
+    ],
+    "crop_content_wh_px": [
+     1256,
+     1292
+    ],
+    "square_crop_padding_px": [
+     0,
+     1
+    ],
+    "content_aspect_h_over_w": 1.0279,
+    "margins_px_in_crop": {
+     "left": 108,
+     "right": 108,
+     "top": 90,
+     "bottom": 90
+    },
+    "margins_equal_in_crop": true,
+    "margins_px_in_output": {
+     "left": 75.13,
+     "right": 75.13,
+     "top": 62.61,
+     "bottom": 62.61
+    },
+    "output": "/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/renders/crops/cobblestone-chunky-ortho-1024.png",
+    "output_size": 1024
+   },
+   "render_log": "work/logs/cobblestone.log",
+   "chunksLoaded": 394,
+   "errors": [
+    "Failed to load chunk data!",
+    "java.io.FileNotFoundException: /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-home/chunky.json (No such file or directory)",
+    "java.io.FileNotFoundException: /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/scenes/cobblestone.octree2 (No such file or directory)"
+   ],
+   "command": "/nix/store/b7hzgfqk2jfcbncp0vpabf73j0riqgq4-openjdk-25.0.4.1+1/bin/java -Xmx6G -Dchunky.home=/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-home -cp /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/chunky-core-2.5.0-SNAPSHOT.478.g527cb4a.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/commons-math3-3.2.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/fastutil-8.4.4.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/gson-2.9.0.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/lz4-java-1.8.0.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/maven-artifact-3.9.9.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/plexus-utils-3.5.1.jar -Djava.awt.headless=true se.llbit.chunky.main.Chunky -texture /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon/chunky/round3-mc26.2-block-textures.zip -render /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/scenes/cobblestone.json -reload-chunks -f -target 64 -threads 8",
+   "render_details_rebuilt": "command/errors/chunksLoaded rebuilt from the saved renderer log and the settings below; the exit code of the original run was not recorded"
+  },
+  "copper": {
+   "resumed_from": "renders/frames/copper.png",
+   "fov_blocks": 236.08,
+   "size_px": 1600,
+   "spp": 64,
+   "threads": 8,
+   "frame": "renders/frames/copper.png",
+   "frame_copy": "renders/frames/copper.png",
+   "content_bbox": [
+    167,
+    152,
+    1422,
+    1442
+   ],
+   "content_touches_frame_edge": false,
+   "crop": {
+    "crop_box": [
+     59,
+     62,
+     1531,
+     1534
+    ],
+    "crop_side_px": 1472,
+    "crop_clamped_to_frame": false,
+    "content_wh_px": [
+     1256,
+     1291
+    ],
+    "crop_content_wh_px": [
+     1256,
+     1292
+    ],
+    "square_crop_padding_px": [
+     0,
+     1
+    ],
+    "content_aspect_h_over_w": 1.0279,
+    "margins_px_in_crop": {
+     "left": 108,
+     "right": 108,
+     "top": 90,
+     "bottom": 90
+    },
+    "margins_equal_in_crop": true,
+    "margins_px_in_output": {
+     "left": 75.13,
+     "right": 75.13,
+     "top": 62.61,
+     "bottom": 62.61
+    },
+    "output": "/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/renders/crops/copper-chunky-ortho-1024.png",
+    "output_size": 1024
+   },
+   "render_log": "work/logs/copper.log",
+   "chunksLoaded": 394,
+   "errors": [
+    "Failed to load chunk data!",
+    "java.io.FileNotFoundException: /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-home/chunky.json (No such file or directory)",
+    "java.io.FileNotFoundException: /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/scenes/copper.octree2 (No such file or directory)"
+   ],
+   "command": "/nix/store/b7hzgfqk2jfcbncp0vpabf73j0riqgq4-openjdk-25.0.4.1+1/bin/java -Xmx6G -Dchunky.home=/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-home -cp /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/chunky-core-2.5.0-SNAPSHOT.478.g527cb4a.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/commons-math3-3.2.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/fastutil-8.4.4.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/gson-2.9.0.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/lz4-java-1.8.0.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/maven-artifact-3.9.9.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/plexus-utils-3.5.1.jar -Djava.awt.headless=true se.llbit.chunky.main.Chunky -texture /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon/chunky/round3-mc26.2-block-textures.zip -render /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/scenes/copper.json -reload-chunks -f -target 64 -threads 8",
+   "render_details_rebuilt": "command/errors/chunksLoaded rebuilt from the saved renderer log and the settings below; the exit code of the original run was not recorded"
+  },
+  "crimson_forest": {
+   "resumed_from": "renders/frames/crimson_forest.png",
+   "fov_blocks": 236.08,
+   "size_px": 1600,
+   "spp": 64,
+   "threads": 8,
+   "frame": "renders/frames/crimson_forest.png",
+   "frame_copy": "renders/frames/crimson_forest.png",
+   "content_bbox": [
+    167,
+    151,
+    1422,
+    1442
+   ],
+   "content_touches_frame_edge": false,
+   "crop": {
+    "crop_box": [
+     59,
+     61,
+     1531,
+     1533
+    ],
+    "crop_side_px": 1472,
+    "crop_clamped_to_frame": false,
+    "content_wh_px": [
+     1256,
+     1292
+    ],
+    "crop_content_wh_px": [
+     1256,
+     1292
+    ],
+    "square_crop_padding_px": [
+     0,
+     0
+    ],
+    "content_aspect_h_over_w": 1.0287,
+    "margins_px_in_crop": {
+     "left": 108,
+     "right": 108,
+     "top": 90,
+     "bottom": 90
+    },
+    "margins_equal_in_crop": true,
+    "margins_px_in_output": {
+     "left": 75.13,
+     "right": 75.13,
+     "top": 62.61,
+     "bottom": 62.61
+    },
+    "output": "/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/renders/crops/crimson_forest-chunky-ortho-1024.png",
+    "output_size": 1024
+   },
+   "render_log": "work/logs/crimson_forest.log",
+   "chunksLoaded": 394,
+   "errors": [
+    "Failed to load chunk data!",
+    "java.io.FileNotFoundException: /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-home/chunky.json (No such file or directory)",
+    "java.io.FileNotFoundException: /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/scenes/crimson_forest.octree2 (No such file or directory)"
+   ],
+   "command": "/nix/store/b7hzgfqk2jfcbncp0vpabf73j0riqgq4-openjdk-25.0.4.1+1/bin/java -Xmx6G -Dchunky.home=/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-home -cp /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/chunky-core-2.5.0-SNAPSHOT.478.g527cb4a.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/commons-math3-3.2.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/fastutil-8.4.4.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/gson-2.9.0.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/lz4-java-1.8.0.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/maven-artifact-3.9.9.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/plexus-utils-3.5.1.jar -Djava.awt.headless=true se.llbit.chunky.main.Chunky -texture /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon/chunky/round3-mc26.2-block-textures.zip -render /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/scenes/crimson_forest.json -reload-chunks -f -target 64 -threads 8",
+   "render_details_rebuilt": "command/errors/chunksLoaded rebuilt from the saved renderer log and the settings below; the exit code of the original run was not recorded"
+  },
+  "deepslate": {
+   "resumed_from": "renders/frames/deepslate.png",
+   "fov_blocks": 236.08,
+   "size_px": 1600,
+   "spp": 64,
+   "threads": 8,
+   "frame": "renders/frames/deepslate.png",
+   "frame_copy": "renders/frames/deepslate.png",
+   "content_bbox": [
+    167,
+    151,
+    1422,
+    1442
+   ],
+   "content_touches_frame_edge": false,
+   "crop": {
+    "crop_box": [
+     59,
+     61,
+     1531,
+     1533
+    ],
+    "crop_side_px": 1472,
+    "crop_clamped_to_frame": false,
+    "content_wh_px": [
+     1256,
+     1292
+    ],
+    "crop_content_wh_px": [
+     1256,
+     1292
+    ],
+    "square_crop_padding_px": [
+     0,
+     0
+    ],
+    "content_aspect_h_over_w": 1.0287,
+    "margins_px_in_crop": {
+     "left": 108,
+     "right": 108,
+     "top": 90,
+     "bottom": 90
+    },
+    "margins_equal_in_crop": true,
+    "margins_px_in_output": {
+     "left": 75.13,
+     "right": 75.13,
+     "top": 62.61,
+     "bottom": 62.61
+    },
+    "output": "/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/renders/crops/deepslate-chunky-ortho-1024.png",
+    "output_size": 1024
+   },
+   "render_log": "work/logs/deepslate.log",
+   "chunksLoaded": 394,
+   "errors": [
+    "Failed to load chunk data!",
+    "java.io.FileNotFoundException: /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-home/chunky.json (No such file or directory)",
+    "java.io.FileNotFoundException: /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/scenes/deepslate.octree2 (No such file or directory)"
+   ],
+   "command": "/nix/store/b7hzgfqk2jfcbncp0vpabf73j0riqgq4-openjdk-25.0.4.1+1/bin/java -Xmx6G -Dchunky.home=/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-home -cp /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/chunky-core-2.5.0-SNAPSHOT.478.g527cb4a.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/commons-math3-3.2.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/fastutil-8.4.4.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/gson-2.9.0.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/lz4-java-1.8.0.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/maven-artifact-3.9.9.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/plexus-utils-3.5.1.jar -Djava.awt.headless=true se.llbit.chunky.main.Chunky -texture /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon/chunky/round3-mc26.2-block-textures.zip -render /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/scenes/deepslate.json -reload-chunks -f -target 64 -threads 8",
+   "render_details_rebuilt": "command/errors/chunksLoaded rebuilt from the saved renderer log and the settings below; the exit code of the original run was not recorded"
+  },
+  "desert_tomb": {
+   "resumed_from": "renders/frames/desert_tomb.png",
+   "fov_blocks": 236.08,
+   "size_px": 1600,
+   "spp": 64,
+   "threads": 8,
+   "frame": "renders/frames/desert_tomb.png",
+   "frame_copy": "renders/frames/desert_tomb.png",
+   "content_bbox": [
+    167,
+    151,
+    1422,
+    1442
+   ],
+   "content_touches_frame_edge": false,
+   "crop": {
+    "crop_box": [
+     59,
+     61,
+     1531,
+     1533
+    ],
+    "crop_side_px": 1472,
+    "crop_clamped_to_frame": false,
+    "content_wh_px": [
+     1256,
+     1292
+    ],
+    "crop_content_wh_px": [
+     1256,
+     1292
+    ],
+    "square_crop_padding_px": [
+     0,
+     0
+    ],
+    "content_aspect_h_over_w": 1.0287,
+    "margins_px_in_crop": {
+     "left": 108,
+     "right": 108,
+     "top": 90,
+     "bottom": 90
+    },
+    "margins_equal_in_crop": true,
+    "margins_px_in_output": {
+     "left": 75.13,
+     "right": 75.13,
+     "top": 62.61,
+     "bottom": 62.61
+    },
+    "output": "/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/renders/crops/desert_tomb-chunky-ortho-1024.png",
+    "output_size": 1024
+   },
+   "render_log": "work/logs/desert_tomb.log",
+   "chunksLoaded": 394,
+   "errors": [
+    "Failed to load chunk data!",
+    "java.io.FileNotFoundException: /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-home/chunky.json (No such file or directory)",
+    "java.io.FileNotFoundException: /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/scenes/desert_tomb.octree2 (No such file or directory)"
+   ],
+   "command": "/nix/store/b7hzgfqk2jfcbncp0vpabf73j0riqgq4-openjdk-25.0.4.1+1/bin/java -Xmx6G -Dchunky.home=/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-home -cp /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/chunky-core-2.5.0-SNAPSHOT.478.g527cb4a.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/commons-math3-3.2.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/fastutil-8.4.4.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/gson-2.9.0.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/lz4-java-1.8.0.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/maven-artifact-3.9.9.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/plexus-utils-3.5.1.jar -Djava.awt.headless=true se.llbit.chunky.main.Chunky -texture /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon/chunky/round3-mc26.2-block-textures.zip -render /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/scenes/desert_tomb.json -reload-chunks -f -target 64 -threads 8",
+   "render_details_rebuilt": "command/errors/chunksLoaded rebuilt from the saved renderer log and the settings below; the exit code of the original run was not recorded"
+  },
+  "dripstone": {
+   "resumed_from": "renders/frames/dripstone.png",
+   "fov_blocks": 236.08,
+   "size_px": 1600,
+   "spp": 64,
+   "threads": 8,
+   "frame": "renders/frames/dripstone.png",
+   "frame_copy": "renders/frames/dripstone.png",
+   "content_bbox": [
+    167,
+    152,
+    1422,
+    1441
+   ],
+   "content_touches_frame_edge": false,
+   "crop": {
+    "crop_box": [
+     60,
+     62,
+     1530,
+     1532
+    ],
+    "crop_side_px": 1470,
+    "crop_clamped_to_frame": false,
+    "content_wh_px": [
+     1256,
+     1290
+    ],
+    "crop_content_wh_px": [
+     1256,
+     1290
+    ],
+    "square_crop_padding_px": [
+     0,
+     0
+    ],
+    "content_aspect_h_over_w": 1.0271,
+    "margins_px_in_crop": {
+     "left": 107,
+     "right": 107,
+     "top": 90,
+     "bottom": 90
+    },
+    "margins_equal_in_crop": true,
+    "margins_px_in_output": {
+     "left": 74.54,
+     "right": 74.54,
+     "top": 62.69,
+     "bottom": 62.69
+    },
+    "output": "/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/renders/crops/dripstone-chunky-ortho-1024.png",
+    "output_size": 1024
+   },
+   "render_log": "work/logs/dripstone.log",
+   "chunksLoaded": 394,
+   "errors": [
+    "Failed to load chunk data!",
+    "java.io.FileNotFoundException: /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-home/chunky.json (No such file or directory)",
+    "java.io.FileNotFoundException: /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/scenes/dripstone.octree2 (No such file or directory)"
+   ],
+   "command": "/nix/store/b7hzgfqk2jfcbncp0vpabf73j0riqgq4-openjdk-25.0.4.1+1/bin/java -Xmx6G -Dchunky.home=/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-home -cp /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/chunky-core-2.5.0-SNAPSHOT.478.g527cb4a.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/commons-math3-3.2.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/fastutil-8.4.4.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/gson-2.9.0.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/lz4-java-1.8.0.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/maven-artifact-3.9.9.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/plexus-utils-3.5.1.jar -Djava.awt.headless=true se.llbit.chunky.main.Chunky -texture /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon/chunky/round3-mc26.2-block-textures.zip -render /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/scenes/dripstone.json -reload-chunks -f -target 64 -threads 8",
+   "render_details_rebuilt": "command/errors/chunksLoaded rebuilt from the saved renderer log and the settings below; the exit code of the original run was not recorded"
+  },
+  "end_city": {
+   "resumed_from": "renders/frames/end_city.png",
+   "fov_blocks": 236.08,
+   "size_px": 1600,
+   "spp": 64,
+   "threads": 8,
+   "frame": "renders/frames/end_city.png",
+   "frame_copy": "renders/frames/end_city.png",
+   "content_bbox": [
+    167,
+    151,
+    1423,
+    1442
+   ],
+   "content_touches_frame_edge": false,
+   "crop": {
+    "crop_box": [
+     60,
+     61,
+     1532,
+     1533
+    ],
+    "crop_side_px": 1472,
+    "crop_clamped_to_frame": false,
+    "content_wh_px": [
+     1257,
+     1292
+    ],
+    "crop_content_wh_px": [
+     1258,
+     1292
+    ],
+    "square_crop_padding_px": [
+     1,
+     0
+    ],
+    "content_aspect_h_over_w": 1.0278,
+    "margins_px_in_crop": {
+     "left": 107,
+     "right": 107,
+     "top": 90,
+     "bottom": 90
+    },
+    "margins_equal_in_crop": true,
+    "margins_px_in_output": {
+     "left": 74.43,
+     "right": 74.43,
+     "top": 62.61,
+     "bottom": 62.61
+    },
+    "output": "/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/renders/crops/end_city-chunky-ortho-1024.png",
+    "output_size": 1024
+   },
+   "render_log": "work/logs/end_city.log",
+   "chunksLoaded": 394,
+   "errors": [
+    "Failed to load chunk data!",
+    "java.io.FileNotFoundException: /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-home/chunky.json (No such file or directory)",
+    "java.io.FileNotFoundException: /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/scenes/end_city.octree2 (No such file or directory)"
+   ],
+   "command": "/nix/store/b7hzgfqk2jfcbncp0vpabf73j0riqgq4-openjdk-25.0.4.1+1/bin/java -Xmx6G -Dchunky.home=/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-home -cp /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/chunky-core-2.5.0-SNAPSHOT.478.g527cb4a.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/commons-math3-3.2.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/fastutil-8.4.4.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/gson-2.9.0.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/lz4-java-1.8.0.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/maven-artifact-3.9.9.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/plexus-utils-3.5.1.jar -Djava.awt.headless=true se.llbit.chunky.main.Chunky -texture /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon/chunky/round3-mc26.2-block-textures.zip -render /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/scenes/end_city.json -reload-chunks -f -target 64 -threads 8",
+   "render_details_rebuilt": "command/errors/chunksLoaded rebuilt from the saved renderer log and the settings below; the exit code of the original run was not recorded"
+  },
+  "end_stone": {
+   "resumed_from": "renders/frames/end_stone.png",
+   "fov_blocks": 236.08,
+   "size_px": 1600,
+   "spp": 64,
+   "threads": 8,
+   "frame": "renders/frames/end_stone.png",
+   "frame_copy": "renders/frames/end_stone.png",
+   "content_bbox": [
+    167,
+    151,
+    1422,
+    1442
+   ],
+   "content_touches_frame_edge": false,
+   "crop": {
+    "crop_box": [
+     59,
+     61,
+     1531,
+     1533
+    ],
+    "crop_side_px": 1472,
+    "crop_clamped_to_frame": false,
+    "content_wh_px": [
+     1256,
+     1292
+    ],
+    "crop_content_wh_px": [
+     1256,
+     1292
+    ],
+    "square_crop_padding_px": [
+     0,
+     0
+    ],
+    "content_aspect_h_over_w": 1.0287,
+    "margins_px_in_crop": {
+     "left": 108,
+     "right": 108,
+     "top": 90,
+     "bottom": 90
+    },
+    "margins_equal_in_crop": true,
+    "margins_px_in_output": {
+     "left": 75.13,
+     "right": 75.13,
+     "top": 62.61,
+     "bottom": 62.61
+    },
+    "output": "/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/renders/crops/end_stone-chunky-ortho-1024.png",
+    "output_size": 1024
+   },
+   "render_log": "work/logs/end_stone.log",
+   "chunksLoaded": 394,
+   "errors": [
+    "Failed to load chunk data!",
+    "java.io.FileNotFoundException: /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-home/chunky.json (No such file or directory)",
+    "java.io.FileNotFoundException: /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/scenes/end_stone.octree2 (No such file or directory)"
+   ],
+   "command": "/nix/store/b7hzgfqk2jfcbncp0vpabf73j0riqgq4-openjdk-25.0.4.1+1/bin/java -Xmx6G -Dchunky.home=/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-home -cp /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/chunky-core-2.5.0-SNAPSHOT.478.g527cb4a.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/commons-math3-3.2.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/fastutil-8.4.4.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/gson-2.9.0.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/lz4-java-1.8.0.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/maven-artifact-3.9.9.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/plexus-utils-3.5.1.jar -Djava.awt.headless=true se.llbit.chunky.main.Chunky -texture /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon/chunky/round3-mc26.2-block-textures.zip -render /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/scenes/end_stone.json -reload-chunks -f -target 64 -threads 8",
+   "render_details_rebuilt": "command/errors/chunksLoaded rebuilt from the saved renderer log and the settings below; the exit code of the original run was not recorded"
+  },
+  "frozen": {
+   "resumed_from": "renders/frames/frozen.png",
+   "fov_blocks": 236.08,
+   "size_px": 1600,
+   "spp": 64,
+   "threads": 8,
+   "frame": "renders/frames/frozen.png",
+   "frame_copy": "renders/frames/frozen.png",
+   "content_bbox": [
+    167,
+    152,
+    1422,
+    1441
+   ],
+   "content_touches_frame_edge": false,
+   "crop": {
+    "crop_box": [
+     60,
+     62,
+     1530,
+     1532
+    ],
+    "crop_side_px": 1470,
+    "crop_clamped_to_frame": false,
+    "content_wh_px": [
+     1256,
+     1290
+    ],
+    "crop_content_wh_px": [
+     1256,
+     1290
+    ],
+    "square_crop_padding_px": [
+     0,
+     0
+    ],
+    "content_aspect_h_over_w": 1.0271,
+    "margins_px_in_crop": {
+     "left": 107,
+     "right": 107,
+     "top": 90,
+     "bottom": 90
+    },
+    "margins_equal_in_crop": true,
+    "margins_px_in_output": {
+     "left": 74.54,
+     "right": 74.54,
+     "top": 62.69,
+     "bottom": 62.69
+    },
+    "output": "/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/renders/crops/frozen-chunky-ortho-1024.png",
+    "output_size": 1024
+   },
+   "render_log": "work/logs/frozen.log",
+   "chunksLoaded": 394,
+   "errors": [
+    "Failed to load chunk data!",
+    "java.io.FileNotFoundException: /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-home/chunky.json (No such file or directory)",
+    "java.io.FileNotFoundException: /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/scenes/frozen.octree2 (No such file or directory)"
+   ],
+   "command": "/nix/store/b7hzgfqk2jfcbncp0vpabf73j0riqgq4-openjdk-25.0.4.1+1/bin/java -Xmx6G -Dchunky.home=/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-home -cp /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/chunky-core-2.5.0-SNAPSHOT.478.g527cb4a.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/commons-math3-3.2.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/fastutil-8.4.4.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/gson-2.9.0.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/lz4-java-1.8.0.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/maven-artifact-3.9.9.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/plexus-utils-3.5.1.jar -Djava.awt.headless=true se.llbit.chunky.main.Chunky -texture /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon/chunky/round3-mc26.2-block-textures.zip -render /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/scenes/frozen.json -reload-chunks -f -target 64 -threads 8",
+   "render_details_rebuilt": "command/errors/chunksLoaded rebuilt from the saved renderer log and the settings below; the exit code of the original run was not recorded"
+  },
+  "lush": {
+   "resumed_from": "renders/frames/lush.png",
+   "fov_blocks": 236.08,
+   "size_px": 1600,
+   "spp": 64,
+   "threads": 8,
+   "frame": "renders/frames/lush.png",
+   "frame_copy": "renders/frames/lush.png",
+   "content_bbox": [
+    167,
+    152,
+    1422,
+    1442
+   ],
+   "content_touches_frame_edge": false,
+   "crop": {
+    "crop_box": [
+     59,
+     62,
+     1531,
+     1534
+    ],
+    "crop_side_px": 1472,
+    "crop_clamped_to_frame": false,
+    "content_wh_px": [
+     1256,
+     1291
+    ],
+    "crop_content_wh_px": [
+     1256,
+     1292
+    ],
+    "square_crop_padding_px": [
+     0,
+     1
+    ],
+    "content_aspect_h_over_w": 1.0279,
+    "margins_px_in_crop": {
+     "left": 108,
+     "right": 108,
+     "top": 90,
+     "bottom": 90
+    },
+    "margins_equal_in_crop": true,
+    "margins_px_in_output": {
+     "left": 75.13,
+     "right": 75.13,
+     "top": 62.61,
+     "bottom": 62.61
+    },
+    "output": "/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/renders/crops/lush-chunky-ortho-1024.png",
+    "output_size": 1024
+   },
+   "render_log": "work/logs/lush.log",
+   "chunksLoaded": 394,
+   "errors": [
+    "Failed to load chunk data!",
+    "java.io.FileNotFoundException: /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-home/chunky.json (No such file or directory)",
+    "java.io.FileNotFoundException: /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/scenes/lush.octree2 (No such file or directory)"
+   ],
+   "command": "/nix/store/b7hzgfqk2jfcbncp0vpabf73j0riqgq4-openjdk-25.0.4.1+1/bin/java -Xmx6G -Dchunky.home=/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-home -cp /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/chunky-core-2.5.0-SNAPSHOT.478.g527cb4a.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/commons-math3-3.2.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/fastutil-8.4.4.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/gson-2.9.0.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/lz4-java-1.8.0.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/maven-artifact-3.9.9.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/plexus-utils-3.5.1.jar -Djava.awt.headless=true se.llbit.chunky.main.Chunky -texture /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon/chunky/round3-mc26.2-block-textures.zip -render /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/scenes/lush.json -reload-chunks -f -target 64 -threads 8",
+   "render_details_rebuilt": "command/errors/chunksLoaded rebuilt from the saved renderer log and the settings below; the exit code of the original run was not recorded"
+  },
+  "nether_fortress": {
+   "resumed_from": "renders/frames/nether_fortress.png",
+   "fov_blocks": 236.08,
+   "size_px": 1600,
+   "spp": 64,
+   "threads": 8,
+   "frame": "renders/frames/nether_fortress.png",
+   "frame_copy": "renders/frames/nether_fortress.png",
+   "content_bbox": [
+    167,
+    151,
+    1422,
+    1441
+   ],
+   "content_touches_frame_edge": false,
+   "crop": {
+    "crop_box": [
+     59,
+     61,
+     1531,
+     1533
+    ],
+    "crop_side_px": 1472,
+    "crop_clamped_to_frame": false,
+    "content_wh_px": [
+     1256,
+     1291
+    ],
+    "crop_content_wh_px": [
+     1256,
+     1292
+    ],
+    "square_crop_padding_px": [
+     0,
+     1
+    ],
+    "content_aspect_h_over_w": 1.0279,
+    "margins_px_in_crop": {
+     "left": 108,
+     "right": 108,
+     "top": 90,
+     "bottom": 90
+    },
+    "margins_equal_in_crop": true,
+    "margins_px_in_output": {
+     "left": 75.13,
+     "right": 75.13,
+     "top": 62.61,
+     "bottom": 62.61
+    },
+    "output": "/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/renders/crops/nether_fortress-chunky-ortho-1024.png",
+    "output_size": 1024
+   },
+   "render_log": "work/logs/nether_fortress.log",
+   "chunksLoaded": 394,
+   "errors": [
+    "Failed to load chunk data!",
+    "java.io.FileNotFoundException: /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-home/chunky.json (No such file or directory)",
+    "java.io.FileNotFoundException: /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/scenes/nether_fortress.octree2 (No such file or directory)"
+   ],
+   "command": "/nix/store/b7hzgfqk2jfcbncp0vpabf73j0riqgq4-openjdk-25.0.4.1+1/bin/java -Xmx6G -Dchunky.home=/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-home -cp /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/chunky-core-2.5.0-SNAPSHOT.478.g527cb4a.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/commons-math3-3.2.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/fastutil-8.4.4.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/gson-2.9.0.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/lz4-java-1.8.0.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/maven-artifact-3.9.9.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/plexus-utils-3.5.1.jar -Djava.awt.headless=true se.llbit.chunky.main.Chunky -texture /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon/chunky/round3-mc26.2-block-textures.zip -render /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/scenes/nether_fortress.json -reload-chunks -f -target 64 -threads 8",
+   "render_details_rebuilt": "command/errors/chunksLoaded rebuilt from the saved renderer log and the settings below; the exit code of the original run was not recorded"
+  },
+  "nether_wastes": {
+   "resumed_from": "renders/frames/nether_wastes.png",
+   "fov_blocks": 236.08,
+   "size_px": 1600,
+   "spp": 64,
+   "threads": 8,
+   "frame": "renders/frames/nether_wastes.png",
+   "frame_copy": "renders/frames/nether_wastes.png",
+   "content_bbox": [
+    167,
+    152,
+    1422,
+    1442
+   ],
+   "content_touches_frame_edge": false,
+   "crop": {
+    "crop_box": [
+     59,
+     62,
+     1531,
+     1534
+    ],
+    "crop_side_px": 1472,
+    "crop_clamped_to_frame": false,
+    "content_wh_px": [
+     1256,
+     1291
+    ],
+    "crop_content_wh_px": [
+     1256,
+     1292
+    ],
+    "square_crop_padding_px": [
+     0,
+     1
+    ],
+    "content_aspect_h_over_w": 1.0279,
+    "margins_px_in_crop": {
+     "left": 108,
+     "right": 108,
+     "top": 90,
+     "bottom": 90
+    },
+    "margins_equal_in_crop": true,
+    "margins_px_in_output": {
+     "left": 75.13,
+     "right": 75.13,
+     "top": 62.61,
+     "bottom": 62.61
+    },
+    "output": "/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/renders/crops/nether_wastes-chunky-ortho-1024.png",
+    "output_size": 1024
+   },
+   "render_log": "work/logs/nether_wastes.log",
+   "chunksLoaded": 394,
+   "errors": [
+    "Failed to load chunk data!",
+    "java.io.FileNotFoundException: /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-home/chunky.json (No such file or directory)",
+    "java.io.FileNotFoundException: /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/scenes/nether_wastes.octree2 (No such file or directory)"
+   ],
+   "command": "/nix/store/b7hzgfqk2jfcbncp0vpabf73j0riqgq4-openjdk-25.0.4.1+1/bin/java -Xmx6G -Dchunky.home=/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-home -cp /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/chunky-core-2.5.0-SNAPSHOT.478.g527cb4a.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/commons-math3-3.2.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/fastutil-8.4.4.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/gson-2.9.0.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/lz4-java-1.8.0.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/maven-artifact-3.9.9.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/plexus-utils-3.5.1.jar -Djava.awt.headless=true se.llbit.chunky.main.Chunky -texture /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon/chunky/round3-mc26.2-block-textures.zip -render /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/scenes/nether_wastes.json -reload-chunks -f -target 64 -threads 8",
+   "render_details_rebuilt": "command/errors/chunksLoaded rebuilt from the saved renderer log and the settings below; the exit code of the original run was not recorded"
+  },
+  "ocean_ruin": {
+   "resumed_from": "renders/frames/ocean_ruin.png",
+   "fov_blocks": 236.08,
+   "size_px": 1600,
+   "spp": 64,
+   "threads": 8,
+   "frame": "renders/frames/ocean_ruin.png",
+   "frame_copy": "renders/frames/ocean_ruin.png",
+   "content_bbox": [
+    167,
+    151,
+    1422,
+    1442
+   ],
+   "content_touches_frame_edge": false,
+   "crop": {
+    "crop_box": [
+     59,
+     61,
+     1531,
+     1533
+    ],
+    "crop_side_px": 1472,
+    "crop_clamped_to_frame": false,
+    "content_wh_px": [
+     1256,
+     1292
+    ],
+    "crop_content_wh_px": [
+     1256,
+     1292
+    ],
+    "square_crop_padding_px": [
+     0,
+     0
+    ],
+    "content_aspect_h_over_w": 1.0287,
+    "margins_px_in_crop": {
+     "left": 108,
+     "right": 108,
+     "top": 90,
+     "bottom": 90
+    },
+    "margins_equal_in_crop": true,
+    "margins_px_in_output": {
+     "left": 75.13,
+     "right": 75.13,
+     "top": 62.61,
+     "bottom": 62.61
+    },
+    "output": "/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/renders/crops/ocean_ruin-chunky-ortho-1024.png",
+    "output_size": 1024
+   },
+   "render_log": "work/logs/ocean_ruin.log",
+   "chunksLoaded": 394,
+   "errors": [
+    "Failed to load chunk data!",
+    "java.io.FileNotFoundException: /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-home/chunky.json (No such file or directory)",
+    "java.io.FileNotFoundException: /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/scenes/ocean_ruin.octree2 (No such file or directory)"
+   ],
+   "command": "/nix/store/b7hzgfqk2jfcbncp0vpabf73j0riqgq4-openjdk-25.0.4.1+1/bin/java -Xmx6G -Dchunky.home=/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-home -cp /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/chunky-core-2.5.0-SNAPSHOT.478.g527cb4a.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/commons-math3-3.2.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/fastutil-8.4.4.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/gson-2.9.0.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/lz4-java-1.8.0.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/maven-artifact-3.9.9.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/plexus-utils-3.5.1.jar -Djava.awt.headless=true se.llbit.chunky.main.Chunky -texture /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon/chunky/round3-mc26.2-block-textures.zip -render /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/scenes/ocean_ruin.json -reload-chunks -f -target 64 -threads 8",
+   "render_details_rebuilt": "command/errors/chunksLoaded rebuilt from the saved renderer log and the settings below; the exit code of the original run was not recorded"
+  },
+  "sculk": {
+   "resumed_from": "renders/frames/sculk.png",
+   "fov_blocks": 236.08,
+   "size_px": 1600,
+   "spp": 64,
+   "threads": 8,
+   "frame": "renders/frames/sculk.png",
+   "frame_copy": "renders/frames/sculk.png",
+   "content_bbox": [
+    167,
+    152,
+    1422,
+    1442
+   ],
+   "content_touches_frame_edge": false,
+   "crop": {
+    "crop_box": [
+     59,
+     62,
+     1531,
+     1534
+    ],
+    "crop_side_px": 1472,
+    "crop_clamped_to_frame": false,
+    "content_wh_px": [
+     1256,
+     1291
+    ],
+    "crop_content_wh_px": [
+     1256,
+     1292
+    ],
+    "square_crop_padding_px": [
+     0,
+     1
+    ],
+    "content_aspect_h_over_w": 1.0279,
+    "margins_px_in_crop": {
+     "left": 108,
+     "right": 108,
+     "top": 90,
+     "bottom": 90
+    },
+    "margins_equal_in_crop": true,
+    "margins_px_in_output": {
+     "left": 75.13,
+     "right": 75.13,
+     "top": 62.61,
+     "bottom": 62.61
+    },
+    "output": "/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/renders/crops/sculk-chunky-ortho-1024.png",
+    "output_size": 1024
+   },
+   "render_log": "work/logs/sculk.log",
+   "chunksLoaded": 394,
+   "errors": [
+    "Failed to load chunk data!",
+    "java.io.FileNotFoundException: /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-home/chunky.json (No such file or directory)",
+    "java.io.FileNotFoundException: /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/scenes/sculk.octree2 (No such file or directory)"
+   ],
+   "command": "/nix/store/b7hzgfqk2jfcbncp0vpabf73j0riqgq4-openjdk-25.0.4.1+1/bin/java -Xmx6G -Dchunky.home=/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-home -cp /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/chunky-core-2.5.0-SNAPSHOT.478.g527cb4a.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/commons-math3-3.2.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/fastutil-8.4.4.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/gson-2.9.0.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/lz4-java-1.8.0.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/maven-artifact-3.9.9.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/plexus-utils-3.5.1.jar -Djava.awt.headless=true se.llbit.chunky.main.Chunky -texture /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon/chunky/round3-mc26.2-block-textures.zip -render /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/scenes/sculk.json -reload-chunks -f -target 64 -threads 8",
+   "render_details_rebuilt": "command/errors/chunksLoaded rebuilt from the saved renderer log and the settings below; the exit code of the original run was not recorded"
+  },
+  "soul_sand_valley": {
+   "resumed_from": "renders/frames/soul_sand_valley.png",
+   "fov_blocks": 236.08,
+   "size_px": 1600,
+   "spp": 64,
+   "threads": 8,
+   "frame": "renders/frames/soul_sand_valley.png",
+   "frame_copy": "renders/frames/soul_sand_valley.png",
+   "content_bbox": [
+    167,
+    152,
+    1422,
+    1442
+   ],
+   "content_touches_frame_edge": false,
+   "crop": {
+    "crop_box": [
+     59,
+     62,
+     1531,
+     1534
+    ],
+    "crop_side_px": 1472,
+    "crop_clamped_to_frame": false,
+    "content_wh_px": [
+     1256,
+     1291
+    ],
+    "crop_content_wh_px": [
+     1256,
+     1292
+    ],
+    "square_crop_padding_px": [
+     0,
+     1
+    ],
+    "content_aspect_h_over_w": 1.0279,
+    "margins_px_in_crop": {
+     "left": 108,
+     "right": 108,
+     "top": 90,
+     "bottom": 90
+    },
+    "margins_equal_in_crop": true,
+    "margins_px_in_output": {
+     "left": 75.13,
+     "right": 75.13,
+     "top": 62.61,
+     "bottom": 62.61
+    },
+    "output": "/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/renders/crops/soul_sand_valley-chunky-ortho-1024.png",
+    "output_size": 1024
+   },
+   "render_log": "work/logs/soul_sand_valley.log",
+   "chunksLoaded": 394,
+   "errors": [
+    "Failed to load chunk data!",
+    "java.io.FileNotFoundException: /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-home/chunky.json (No such file or directory)",
+    "java.io.FileNotFoundException: /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/scenes/soul_sand_valley.octree2 (No such file or directory)"
+   ],
+   "command": "/nix/store/b7hzgfqk2jfcbncp0vpabf73j0riqgq4-openjdk-25.0.4.1+1/bin/java -Xmx6G -Dchunky.home=/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-home -cp /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/chunky-core-2.5.0-SNAPSHOT.478.g527cb4a.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/commons-math3-3.2.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/fastutil-8.4.4.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/gson-2.9.0.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/lz4-java-1.8.0.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/maven-artifact-3.9.9.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/plexus-utils-3.5.1.jar -Djava.awt.headless=true se.llbit.chunky.main.Chunky -texture /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon/chunky/round3-mc26.2-block-textures.zip -render /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/scenes/soul_sand_valley.json -reload-chunks -f -target 64 -threads 8",
+   "render_details_rebuilt": "command/errors/chunksLoaded rebuilt from the saved renderer log and the settings below; the exit code of the original run was not recorded"
+  },
+  "stronghold": {
+   "resumed_from": "renders/frames/stronghold.png",
+   "fov_blocks": 236.08,
+   "size_px": 1600,
+   "spp": 64,
+   "threads": 8,
+   "frame": "renders/frames/stronghold.png",
+   "frame_copy": "renders/frames/stronghold.png",
+   "content_bbox": [
+    167,
+    151,
+    1422,
+    1442
+   ],
+   "content_touches_frame_edge": false,
+   "crop": {
+    "crop_box": [
+     59,
+     61,
+     1531,
+     1533
+    ],
+    "crop_side_px": 1472,
+    "crop_clamped_to_frame": false,
+    "content_wh_px": [
+     1256,
+     1292
+    ],
+    "crop_content_wh_px": [
+     1256,
+     1292
+    ],
+    "square_crop_padding_px": [
+     0,
+     0
+    ],
+    "content_aspect_h_over_w": 1.0287,
+    "margins_px_in_crop": {
+     "left": 108,
+     "right": 108,
+     "top": 90,
+     "bottom": 90
+    },
+    "margins_equal_in_crop": true,
+    "margins_px_in_output": {
+     "left": 75.13,
+     "right": 75.13,
+     "top": 62.61,
+     "bottom": 62.61
+    },
+    "output": "/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/renders/crops/stronghold-chunky-ortho-1024.png",
+    "output_size": 1024
+   },
+   "render_log": "work/logs/stronghold.log",
+   "chunksLoaded": 394,
+   "errors": [
+    "Failed to load chunk data!",
+    "java.io.FileNotFoundException: /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-home/chunky.json (No such file or directory)",
+    "java.io.FileNotFoundException: /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/scenes/stronghold.octree2 (No such file or directory)"
+   ],
+   "command": "/nix/store/b7hzgfqk2jfcbncp0vpabf73j0riqgq4-openjdk-25.0.4.1+1/bin/java -Xmx6G -Dchunky.home=/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-home -cp /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/chunky-core-2.5.0-SNAPSHOT.478.g527cb4a.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/commons-math3-3.2.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/fastutil-8.4.4.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/gson-2.9.0.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/lz4-java-1.8.0.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/maven-artifact-3.9.9.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/plexus-utils-3.5.1.jar -Djava.awt.headless=true se.llbit.chunky.main.Chunky -texture /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon/chunky/round3-mc26.2-block-textures.zip -render /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/scenes/stronghold.json -reload-chunks -f -target 64 -threads 8",
+   "render_details_rebuilt": "command/errors/chunksLoaded rebuilt from the saved renderer log and the settings below; the exit code of the original run was not recorded"
+  },
+  "warped_forest": {
+   "resumed_from": "renders/frames/warped_forest.png",
+   "fov_blocks": 236.08,
+   "size_px": 1600,
+   "spp": 64,
+   "threads": 8,
+   "frame": "renders/frames/warped_forest.png",
+   "frame_copy": "renders/frames/warped_forest.png",
+   "content_bbox": [
+    167,
+    151,
+    1422,
+    1442
+   ],
+   "content_touches_frame_edge": false,
+   "crop": {
+    "crop_box": [
+     59,
+     61,
+     1531,
+     1533
+    ],
+    "crop_side_px": 1472,
+    "crop_clamped_to_frame": false,
+    "content_wh_px": [
+     1256,
+     1292
+    ],
+    "crop_content_wh_px": [
+     1256,
+     1292
+    ],
+    "square_crop_padding_px": [
+     0,
+     0
+    ],
+    "content_aspect_h_over_w": 1.0287,
+    "margins_px_in_crop": {
+     "left": 108,
+     "right": 108,
+     "top": 90,
+     "bottom": 90
+    },
+    "margins_equal_in_crop": true,
+    "margins_px_in_output": {
+     "left": 75.13,
+     "right": 75.13,
+     "top": 62.61,
+     "bottom": 62.61
+    },
+    "output": "/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/renders/crops/warped_forest-chunky-ortho-1024.png",
+    "output_size": 1024
+   },
+   "render_log": "work/logs/warped_forest.log",
+   "chunksLoaded": 394,
+   "errors": [
+    "Failed to load chunk data!",
+    "java.io.FileNotFoundException: /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-home/chunky.json (No such file or directory)",
+    "java.io.FileNotFoundException: /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/scenes/warped_forest.octree2 (No such file or directory)"
+   ],
+   "command": "/nix/store/b7hzgfqk2jfcbncp0vpabf73j0riqgq4-openjdk-25.0.4.1+1/bin/java -Xmx6G -Dchunky.home=/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-home -cp /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/chunky-core-2.5.0-SNAPSHOT.478.g527cb4a.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/commons-math3-3.2.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/fastutil-8.4.4.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/gson-2.9.0.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/lz4-java-1.8.0.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/maven-artifact-3.9.9.jar:/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/chunky-lib/plexus-utils-3.5.1.jar -Djava.awt.headless=true se.llbit.chunky.main.Chunky -texture /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon/chunky/round3-mc26.2-block-textures.zip -render /home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/work/scenes/warped_forest.json -reload-chunks -f -target 64 -threads 8",
+   "render_details_rebuilt": "command/errors/chunksLoaded rebuilt from the saved renderer log and the settings below; the exit code of the original run was not recorded"
+  }
+ }
+}

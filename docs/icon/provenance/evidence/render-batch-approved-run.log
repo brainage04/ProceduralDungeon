@@ -1,0 +1,27 @@
+{"amethyst_geode": "frame already rendered, re-measuring"}
+{"amethyst_geode": {"frame": "renders/frames/amethyst_geode.png", "content_bbox": [167, 151, 1422, 1442], "content_touches_frame_edge": false}}
+{"basalt_deltas": "frame already rendered, re-measuring"}
+{"basalt_deltas": {"frame": "renders/frames/basalt_deltas.png", "content_bbox": [167, 151, 1422, 1442], "content_touches_frame_edge": false}}
+{"bastion": "frame already rendered, re-measuring"}
+{"bastion": {"frame": "renders/frames/bastion.png", "content_bbox": [167, 151, 1422, 1442], "content_touches_frame_edge": false}}
+{"cobblestone": "frame already rendered, re-measuring"}
+{"cobblestone": {"frame": "renders/frames/cobblestone.png", "content_bbox": [167, 151, 1422, 1442], "content_touches_frame_edge": false}}
+{"copper": "frame already rendered, re-measuring"}
+{"copper": {"frame": "renders/frames/copper.png", "content_bbox": [167, 152, 1422, 1442], "content_touches_frame_edge": false}}
+{"crimson_forest": "frame already rendered, re-measuring"}
+{"crimson_forest": {"frame": "renders/frames/crimson_forest.png", "content_bbox": [167, 151, 1422, 1442], "content_touches_frame_edge": false}}
+{"deepslate": "frame already rendered, re-measuring"}
+{"deepslate": {"frame": "renders/frames/deepslate.png", "content_bbox": [167, 152, 1422, 1442], "content_touches_frame_edge": false}}
+{"desert_tomb": {"chunksLoaded": 394, "frame": "work/scenes/snapshots/desert_tomb-70.png", "content_bbox": [167, 152, 1422, 1442], "content_touches_frame_edge": false}}
+{"dripstone": {"chunksLoaded": 394, "frame": "work/scenes/snapshots/dripstone-70.png", "content_bbox": [167, 152, 1422, 1442], "content_touches_frame_edge": false}}
+{"end_city": {"chunksLoaded": 394, "frame": "work/scenes/snapshots/end_city-70.png", "content_bbox": [167, 152, 1423, 1442], "content_touches_frame_edge": false}}
+{"end_stone": {"chunksLoaded": 394, "frame": "work/scenes/snapshots/end_stone-70.png", "content_bbox": [167, 152, 1423, 1442], "content_touches_frame_edge": false}}
+{"frozen": {"chunksLoaded": 394, "frame": "work/scenes/snapshots/frozen-70.png", "content_bbox": [167, 151, 1422, 1442], "content_touches_frame_edge": false}}
+{"lush": {"chunksLoaded": 394, "frame": "work/scenes/snapshots/lush-70.png", "content_bbox": [167, 151, 1422, 1442], "content_touches_frame_edge": false}}
+{"nether_fortress": {"chunksLoaded": 394, "frame": "work/scenes/snapshots/nether_fortress-70.png", "content_bbox": [167, 151, 1423, 1442], "content_touches_frame_edge": false}}
+{"nether_wastes": {"chunksLoaded": 394, "frame": "work/scenes/snapshots/nether_wastes-70.png", "content_bbox": [167, 151, 1422, 1442], "content_touches_frame_edge": false}}
+{"ocean_ruin": {"chunksLoaded": 394, "frame": "work/scenes/snapshots/ocean_ruin-70.png", "content_bbox": [167, 152, 1422, 1442], "content_touches_frame_edge": false}}
+{"sculk": {"chunksLoaded": 394, "frame": "work/scenes/snapshots/sculk-70.png", "content_bbox": [167, 152, 1423, 1442], "content_touches_frame_edge": false}}
+{"soul_sand_valley": {"chunksLoaded": 394, "frame": "work/scenes/snapshots/soul_sand_valley-70.png", "content_bbox": [167, 151, 1422, 1442], "content_touches_frame_edge": false}}
+{"stronghold": {"chunksLoaded": 394, "frame": "work/scenes/snapshots/stronghold-70.png", "content_bbox": [167, 151, 1422, 1442], "content_touches_frame_edge": false}}
+{"warped_forest": {"chunksLoaded": 394, "frame": "work/scenes/snapshots/warped_forest-70.png", "content_bbox": [167, 151, 1422, 1442], "content_touches_frame_edge": false}}

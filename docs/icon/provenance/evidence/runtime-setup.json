@@ -1,0 +1,14 @@
+{
+ "runtime": {
+  "gameDir": "/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/runtime"
+ },
+ "world": {
+  "world": "/home/thomas/01_TM/Coding/Websites/brainage04.github.io/.local-icon-variants/round3/captures-dungeon2/runtime/saves/Round3 Tall Search",
+  "level_name": "Round3 Tall Search",
+  "seed": 20260910,
+  "generator": "minecraft:flat",
+  "packs": [
+   "round3-canonical-pools"
+  ]
+ }
+}

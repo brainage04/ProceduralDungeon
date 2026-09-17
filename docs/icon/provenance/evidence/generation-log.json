@@ -1,0 +1,648 @@
+{
+ "themes": {
+  "cobblestone": {
+   "theme": "cobblestone",
+   "pieces": 1148,
+   "seconds": 21.3,
+   "bbox": [
+    1848,
+    129,
+    -72,
+    1992,
+    261,
+    72
+   ],
+   "blocks": 364391,
+   "size": [
+    145,
+    133,
+    145
+   ],
+   "regions": [
+    "r.3.-1.mca",
+    "r.3.0.mca"
+   ],
+   "position": [
+    1920.5,
+    200.0,
+    0.5
+   ],
+   "rng_seed": -3029389837200272546,
+   "done": true
+  },
+  "deepslate": {
+   "theme": "deepslate",
+   "pieces": 1148,
+   "seconds": 33.9,
+   "bbox": [
+    1848,
+    129,
+    -72,
+    1992,
+    261,
+    72
+   ],
+   "blocks": 364378,
+   "size": [
+    145,
+    133,
+    145
+   ],
+   "regions": [
+    "r.3.-1.mca",
+    "r.3.0.mca"
+   ],
+   "position": [
+    1920.5,
+    200.0,
+    0.5
+   ],
+   "rng_seed": -3029389837200272546,
+   "done": true
+  },
+  "sculk": {
+   "theme": "sculk",
+   "pieces": 1148,
+   "seconds": 34.4,
+   "bbox": [
+    1848,
+    129,
+    -72,
+    1992,
+    261,
+    72
+   ],
+   "blocks": 364376,
+   "size": [
+    145,
+    133,
+    145
+   ],
+   "regions": [
+    "r.3.-1.mca",
+    "r.3.0.mca"
+   ],
+   "position": [
+    1920.5,
+    200.0,
+    0.5
+   ],
+   "rng_seed": -3029389837200272546,
+   "done": true
+  },
+  "desert_tomb": {
+   "theme": "desert_tomb",
+   "pieces": 1148,
+   "seconds": 33.9,
+   "bbox": [
+    1848,
+    129,
+    -72,
+    1992,
+    261,
+    72
+   ],
+   "blocks": 364378,
+   "size": [
+    145,
+    133,
+    145
+   ],
+   "regions": [
+    "r.3.-1.mca",
+    "r.3.0.mca"
+   ],
+   "position": [
+    1920.5,
+    200.0,
+    0.5
+   ],
+   "rng_seed": -3029389837200272546,
+   "done": true
+  },
+  "lush": {
+   "theme": "lush",
+   "pieces": 1148,
+   "seconds": 33.9,
+   "bbox": [
+    1848,
+    129,
+    -72,
+    1992,
+    261,
+    72
+   ],
+   "blocks": 364377,
+   "size": [
+    145,
+    133,
+    145
+   ],
+   "regions": [
+    "r.3.-1.mca",
+    "r.3.0.mca"
+   ],
+   "position": [
+    1920.5,
+    200.0,
+    0.5
+   ],
+   "rng_seed": -3029389837200272546,
+   "done": true
+  },
+  "dripstone": {
+   "theme": "dripstone",
+   "pieces": 1148,
+   "seconds": 33.9,
+   "bbox": [
+    1848,
+    129,
+    -72,
+    1992,
+    261,
+    72
+   ],
+   "blocks": 364378,
+   "size": [
+    145,
+    133,
+    145
+   ],
+   "regions": [
+    "r.3.-1.mca",
+    "r.3.0.mca"
+   ],
+   "position": [
+    1920.5,
+    200.0,
+    0.5
+   ],
+   "rng_seed": -3029389837200272546,
+   "done": true
+  },
+  "frozen": {
+   "theme": "frozen",
+   "pieces": 1148,
+   "seconds": 33.9,
+   "bbox": [
+    1848,
+    129,
+    -72,
+    1992,
+    261,
+    72
+   ],
+   "blocks": 364378,
+   "size": [
+    145,
+    133,
+    145
+   ],
+   "regions": [
+    "r.3.-1.mca",
+    "r.3.0.mca"
+   ],
+   "position": [
+    1920.5,
+    200.0,
+    0.5
+   ],
+   "rng_seed": -3029389837200272546,
+   "done": true
+  },
+  "ocean_ruin": {
+   "theme": "ocean_ruin",
+   "pieces": 1148,
+   "seconds": 33.9,
+   "bbox": [
+    1848,
+    129,
+    -72,
+    1992,
+    261,
+    72
+   ],
+   "blocks": 364378,
+   "size": [
+    145,
+    133,
+    145
+   ],
+   "regions": [
+    "r.3.-1.mca",
+    "r.3.0.mca"
+   ],
+   "position": [
+    1920.5,
+    200.0,
+    0.5
+   ],
+   "rng_seed": -3029389837200272546,
+   "done": true
+  },
+  "amethyst_geode": {
+   "theme": "amethyst_geode",
+   "pieces": 1148,
+   "seconds": 55.1,
+   "bbox": [
+    1848,
+    129,
+    -72,
+    1992,
+    261,
+    72
+   ],
+   "blocks": 364378,
+   "size": [
+    145,
+    133,
+    145
+   ],
+   "regions": [
+    "r.3.-1.mca",
+    "r.3.0.mca"
+   ],
+   "position": [
+    1920.5,
+    200.0,
+    0.5
+   ],
+   "rng_seed": -3029389837200272546,
+   "done": true
+  },
+  "copper": {
+   "theme": "copper",
+   "pieces": 1148,
+   "seconds": 33.5,
+   "bbox": [
+    1848,
+    129,
+    -72,
+    1992,
+    261,
+    72
+   ],
+   "blocks": 364378,
+   "size": [
+    145,
+    133,
+    145
+   ],
+   "regions": [
+    "r.3.-1.mca",
+    "r.3.0.mca"
+   ],
+   "position": [
+    1920.5,
+    200.0,
+    0.5
+   ],
+   "rng_seed": -3029389837200272546,
+   "done": true
+  },
+  "stronghold": {
+   "theme": "stronghold",
+   "pieces": 1148,
+   "seconds": 33.5,
+   "bbox": [
+    1848,
+    129,
+    -72,
+    1992,
+    261,
+    72
+   ],
+   "blocks": 364378,
+   "size": [
+    145,
+    133,
+    145
+   ],
+   "regions": [
+    "r.3.-1.mca",
+    "r.3.0.mca"
+   ],
+   "position": [
+    1920.5,
+    200.0,
+    0.5
+   ],
+   "rng_seed": -3029389837200272546,
+   "done": true
+  },
+  "nether_wastes": {
+   "theme": "nether_wastes",
+   "pieces": 1148,
+   "seconds": 33.5,
+   "bbox": [
+    1848,
+    129,
+    -72,
+    1992,
+    261,
+    72
+   ],
+   "blocks": 362801,
+   "size": [
+    145,
+    133,
+    145
+   ],
+   "regions": [
+    "r.3.-1.mca",
+    "r.3.0.mca"
+   ],
+   "position": [
+    1920.5,
+    200.0,
+    0.5
+   ],
+   "rng_seed": -3029389837200272546,
+   "done": true
+  },
+  "crimson_forest": {
+   "theme": "crimson_forest",
+   "pieces": 1148,
+   "seconds": 33.9,
+   "bbox": [
+    1848,
+    129,
+    -72,
+    1992,
+    261,
+    72
+   ],
+   "blocks": 364378,
+   "size": [
+    145,
+    133,
+    145
+   ],
+   "regions": [
+    "r.3.-1.mca",
+    "r.3.0.mca"
+   ],
+   "position": [
+    1920.5,
+    200.0,
+    0.5
+   ],
+   "rng_seed": -3029389837200272546,
+   "done": true
+  },
+  "warped_forest": {
+   "theme": "warped_forest",
+   "pieces": 1148,
+   "seconds": 33.9,
+   "bbox": [
+    1848,
+    129,
+    -72,
+    1992,
+    261,
+    72
+   ],
+   "blocks": 364378,
+   "size": [
+    145,
+    133,
+    145
+   ],
+   "regions": [
+    "r.3.-1.mca",
+    "r.3.0.mca"
+   ],
+   "position": [
+    1920.5,
+    200.0,
+    0.5
+   ],
+   "rng_seed": -3029389837200272546,
+   "done": true
+  },
+  "basalt_deltas": {
+   "theme": "basalt_deltas",
+   "pieces": 1148,
+   "seconds": 33.9,
+   "bbox": [
+    1848,
+    129,
+    -72,
+    1992,
+    261,
+    72
+   ],
+   "blocks": 364378,
+   "size": [
+    145,
+    133,
+    145
+   ],
+   "regions": [
+    "r.3.-1.mca",
+    "r.3.0.mca"
+   ],
+   "position": [
+    1920.5,
+    200.0,
+    0.5
+   ],
+   "rng_seed": -3029389837200272546,
+   "done": true
+  },
+  "soul_sand_valley": {
+   "theme": "soul_sand_valley",
+   "pieces": 1148,
+   "seconds": 33.5,
+   "bbox": [
+    1848,
+    129,
+    -72,
+    1992,
+    261,
+    72
+   ],
+   "blocks": 364378,
+   "size": [
+    145,
+    133,
+    145
+   ],
+   "regions": [
+    "r.3.-1.mca",
+    "r.3.0.mca"
+   ],
+   "position": [
+    1920.5,
+    200.0,
+    0.5
+   ],
+   "rng_seed": -3029389837200272546,
+   "done": true
+  },
+  "nether_fortress": {
+   "theme": "nether_fortress",
+   "pieces": 1148,
+   "seconds": 33.5,
+   "bbox": [
+    1848,
+    129,
+    -72,
+    1992,
+    261,
+    72
+   ],
+   "blocks": 364378,
+   "size": [
+    145,
+    133,
+    145
+   ],
+   "regions": [
+    "r.3.-1.mca",
+    "r.3.0.mca"
+   ],
+   "position": [
+    1920.5,
+    200.0,
+    0.5
+   ],
+   "rng_seed": -3029389837200272546,
+   "done": true
+  },
+  "bastion": {
+   "theme": "bastion",
+   "pieces": 1148,
+   "seconds": 33.9,
+   "bbox": [
+    1848,
+    129,
+    -72,
+    1992,
+    261,
+    72
+   ],
+   "blocks": 364378,
+   "size": [
+    145,
+    133,
+    145
+   ],
+   "regions": [
+    "r.3.-1.mca",
+    "r.3.0.mca"
+   ],
+   "position": [
+    1920.5,
+    200.0,
+    0.5
+   ],
+   "rng_seed": -3029389837200272546,
+   "done": true
+  },
+  "end_stone": {
+   "theme": "end_stone",
+   "pieces": 1148,
+   "seconds": 33.9,
+   "bbox": [
+    1848,
+    129,
+    -72,
+    1992,
+    261,
+    72
+   ],
+   "blocks": 364378,
+   "size": [
+    145,
+    133,
+    145
+   ],
+   "regions": [
+    "r.3.-1.mca",
+    "r.3.0.mca"
+   ],
+   "position": [
+    1920.5,
+    200.0,
+    0.5
+   ],
+   "rng_seed": -3029389837200272546,
+   "done": true
+  },
+  "end_city": {
+   "theme": "end_city",
+   "pieces": 1148,
+   "seconds": 33.9,
+   "bbox": [
+    1848,
+    129,
+    -72,
+    1992,
+    261,
+    72
+   ],
+   "blocks": 364378,
+   "size": [
+    145,
+    133,
+    145
+   ],
+   "regions": [
+    "r.3.-1.mca",
+    "r.3.0.mca"
+   ],
+   "position": [
+    1920.5,
+    200.0,
+    0.5
+   ],
+   "rng_seed": -3029389837200272546,
+   "done": true
+  }
+ },
+ "winner": {
+  "label": "cx120cz0y200t5d20",
+  "world_seed": 20260910,
+  "chunk_x": 120,
+  "chunk_z": 0,
+  "start_y": 200,
+  "tier": 5,
+  "depth": 20,
+  "theme_for_measurement": "cobblestone",
+  "rng_seed": -3029389837200272546,
+  "pieces": 1148,
+  "bbox": [
+   1848,
+   127,
+   -72,
+   1992,
+   261,
+   72
+  ],
+  "size_blocks": [
+   145,
+   135,
+   145
+  ],
+  "non_air_blocks": 364699,
+  "projected_width_blocks": 183.85,
+  "projected_height_blocks": 188.86,
+  "height_over_width": 1.0273,
+  "margins_px_at_1024": {
+   "left_right_px": 73.9,
+   "top_bottom_px": 62.0,
+   "side_px_at_1024": 1024.0
+  },
+  "control": "",
+  "seconds": 25.8,
+  "squareness_error_blocks": 5.01,
+  "measurable": true,
+  "position": [
+   1920.5,
+   200.0,
+   0.5
+  ]
+ },
+ "setupDone": true
+}

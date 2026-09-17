@@ -1,0 +1,77 @@
+[14:55:31] driver attached to window 2097160
+[14:56:48] setup complete
+[14:59:11] driver attached to window 2097160
+[14:59:45] cx0cz0y200: {"pieces": 752, "size": [144, 79, 144], "seconds": 30.8}
+[15:00:16] cx12cz0y200: {"pieces": 983, "size": [145, 77, 146], "seconds": 30.3}
+[15:00:16] search batch done
+[15:01:30] driver attached to window 2097160
+[15:01:34] cx0cz0y200t5d20: already measured, skipping
+[15:01:34] cx12cz0y200t5d20: already measured, skipping
+[15:02:08] cx24cz0y200t5d20: {"pieces": 921, "size": [144, 80, 144], "seconds": 33.4}
+[15:02:46] cx36cz0y200t5d20: {"pieces": 988, "size": [145, 78, 145], "seconds": 38.3}
+[15:03:16] cx48cz0y200t5d20: {"pieces": 825, "size": [144, 79, 144], "seconds": 30.2}
+[15:03:47] cx60cz0y200t5d20: {"pieces": 770, "size": [144, 80, 144], "seconds": 30.7}
+[15:06:29] driver attached to window 2097160
+[15:07:03] cx72cz0y200t5d20: {"pieces": 1161, "size": [144, 129, 143], "seconds": 31.2}
+[15:07:29] cx84cz0y200t5d20: {"pieces": 1089, "size": [145, 79, 145], "seconds": 25.6}
+[15:07:55] cx96cz0y200t5d20: {"pieces": 944, "size": [145, 94, 145], "seconds": 25.9}
+[15:08:15] cx108cz0y200t5d20: {"pieces": 837, "size": [145, 112, 144], "seconds": 20.3}
+[15:08:41] cx120cz0y200t5d20: {"pieces": 1148, "size": [145, 135, 145], "seconds": 25.8}
+[15:09:07] cx132cz0y200t5d20: {"pieces": 959, "size": [145, 79, 145], "seconds": 26.2}
+[15:09:33] cx144cz0y200t5d20: {"pieces": 961, "size": [145, 94, 145], "seconds": 25.4}
+[15:09:58] cx156cz0y200t5d20: {"pieces": 965, "size": [145, 80, 144], "seconds": 25.8}
+[15:10:24] cx168cz0y200t5d20: {"pieces": 1043, "size": [145, 91, 145], "seconds": 25.2}
+[15:10:49] cx180cz0y200t5d20: {"pieces": 1007, "size": [145, 79, 145], "seconds": 25.5}
+[15:11:15] cx12cz12y200t5d20: {"pieces": 1089, "size": [145, 92, 144], "seconds": 25.8}
+[15:11:41] cx24cz12y200t5d20: {"pieces": 1038, "size": [145, 91, 145], "seconds": 26.2}
+[15:12:09] cx36cz12y200t5d20: {"pieces": 806, "size": [145, 77, 143], "seconds": 27.4}
+[15:12:40] cx48cz12y200t5d20: {"pieces": 1276, "size": [145, 129, 143], "seconds": 31.5}
+[15:13:08] cx60cz12y200t5d20: {"pieces": 813, "size": [144, 77, 145], "seconds": 27.7}
+[15:13:34] cx72cz12y200t5d20: {"pieces": 978, "size": [145, 79, 145], "seconds": 26.0}
+[15:14:00] cx12cz24y200t5d20: {"pieces": 854, "size": [144, 80, 145], "seconds": 26.6}
+[15:14:27] cx24cz24y200t5d20: {"pieces": 855, "size": [145, 79, 145], "seconds": 26.7}
+[15:14:51] cx36cz24y200t5d20: {"pieces": 939, "size": [145, 77, 145], "seconds": 23.7}
+[15:15:17] cx48cz24y200t5d20: {"pieces": 971, "size": [145, 79, 145], "seconds": 26.7}
+[15:15:40] cx0cz0y150t5d20: {"pieces": 752, "size": [144, 127, 144], "seconds": 22.8}
+[15:16:03] cx0cz0y250t5d20: {"pieces": 752, "size": [144, 191, 144], "seconds": 22.9}
+[15:16:26] cx60cz24y200t5d16: {"pieces": 920, "size": [145, 77, 145], "seconds": 22.8}
+[15:16:47] cx72cz24y200t5d12: {"pieces": 332, "size": [136, 70, 142], "seconds": 20.8}
+[15:17:07] cx84cz24y200t5d8: {"pieces": 182, "size": [125, 42, 112], "seconds": 20.8}
+[15:17:29] cx96cz24y200t4d20: {"pieces": 344, "size": [144, 78, 143], "seconds": 21.8}
+[15:17:50] cx108cz24y200t4d16: {"pieces": 253, "size": [121, 77, 142], "seconds": 20.6}
+[15:18:11] cx120cz24y200t3d20: {"pieces": 127, "size": [116, 71, 103], "seconds": 20.8}
+[15:18:32] cx132cz24y200t3d14: {"pieces": 67, "size": [109, 56, 66], "seconds": 21.5}
+[15:18:32] search batch done
+[15:29:20] driver attached to window 2097160
+[15:32:15] driver attached to window 2097160
+[15:33:37] driver attached to window 2097160
+[15:34:00] cobblestone: {"pieces": 1148, "size": null, "seconds": 20.2}
+[15:34:20] deepslate: {"pieces": 1148, "size": null, "seconds": 20.3}
+[15:34:45] driver attached to window 2097160
+[15:35:34] cobblestone: {"pieces": 1148, "size": [145, 215, 145], "seconds": 21.1}
+[15:36:53] driver attached to window 2097160
+[15:38:04] driver attached to window 2097160
+[15:39:57] driver attached to window 2097160
+[15:40:27] cobblestone: {"pieces": 1148, "size": [145, 133, 145], "seconds": 21.3}
+[15:41:47] driver attached to window 2097160
+[15:41:56] cobblestone: already generated, skipping
+[15:42:30] deepslate: {"pieces": 1148, "size": [145, 133, 145], "seconds": 33.9}
+[15:43:05] sculk: {"pieces": 1148, "size": [145, 133, 145], "seconds": 34.4}
+[15:43:38] desert_tomb: {"pieces": 1148, "size": [145, 133, 145], "seconds": 33.9}
+[15:44:12] lush: {"pieces": 1148, "size": [145, 133, 145], "seconds": 33.9}
+[15:44:46] dripstone: {"pieces": 1148, "size": [145, 133, 145], "seconds": 33.9}
+[15:45:20] frozen: {"pieces": 1148, "size": [145, 133, 145], "seconds": 33.9}
+[15:45:54] ocean_ruin: {"pieces": 1148, "size": [145, 133, 145], "seconds": 33.9}
+[15:46:49] amethyst_geode: {"pieces": 1148, "size": [145, 133, 145], "seconds": 55.1}
+[15:47:23] copper: {"pieces": 1148, "size": [145, 133, 145], "seconds": 33.5}
+[15:47:56] stronghold: {"pieces": 1148, "size": [145, 133, 145], "seconds": 33.5}
+[15:48:30] nether_wastes: {"pieces": 1148, "size": [145, 133, 145], "seconds": 33.5}
+[15:49:04] crimson_forest: {"pieces": 1148, "size": [145, 133, 145], "seconds": 33.9}
+[15:49:38] warped_forest: {"pieces": 1148, "size": [145, 133, 145], "seconds": 33.9}
+[15:50:11] basalt_deltas: {"pieces": 1148, "size": [145, 133, 145], "seconds": 33.9}
+[15:50:45] soul_sand_valley: {"pieces": 1148, "size": [145, 133, 145], "seconds": 33.5}
+[15:51:19] nether_fortress: {"pieces": 1148, "size": [145, 133, 145], "seconds": 33.5}
+[15:51:52] bastion: {"pieces": 1148, "size": [145, 133, 145], "seconds": 33.9}
+[15:52:26] end_stone: {"pieces": 1148, "size": [145, 133, 145], "seconds": 33.9}
+[15:53:00] end_city: {"pieces": 1148, "size": [145, 133, 145], "seconds": 33.9}
+[15:53:00] theme generation done

@@ -1,0 +1,21 @@
+{
+ "session": "captures-dungeon2 dimension-composite rerun",
+ "started": {
+  "display": null,
+  "audio_sink": null,
+  "server": null,
+  "note": "nothing was started: the rerun is headless (Chunky -Djava.awt.headless=true, Pillow offline); no Xvfb, no Minecraft client, no PulseAudio sink, no HTTP server"
+ },
+ "sibling_processes_not_touched": [],
+ "render_processes_after": [],
+ "client_processes_after": [],
+ "python_composite_processes_after": [],
+ "display_socket_present": false,
+ "display_still_accepts_connections": false,
+ "audio_sink_present": [],
+ "render_cgroup_members": [
+  "78834\t/run/current-system/sw/bin/sleep infinity "
+ ],
+ "own_shell_moved_back": "the session shell was moved into render-chunky.service for the batch and returned to its own scope (app-ghostty-surface-transient scope) afterwards, so no process of this rerun is left in the render cgroup",
+ "cpu_policy": "every Chunky JVM of this rerun ran with -threads 8 inside the shared render-chunky.service cgroup that round3/tools/throttle-render.py assigns to Chunky/Minecraft processes.  The run started under CPUQuota=800% / CPUWeight=50 and the quota was tightened to CPUQuota=400% / CPUWeight=20 while it was running (announced by the main agent); the thread count was not raised and no process was moved out of the cgroup, so the 20 themes + the empty-sky reference simply took about 48 minutes instead of about 10."
+}

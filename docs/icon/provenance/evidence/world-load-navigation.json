@@ -1,0 +1,20 @@
+{
+ "window": "2097160",
+ "attempts": [
+  {
+   "y": 120,
+   "loaded": true,
+   "tail": ":55:27] [Server thread/INFO]: Loading 48 chunks for player spawn...\n[14:55:27] [Server thread/INFO]: Preparing spawn area: 16%\n[14:55:27] [Server thread/INFO]: Preparing spawn area: 16%\n[14:55:27] [Server thread/INFO]: Preparing spawn area: 16%\n[14:55:27] [Server thread/INFO]: Time elapsed: 1998 ms\n"
+  }
+ ],
+ "final_world": {
+  "world": "Round3 Tall Dungeon",
+  "evidence": "logs/latest.log: '[15:29:01] Loading 48 chunks for player spawn...' / '[15:29:02] Time elapsed: 7328 ms'",
+  "sequence": [
+   "client relaunched on the isolated :247 display (hub process dungeon2-client)",
+   "Escape -> Tab -> Return (singleplayer list), then a double click on the single world entry",
+   "the 26.2 client then shows the 'Worlds using Experimental Settings are not supported' confirmation (the world enables the file/round3-canonical-pools datapack); 'I Know What I'm Doing!' was clicked at (1122, 252) on the 1920x1080 window"
+  ],
+  "note": "--quickPlaySingleplayer does not fire on this build, so the world is opened through the world list; the experimental-settings confirmation appears for this world and has to be accepted once per session"
+ }
+}

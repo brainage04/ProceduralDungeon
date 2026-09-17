@@ -1,0 +1,24 @@
+[
+ {
+  "project": "ProceduralDungeon",
+  "requirement": "content bounding box exactly square, so that the left/right and the top/bottom crop margins are identical to each other (not only equal within each axis)",
+  "status": "not reached by any of the 35 measured candidates; the closest one was rendered.  Within each axis the margins are exactly equal (left == right, top == bottom)",
+  "evidence": [
+   "winner cx120cz0y200t5d20: projected 183.85 x 188.86 blocks, |width - height| = 5.01 blocks",
+   "predicted margins at 1024 px: left/right 73.9, top/bottom 62.0",
+   "rendered margins over 20 themes: left {'min': 74.43, 'max': 75.13}, right {'min': 74.43, 'max': 75.13}, top {'min': 62.61, 'max': 62.69}, bottom {'min': 62.61, 'max': 62.69}",
+   "evidence/seeds-report.json lists every candidate's projected size and margins; the search can be extended by adding candidates (scripts/drive_search.py candidates())"
+  ]
+ },
+ {
+  "project": "ProceduralDungeon",
+  "requirement": "dimension sectors placed exactly on the named directions (Overworld top-left, End top-right, Nether bottom) in the proportional ring as well",
+  "status": "not reachable by construction; the minimax rotation that comes closest is used, so in the proportional ring the sector centres sit 15-21 deg off the directions the equal-thirds ring hits exactly",
+  "evidence": [
+   "the bisector gap of two adjacent sectors is fixed at (width_i + width_j)/2, so the three bisectors can only be 120 deg apart (the equal-thirds directions) when all sectors are 120 deg; with 198/36/126 deg the gaps are 117/81/162 deg",
+   "chosen rotation: start 222.0 deg -> bisectors {'overworld': 321.0, 'end': 78.0, 'nether': 159.0}, deviations {'overworld': 21.0, 'end': 18.0, 'nether': -21.0}, worst case 21.0 deg",
+   "alternative anchor 'nether bisector at 180': worst case 42.0 deg; alternative anchor 'overworld bisector at 300': worst case 42.0 deg",
+   "the equal-thirds ring (proceduraldungeon-all20-radial-dimension-equalthirds.png) places all three sectors exactly on the named directions; both rings are delivered"
+  ]
+ }
+]

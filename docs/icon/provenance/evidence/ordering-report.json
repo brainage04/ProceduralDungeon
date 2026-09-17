@@ -1,0 +1,2413 @@
+{
+ "construction": "20 equal 18-degree wedges, clockwise from the top, direct pixel copies",
+ "input_suffix": "chunky-ortho-1024.png",
+ "colour_metric": "per theme: mean sRGB of the frame pixels that differ from the empty-sky reference render (dungeon only), converted to CIELAB; hue = atan2(b*, a*); adjacency objective uses CIEDE2000",
+ "theme_colours": {
+  "cobblestone": {
+   "rgb": [
+    87.31,
+    96.3,
+    106.34
+   ],
+   "lab": [
+    40.425,
+    -1.12,
+    -6.871
+   ],
+   "chroma": 6.962,
+   "hue_deg": 260.74,
+   "pixels": 1019458
+  },
+  "deepslate": {
+   "rgb": [
+    54.25,
+    60.36,
+    67.8
+   ],
+   "lab": [
+    25.186,
+    -0.661,
+    -5.425
+   ],
+   "chroma": 5.466,
+   "hue_deg": 263.05,
+   "pixels": 1019615
+  },
+  "sculk": {
+   "rgb": [
+    12.21,
+    26.51,
+    33.11
+   ],
+   "lab": [
+    8.583,
+    -3.754,
+    -6.479
+   ],
+   "chroma": 7.488,
+   "hue_deg": 239.91,
+   "pixels": 1019550
+  },
+  "desert_tomb": {
+   "rgb": [
+    161.52,
+    163.63,
+    135.77
+   ],
+   "lab": [
+    66.382,
+    -5.677,
+    14.244
+   ],
+   "chroma": 15.334,
+   "hue_deg": 111.73,
+   "pixels": 1019693
+  },
+  "lush": {
+   "rgb": [
+    73.77,
+    85.5,
+    73.27
+   ],
+   "lab": [
+    35.017,
+    -7.314,
+    5.591
+   ],
+   "chroma": 9.206,
+   "hue_deg": 142.61,
+   "pixels": 1019598
+  },
+  "dripstone": {
+   "rgb": [
+    87.24,
+    94.38,
+    101.35
+   ],
+   "lab": [
+    39.678,
+    -1.185,
+    -4.919
+   ],
+   "chroma": 5.06,
+   "hue_deg": 256.46,
+   "pixels": 1019473
+  },
+  "frozen": {
+   "rgb": [
+    125.1,
+    149.19,
+    181.51
+   ],
+   "lab": [
+    61.027,
+    -0.751,
+    -19.598
+   ],
+   "chroma": 19.612,
+   "hue_deg": 267.81,
+   "pixels": 1019008
+  },
+  "ocean_ruin": {
+   "rgb": [
+    70.86,
+    125.92,
+    122.92
+   ],
+   "lab": [
+    49.083,
+    -18.965,
+    -4.074
+   ],
+   "chroma": 19.398,
+   "hue_deg": 192.12,
+   "pixels": 1019603
+  },
+  "amethyst_geode": {
+   "rgb": [
+    140.45,
+    149.89,
+    169.01
+   ],
+   "lab": [
+    61.876,
+    0.707,
+    -11.144
+   ],
+   "chroma": 11.167,
+   "hue_deg": 273.63,
+   "pixels": 1017442
+  },
+  "copper": {
+   "rgb": [
+    73.65,
+    76.1,
+    73.71
+   ],
+   "lab": [
+    32.067,
+    -1.52,
+    1.068
+   ],
+   "chroma": 1.857,
+   "hue_deg": 144.91,
+   "pixels": 1019608
+  },
+  "stronghold": {
+   "rgb": [
+    83.08,
+    91.91,
+    100.93
+   ],
+   "lab": [
+    38.584,
+    -1.312,
+    -6.324
+   ],
+   "chroma": 6.459,
+   "hue_deg": 258.28,
+   "pixels": 1019506
+  },
+  "nether_wastes": {
+   "rgb": [
+    70.54,
+    31.66,
+    33.21
+   ],
+   "lab": [
+    17.683,
+    18.745,
+    7.601
+   ],
+   "chroma": 20.228,
+   "hue_deg": 22.07,
+   "pixels": 1020774
+  },
+  "crimson_forest": {
+   "rgb": [
+    76.24,
+    13.03,
+    16.97
+   ],
+   "lab": [
+    14.823,
+    29.356,
+    15.254
+   ],
+   "chroma": 33.083,
+   "hue_deg": 27.46,
+   "pixels": 1019630
+  },
+  "warped_forest": {
+   "rgb": [
+    21.93,
+    84.08,
+    92.77
+   ],
+   "lab": [
+    32.5,
+    -16.002,
+    -10.705
+   ],
+   "chroma": 19.252,
+   "hue_deg": 213.78,
+   "pixels": 1019678
+  },
+  "basalt_deltas": {
+   "rgb": [
+    53.93,
+    59.61,
+    68.94
+   ],
+   "lab": [
+    24.957,
+    0.016,
+    -6.53
+   ],
+   "chroma": 6.53,
+   "hue_deg": 270.14,
+   "pixels": 1020003
+  },
+  "soul_sand_valley": {
+   "rgb": [
+    51.31,
+    43.32,
+    38.87
+   ],
+   "lab": [
+    18.405,
+    2.758,
+    4.244
+   ],
+   "chroma": 5.062,
+   "hue_deg": 56.99,
+   "pixels": 1020027
+  },
+  "nether_fortress": {
+   "rgb": [
+    32.26,
+    16.26,
+    21.21
+   ],
+   "lab": [
+    6.725,
+    8.996,
+    -0.055
+   ],
+   "chroma": 8.997,
+   "hue_deg": 359.65,
+   "pixels": 1019650
+  },
+  "bastion": {
+   "rgb": [
+    30.68,
+    30.44,
+    39.03
+   ],
+   "lab": [
+    11.849,
+    2.451,
+    -5.749
+   ],
+   "chroma": 6.249,
+   "hue_deg": 293.09,
+   "pixels": 1019672
+  },
+  "end_stone": {
+   "rgb": [
+    164.2,
+    180.36,
+    135.55
+   ],
+   "lab": [
+    71.191,
+    -13.536,
+    21.044
+   ],
+   "chroma": 25.021,
+   "hue_deg": 122.75,
+   "pixels": 1019659
+  },
+  "end_city": {
+   "rgb": [
+    120.34,
+    95.59,
+    145.92
+   ],
+   "lab": [
+    44.774,
+    20.413,
+    -23.941
+   ],
+   "chroma": 31.462,
+   "hue_deg": 310.45,
+   "pixels": 1019650
+  }
+ },
+ "orderings": {
+  "theme": {
+   "order": [
+    "cobblestone",
+    "deepslate",
+    "sculk",
+    "desert_tomb",
+    "lush",
+    "dripstone",
+    "frozen",
+    "ocean_ruin",
+    "amethyst_geode",
+    "copper",
+    "stronghold",
+    "nether_wastes",
+    "crimson_forest",
+    "warped_forest",
+    "basalt_deltas",
+    "soul_sand_valley",
+    "nether_fortress",
+    "bastion",
+    "end_stone",
+    "end_city"
+   ],
+   "path": "renders/composite/proceduraldungeon-all20-radial-composite.png",
+   "cycle": {
+    "min_adjacent_delta_e00": 6.5297,
+    "total_cycle_delta_e00": 480.9111
+   }
+  },
+  "rainbow": {
+   "order": [
+    "nether_wastes",
+    "crimson_forest",
+    "soul_sand_valley",
+    "desert_tomb",
+    "end_stone",
+    "lush",
+    "copper",
+    "ocean_ruin",
+    "warped_forest",
+    "sculk",
+    "dripstone",
+    "stronghold",
+    "cobblestone",
+    "deepslate",
+    "frozen",
+    "basalt_deltas",
+    "amethyst_geode",
+    "bastion",
+    "end_city",
+    "nether_fortress"
+   ],
+   "path": "renders/composite/proceduraldungeon-all20-radial-rainbow.png",
+   "cycle": {
+    "min_adjacent_delta_e00": 1.4723,
+    "total_cycle_delta_e00": 435.5393
+   }
+  },
+  "contrast": {
+   "order": [
+    "deepslate",
+    "amethyst_geode",
+    "sculk",
+    "frozen",
+    "copper",
+    "end_city",
+    "lush",
+    "nether_wastes",
+    "dripstone",
+    "nether_fortress",
+    "cobblestone",
+    "crimson_forest",
+    "stronghold",
+    "desert_tomb",
+    "bastion",
+    "warped_forest",
+    "soul_sand_valley",
+    "ocean_ruin",
+    "basalt_deltas",
+    "end_stone"
+   ],
+   "path": "renders/composite/proceduraldungeon-all20-radial-contrast.png",
+   "cycle": {
+    "min_adjacent_delta_e00": 24.3358,
+    "total_cycle_delta_e00": 684.3835
+   }
+  }
+ },
+ "contrast_objective": {
+  "definition": "maximise the minimum CIEDE2000 difference between adjacent wedges in the cyclic order, tie-broken by the summed difference around the cycle",
+  "search": "simulated annealing over 2-opt moves, 40 restarts, fixed seed 20260913",
+  "result": {
+   "order": [
+    "deepslate",
+    "amethyst_geode",
+    "sculk",
+    "frozen",
+    "copper",
+    "end_city",
+    "lush",
+    "nether_wastes",
+    "dripstone",
+    "nether_fortress",
+    "cobblestone",
+    "crimson_forest",
+    "stronghold",
+    "desert_tomb",
+    "bastion",
+    "warped_forest",
+    "soul_sand_valley",
+    "ocean_ruin",
+    "basalt_deltas",
+    "end_stone"
+   ],
+   "min_adjacent_delta_e00": 24.3358,
+   "total_cycle_delta_e00": 684.3835
+  },
+  "same_objective_theme_order": {
+   "min_adjacent_delta_e00": 6.5297,
+   "total_cycle_delta_e00": 480.9111
+  },
+  "same_objective_rainbow_order": {
+   "min_adjacent_delta_e00": 1.4723,
+   "total_cycle_delta_e00": 435.5393
+  }
+ },
+ "contact_sheet": "renders/composite/proceduraldungeon-all20-contact-sheet.png",
+ "ordering_comparison": "renders/composite/proceduraldungeon-all20-ordering-comparison.png",
+ "delta_e00_selfcheck": {
+  "pair": "Lab(50, 2.6772, -79.7751) vs Lab(50, 0, -82.7485)",
+  "expected": 2.0425,
+  "computed": 2.0425
+ },
+ "dimension_grouping": {
+  "primary": "renders/composite/proceduraldungeon-all20-radial-theme.png (round-3 theme order) remains the primary composite and was not rebuilt",
+  "sector_order_clockwise": [
+   "overworld",
+   "end",
+   "nether"
+  ],
+  "sector_placement": {
+   "overworld": "top-left",
+   "end": "top-right",
+   "nether": "bottom"
+  },
+  "sort_key": {
+   "outer": "dimension group (minecraft:overworld 11 themes, minecraft:nether 7, minecraft:the_end 2)",
+   "inner": "documented biome progression per dimension, stated per group below; no measured/derived value is used, so the order does not depend on the render noise",
+   "tie_break": "none needed - every theme has a distinct rank"
+  },
+  "groups": {
+   "overworld": {
+    "label": "Overworld",
+    "placement": "top-left",
+    "theme_count": 11,
+    "biome_sort_key": "biome layer depth, shallowest first (surface biome -> sea floor -> cave layer -> stone layer -> ore/geode -> deep stone -> deep dark)",
+    "sector_degrees": {
+     "equal_thirds": 120.0,
+     "proportional": 198.0
+    },
+    "sector_centre_deg": {
+     "equal_thirds": 300.0,
+     "proportional": 321.0
+    },
+    "themes": [
+     {
+      "index": 1,
+      "theme": "desert_tomb",
+      "label": "Desert Tomb",
+      "biome": "desert",
+      "layer": "surface layer, y 63-70",
+      "wedge_degrees": {
+       "equal_thirds": 10.9091,
+       "proportional": 18.0
+      },
+      "mean_rgb": [
+       161.51,
+       163.62,
+       135.77
+      ],
+      "lab_hue_deg": 111.75,
+      "lab_chroma": 15.329
+     },
+     {
+      "index": 2,
+      "theme": "frozen",
+      "label": "Frozen",
+      "biome": "snowy plains / ice spikes",
+      "layer": "surface layer, y 62-70",
+      "wedge_degrees": {
+       "equal_thirds": 10.9091,
+       "proportional": 18.0
+      },
+      "mean_rgb": [
+       125.12,
+       149.21,
+       181.51
+      ],
+      "lab_hue_deg": 267.8,
+      "lab_chroma": 19.602
+     },
+     {
+      "index": 3,
+      "theme": "ocean_ruin",
+      "label": "Ocean Ruin",
+      "biome": "ocean ruin on the sea floor",
+      "layer": "sea floor, y 40-62",
+      "wedge_degrees": {
+       "equal_thirds": 10.9091,
+       "proportional": 18.0
+      },
+      "mean_rgb": [
+       70.86,
+       125.9,
+       122.9
+      ],
+      "lab_hue_deg": 192.11,
+      "lab_chroma": 19.395
+     },
+     {
+      "index": 4,
+      "theme": "lush",
+      "label": "Lush",
+      "biome": "lush caves",
+      "layer": "cave layer, y 0-40",
+      "wedge_degrees": {
+       "equal_thirds": 10.9091,
+       "proportional": 18.0
+      },
+      "mean_rgb": [
+       73.75,
+       85.49,
+       73.25
+      ],
+      "lab_hue_deg": 142.59,
+      "lab_chroma": 9.211
+     },
+     {
+      "index": 5,
+      "theme": "dripstone",
+      "label": "Dripstone",
+      "biome": "dripstone caves",
+      "layer": "cave layer, y -10-40",
+      "wedge_degrees": {
+       "equal_thirds": 10.9091,
+       "proportional": 18.0
+      },
+      "mean_rgb": [
+       87.24,
+       94.39,
+       101.35
+      ],
+      "lab_hue_deg": 256.46,
+      "lab_chroma": 5.06
+     },
+     {
+      "index": 6,
+      "theme": "cobblestone",
+      "label": "Cobblestone",
+      "biome": "stone layer (mountains, mineshafts)",
+      "layer": "stone layer, y 0-60",
+      "wedge_degrees": {
+       "equal_thirds": 10.9091,
+       "proportional": 18.0
+      },
+      "mean_rgb": [
+       87.31,
+       96.3,
+       106.34
+      ],
+      "lab_hue_deg": 260.74,
+      "lab_chroma": 6.962
+     },
+     {
+      "index": 7,
+      "theme": "copper",
+      "label": "Copper",
+      "biome": "copper ore",
+      "layer": "ore layer, dense below y 48",
+      "wedge_degrees": {
+       "equal_thirds": 10.9091,
+       "proportional": 18.0
+      },
+      "mean_rgb": [
+       73.64,
+       76.08,
+       73.7
+      ],
+      "lab_hue_deg": 144.95,
+      "lab_chroma": 1.856
+     },
+     {
+      "index": 8,
+      "theme": "amethyst_geode",
+      "label": "Amethyst Geode",
+      "biome": "amethyst geode",
+      "layer": "deep cave layer, y -60-30",
+      "wedge_degrees": {
+       "equal_thirds": 10.9091,
+       "proportional": 18.0
+      },
+      "mean_rgb": [
+       140.45,
+       149.89,
+       169.0
+      ],
+      "lab_hue_deg": 273.62,
+      "lab_chroma": 11.164
+     },
+     {
+      "index": 9,
+      "theme": "stronghold",
+      "label": "Stronghold",
+      "biome": "stronghold (stone brick)",
+      "layer": "deep layer, y -40-0",
+      "wedge_degrees": {
+       "equal_thirds": 10.9091,
+       "proportional": 18.0
+      },
+      "mean_rgb": [
+       83.08,
+       91.91,
+       100.93
+      ],
+      "lab_hue_deg": 258.31,
+      "lab_chroma": 6.462
+     },
+     {
+      "index": 10,
+      "theme": "deepslate",
+      "label": "Deepslate",
+      "biome": "deepslate layer",
+      "layer": "deep layer, y -64-0",
+      "wedge_degrees": {
+       "equal_thirds": 10.9091,
+       "proportional": 18.0
+      },
+      "mean_rgb": [
+       54.26,
+       60.37,
+       67.81
+      ],
+      "lab_hue_deg": 263.05,
+      "lab_chroma": 5.466
+     },
+     {
+      "index": 11,
+      "theme": "sculk",
+      "label": "Sculk",
+      "biome": "deep dark (sculk)",
+      "layer": "bottom layer, y -64 to -1",
+      "wedge_degrees": {
+       "equal_thirds": 10.9091,
+       "proportional": 18.0
+      },
+      "mean_rgb": [
+       12.21,
+       26.53,
+       33.13
+      ],
+      "lab_hue_deg": 239.88,
+      "lab_chroma": 7.493
+     }
+    ]
+   },
+   "end": {
+    "label": "End",
+    "placement": "top-right",
+    "theme_count": 2,
+    "biome_sort_key": "named end progression: natural biome -> structure",
+    "sector_degrees": {
+     "equal_thirds": 120.0,
+     "proportional": 36.0
+    },
+    "sector_centre_deg": {
+     "equal_thirds": 60.0,
+     "proportional": 78.0
+    },
+    "themes": [
+     {
+      "index": 1,
+      "theme": "end_stone",
+      "label": "End Stone",
+      "biome": "the end (outer islands)",
+      "layer": "natural biome, end stone",
+      "wedge_degrees": {
+       "equal_thirds": 60.0,
+       "proportional": 18.0
+      },
+      "mean_rgb": [
+       164.2,
+       180.36,
+       135.56
+      ],
+      "lab_hue_deg": 122.75,
+      "lab_chroma": 25.016
+     },
+     {
+      "index": 2,
+      "theme": "end_city",
+      "label": "End City",
+      "biome": "end city",
+      "layer": "built: purpur and end stone brick",
+      "wedge_degrees": {
+       "equal_thirds": 60.0,
+       "proportional": 18.0
+      },
+      "mean_rgb": [
+       120.34,
+       95.58,
+       145.92
+      ],
+      "lab_hue_deg": 310.45,
+      "lab_chroma": 31.465
+     }
+    ]
+   },
+   "nether": {
+    "label": "Nether",
+    "placement": "bottom",
+    "theme_count": 7,
+    "biome_sort_key": "named nether progression: barren wastes -> ashen valley -> warm fungal forest -> cold fungal forest -> volcanic deltas -> built fortifications",
+    "sector_degrees": {
+     "equal_thirds": 120.0,
+     "proportional": 126.0
+    },
+    "sector_centre_deg": {
+     "equal_thirds": 180.0,
+     "proportional": 159.0
+    },
+    "themes": [
+     {
+      "index": 1,
+      "theme": "nether_wastes",
+      "label": "Nether Wastes",
+      "biome": "nether wastes",
+      "layer": "barren baseline wasteland",
+      "wedge_degrees": {
+       "equal_thirds": 17.1429,
+       "proportional": 18.0
+      },
+      "mean_rgb": [
+       70.55,
+       31.67,
+       33.21
+      ],
+      "lab_hue_deg": 22.08,
+      "lab_chroma": 20.229
+     },
+     {
+      "index": 2,
+      "theme": "soul_sand_valley",
+      "label": "Soul Sand Valley",
+      "biome": "soul sand valley",
+      "layer": "ashen floor, bone fossils",
+      "wedge_degrees": {
+       "equal_thirds": 17.1429,
+       "proportional": 18.0
+      },
+      "mean_rgb": [
+       51.31,
+       43.32,
+       38.87
+      ],
+      "lab_hue_deg": 56.98,
+      "lab_chroma": 5.062
+     },
+     {
+      "index": 3,
+      "theme": "crimson_forest",
+      "label": "Crimson Forest",
+      "biome": "crimson forest",
+      "layer": "warm fungal forest",
+      "wedge_degrees": {
+       "equal_thirds": 17.1429,
+       "proportional": 18.0
+      },
+      "mean_rgb": [
+       76.23,
+       13.03,
+       16.97
+      ],
+      "lab_hue_deg": 27.46,
+      "lab_chroma": 33.079
+     },
+     {
+      "index": 4,
+      "theme": "warped_forest",
+      "label": "Warped Forest",
+      "biome": "warped forest",
+      "layer": "cold fungal forest",
+      "wedge_degrees": {
+       "equal_thirds": 17.1429,
+       "proportional": 18.0
+      },
+      "mean_rgb": [
+       21.93,
+       84.07,
+       92.76
+      ],
+      "lab_hue_deg": 213.8,
+      "lab_chroma": 19.249
+     },
+     {
+      "index": 5,
+      "theme": "basalt_deltas",
+      "label": "Basalt Deltas",
+      "biome": "basalt deltas",
+      "layer": "volcanic, basalt columns",
+      "wedge_degrees": {
+       "equal_thirds": 17.1429,
+       "proportional": 18.0
+      },
+      "mean_rgb": [
+       53.92,
+       59.6,
+       68.94
+      ],
+      "lab_hue_deg": 270.14,
+      "lab_chroma": 6.53
+     },
+     {
+      "index": 6,
+      "theme": "nether_fortress",
+      "label": "Nether Fortress",
+      "biome": "nether fortress",
+      "layer": "built: nether brick",
+      "wedge_degrees": {
+       "equal_thirds": 17.1429,
+       "proportional": 18.0
+      },
+      "mean_rgb": [
+       32.26,
+       16.26,
+       21.22
+      ],
+      "lab_hue_deg": 359.65,
+      "lab_chroma": 8.998
+     },
+     {
+      "index": 7,
+      "theme": "bastion",
+      "label": "Bastion",
+      "biome": "bastion remnant",
+      "layer": "built: blackstone",
+      "wedge_degrees": {
+       "equal_thirds": 17.1429,
+       "proportional": 18.0
+      },
+      "mean_rgb": [
+       30.68,
+       30.44,
+       39.03
+      ],
+      "lab_hue_deg": 293.09,
+      "lab_chroma": 6.25
+     }
+    ]
+   }
+  },
+  "layouts": {
+   "equal_thirds": {
+    "rule": "three 120 deg sectors; inside a sector every theme gets an equal share of the sector (proportional to the theme count)",
+    "spans_deg": {
+     "overworld": [
+      240.0,
+      120.0
+     ],
+     "end": [
+      0.0,
+      120.0
+     ],
+     "nether": [
+      120.0,
+      120.0
+     ]
+    },
+    "bisectors_deg": {
+     "overworld": 300.0,
+     "end": 60.0,
+     "nether": 180.0
+    },
+    "sector_degrees": {
+     "overworld": 120.0,
+     "end": 120.0,
+     "nether": 120.0
+    },
+    "wedge_degrees": {
+     "overworld": {
+      "desert_tomb": 10.9091,
+      "frozen": 10.9091,
+      "ocean_ruin": 10.9091,
+      "lush": 10.9091,
+      "dripstone": 10.9091,
+      "cobblestone": 10.9091,
+      "copper": 10.9091,
+      "amethyst_geode": 10.9091,
+      "stronghold": 10.9091,
+      "deepslate": 10.9091,
+      "sculk": 10.9091
+     },
+     "end": {
+      "end_stone": 60.0,
+      "end_city": 60.0
+     },
+     "nether": {
+      "nether_wastes": 17.1429,
+      "soul_sand_valley": 17.1429,
+      "crimson_forest": 17.1429,
+      "warped_forest": 17.1429,
+      "basalt_deltas": 17.1429,
+      "nether_fortress": 17.1429,
+      "bastion": 17.1429
+     }
+    },
+    "path": "renders/composite/proceduraldungeon-all20-radial-dimension-equalthirds.png",
+    "path_relative_to_round3": "captures-dungeon2/renders/composite/proceduraldungeon-all20-radial-dimension-equalthirds.png",
+    "size_px": 1024,
+    "self_check": {
+     "check": "sampled pixels must equal the same-coordinate pixel of the owner theme's crop",
+     "samples": 50000,
+     "seed": 20260914,
+     "mismatches": 0,
+     "first_mismatches": [],
+     "direct_pixel_copies": true
+    },
+    "wedge_check": {
+     "check": "the ring's angle -> theme buckets are exactly the documented wedge intervals",
+     "bucket_step_deg": 0.01,
+     "themes": {
+      "desert_tomb": {
+       "sector": "overworld",
+       "wedge_degrees": 10.9091,
+       "measured_offset_deg": [
+        0.0,
+        10.91
+       ],
+       "measured_bucket_count": 1091,
+       "expected_offset_deg": [
+        0.0,
+        10.9091
+       ],
+       "inside_documented_wedge": true
+      },
+      "frozen": {
+       "sector": "overworld",
+       "wedge_degrees": 10.9091,
+       "measured_offset_deg": [
+        10.91,
+        21.82
+       ],
+       "measured_bucket_count": 1091,
+       "expected_offset_deg": [
+        10.9091,
+        21.8182
+       ],
+       "inside_documented_wedge": true
+      },
+      "ocean_ruin": {
+       "sector": "overworld",
+       "wedge_degrees": 10.9091,
+       "measured_offset_deg": [
+        21.82,
+        32.73
+       ],
+       "measured_bucket_count": 1091,
+       "expected_offset_deg": [
+        21.8182,
+        32.7273
+       ],
+       "inside_documented_wedge": true
+      },
+      "lush": {
+       "sector": "overworld",
+       "wedge_degrees": 10.9091,
+       "measured_offset_deg": [
+        32.73,
+        43.64
+       ],
+       "measured_bucket_count": 1091,
+       "expected_offset_deg": [
+        32.7273,
+        43.6364
+       ],
+       "inside_documented_wedge": true
+      },
+      "dripstone": {
+       "sector": "overworld",
+       "wedge_degrees": 10.9091,
+       "measured_offset_deg": [
+        43.64,
+        54.55
+       ],
+       "measured_bucket_count": 1091,
+       "expected_offset_deg": [
+        43.6364,
+        54.5455
+       ],
+       "inside_documented_wedge": true
+      },
+      "cobblestone": {
+       "sector": "overworld",
+       "wedge_degrees": 10.9091,
+       "measured_offset_deg": [
+        54.55,
+        65.46
+       ],
+       "measured_bucket_count": 1091,
+       "expected_offset_deg": [
+        54.5455,
+        65.4545
+       ],
+       "inside_documented_wedge": true
+      },
+      "copper": {
+       "sector": "overworld",
+       "wedge_degrees": 10.9091,
+       "measured_offset_deg": [
+        65.46,
+        76.37
+       ],
+       "measured_bucket_count": 1091,
+       "expected_offset_deg": [
+        65.4545,
+        76.3636
+       ],
+       "inside_documented_wedge": true
+      },
+      "amethyst_geode": {
+       "sector": "overworld",
+       "wedge_degrees": 10.9091,
+       "measured_offset_deg": [
+        76.37,
+        87.28
+       ],
+       "measured_bucket_count": 1091,
+       "expected_offset_deg": [
+        76.3636,
+        87.2727
+       ],
+       "inside_documented_wedge": true
+      },
+      "stronghold": {
+       "sector": "overworld",
+       "wedge_degrees": 10.9091,
+       "measured_offset_deg": [
+        87.28,
+        98.19
+       ],
+       "measured_bucket_count": 1091,
+       "expected_offset_deg": [
+        87.2727,
+        98.1818
+       ],
+       "inside_documented_wedge": true
+      },
+      "deepslate": {
+       "sector": "overworld",
+       "wedge_degrees": 10.9091,
+       "measured_offset_deg": [
+        98.19,
+        109.1
+       ],
+       "measured_bucket_count": 1091,
+       "expected_offset_deg": [
+        98.1818,
+        109.0909
+       ],
+       "inside_documented_wedge": true
+      },
+      "sculk": {
+       "sector": "overworld",
+       "wedge_degrees": 10.9091,
+       "measured_offset_deg": [
+        109.1,
+        120.0
+       ],
+       "measured_bucket_count": 1090,
+       "expected_offset_deg": [
+        109.0909,
+        120.0
+       ],
+       "inside_documented_wedge": true
+      },
+      "end_stone": {
+       "sector": "end",
+       "wedge_degrees": 60.0,
+       "measured_offset_deg": [
+        0.0,
+        60.0
+       ],
+       "measured_bucket_count": 6000,
+       "expected_offset_deg": [
+        0.0,
+        60.0
+       ],
+       "inside_documented_wedge": true
+      },
+      "end_city": {
+       "sector": "end",
+       "wedge_degrees": 60.0,
+       "measured_offset_deg": [
+        60.0,
+        120.0
+       ],
+       "measured_bucket_count": 6000,
+       "expected_offset_deg": [
+        60.0,
+        120.0
+       ],
+       "inside_documented_wedge": true
+      },
+      "nether_wastes": {
+       "sector": "nether",
+       "wedge_degrees": 17.1429,
+       "measured_offset_deg": [
+        0.0,
+        17.15
+       ],
+       "measured_bucket_count": 1715,
+       "expected_offset_deg": [
+        0.0,
+        17.1429
+       ],
+       "inside_documented_wedge": true
+      },
+      "soul_sand_valley": {
+       "sector": "nether",
+       "wedge_degrees": 17.1429,
+       "measured_offset_deg": [
+        17.15,
+        34.29
+       ],
+       "measured_bucket_count": 1714,
+       "expected_offset_deg": [
+        17.1429,
+        34.2857
+       ],
+       "inside_documented_wedge": true
+      },
+      "crimson_forest": {
+       "sector": "nether",
+       "wedge_degrees": 17.1429,
+       "measured_offset_deg": [
+        34.29,
+        51.43
+       ],
+       "measured_bucket_count": 1714,
+       "expected_offset_deg": [
+        34.2857,
+        51.4286
+       ],
+       "inside_documented_wedge": true
+      },
+      "warped_forest": {
+       "sector": "nether",
+       "wedge_degrees": 17.1429,
+       "measured_offset_deg": [
+        51.43,
+        68.58
+       ],
+       "measured_bucket_count": 1715,
+       "expected_offset_deg": [
+        51.4286,
+        68.5714
+       ],
+       "inside_documented_wedge": true
+      },
+      "basalt_deltas": {
+       "sector": "nether",
+       "wedge_degrees": 17.1429,
+       "measured_offset_deg": [
+        68.58,
+        85.72
+       ],
+       "measured_bucket_count": 1714,
+       "expected_offset_deg": [
+        68.5714,
+        85.7143
+       ],
+       "inside_documented_wedge": true
+      },
+      "nether_fortress": {
+       "sector": "nether",
+       "wedge_degrees": 17.1429,
+       "measured_offset_deg": [
+        85.72,
+        102.86
+       ],
+       "measured_bucket_count": 1714,
+       "expected_offset_deg": [
+        85.7143,
+        102.8571
+       ],
+       "inside_documented_wedge": true
+      },
+      "bastion": {
+       "sector": "nether",
+       "wedge_degrees": 17.1429,
+       "measured_offset_deg": [
+        102.86,
+        120.0
+       ],
+       "measured_bucket_count": 1714,
+       "expected_offset_deg": [
+        102.8571,
+        120.0
+       ],
+       "inside_documented_wedge": true
+      }
+     },
+     "failures": []
+    },
+    "pixel_profile": {
+     "radius_px": 200,
+     "step_deg": 0.2,
+     "ambiguous_samples": 6,
+     "themes_seen": [
+      "amethyst_geode",
+      "basalt_deltas",
+      "bastion",
+      "cobblestone",
+      "copper",
+      "crimson_forest",
+      "deepslate",
+      "desert_tomb",
+      "dripstone",
+      "end_city",
+      "end_stone",
+      "frozen",
+      "lush",
+      "nether_fortress",
+      "nether_wastes",
+      "ocean_ruin",
+      "sculk",
+      "soul_sand_valley",
+      "stronghold",
+      "warped_forest"
+     ],
+     "themes_seen_count": 20,
+     "runs_deg": [
+      {
+       "theme": "end_stone",
+       "start_deg": 0.0,
+       "end_deg": 59.8
+      },
+      {
+       "theme": "end_city",
+       "start_deg": 60.0,
+       "end_deg": 119.8
+      },
+      {
+       "theme": "nether_wastes",
+       "start_deg": 120.0,
+       "end_deg": 137.0
+      },
+      {
+       "theme": "soul_sand_valley",
+       "start_deg": 137.2,
+       "end_deg": 154.2
+      },
+      {
+       "theme": "crimson_forest",
+       "start_deg": 154.4,
+       "end_deg": 171.4
+      },
+      {
+       "theme": "warped_forest",
+       "start_deg": 171.6,
+       "end_deg": 188.6
+      },
+      {
+       "theme": "basalt_deltas",
+       "start_deg": 188.8,
+       "end_deg": 205.8
+      },
+      {
+       "theme": "nether_fortress",
+       "start_deg": 206.0,
+       "end_deg": 223.0
+      },
+      {
+       "theme": "bastion",
+       "start_deg": 223.2,
+       "end_deg": 240.0
+      },
+      {
+       "theme": "desert_tomb",
+       "start_deg": 240.2,
+       "end_deg": 251.0
+      },
+      {
+       "theme": "frozen",
+       "start_deg": 251.2,
+       "end_deg": 262.0
+      },
+      {
+       "theme": "ocean_ruin",
+       "start_deg": 262.2,
+       "end_deg": 273.0
+      },
+      {
+       "theme": "lush",
+       "start_deg": 273.2,
+       "end_deg": 283.6
+      },
+      {
+       "theme": "dripstone",
+       "start_deg": 283.8,
+       "end_deg": 294.6
+      },
+      {
+       "theme": "cobblestone",
+       "start_deg": 294.8,
+       "end_deg": 305.6
+      },
+      {
+       "theme": "copper",
+       "start_deg": 305.8,
+       "end_deg": 316.2
+      },
+      {
+       "theme": "amethyst_geode",
+       "start_deg": 316.4,
+       "end_deg": 327.0
+      },
+      {
+       "theme": "stronghold",
+       "start_deg": 327.2,
+       "end_deg": 338.0
+      },
+      {
+       "theme": "deepslate",
+       "start_deg": 338.2,
+       "end_deg": 348.8
+      },
+      {
+       "theme": "sculk",
+       "start_deg": 349.0,
+       "end_deg": 359.8
+      }
+     ]
+    }
+   },
+   "proportional": {
+    "start_deg": 222.0,
+    "spans_deg": {
+     "overworld": [
+      222.0,
+      198.0
+     ],
+     "end": [
+      60.0,
+      36.0
+     ],
+     "nether": [
+      96.0,
+      126.0
+     ]
+    },
+    "bisectors_deg": {
+     "overworld": 321.0,
+     "end": 78.0,
+     "nether": 159.0
+    },
+    "deviation_from_equal_thirds_deg": {
+     "overworld": 21.0,
+     "end": 18.0,
+     "nether": -21.0
+    },
+    "max_abs_deviation_deg": 21.0,
+    "sum_squared_deviation_deg2": 1206.0,
+    "wedge_degrees": {
+     "overworld": {
+      "desert_tomb": 18.0,
+      "frozen": 18.0,
+      "ocean_ruin": 18.0,
+      "lush": 18.0,
+      "dripstone": 18.0,
+      "cobblestone": 18.0,
+      "copper": 18.0,
+      "amethyst_geode": 18.0,
+      "stronghold": 18.0,
+      "deepslate": 18.0,
+      "sculk": 18.0
+     },
+     "end": {
+      "end_stone": 18.0,
+      "end_city": 18.0
+     },
+     "nether": {
+      "nether_wastes": 18.0,
+      "soul_sand_valley": 18.0,
+      "crimson_forest": 18.0,
+      "warped_forest": 18.0,
+      "basalt_deltas": 18.0,
+      "nether_fortress": 18.0,
+      "bastion": 18.0
+     }
+    },
+    "rule": "sector widths proportional to the theme counts (11/7/2 of 360 deg); contiguous in the same clockwise order as the equal-thirds ring, rotated to the minimax-optimal bisector placement",
+    "sector_degrees": {
+     "overworld": 198.0,
+     "end": 36.0,
+     "nether": 126.0
+    },
+    "anchoring_alternatives": {
+     "nether_bisector_anchored_at_180_deg": {
+      "bisectors_deg": {
+       "overworld": 342.0,
+       "end": 99.0,
+       "nether": 180.0
+      },
+      "deviation_deg": {
+       "overworld": 42.0,
+       "end": 39.0,
+       "nether": 0.0
+      },
+      "max_abs_deviation_deg": 42.0
+     },
+     "overworld_bisector_anchored_at_300_deg": {
+      "bisectors_deg": {
+       "overworld": 300.0,
+       "end": 57.0,
+       "nether": 138.0
+      },
+      "deviation_deg": {
+       "overworld": 0.0,
+       "end": -3.0,
+       "nether": -42.0
+      },
+      "max_abs_deviation_deg": 42.0
+     }
+    },
+    "path": "renders/composite/proceduraldungeon-all20-radial-dimension-proportional.png",
+    "path_relative_to_round3": "captures-dungeon2/renders/composite/proceduraldungeon-all20-radial-dimension-proportional.png",
+    "size_px": 1024,
+    "self_check": {
+     "check": "sampled pixels must equal the same-coordinate pixel of the owner theme's crop",
+     "samples": 50000,
+     "seed": 20260914,
+     "mismatches": 0,
+     "first_mismatches": [],
+     "direct_pixel_copies": true
+    },
+    "wedge_check": {
+     "check": "the ring's angle -> theme buckets are exactly the documented wedge intervals",
+     "bucket_step_deg": 0.01,
+     "themes": {
+      "desert_tomb": {
+       "sector": "overworld",
+       "wedge_degrees": 18.0,
+       "measured_offset_deg": [
+        0.0,
+        18.0
+       ],
+       "measured_bucket_count": 1800,
+       "expected_offset_deg": [
+        0.0,
+        18.0
+       ],
+       "inside_documented_wedge": true
+      },
+      "frozen": {
+       "sector": "overworld",
+       "wedge_degrees": 18.0,
+       "measured_offset_deg": [
+        18.0,
+        36.0
+       ],
+       "measured_bucket_count": 1800,
+       "expected_offset_deg": [
+        18.0,
+        36.0
+       ],
+       "inside_documented_wedge": true
+      },
+      "ocean_ruin": {
+       "sector": "overworld",
+       "wedge_degrees": 18.0,
+       "measured_offset_deg": [
+        36.0,
+        54.0
+       ],
+       "measured_bucket_count": 1800,
+       "expected_offset_deg": [
+        36.0,
+        54.0
+       ],
+       "inside_documented_wedge": true
+      },
+      "lush": {
+       "sector": "overworld",
+       "wedge_degrees": 18.0,
+       "measured_offset_deg": [
+        54.0,
+        72.0
+       ],
+       "measured_bucket_count": 1800,
+       "expected_offset_deg": [
+        54.0,
+        72.0
+       ],
+       "inside_documented_wedge": true
+      },
+      "dripstone": {
+       "sector": "overworld",
+       "wedge_degrees": 18.0,
+       "measured_offset_deg": [
+        72.0,
+        90.0
+       ],
+       "measured_bucket_count": 1800,
+       "expected_offset_deg": [
+        72.0,
+        90.0
+       ],
+       "inside_documented_wedge": true
+      },
+      "cobblestone": {
+       "sector": "overworld",
+       "wedge_degrees": 18.0,
+       "measured_offset_deg": [
+        90.0,
+        108.0
+       ],
+       "measured_bucket_count": 1800,
+       "expected_offset_deg": [
+        90.0,
+        108.0
+       ],
+       "inside_documented_wedge": true
+      },
+      "copper": {
+       "sector": "overworld",
+       "wedge_degrees": 18.0,
+       "measured_offset_deg": [
+        108.0,
+        126.0
+       ],
+       "measured_bucket_count": 1800,
+       "expected_offset_deg": [
+        108.0,
+        126.0
+       ],
+       "inside_documented_wedge": true
+      },
+      "amethyst_geode": {
+       "sector": "overworld",
+       "wedge_degrees": 18.0,
+       "measured_offset_deg": [
+        126.0,
+        144.0
+       ],
+       "measured_bucket_count": 1800,
+       "expected_offset_deg": [
+        126.0,
+        144.0
+       ],
+       "inside_documented_wedge": true
+      },
+      "stronghold": {
+       "sector": "overworld",
+       "wedge_degrees": 18.0,
+       "measured_offset_deg": [
+        144.0,
+        162.0
+       ],
+       "measured_bucket_count": 1800,
+       "expected_offset_deg": [
+        144.0,
+        162.0
+       ],
+       "inside_documented_wedge": true
+      },
+      "deepslate": {
+       "sector": "overworld",
+       "wedge_degrees": 18.0,
+       "measured_offset_deg": [
+        162.0,
+        180.0
+       ],
+       "measured_bucket_count": 1800,
+       "expected_offset_deg": [
+        162.0,
+        180.0
+       ],
+       "inside_documented_wedge": true
+      },
+      "sculk": {
+       "sector": "overworld",
+       "wedge_degrees": 18.0,
+       "measured_offset_deg": [
+        180.0,
+        198.0
+       ],
+       "measured_bucket_count": 1800,
+       "expected_offset_deg": [
+        180.0,
+        198.0
+       ],
+       "inside_documented_wedge": true
+      },
+      "end_stone": {
+       "sector": "end",
+       "wedge_degrees": 18.0,
+       "measured_offset_deg": [
+        0.0,
+        18.0
+       ],
+       "measured_bucket_count": 1800,
+       "expected_offset_deg": [
+        0.0,
+        18.0
+       ],
+       "inside_documented_wedge": true
+      },
+      "end_city": {
+       "sector": "end",
+       "wedge_degrees": 18.0,
+       "measured_offset_deg": [
+        18.0,
+        36.0
+       ],
+       "measured_bucket_count": 1800,
+       "expected_offset_deg": [
+        18.0,
+        36.0
+       ],
+       "inside_documented_wedge": true
+      },
+      "nether_wastes": {
+       "sector": "nether",
+       "wedge_degrees": 18.0,
+       "measured_offset_deg": [
+        0.0,
+        18.0
+       ],
+       "measured_bucket_count": 1800,
+       "expected_offset_deg": [
+        0.0,
+        18.0
+       ],
+       "inside_documented_wedge": true
+      },
+      "soul_sand_valley": {
+       "sector": "nether",
+       "wedge_degrees": 18.0,
+       "measured_offset_deg": [
+        18.0,
+        36.0
+       ],
+       "measured_bucket_count": 1800,
+       "expected_offset_deg": [
+        18.0,
+        36.0
+       ],
+       "inside_documented_wedge": true
+      },
+      "crimson_forest": {
+       "sector": "nether",
+       "wedge_degrees": 18.0,
+       "measured_offset_deg": [
+        36.0,
+        54.0
+       ],
+       "measured_bucket_count": 1800,
+       "expected_offset_deg": [
+        36.0,
+        54.0
+       ],
+       "inside_documented_wedge": true
+      },
+      "warped_forest": {
+       "sector": "nether",
+       "wedge_degrees": 18.0,
+       "measured_offset_deg": [
+        54.0,
+        72.0
+       ],
+       "measured_bucket_count": 1800,
+       "expected_offset_deg": [
+        54.0,
+        72.0
+       ],
+       "inside_documented_wedge": true
+      },
+      "basalt_deltas": {
+       "sector": "nether",
+       "wedge_degrees": 18.0,
+       "measured_offset_deg": [
+        72.0,
+        90.0
+       ],
+       "measured_bucket_count": 1800,
+       "expected_offset_deg": [
+        72.0,
+        90.0
+       ],
+       "inside_documented_wedge": true
+      },
+      "nether_fortress": {
+       "sector": "nether",
+       "wedge_degrees": 18.0,
+       "measured_offset_deg": [
+        90.0,
+        108.0
+       ],
+       "measured_bucket_count": 1800,
+       "expected_offset_deg": [
+        90.0,
+        108.0
+       ],
+       "inside_documented_wedge": true
+      },
+      "bastion": {
+       "sector": "nether",
+       "wedge_degrees": 18.0,
+       "measured_offset_deg": [
+        108.0,
+        126.0
+       ],
+       "measured_bucket_count": 1800,
+       "expected_offset_deg": [
+        108.0,
+        126.0
+       ],
+       "inside_documented_wedge": true
+      }
+     },
+     "failures": []
+    },
+    "pixel_profile": {
+     "radius_px": 200,
+     "step_deg": 0.2,
+     "ambiguous_samples": 5,
+     "themes_seen": [
+      "amethyst_geode",
+      "basalt_deltas",
+      "bastion",
+      "cobblestone",
+      "copper",
+      "crimson_forest",
+      "deepslate",
+      "desert_tomb",
+      "dripstone",
+      "end_city",
+      "end_stone",
+      "frozen",
+      "lush",
+      "nether_fortress",
+      "nether_wastes",
+      "ocean_ruin",
+      "sculk",
+      "soul_sand_valley",
+      "stronghold",
+      "warped_forest"
+     ],
+     "themes_seen_count": 20,
+     "runs_deg": [
+      {
+       "theme": "amethyst_geode",
+       "start_deg": 0.0,
+       "end_deg": 5.8
+      },
+      {
+       "theme": "stronghold",
+       "start_deg": 6.0,
+       "end_deg": 23.6
+      },
+      {
+       "theme": "deepslate",
+       "start_deg": 23.8,
+       "end_deg": 41.8
+      },
+      {
+       "theme": "sculk",
+       "start_deg": 42.0,
+       "end_deg": 59.8
+      },
+      {
+       "theme": "end_stone",
+       "start_deg": 60.0,
+       "end_deg": 77.6
+      },
+      {
+       "theme": "end_city",
+       "start_deg": 77.8,
+       "end_deg": 95.8
+      },
+      {
+       "theme": "nether_wastes",
+       "start_deg": 96.0,
+       "end_deg": 114.0
+      },
+      {
+       "theme": "soul_sand_valley",
+       "start_deg": 114.2,
+       "end_deg": 132.0
+      },
+      {
+       "theme": "crimson_forest",
+       "start_deg": 132.2,
+       "end_deg": 150.0
+      },
+      {
+       "theme": "warped_forest",
+       "start_deg": 150.2,
+       "end_deg": 168.0
+      },
+      {
+       "theme": "basalt_deltas",
+       "start_deg": 168.2,
+       "end_deg": 186.0
+      },
+      {
+       "theme": "nether_fortress",
+       "start_deg": 186.2,
+       "end_deg": 204.0
+      },
+      {
+       "theme": "bastion",
+       "start_deg": 204.2,
+       "end_deg": 222.2
+      },
+      {
+       "theme": "desert_tomb",
+       "start_deg": 222.4,
+       "end_deg": 240.0
+      },
+      {
+       "theme": "frozen",
+       "start_deg": 240.2,
+       "end_deg": 258.0
+      },
+      {
+       "theme": "ocean_ruin",
+       "start_deg": 258.2,
+       "end_deg": 276.0
+      },
+      {
+       "theme": "lush",
+       "start_deg": 276.2,
+       "end_deg": 294.0
+      },
+      {
+       "theme": "dripstone",
+       "start_deg": 294.2,
+       "end_deg": 312.0
+      },
+      {
+       "theme": "cobblestone",
+       "start_deg": 312.2,
+       "end_deg": 329.8
+      },
+      {
+       "theme": "copper",
+       "start_deg": 330.0,
+       "end_deg": 347.8
+      },
+      {
+       "theme": "amethyst_geode",
+       "start_deg": 348.0,
+       "end_deg": 359.8
+      }
+     ]
+    }
+   }
+  },
+  "legend": "renders/composite/proceduraldungeon-all20-dimension-legend.png",
+  "construction": "identical to build_composite2.py: ring pixels are direct copies of the same-coordinate pixels of each theme's own equal-margin Chunky crop, 0 deg = up, angles increase clockwise",
+  "crop_margin_verification": {
+   "summary": {
+    "checked": 20,
+    "expected": 20,
+    "all_margins_equal_within_axis": true,
+    "crop_side_px_values": [
+     1470,
+     1472
+    ],
+    "identical_crop_side_across_themes": false,
+    "left_right_margins_px_values": [
+     [
+      107,
+      107
+     ],
+     [
+      108,
+      108
+     ]
+    ],
+    "top_bottom_margins_px_values": [
+     [
+      90,
+      90
+     ]
+    ],
+    "themes_padded_by_one_pixel": [
+     "basalt_deltas",
+     "bastion",
+     "cobblestone",
+     "copper",
+     "end_city",
+     "lush",
+     "nether_fortress",
+     "nether_wastes",
+     "sculk",
+     "soul_sand_valley"
+    ],
+    "note": "left == right and top == bottom for every theme.  The square side differs by at most 2 px between themes (1470/1472 of the 1600 px frame, i.e. a 0.13% scale difference) because the measured content box moves by one pixel with the render noise at the silhouette edge - the approved run had the same 1256-1257 x 1290-1292 px spread.  Themes whose measured width and height have different parity are padded by one pixel on the odd axis (chunky_render2.crop_equal_margins) so that the margin pair of that axis stays exactly equal.",
+    "failures": []
+   },
+   "themes": {
+    "desert_tomb": {
+     "output": "renders/crops/desert_tomb-chunky-ortho-1024.png",
+     "output_size": [
+      1024,
+      1024
+     ],
+     "crop_side_px": 1472,
+     "content_wh_px": [
+      1256,
+      1292
+     ],
+     "margins_px_in_crop": {
+      "left": 108,
+      "right": 108,
+      "top": 90,
+      "bottom": 90
+     },
+     "margins_equal_within_axis": true,
+     "margins_equal_between_themes": false,
+     "l_r_margin_equal_across_themes": false,
+     "t_b_margin_equal_across_themes": true,
+     "crop_clamped_to_frame": false
+    },
+    "frozen": {
+     "output": "renders/crops/frozen-chunky-ortho-1024.png",
+     "output_size": [
+      1024,
+      1024
+     ],
+     "crop_side_px": 1470,
+     "content_wh_px": [
+      1256,
+      1290
+     ],
+     "margins_px_in_crop": {
+      "left": 107,
+      "right": 107,
+      "top": 90,
+      "bottom": 90
+     },
+     "margins_equal_within_axis": true,
+     "margins_equal_between_themes": false,
+     "l_r_margin_equal_across_themes": false,
+     "t_b_margin_equal_across_themes": true,
+     "crop_clamped_to_frame": false
+    },
+    "ocean_ruin": {
+     "output": "renders/crops/ocean_ruin-chunky-ortho-1024.png",
+     "output_size": [
+      1024,
+      1024
+     ],
+     "crop_side_px": 1472,
+     "content_wh_px": [
+      1256,
+      1292
+     ],
+     "margins_px_in_crop": {
+      "left": 108,
+      "right": 108,
+      "top": 90,
+      "bottom": 90
+     },
+     "margins_equal_within_axis": true,
+     "margins_equal_between_themes": false,
+     "l_r_margin_equal_across_themes": false,
+     "t_b_margin_equal_across_themes": true,
+     "crop_clamped_to_frame": false
+    },
+    "lush": {
+     "output": "renders/crops/lush-chunky-ortho-1024.png",
+     "output_size": [
+      1024,
+      1024
+     ],
+     "crop_side_px": 1472,
+     "content_wh_px": [
+      1256,
+      1291
+     ],
+     "margins_px_in_crop": {
+      "left": 108,
+      "right": 108,
+      "top": 90,
+      "bottom": 90
+     },
+     "margins_equal_within_axis": true,
+     "margins_equal_between_themes": false,
+     "l_r_margin_equal_across_themes": false,
+     "t_b_margin_equal_across_themes": true,
+     "crop_clamped_to_frame": false
+    },
+    "dripstone": {
+     "output": "renders/crops/dripstone-chunky-ortho-1024.png",
+     "output_size": [
+      1024,
+      1024
+     ],
+     "crop_side_px": 1470,
+     "content_wh_px": [
+      1256,
+      1290
+     ],
+     "margins_px_in_crop": {
+      "left": 107,
+      "right": 107,
+      "top": 90,
+      "bottom": 90
+     },
+     "margins_equal_within_axis": true,
+     "margins_equal_between_themes": false,
+     "l_r_margin_equal_across_themes": false,
+     "t_b_margin_equal_across_themes": true,
+     "crop_clamped_to_frame": false
+    },
+    "cobblestone": {
+     "output": "renders/crops/cobblestone-chunky-ortho-1024.png",
+     "output_size": [
+      1024,
+      1024
+     ],
+     "crop_side_px": 1472,
+     "content_wh_px": [
+      1256,
+      1291
+     ],
+     "margins_px_in_crop": {
+      "left": 108,
+      "right": 108,
+      "top": 90,
+      "bottom": 90
+     },
+     "margins_equal_within_axis": true,
+     "margins_equal_between_themes": false,
+     "l_r_margin_equal_across_themes": false,
+     "t_b_margin_equal_across_themes": true,
+     "crop_clamped_to_frame": false
+    },
+    "copper": {
+     "output": "renders/crops/copper-chunky-ortho-1024.png",
+     "output_size": [
+      1024,
+      1024
+     ],
+     "crop_side_px": 1472,
+     "content_wh_px": [
+      1256,
+      1291
+     ],
+     "margins_px_in_crop": {
+      "left": 108,
+      "right": 108,
+      "top": 90,
+      "bottom": 90
+     },
+     "margins_equal_within_axis": true,
+     "margins_equal_between_themes": false,
+     "l_r_margin_equal_across_themes": false,
+     "t_b_margin_equal_across_themes": true,
+     "crop_clamped_to_frame": false
+    },
+    "amethyst_geode": {
+     "output": "renders/crops/amethyst_geode-chunky-ortho-1024.png",
+     "output_size": [
+      1024,
+      1024
+     ],
+     "crop_side_px": 1472,
+     "content_wh_px": [
+      1256,
+      1292
+     ],
+     "margins_px_in_crop": {
+      "left": 108,
+      "right": 108,
+      "top": 90,
+      "bottom": 90
+     },
+     "margins_equal_within_axis": true,
+     "margins_equal_between_themes": false,
+     "l_r_margin_equal_across_themes": false,
+     "t_b_margin_equal_across_themes": true,
+     "crop_clamped_to_frame": false
+    },
+    "stronghold": {
+     "output": "renders/crops/stronghold-chunky-ortho-1024.png",
+     "output_size": [
+      1024,
+      1024
+     ],
+     "crop_side_px": 1472,
+     "content_wh_px": [
+      1256,
+      1292
+     ],
+     "margins_px_in_crop": {
+      "left": 108,
+      "right": 108,
+      "top": 90,
+      "bottom": 90
+     },
+     "margins_equal_within_axis": true,
+     "margins_equal_between_themes": false,
+     "l_r_margin_equal_across_themes": false,
+     "t_b_margin_equal_across_themes": true,
+     "crop_clamped_to_frame": false
+    },
+    "deepslate": {
+     "output": "renders/crops/deepslate-chunky-ortho-1024.png",
+     "output_size": [
+      1024,
+      1024
+     ],
+     "crop_side_px": 1472,
+     "content_wh_px": [
+      1256,
+      1292
+     ],
+     "margins_px_in_crop": {
+      "left": 108,
+      "right": 108,
+      "top": 90,
+      "bottom": 90
+     },
+     "margins_equal_within_axis": true,
+     "margins_equal_between_themes": false,
+     "l_r_margin_equal_across_themes": false,
+     "t_b_margin_equal_across_themes": true,
+     "crop_clamped_to_frame": false
+    },
+    "sculk": {
+     "output": "renders/crops/sculk-chunky-ortho-1024.png",
+     "output_size": [
+      1024,
+      1024
+     ],
+     "crop_side_px": 1472,
+     "content_wh_px": [
+      1256,
+      1291
+     ],
+     "margins_px_in_crop": {
+      "left": 108,
+      "right": 108,
+      "top": 90,
+      "bottom": 90
+     },
+     "margins_equal_within_axis": true,
+     "margins_equal_between_themes": false,
+     "l_r_margin_equal_across_themes": false,
+     "t_b_margin_equal_across_themes": true,
+     "crop_clamped_to_frame": false
+    },
+    "end_stone": {
+     "output": "renders/crops/end_stone-chunky-ortho-1024.png",
+     "output_size": [
+      1024,
+      1024
+     ],
+     "crop_side_px": 1472,
+     "content_wh_px": [
+      1256,
+      1292
+     ],
+     "margins_px_in_crop": {
+      "left": 108,
+      "right": 108,
+      "top": 90,
+      "bottom": 90
+     },
+     "margins_equal_within_axis": true,
+     "margins_equal_between_themes": false,
+     "l_r_margin_equal_across_themes": false,
+     "t_b_margin_equal_across_themes": true,
+     "crop_clamped_to_frame": false
+    },
+    "end_city": {
+     "output": "renders/crops/end_city-chunky-ortho-1024.png",
+     "output_size": [
+      1024,
+      1024
+     ],
+     "crop_side_px": 1472,
+     "content_wh_px": [
+      1257,
+      1292
+     ],
+     "margins_px_in_crop": {
+      "left": 107,
+      "right": 107,
+      "top": 90,
+      "bottom": 90
+     },
+     "margins_equal_within_axis": true,
+     "margins_equal_between_themes": false,
+     "l_r_margin_equal_across_themes": false,
+     "t_b_margin_equal_across_themes": true,
+     "crop_clamped_to_frame": false
+    },
+    "nether_wastes": {
+     "output": "renders/crops/nether_wastes-chunky-ortho-1024.png",
+     "output_size": [
+      1024,
+      1024
+     ],
+     "crop_side_px": 1472,
+     "content_wh_px": [
+      1256,
+      1291
+     ],
+     "margins_px_in_crop": {
+      "left": 108,
+      "right": 108,
+      "top": 90,
+      "bottom": 90
+     },
+     "margins_equal_within_axis": true,
+     "margins_equal_between_themes": false,
+     "l_r_margin_equal_across_themes": false,
+     "t_b_margin_equal_across_themes": true,
+     "crop_clamped_to_frame": false
+    },
+    "soul_sand_valley": {
+     "output": "renders/crops/soul_sand_valley-chunky-ortho-1024.png",
+     "output_size": [
+      1024,
+      1024
+     ],
+     "crop_side_px": 1472,
+     "content_wh_px": [
+      1256,
+      1291
+     ],
+     "margins_px_in_crop": {
+      "left": 108,
+      "right": 108,
+      "top": 90,
+      "bottom": 90
+     },
+     "margins_equal_within_axis": true,
+     "margins_equal_between_themes": false,
+     "l_r_margin_equal_across_themes": false,
+     "t_b_margin_equal_across_themes": true,
+     "crop_clamped_to_frame": false
+    },
+    "crimson_forest": {
+     "output": "renders/crops/crimson_forest-chunky-ortho-1024.png",
+     "output_size": [
+      1024,
+      1024
+     ],
+     "crop_side_px": 1472,
+     "content_wh_px": [
+      1256,
+      1292
+     ],
+     "margins_px_in_crop": {
+      "left": 108,
+      "right": 108,
+      "top": 90,
+      "bottom": 90
+     },
+     "margins_equal_within_axis": true,
+     "margins_equal_between_themes": false,
+     "l_r_margin_equal_across_themes": false,
+     "t_b_margin_equal_across_themes": true,
+     "crop_clamped_to_frame": false
+    },
+    "warped_forest": {
+     "output": "renders/crops/warped_forest-chunky-ortho-1024.png",
+     "output_size": [
+      1024,
+      1024
+     ],
+     "crop_side_px": 1472,
+     "content_wh_px": [
+      1256,
+      1292
+     ],
+     "margins_px_in_crop": {
+      "left": 108,
+      "right": 108,
+      "top": 90,
+      "bottom": 90
+     },
+     "margins_equal_within_axis": true,
+     "margins_equal_between_themes": false,
+     "l_r_margin_equal_across_themes": false,
+     "t_b_margin_equal_across_themes": true,
+     "crop_clamped_to_frame": false
+    },
+    "basalt_deltas": {
+     "output": "renders/crops/basalt_deltas-chunky-ortho-1024.png",
+     "output_size": [
+      1024,
+      1024
+     ],
+     "crop_side_px": 1472,
+     "content_wh_px": [
+      1256,
+      1291
+     ],
+     "margins_px_in_crop": {
+      "left": 108,
+      "right": 108,
+      "top": 90,
+      "bottom": 90
+     },
+     "margins_equal_within_axis": true,
+     "margins_equal_between_themes": false,
+     "l_r_margin_equal_across_themes": false,
+     "t_b_margin_equal_across_themes": true,
+     "crop_clamped_to_frame": false
+    },
+    "nether_fortress": {
+     "output": "renders/crops/nether_fortress-chunky-ortho-1024.png",
+     "output_size": [
+      1024,
+      1024
+     ],
+     "crop_side_px": 1472,
+     "content_wh_px": [
+      1256,
+      1291
+     ],
+     "margins_px_in_crop": {
+      "left": 108,
+      "right": 108,
+      "top": 90,
+      "bottom": 90
+     },
+     "margins_equal_within_axis": true,
+     "margins_equal_between_themes": false,
+     "l_r_margin_equal_across_themes": false,
+     "t_b_margin_equal_across_themes": true,
+     "crop_clamped_to_frame": false
+    },
+    "bastion": {
+     "output": "renders/crops/bastion-chunky-ortho-1024.png",
+     "output_size": [
+      1024,
+      1024
+     ],
+     "crop_side_px": 1472,
+     "content_wh_px": [
+      1256,
+      1291
+     ],
+     "margins_px_in_crop": {
+      "left": 108,
+      "right": 108,
+      "top": 90,
+      "bottom": 90
+     },
+     "margins_equal_within_axis": true,
+     "margins_equal_between_themes": false,
+     "l_r_margin_equal_across_themes": false,
+     "t_b_margin_equal_across_themes": true,
+     "crop_clamped_to_frame": false
+    }
+   }
+  },
+  "render": {
+   "renderer": "Chunky 2.5.0-SNAPSHOT.478.g527cb4a standalone, PARALLEL (orthographic) projection",
+   "render_size_px": 1600,
+   "samples_per_pixel": 64,
+   "render_threads": 8,
+   "crop_out_size_px": 1024,
+   "crop_margin_fraction": 0.07,
+   "crop_rule": "square crop around the measured dungeon content box, equal left/right and equal top/bottom margins, LANCZOS resize to 1024 px",
+   "projection": "PARALLEL",
+   "fov_blocks": 236.08,
+   "camera_position": [
+    2107.2833,
+    337.476,
+    -186.2835
+   ],
+   "camera_yaw_pitch_deg": [
+    45.0,
+    30.0
+   ],
+   "sun": {
+    "altitude_deg": 50,
+    "azimuth_deg": 225,
+    "clouds": false
+   },
+   "worlds": "worlds/<theme> staged into work/worlds/<theme> by chunky_render2.py stage",
+   "note": "re-rendered with the settings of the approved run - no resolution or sample reduction: 1600 px / 64 spp / 8 render threads, identical camera, fov and 7% crop margins, so the two new rings stay pixel-comparable with the primary ring. The 21 frames (20 themes + the empty-sky reference) took about 48 minutes of wall clock instead of the ~10 minutes of the approved run, because the shared Chunky CPU quota was tightened from 8 to 4 cores (CPUWeight 50 -> 20) while the batch was running; the thread count was not raised and no process left the render cgroup.",
+   "evidence": "evidence/chunky-render-log.json (per theme: command, content box, crop box, margins); evidence/chunky-render-log-approved-run.json (the pruned approved-run log, kept for provenance)"
+  },
+  "theme_colours_note": "mean_rgb / lab_hue_deg / lab_chroma are measured on the re-rendered frames with the same metric as ordering-report.json -> theme_colours (mask = pixels differing from the empty-sky reference render)"
+ }
+}

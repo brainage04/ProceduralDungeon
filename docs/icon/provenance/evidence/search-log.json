@@ -1,0 +1,1099 @@
+{
+ "candidates": [
+  {
+   "chunk_x": 0,
+   "chunk_z": 0,
+   "start_y": 200,
+   "world_seed": 20260910,
+   "rng_seed": 20260910,
+   "position": [
+    0.5,
+    200.0,
+    0.5
+   ],
+   "pieces": 752,
+   "seconds": 30.8,
+   "bbox": [
+    -71,
+    127,
+    -72,
+    72,
+    205,
+    71
+   ],
+   "blocks": 236535,
+   "size": [
+    144,
+    79,
+    144
+   ],
+   "label": "cx0cz0y200t5d20",
+   "tier": 5,
+   "depth": 20
+  },
+  {
+   "chunk_x": 12,
+   "chunk_z": 0,
+   "start_y": 200,
+   "world_seed": 20260910,
+   "rng_seed": 12609781867858715766,
+   "position": [
+    192.5,
+    200.0,
+    0.5
+   ],
+   "pieces": 983,
+   "seconds": 30.3,
+   "bbox": [
+    120,
+    129,
+    -72,
+    264,
+    205,
+    73
+   ],
+   "blocks": 300402,
+   "size": [
+    145,
+    77,
+    146
+   ],
+   "label": "cx12cz0y200t5d20",
+   "tier": 5,
+   "depth": 20
+  },
+  {
+   "chunk_x": 24,
+   "chunk_z": 0,
+   "start_y": 200,
+   "world_seed": 20260910,
+   "rng_seed": 6772819662022226078,
+   "position": [
+    384.5,
+    200.0,
+    0.5
+   ],
+   "tier": 5,
+   "depth": 20,
+   "pieces": 921,
+   "seconds": 33.4,
+   "bbox": [
+    312,
+    126,
+    -72,
+    455,
+    205,
+    71
+   ],
+   "blocks": 282462,
+   "size": [
+    144,
+    80,
+    144
+   ],
+   "label": "cx24cz0y200t5d20"
+  },
+  {
+   "chunk_x": 36,
+   "chunk_z": 0,
+   "start_y": 200,
+   "world_seed": 20260910,
+   "rng_seed": 935857456184675622,
+   "position": [
+    576.5,
+    200.0,
+    0.5
+   ],
+   "tier": 5,
+   "depth": 20,
+   "pieces": 988,
+   "seconds": 38.3,
+   "bbox": [
+    504,
+    128,
+    -72,
+    648,
+    205,
+    72
+   ],
+   "blocks": 305996,
+   "size": [
+    145,
+    78,
+    145
+   ],
+   "label": "cx36cz0y200t5d20"
+  },
+  {
+   "chunk_x": 48,
+   "chunk_z": 0,
+   "start_y": 200,
+   "world_seed": 20260910,
+   "rng_seed": 13545639324063897934,
+   "position": [
+    768.5,
+    200.0,
+    0.5
+   ],
+   "tier": 5,
+   "depth": 20,
+   "pieces": 825,
+   "seconds": 30.2,
+   "bbox": [
+    697,
+    127,
+    -72,
+    840,
+    205,
+    71
+   ],
+   "blocks": 258307,
+   "size": [
+    144,
+    79,
+    144
+   ],
+   "label": "cx48cz0y200t5d20"
+  },
+  {
+   "chunk_x": 60,
+   "chunk_z": 0,
+   "start_y": 200,
+   "world_seed": 20260910,
+   "rng_seed": 7708677118226355606,
+   "position": [
+    960.5,
+    200.0,
+    0.5
+   ],
+   "tier": 5,
+   "depth": 20,
+   "pieces": 770,
+   "seconds": 30.7,
+   "bbox": [
+    889,
+    126,
+    -72,
+    1032,
+    205,
+    71
+   ],
+   "blocks": 239925,
+   "size": [
+    144,
+    80,
+    144
+   ],
+   "label": "cx60cz0y200t5d20"
+  },
+  {
+   "chunk_x": 72,
+   "chunk_z": 0,
+   "start_y": 200,
+   "world_seed": 20260910,
+   "rng_seed": 1871714912423436862,
+   "position": [
+    1152.5,
+    200.0,
+    0.5
+   ],
+   "tier": 5,
+   "depth": 20,
+   "pieces": 1161,
+   "seconds": 31.2,
+   "bbox": [
+    1080,
+    126,
+    -72,
+    1223,
+    254,
+    70
+   ],
+   "blocks": 364692,
+   "size": [
+    144,
+    129,
+    143
+   ],
+   "label": "cx72cz0y200t5d20"
+  },
+  {
+   "chunk_x": 84,
+   "chunk_z": 0,
+   "start_y": 200,
+   "world_seed": 20260910,
+   "rng_seed": 14481496780303973958,
+   "position": [
+    1344.5,
+    200.0,
+    0.5
+   ],
+   "tier": 5,
+   "depth": 20,
+   "pieces": 1089,
+   "seconds": 25.6,
+   "bbox": [
+    1272,
+    127,
+    -72,
+    1416,
+    205,
+    72
+   ],
+   "blocks": 334873,
+   "size": [
+    145,
+    79,
+    145
+   ],
+   "label": "cx84cz0y200t5d20"
+  },
+  {
+   "chunk_x": 96,
+   "chunk_z": 0,
+   "start_y": 200,
+   "world_seed": 20260910,
+   "rng_seed": 8644534574465370862,
+   "position": [
+    1536.5,
+    200.0,
+    0.5
+   ],
+   "tier": 5,
+   "depth": 20,
+   "pieces": 944,
+   "seconds": 25.9,
+   "bbox": [
+    1464,
+    126,
+    -72,
+    1608,
+    219,
+    72
+   ],
+   "blocks": 297198,
+   "size": [
+    145,
+    94,
+    145
+   ],
+   "label": "cx96cz0y200t5d20"
+  },
+  {
+   "chunk_x": 108,
+   "chunk_z": 0,
+   "start_y": 200,
+   "world_seed": 20260910,
+   "rng_seed": 2807572368627828534,
+   "position": [
+    1728.5,
+    200.0,
+    0.5
+   ],
+   "tier": 5,
+   "depth": 20,
+   "pieces": 837,
+   "seconds": 20.3,
+   "bbox": [
+    1656,
+    129,
+    -72,
+    1800,
+    240,
+    71
+   ],
+   "blocks": 259838,
+   "size": [
+    145,
+    112,
+    144
+   ],
+   "label": "cx108cz0y200t5d20"
+  },
+  {
+   "chunk_x": 120,
+   "chunk_z": 0,
+   "start_y": 200,
+   "world_seed": 20260910,
+   "rng_seed": 15417354236509279070,
+   "position": [
+    1920.5,
+    200.0,
+    0.5
+   ],
+   "tier": 5,
+   "depth": 20,
+   "pieces": 1148,
+   "seconds": 25.8,
+   "bbox": [
+    1848,
+    127,
+    -72,
+    1992,
+    261,
+    72
+   ],
+   "blocks": 364699,
+   "size": [
+    145,
+    135,
+    145
+   ],
+   "label": "cx120cz0y200t5d20"
+  },
+  {
+   "chunk_x": 132,
+   "chunk_z": 0,
+   "start_y": 200,
+   "world_seed": 20260910,
+   "rng_seed": 9580392030671630310,
+   "position": [
+    2112.5,
+    200.0,
+    0.5
+   ],
+   "tier": 5,
+   "depth": 20,
+   "pieces": 959,
+   "seconds": 26.2,
+   "bbox": [
+    2040,
+    127,
+    -72,
+    2184,
+    205,
+    72
+   ],
+   "blocks": 303676,
+   "size": [
+    145,
+    79,
+    145
+   ],
+   "label": "cx132cz0y200t5d20"
+  },
+  {
+   "chunk_x": 144,
+   "chunk_z": 0,
+   "start_y": 200,
+   "world_seed": 20260910,
+   "rng_seed": 3743429824799489038,
+   "position": [
+    2304.5,
+    200.0,
+    0.5
+   ],
+   "tier": 5,
+   "depth": 20,
+   "pieces": 961,
+   "seconds": 25.4,
+   "bbox": [
+    2232,
+    126,
+    -72,
+    2376,
+    219,
+    72
+   ],
+   "blocks": 304876,
+   "size": [
+    145,
+    94,
+    145
+   ],
+   "label": "cx144cz0y200t5d20"
+  },
+  {
+   "chunk_x": 156,
+   "chunk_z": 0,
+   "start_y": 200,
+   "world_seed": 20260910,
+   "rng_seed": 16353211692679874646,
+   "position": [
+    2496.5,
+    200.0,
+    0.5
+   ],
+   "tier": 5,
+   "depth": 20,
+   "pieces": 965,
+   "seconds": 25.8,
+   "bbox": [
+    2424,
+    126,
+    -72,
+    2568,
+    205,
+    71
+   ],
+   "blocks": 302208,
+   "size": [
+    145,
+    80,
+    144
+   ],
+   "label": "cx156cz0y200t5d20"
+  },
+  {
+   "chunk_x": 168,
+   "chunk_z": 0,
+   "start_y": 200,
+   "world_seed": 20260910,
+   "rng_seed": 10516249486842987774,
+   "position": [
+    2688.5,
+    200.0,
+    0.5
+   ],
+   "tier": 5,
+   "depth": 20,
+   "pieces": 1043,
+   "seconds": 25.2,
+   "bbox": [
+    2616,
+    129,
+    -72,
+    2760,
+    219,
+    72
+   ],
+   "blocks": 323955,
+   "size": [
+    145,
+    91,
+    145
+   ],
+   "label": "cx168cz0y200t5d20"
+  },
+  {
+   "chunk_x": 180,
+   "chunk_z": 0,
+   "start_y": 200,
+   "world_seed": 20260910,
+   "rng_seed": 4679287281004400902,
+   "position": [
+    2880.5,
+    200.0,
+    0.5
+   ],
+   "tier": 5,
+   "depth": 20,
+   "pieces": 1007,
+   "seconds": 25.5,
+   "bbox": [
+    2808,
+    127,
+    -72,
+    2952,
+    205,
+    72
+   ],
+   "blocks": 312689,
+   "size": [
+    145,
+    79,
+    145
+   ],
+   "label": "cx180cz0y200t5d20"
+  },
+  {
+   "chunk_x": 12,
+   "chunk_z": 12,
+   "start_y": 200,
+   "world_seed": 20260910,
+   "rng_seed": 851316457238018830,
+   "position": [
+    192.5,
+    200.0,
+    192.5
+   ],
+   "tier": 5,
+   "depth": 20,
+   "pieces": 1089,
+   "seconds": 25.8,
+   "bbox": [
+    120,
+    128,
+    120,
+    264,
+    219,
+    263
+   ],
+   "blocks": 336405,
+   "size": [
+    145,
+    92,
+    144
+   ],
+   "label": "cx12cz12y200t5d20"
+  },
+  {
+   "chunk_x": 24,
+   "chunk_z": 12,
+   "start_y": 200,
+   "world_seed": 20260910,
+   "rng_seed": 17929790657331818470,
+   "position": [
+    384.5,
+    200.0,
+    192.5
+   ],
+   "tier": 5,
+   "depth": 20,
+   "pieces": 1038,
+   "seconds": 26.2,
+   "bbox": [
+    312,
+    129,
+    120,
+    456,
+    219,
+    264
+   ],
+   "blocks": 321048,
+   "size": [
+    145,
+    91,
+    145
+   ],
+   "label": "cx24cz12y200t5d20"
+  },
+  {
+   "chunk_x": 36,
+   "chunk_z": 12,
+   "start_y": 200,
+   "world_seed": 20260910,
+   "rng_seed": 12236948037627613790,
+   "position": [
+    576.5,
+    200.0,
+    192.5
+   ],
+   "tier": 5,
+   "depth": 20,
+   "pieces": 806,
+   "seconds": 27.4,
+   "bbox": [
+    504,
+    129,
+    122,
+    648,
+    205,
+    264
+   ],
+   "blocks": 259814,
+   "size": [
+    145,
+    77,
+    143
+   ],
+   "label": "cx36cz12y200t5d20"
+  },
+  {
+   "chunk_x": 48,
+   "chunk_z": 12,
+   "start_y": 200,
+   "world_seed": 20260910,
+   "rng_seed": 2221766862274348598,
+   "position": [
+    768.5,
+    200.0,
+    192.5
+   ],
+   "tier": 5,
+   "depth": 20,
+   "pieces": 1276,
+   "seconds": 31.5,
+   "bbox": [
+    696,
+    126,
+    122,
+    840,
+    254,
+    264
+   ],
+   "blocks": 397169,
+   "size": [
+    145,
+    129,
+    143
+   ],
+   "label": "cx48cz12y200t5d20"
+  },
+  {
+   "chunk_x": 60,
+   "chunk_z": 12,
+   "start_y": 200,
+   "world_seed": 20260910,
+   "rng_seed": 14975650724093659886,
+   "position": [
+    960.5,
+    200.0,
+    192.5
+   ],
+   "tier": 5,
+   "depth": 20,
+   "pieces": 813,
+   "seconds": 27.7,
+   "bbox": [
+    889,
+    129,
+    120,
+    1032,
+    205,
+    264
+   ],
+   "blocks": 250660,
+   "size": [
+    144,
+    77,
+    145
+   ],
+   "label": "cx60cz12y200t5d20"
+  },
+  {
+   "chunk_x": 72,
+   "chunk_z": 12,
+   "start_y": 200,
+   "world_seed": 20260910,
+   "rng_seed": 13607380850444352838,
+   "position": [
+    1152.5,
+    200.0,
+    192.5
+   ],
+   "tier": 5,
+   "depth": 20,
+   "pieces": 978,
+   "seconds": 26.0,
+   "bbox": [
+    1080,
+    127,
+    120,
+    1224,
+    205,
+    264
+   ],
+   "blocks": 302184,
+   "size": [
+    145,
+    79,
+    145
+   ],
+   "label": "cx72cz12y200t5d20"
+  },
+  {
+   "chunk_x": 12,
+   "chunk_z": 24,
+   "start_y": 200,
+   "world_seed": 20260910,
+   "rng_seed": 16475264511207070342,
+   "position": [
+    192.5,
+    200.0,
+    384.5
+   ],
+   "tier": 5,
+   "depth": 20,
+   "pieces": 854,
+   "seconds": 26.6,
+   "bbox": [
+    120,
+    126,
+    312,
+    263,
+    205,
+    456
+   ],
+   "blocks": 267973,
+   "size": [
+    144,
+    80,
+    145
+   ],
+   "label": "cx12cz24y200t5d20"
+  },
+  {
+   "chunk_x": 24,
+   "chunk_z": 24,
+   "start_y": 200,
+   "world_seed": 20260910,
+   "rng_seed": 1702632914461920878,
+   "position": [
+    384.5,
+    200.0,
+    384.5
+   ],
+   "tier": 5,
+   "depth": 20,
+   "pieces": 855,
+   "seconds": 26.7,
+   "bbox": [
+    312,
+    127,
+    312,
+    456,
+    205,
+    456
+   ],
+   "blocks": 270195,
+   "size": [
+    145,
+    79,
+    145
+   ],
+   "label": "cx24cz24y200t5d20"
+  },
+  {
+   "chunk_x": 36,
+   "chunk_z": 24,
+   "start_y": 200,
+   "world_seed": 20260910,
+   "rng_seed": 5089561679611589590,
+   "position": [
+    576.5,
+    200.0,
+    384.5
+   ],
+   "tier": 5,
+   "depth": 20,
+   "pieces": 939,
+   "seconds": 23.7,
+   "bbox": [
+    504,
+    129,
+    312,
+    648,
+    205,
+    456
+   ],
+   "blocks": 291780,
+   "size": [
+    145,
+    77,
+    145
+   ],
+   "label": "cx36cz24y200t5d20"
+  },
+  {
+   "chunk_x": 48,
+   "chunk_z": 24,
+   "start_y": 200,
+   "world_seed": 20260910,
+   "rng_seed": 17412837240934868926,
+   "position": [
+    768.5,
+    200.0,
+    384.5
+   ],
+   "tier": 5,
+   "depth": 20,
+   "pieces": 971,
+   "seconds": 26.7,
+   "bbox": [
+    696,
+    127,
+    312,
+    840,
+    205,
+    456
+   ],
+   "blocks": 302843,
+   "size": [
+    145,
+    79,
+    145
+   ],
+   "label": "cx48cz24y200t5d20"
+  },
+  {
+   "chunk_x": 0,
+   "chunk_z": 0,
+   "start_y": 150,
+   "control": "start height 150 (RNG of chunk 0,0)",
+   "world_seed": 20260910,
+   "rng_seed": 20260910,
+   "position": [
+    0.5,
+    150.0,
+    0.5
+   ],
+   "tier": 5,
+   "depth": 20,
+   "pieces": 752,
+   "seconds": 22.8,
+   "bbox": [
+    -71,
+    79,
+    -72,
+    72,
+    205,
+    71
+   ],
+   "blocks": 453848,
+   "size": [
+    144,
+    127,
+    144
+   ],
+   "label": "cx0cz0y150t5d20"
+  },
+  {
+   "chunk_x": 0,
+   "chunk_z": 0,
+   "start_y": 250,
+   "control": "start height 250 (RNG of chunk 0,0)",
+   "world_seed": 20260910,
+   "rng_seed": 20260910,
+   "position": [
+    0.5,
+    250.0,
+    0.5
+   ],
+   "tier": 5,
+   "depth": 20,
+   "pieces": 752,
+   "seconds": 22.9,
+   "bbox": [
+    -71,
+    65,
+    -72,
+    72,
+    255,
+    71
+   ],
+   "blocks": 671536,
+   "size": [
+    144,
+    191,
+    144
+   ],
+   "label": "cx0cz0y250t5d20"
+  },
+  {
+   "chunk_x": 60,
+   "chunk_z": 24,
+   "start_y": 200,
+   "tier": 5,
+   "depth": 16,
+   "control": "tier 5 depth 16",
+   "world_seed": 20260910,
+   "rng_seed": 2353039524561021798,
+   "position": [
+    960.5,
+    200.0,
+    384.5
+   ],
+   "pieces": 920,
+   "seconds": 22.8,
+   "bbox": [
+    888,
+    129,
+    312,
+    1032,
+    205,
+    456
+   ],
+   "blocks": 288998,
+   "size": [
+    145,
+    77,
+    145
+   ],
+   "label": "cx60cz24y200t5d16"
+  },
+  {
+   "chunk_x": 72,
+   "chunk_z": 24,
+   "start_y": 200,
+   "tier": 5,
+   "depth": 12,
+   "control": "tier 5 depth 12",
+   "world_seed": 20260910,
+   "rng_seed": 6027152001491885262,
+   "position": [
+    1152.5,
+    200.0,
+    384.5
+   ],
+   "pieces": 332,
+   "seconds": 20.8,
+   "bbox": [
+    1089,
+    136,
+    313,
+    1224,
+    205,
+    454
+   ],
+   "blocks": 107546,
+   "size": [
+    136,
+    70,
+    142
+   ],
+   "label": "cx72cz24y200t5d12"
+  },
+  {
+   "chunk_x": 84,
+   "chunk_z": 24,
+   "start_y": 200,
+   "tier": 5,
+   "depth": 8,
+   "control": "tier 5 depth 8",
+   "world_seed": 20260910,
+   "rng_seed": 9414080800992952502,
+   "position": [
+    1344.5,
+    200.0,
+    384.5
+   ],
+   "pieces": 182,
+   "seconds": 20.8,
+   "bbox": [
+    1291,
+    164,
+    325,
+    1415,
+    205,
+    436
+   ],
+   "blocks": 60887,
+   "size": [
+    125,
+    42,
+    112
+   ],
+   "label": "cx84cz24y200t5d8"
+  },
+  {
+   "chunk_x": 96,
+   "chunk_z": 24,
+   "start_y": 200,
+   "tier": 4,
+   "depth": 20,
+   "control": "tier 4 depth 20",
+   "world_seed": 20260910,
+   "rng_seed": 4443533724502389790,
+   "position": [
+    1536.5,
+    200.0,
+    384.5
+   ],
+   "pieces": 344,
+   "seconds": 21.8,
+   "bbox": [
+    1464,
+    128,
+    314,
+    1607,
+    205,
+    456
+   ],
+   "blocks": 117709,
+   "size": [
+    144,
+    78,
+    143
+   ],
+   "label": "cx96cz24y200t4d20"
+  },
+  {
+   "chunk_x": 108,
+   "chunk_z": 24,
+   "start_y": 200,
+   "tier": 4,
+   "depth": 16,
+   "control": "tier 4 depth 16",
+   "world_seed": 20260910,
+   "rng_seed": 7830515334929594822,
+   "position": [
+    1728.5,
+    200.0,
+    384.5
+   ],
+   "pieces": 253,
+   "seconds": 20.6,
+   "bbox": [
+    1669,
+    129,
+    314,
+    1789,
+    205,
+    455
+   ],
+   "blocks": 86329,
+   "size": [
+    121,
+    77,
+    142
+   ],
+   "label": "cx108cz24y200t4d16"
+  },
+  {
+   "chunk_x": 120,
+   "chunk_z": 24,
+   "start_y": 200,
+   "tier": 3,
+   "depth": 20,
+   "control": "tier 3 depth 20",
+   "world_seed": 20260910,
+   "rng_seed": 11504557374422019502,
+   "position": [
+    1920.5,
+    200.0,
+    384.5
+   ],
+   "pieces": 127,
+   "seconds": 20.8,
+   "bbox": [
+    1869,
+    135,
+    345,
+    1984,
+    205,
+    447
+   ],
+   "blocks": 47312,
+   "size": [
+    116,
+    71,
+    103
+   ],
+   "label": "cx120cz24y200t3d20"
+  },
+  {
+   "chunk_x": 132,
+   "chunk_z": 24,
+   "start_y": 200,
+   "tier": 3,
+   "depth": 14,
+   "control": "tier 3 depth 14",
+   "world_seed": 20260910,
+   "rng_seed": 14891565373128429846,
+   "position": [
+    2112.5,
+    200.0,
+    384.5
+   ],
+   "pieces": 67,
+   "seconds": 21.5,
+   "bbox": [
+    2064,
+    150,
+    370,
+    2172,
+    205,
+    435
+   ],
+   "blocks": 23074,
+   "size": [
+    109,
+    56,
+    66
+   ],
+   "label": "cx132cz24y200t3d14"
+  }
+ ],
+ "setupDone": true
+}

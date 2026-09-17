@@ -1,0 +1,860 @@
+{
+ "entries": [
+  {
+   "project": "ProceduralDungeon",
+   "label": "Seed search log: every candidate's RNG seed, bbox, size and timing",
+   "path": "captures-dungeon2/evidence/search-log.json",
+   "method": "Machine written evidence captured while producing the images",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "Seed search analysis: render-plane silhouette, squareness and margins per candidate",
+   "path": "captures-dungeon2/evidence/search-analysis.json",
+   "method": "Machine written evidence captured while producing the images",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "Seed report: candidates tried, bounding boxes, margins, winner and structural findings",
+   "path": "captures-dungeon2/evidence/seeds-report.json",
+   "method": "Machine written evidence captured while producing the images",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "Effective dungeon RNG seed per candidate, cross-checked against a JVM run of setLargeFeatureSeed",
+   "path": "captures-dungeon2/evidence/rng-seedcheck-java.txt",
+   "method": "Machine written evidence captured while producing the images",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "Per-theme generation log: piece counts, seconds, bounding boxes, copied regions",
+   "path": "captures-dungeon2/evidence/generation-log.json",
+   "method": "Machine written evidence captured while producing the images",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "Identical-geometry verification across the 20 themes (piece counts, silhouettes, voxel diff)",
+   "path": "captures-dungeon2/evidence/geometry-verification.json",
+   "method": "Machine written evidence captured while producing the images",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "Chunky render log: camera model, content boxes, crop boxes and measured margins per theme",
+   "path": "captures-dungeon2/evidence/chunky-render-log.json",
+   "method": "Machine written evidence captured while producing the images",
+   "source": "captures-dungeon2 session",
+   "notes": "re-render of the 20 themes + the empty-sky reference with the approved settings (1600 px, 64 spp, 8 render threads); the pruned approved-run log is kept separately"
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "Chunky render log of the approved run (provenance copy, frames were pruned)",
+   "path": "captures-dungeon2/evidence/chunky-render-log-approved-run.json",
+   "method": "Machine written evidence captured while producing the images",
+   "source": "captures-dungeon2 session",
+   "notes": "describes the crops the primary composite was built from; kept because the re-render rewrites evidence/chunky-render-log.json"
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "Ordering report: theme colours, the three round-3 wedge orderings, the contrast objective result and the dimension grouping (sector order, biome sort keys, per-sector theme lists, sector angles and crop-margin verification)",
+   "path": "captures-dungeon2/evidence/ordering-report.json",
+   "method": "Machine written evidence captured while producing the images",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "Step-by-step search driver log",
+   "path": "captures-dungeon2/evidence/search-progress.log",
+   "method": "Machine written evidence captured while producing the images",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "Search run stdout (35 candidates)",
+   "path": "captures-dungeon2/evidence/search-batch.log",
+   "method": "Machine written evidence captured while producing the images",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "Candidate silhouette analysis stdout",
+   "path": "captures-dungeon2/evidence/analysis-batch.log",
+   "method": "Machine written evidence captured while producing the images",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "20-theme generation stdout",
+   "path": "captures-dungeon2/evidence/themes-batch.log",
+   "method": "Machine written evidence captured while producing the images",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "20-theme Chunky render stdout (re-render of the 20 themes)",
+   "path": "captures-dungeon2/evidence/render-batch.log",
+   "method": "Machine written evidence captured while producing the images",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "20-theme Chunky render stdout of the approved run (provenance copy)",
+   "path": "captures-dungeon2/evidence/render-batch-approved-run.log",
+   "method": "Machine written evidence captured while producing the images",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "World-load navigation record for the isolated client",
+   "path": "captures-dungeon2/evidence/world-load-navigation.json",
+   "method": "Machine written evidence captured while producing the images",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "Runtime/isolated-environment setup record",
+   "path": "captures-dungeon2/evidence/runtime-setup.json",
+   "method": "Machine written evidence captured while producing the images",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "Final capture world setup record",
+   "path": "captures-dungeon2/evidence/final-world-setup.json",
+   "method": "Machine written evidence captured while producing the images",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "Runtime cleanup record: isolated sink unloaded, client and Xvfb stopped",
+   "path": "captures-dungeon2/evidence/cleanup.json",
+   "method": "Machine written evidence captured while producing the images",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "Cleanup record of the dimension-composite rerun: no display, sink or server started, render processes gone, CPU policy honoured",
+   "path": "captures-dungeon2/evidence/cleanup-render-rerun.json",
+   "method": "Machine written evidence captured while producing the images",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "cobblestone: saved dungeon regions of the rendered world copy",
+   "path": "captures-dungeon2/worlds/cobblestone/region",
+   "method": "Minecraft 26.2 region files written by the isolated client capture",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "deepslate: saved dungeon regions of the rendered world copy",
+   "path": "captures-dungeon2/worlds/deepslate/region",
+   "method": "Minecraft 26.2 region files written by the isolated client capture",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "sculk: saved dungeon regions of the rendered world copy",
+   "path": "captures-dungeon2/worlds/sculk/region",
+   "method": "Minecraft 26.2 region files written by the isolated client capture",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "desert_tomb: saved dungeon regions of the rendered world copy",
+   "path": "captures-dungeon2/worlds/desert_tomb/region",
+   "method": "Minecraft 26.2 region files written by the isolated client capture",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "lush: saved dungeon regions of the rendered world copy",
+   "path": "captures-dungeon2/worlds/lush/region",
+   "method": "Minecraft 26.2 region files written by the isolated client capture",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "dripstone: saved dungeon regions of the rendered world copy",
+   "path": "captures-dungeon2/worlds/dripstone/region",
+   "method": "Minecraft 26.2 region files written by the isolated client capture",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "frozen: saved dungeon regions of the rendered world copy",
+   "path": "captures-dungeon2/worlds/frozen/region",
+   "method": "Minecraft 26.2 region files written by the isolated client capture",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "ocean_ruin: saved dungeon regions of the rendered world copy",
+   "path": "captures-dungeon2/worlds/ocean_ruin/region",
+   "method": "Minecraft 26.2 region files written by the isolated client capture",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "amethyst_geode: saved dungeon regions of the rendered world copy",
+   "path": "captures-dungeon2/worlds/amethyst_geode/region",
+   "method": "Minecraft 26.2 region files written by the isolated client capture",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "copper: saved dungeon regions of the rendered world copy",
+   "path": "captures-dungeon2/worlds/copper/region",
+   "method": "Minecraft 26.2 region files written by the isolated client capture",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "stronghold: saved dungeon regions of the rendered world copy",
+   "path": "captures-dungeon2/worlds/stronghold/region",
+   "method": "Minecraft 26.2 region files written by the isolated client capture",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "nether_wastes: saved dungeon regions of the rendered world copy",
+   "path": "captures-dungeon2/worlds/nether_wastes/region",
+   "method": "Minecraft 26.2 region files written by the isolated client capture",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "crimson_forest: saved dungeon regions of the rendered world copy",
+   "path": "captures-dungeon2/worlds/crimson_forest/region",
+   "method": "Minecraft 26.2 region files written by the isolated client capture",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "warped_forest: saved dungeon regions of the rendered world copy",
+   "path": "captures-dungeon2/worlds/warped_forest/region",
+   "method": "Minecraft 26.2 region files written by the isolated client capture",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "basalt_deltas: saved dungeon regions of the rendered world copy",
+   "path": "captures-dungeon2/worlds/basalt_deltas/region",
+   "method": "Minecraft 26.2 region files written by the isolated client capture",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "soul_sand_valley: saved dungeon regions of the rendered world copy",
+   "path": "captures-dungeon2/worlds/soul_sand_valley/region",
+   "method": "Minecraft 26.2 region files written by the isolated client capture",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "nether_fortress: saved dungeon regions of the rendered world copy",
+   "path": "captures-dungeon2/worlds/nether_fortress/region",
+   "method": "Minecraft 26.2 region files written by the isolated client capture",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "bastion: saved dungeon regions of the rendered world copy",
+   "path": "captures-dungeon2/worlds/bastion/region",
+   "method": "Minecraft 26.2 region files written by the isolated client capture",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "end_stone: saved dungeon regions of the rendered world copy",
+   "path": "captures-dungeon2/worlds/end_stone/region",
+   "method": "Minecraft 26.2 region files written by the isolated client capture",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "end_city: saved dungeon regions of the rendered world copy",
+   "path": "captures-dungeon2/worlds/end_city/region",
+   "method": "Minecraft 26.2 region files written by the isolated client capture",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "Search world: the 35 candidate dungeons of the seed search (region data)",
+   "path": "captures-dungeon2/work/search-world/dimensions/minecraft/overworld/region",
+   "method": "Minecraft 26.2 region files of the seed-search world",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "cobblestone: equal-margin Chunky crop (1024 px)",
+   "path": "captures-dungeon2/renders/crops/cobblestone-chunky-ortho-1024.png",
+   "method": "Chunky 2.5.0-SNAPSHOT.478.g527cb4a, PARALLEL projection, equal-margin crop",
+   "source": "captures-dungeon2 session",
+   "notes": "re-rendered from worlds/<theme> with the settings of the approved run"
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "deepslate: equal-margin Chunky crop (1024 px)",
+   "path": "captures-dungeon2/renders/crops/deepslate-chunky-ortho-1024.png",
+   "method": "Chunky 2.5.0-SNAPSHOT.478.g527cb4a, PARALLEL projection, equal-margin crop",
+   "source": "captures-dungeon2 session",
+   "notes": "re-rendered from worlds/<theme> with the settings of the approved run"
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "sculk: equal-margin Chunky crop (1024 px)",
+   "path": "captures-dungeon2/renders/crops/sculk-chunky-ortho-1024.png",
+   "method": "Chunky 2.5.0-SNAPSHOT.478.g527cb4a, PARALLEL projection, equal-margin crop",
+   "source": "captures-dungeon2 session",
+   "notes": "re-rendered from worlds/<theme> with the settings of the approved run"
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "desert_tomb: equal-margin Chunky crop (1024 px)",
+   "path": "captures-dungeon2/renders/crops/desert_tomb-chunky-ortho-1024.png",
+   "method": "Chunky 2.5.0-SNAPSHOT.478.g527cb4a, PARALLEL projection, equal-margin crop",
+   "source": "captures-dungeon2 session",
+   "notes": "re-rendered from worlds/<theme> with the settings of the approved run"
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "lush: equal-margin Chunky crop (1024 px)",
+   "path": "captures-dungeon2/renders/crops/lush-chunky-ortho-1024.png",
+   "method": "Chunky 2.5.0-SNAPSHOT.478.g527cb4a, PARALLEL projection, equal-margin crop",
+   "source": "captures-dungeon2 session",
+   "notes": "re-rendered from worlds/<theme> with the settings of the approved run"
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "dripstone: equal-margin Chunky crop (1024 px)",
+   "path": "captures-dungeon2/renders/crops/dripstone-chunky-ortho-1024.png",
+   "method": "Chunky 2.5.0-SNAPSHOT.478.g527cb4a, PARALLEL projection, equal-margin crop",
+   "source": "captures-dungeon2 session",
+   "notes": "re-rendered from worlds/<theme> with the settings of the approved run"
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "frozen: equal-margin Chunky crop (1024 px)",
+   "path": "captures-dungeon2/renders/crops/frozen-chunky-ortho-1024.png",
+   "method": "Chunky 2.5.0-SNAPSHOT.478.g527cb4a, PARALLEL projection, equal-margin crop",
+   "source": "captures-dungeon2 session",
+   "notes": "re-rendered from worlds/<theme> with the settings of the approved run"
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "ocean_ruin: equal-margin Chunky crop (1024 px)",
+   "path": "captures-dungeon2/renders/crops/ocean_ruin-chunky-ortho-1024.png",
+   "method": "Chunky 2.5.0-SNAPSHOT.478.g527cb4a, PARALLEL projection, equal-margin crop",
+   "source": "captures-dungeon2 session",
+   "notes": "re-rendered from worlds/<theme> with the settings of the approved run"
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "amethyst_geode: equal-margin Chunky crop (1024 px)",
+   "path": "captures-dungeon2/renders/crops/amethyst_geode-chunky-ortho-1024.png",
+   "method": "Chunky 2.5.0-SNAPSHOT.478.g527cb4a, PARALLEL projection, equal-margin crop",
+   "source": "captures-dungeon2 session",
+   "notes": "re-rendered from worlds/<theme> with the settings of the approved run"
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "copper: equal-margin Chunky crop (1024 px)",
+   "path": "captures-dungeon2/renders/crops/copper-chunky-ortho-1024.png",
+   "method": "Chunky 2.5.0-SNAPSHOT.478.g527cb4a, PARALLEL projection, equal-margin crop",
+   "source": "captures-dungeon2 session",
+   "notes": "re-rendered from worlds/<theme> with the settings of the approved run"
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "stronghold: equal-margin Chunky crop (1024 px)",
+   "path": "captures-dungeon2/renders/crops/stronghold-chunky-ortho-1024.png",
+   "method": "Chunky 2.5.0-SNAPSHOT.478.g527cb4a, PARALLEL projection, equal-margin crop",
+   "source": "captures-dungeon2 session",
+   "notes": "re-rendered from worlds/<theme> with the settings of the approved run"
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "nether_wastes: equal-margin Chunky crop (1024 px)",
+   "path": "captures-dungeon2/renders/crops/nether_wastes-chunky-ortho-1024.png",
+   "method": "Chunky 2.5.0-SNAPSHOT.478.g527cb4a, PARALLEL projection, equal-margin crop",
+   "source": "captures-dungeon2 session",
+   "notes": "re-rendered from worlds/<theme> with the settings of the approved run"
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "crimson_forest: equal-margin Chunky crop (1024 px)",
+   "path": "captures-dungeon2/renders/crops/crimson_forest-chunky-ortho-1024.png",
+   "method": "Chunky 2.5.0-SNAPSHOT.478.g527cb4a, PARALLEL projection, equal-margin crop",
+   "source": "captures-dungeon2 session",
+   "notes": "re-rendered from worlds/<theme> with the settings of the approved run"
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "warped_forest: equal-margin Chunky crop (1024 px)",
+   "path": "captures-dungeon2/renders/crops/warped_forest-chunky-ortho-1024.png",
+   "method": "Chunky 2.5.0-SNAPSHOT.478.g527cb4a, PARALLEL projection, equal-margin crop",
+   "source": "captures-dungeon2 session",
+   "notes": "re-rendered from worlds/<theme> with the settings of the approved run"
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "basalt_deltas: equal-margin Chunky crop (1024 px)",
+   "path": "captures-dungeon2/renders/crops/basalt_deltas-chunky-ortho-1024.png",
+   "method": "Chunky 2.5.0-SNAPSHOT.478.g527cb4a, PARALLEL projection, equal-margin crop",
+   "source": "captures-dungeon2 session",
+   "notes": "re-rendered from worlds/<theme> with the settings of the approved run"
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "soul_sand_valley: equal-margin Chunky crop (1024 px)",
+   "path": "captures-dungeon2/renders/crops/soul_sand_valley-chunky-ortho-1024.png",
+   "method": "Chunky 2.5.0-SNAPSHOT.478.g527cb4a, PARALLEL projection, equal-margin crop",
+   "source": "captures-dungeon2 session",
+   "notes": "re-rendered from worlds/<theme> with the settings of the approved run"
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "nether_fortress: equal-margin Chunky crop (1024 px)",
+   "path": "captures-dungeon2/renders/crops/nether_fortress-chunky-ortho-1024.png",
+   "method": "Chunky 2.5.0-SNAPSHOT.478.g527cb4a, PARALLEL projection, equal-margin crop",
+   "source": "captures-dungeon2 session",
+   "notes": "re-rendered from worlds/<theme> with the settings of the approved run"
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "bastion: equal-margin Chunky crop (1024 px)",
+   "path": "captures-dungeon2/renders/crops/bastion-chunky-ortho-1024.png",
+   "method": "Chunky 2.5.0-SNAPSHOT.478.g527cb4a, PARALLEL projection, equal-margin crop",
+   "source": "captures-dungeon2 session",
+   "notes": "re-rendered from worlds/<theme> with the settings of the approved run"
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "end_stone: equal-margin Chunky crop (1024 px)",
+   "path": "captures-dungeon2/renders/crops/end_stone-chunky-ortho-1024.png",
+   "method": "Chunky 2.5.0-SNAPSHOT.478.g527cb4a, PARALLEL projection, equal-margin crop",
+   "source": "captures-dungeon2 session",
+   "notes": "re-rendered from worlds/<theme> with the settings of the approved run"
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "end_city: equal-margin Chunky crop (1024 px)",
+   "path": "captures-dungeon2/renders/crops/end_city-chunky-ortho-1024.png",
+   "method": "Chunky 2.5.0-SNAPSHOT.478.g527cb4a, PARALLEL projection, equal-margin crop",
+   "source": "captures-dungeon2 session",
+   "notes": "re-rendered from worlds/<theme> with the settings of the approved run"
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "cobblestone: full 1600 px Chunky frame (uncropped)",
+   "path": "captures-dungeon2/renders/frames/cobblestone.png",
+   "method": "Chunky 2.5.0-SNAPSHOT.478.g527cb4a, PARALLEL projection, equal-margin crop",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "deepslate: full 1600 px Chunky frame (uncropped)",
+   "path": "captures-dungeon2/renders/frames/deepslate.png",
+   "method": "Chunky 2.5.0-SNAPSHOT.478.g527cb4a, PARALLEL projection, equal-margin crop",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "sculk: full 1600 px Chunky frame (uncropped)",
+   "path": "captures-dungeon2/renders/frames/sculk.png",
+   "method": "Chunky 2.5.0-SNAPSHOT.478.g527cb4a, PARALLEL projection, equal-margin crop",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "desert_tomb: full 1600 px Chunky frame (uncropped)",
+   "path": "captures-dungeon2/renders/frames/desert_tomb.png",
+   "method": "Chunky 2.5.0-SNAPSHOT.478.g527cb4a, PARALLEL projection, equal-margin crop",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "lush: full 1600 px Chunky frame (uncropped)",
+   "path": "captures-dungeon2/renders/frames/lush.png",
+   "method": "Chunky 2.5.0-SNAPSHOT.478.g527cb4a, PARALLEL projection, equal-margin crop",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "dripstone: full 1600 px Chunky frame (uncropped)",
+   "path": "captures-dungeon2/renders/frames/dripstone.png",
+   "method": "Chunky 2.5.0-SNAPSHOT.478.g527cb4a, PARALLEL projection, equal-margin crop",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "frozen: full 1600 px Chunky frame (uncropped)",
+   "path": "captures-dungeon2/renders/frames/frozen.png",
+   "method": "Chunky 2.5.0-SNAPSHOT.478.g527cb4a, PARALLEL projection, equal-margin crop",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "ocean_ruin: full 1600 px Chunky frame (uncropped)",
+   "path": "captures-dungeon2/renders/frames/ocean_ruin.png",
+   "method": "Chunky 2.5.0-SNAPSHOT.478.g527cb4a, PARALLEL projection, equal-margin crop",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "amethyst_geode: full 1600 px Chunky frame (uncropped)",
+   "path": "captures-dungeon2/renders/frames/amethyst_geode.png",
+   "method": "Chunky 2.5.0-SNAPSHOT.478.g527cb4a, PARALLEL projection, equal-margin crop",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "copper: full 1600 px Chunky frame (uncropped)",
+   "path": "captures-dungeon2/renders/frames/copper.png",
+   "method": "Chunky 2.5.0-SNAPSHOT.478.g527cb4a, PARALLEL projection, equal-margin crop",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "stronghold: full 1600 px Chunky frame (uncropped)",
+   "path": "captures-dungeon2/renders/frames/stronghold.png",
+   "method": "Chunky 2.5.0-SNAPSHOT.478.g527cb4a, PARALLEL projection, equal-margin crop",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "nether_wastes: full 1600 px Chunky frame (uncropped)",
+   "path": "captures-dungeon2/renders/frames/nether_wastes.png",
+   "method": "Chunky 2.5.0-SNAPSHOT.478.g527cb4a, PARALLEL projection, equal-margin crop",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "crimson_forest: full 1600 px Chunky frame (uncropped)",
+   "path": "captures-dungeon2/renders/frames/crimson_forest.png",
+   "method": "Chunky 2.5.0-SNAPSHOT.478.g527cb4a, PARALLEL projection, equal-margin crop",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "warped_forest: full 1600 px Chunky frame (uncropped)",
+   "path": "captures-dungeon2/renders/frames/warped_forest.png",
+   "method": "Chunky 2.5.0-SNAPSHOT.478.g527cb4a, PARALLEL projection, equal-margin crop",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "basalt_deltas: full 1600 px Chunky frame (uncropped)",
+   "path": "captures-dungeon2/renders/frames/basalt_deltas.png",
+   "method": "Chunky 2.5.0-SNAPSHOT.478.g527cb4a, PARALLEL projection, equal-margin crop",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "soul_sand_valley: full 1600 px Chunky frame (uncropped)",
+   "path": "captures-dungeon2/renders/frames/soul_sand_valley.png",
+   "method": "Chunky 2.5.0-SNAPSHOT.478.g527cb4a, PARALLEL projection, equal-margin crop",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "nether_fortress: full 1600 px Chunky frame (uncropped)",
+   "path": "captures-dungeon2/renders/frames/nether_fortress.png",
+   "method": "Chunky 2.5.0-SNAPSHOT.478.g527cb4a, PARALLEL projection, equal-margin crop",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "bastion: full 1600 px Chunky frame (uncropped)",
+   "path": "captures-dungeon2/renders/frames/bastion.png",
+   "method": "Chunky 2.5.0-SNAPSHOT.478.g527cb4a, PARALLEL projection, equal-margin crop",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "end_stone: full 1600 px Chunky frame (uncropped)",
+   "path": "captures-dungeon2/renders/frames/end_stone.png",
+   "method": "Chunky 2.5.0-SNAPSHOT.478.g527cb4a, PARALLEL projection, equal-margin crop",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "end_city: full 1600 px Chunky frame (uncropped)",
+   "path": "captures-dungeon2/renders/frames/end_city.png",
+   "method": "Chunky 2.5.0-SNAPSHOT.478.g527cb4a, PARALLEL projection, equal-margin crop",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "Empty-sky reference frame used for the content bounding boxes",
+   "path": "captures-dungeon2/renders/frames/_empty.png",
+   "method": "Chunky 2.5.0-SNAPSHOT.478.g527cb4a, PARALLEL projection, equal-margin crop",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "Radial composite, round-3 theme order",
+   "path": "captures-dungeon2/renders/composite/proceduraldungeon-all20-radial-theme.png",
+   "method": "20 equal 18-degree wedges, clockwise from the top, direct pixel copies",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "Radial composite, rainbow order by theme colour",
+   "path": "captures-dungeon2/renders/composite/proceduraldungeon-all20-radial-rainbow.png",
+   "method": "20 equal 18-degree wedges, clockwise from the top, direct pixel copies",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "Radial composite, max-contrast cycle order",
+   "path": "captures-dungeon2/renders/composite/proceduraldungeon-all20-radial-contrast.png",
+   "method": "20 equal 18-degree wedges, clockwise from the top, direct pixel copies",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "Contact sheet of all 20 themes in theme order",
+   "path": "captures-dungeon2/renders/composite/proceduraldungeon-all20-contact-sheet.png",
+   "method": "Labelled PIL contact sheet",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "Side-by-side comparison of the three wedge orderings",
+   "path": "captures-dungeon2/renders/composite/proceduraldungeon-all20-ordering-comparison.png",
+   "method": "Labelled PIL contact sheet",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "Dimension composite, equal thirds (Overworld 120 deg top-left, End 120 deg top-right, Nether 120 deg bottom; 10.909/17.143/60 deg wedges inside a sector)",
+   "path": "captures-dungeon2/renders/composite/proceduraldungeon-all20-radial-dimension-equalthirds.png",
+   "method": "Rotationally sliced wedge ring, direct pixel copies of the 20 equal-margin Chunky crops (same construction as the primary composite)",
+   "source": "captures-dungeon2 session",
+   "notes": "ordered by the dimension grouping in evidence/ordering-report.json"
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "Dimension composite, sectors proportional to the theme counts (198/126/36 deg, every theme an 18 deg wedge; minimax-rotated bisector placement)",
+   "path": "captures-dungeon2/renders/composite/proceduraldungeon-all20-radial-dimension-proportional.png",
+   "method": "Rotationally sliced wedge ring, direct pixel copies of the 20 equal-margin Chunky crops (same construction as the primary composite)",
+   "source": "captures-dungeon2 session",
+   "notes": "ordered by the dimension grouping in evidence/ordering-report.json"
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "Legend for the dimension grouping: sector diagram, both rings and the per-group theme order with biome, layer and wedge widths",
+   "path": "captures-dungeon2/renders/composite/proceduraldungeon-all20-dimension-legend.png",
+   "method": "Rotationally sliced wedge ring, direct pixel copies of the 20 equal-margin Chunky crops (same construction as the primary composite)",
+   "source": "captures-dungeon2 session",
+   "notes": "ordered by the dimension grouping in evidence/ordering-report.json"
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "Script: analyze_candidates.py",
+   "path": "captures-dungeon2/scripts/analyze_candidates.py",
+   "method": "Reproducible pipeline script",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "Script: anvil.py",
+   "path": "captures-dungeon2/scripts/anvil.py",
+   "method": "Reproducible pipeline script",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "Script: build_composite2.py",
+   "path": "captures-dungeon2/scripts/build_composite2.py",
+   "method": "Reproducible pipeline script",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "Script: build_dimension_composite2.py",
+   "path": "captures-dungeon2/scripts/build_dimension_composite2.py",
+   "method": "Reproducible pipeline script",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "Script: build_manifest2.py",
+   "path": "captures-dungeon2/scripts/build_manifest2.py",
+   "method": "Reproducible pipeline script",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "Script: build_seeds_report.py",
+   "path": "captures-dungeon2/scripts/build_seeds_report.py",
+   "method": "Reproducible pipeline script",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "Script: chunky_render2.py",
+   "path": "captures-dungeon2/scripts/chunky_render2.py",
+   "method": "Reproducible pipeline script",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "Script: cleanup.py",
+   "path": "captures-dungeon2/scripts/cleanup.py",
+   "method": "Reproducible pipeline script",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "Script: cleanup_render_rerun.py",
+   "path": "captures-dungeon2/scripts/cleanup_render_rerun.py",
+   "method": "Reproducible pipeline script",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "Script: drive_search.py",
+   "path": "captures-dungeon2/scripts/drive_search.py",
+   "method": "Reproducible pipeline script",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "Script: drive_themes2.py",
+   "path": "captures-dungeon2/scripts/drive_themes2.py",
+   "method": "Reproducible pipeline script",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "Script: make_final_world.py",
+   "path": "captures-dungeon2/scripts/make_final_world.py",
+   "method": "Reproducible pipeline script",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "Script: navigate_world.py",
+   "path": "captures-dungeon2/scripts/navigate_world.py",
+   "method": "Reproducible pipeline script",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "Script: nbt.py",
+   "path": "captures-dungeon2/scripts/nbt.py",
+   "method": "Reproducible pipeline script",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "Script: setup_runtime.py",
+   "path": "captures-dungeon2/scripts/setup_runtime.py",
+   "method": "Reproducible pipeline script",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "Script: verify_geometry2.py",
+   "path": "captures-dungeon2/scripts/verify_geometry2.py",
+   "method": "Reproducible pipeline script",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  },
+  {
+   "project": "ProceduralDungeon",
+   "label": "Script: launch-dungeons2.sh",
+   "path": "captures-dungeon2/scripts/launch-dungeons2.sh",
+   "method": "Reproducible pipeline script",
+   "source": "captures-dungeon2 session",
+   "notes": ""
+  }
+ ]
+}

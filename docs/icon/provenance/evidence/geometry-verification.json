@@ -1,0 +1,634 @@
+{
+ "referenceTheme": "cobblestone",
+ "window": [
+  1840,
+  0,
+  -80,
+  2000,
+  319,
+  80
+ ],
+ "themes": 20,
+ "identicalPieceCount": true,
+ "pieceCount": 1148,
+ "identicalBoundingBox": true,
+ "boundingBox": [
+  1848,
+  129,
+  -72,
+  1992,
+  261,
+  72
+ ],
+ "maxSymmetricDifferencePercent": 0.4363,
+ "worstTheme": "nether_wastes",
+ "symmetricDifferenceExplanation": "voxel differences are theme-palette effects, not layout differences: a theme whose palette maps a block to lava/water loses that voxel from the structural set (fluids are excluded because they keep flowing after placement).  missingOccupiedByFluids counts exactly those voxels for each theme.",
+ "fluidsExcluded": [
+  "minecraft:flowing_lava",
+  "minecraft:flowing_water",
+  "minecraft:lava",
+  "minecraft:water"
+ ],
+ "results": [
+  {
+   "theme": "cobblestone",
+   "pieces": 1148,
+   "voxels": 364391,
+   "fluidVoxels": 1362,
+   "bbox": [
+    1848,
+    129,
+    -72,
+    1992,
+    261,
+    72
+   ],
+   "occupied_bbox_including_fluids": [
+    1848,
+    0,
+    -72,
+    1992,
+    261,
+    72
+   ],
+   "footprintHash": "d2b61b228071700f985d2db613450ac654e6f83466f3ee285e75f312168d81d1",
+   "elevationXHash": "859f530410811a5d0e90778af49ead85e3b8b339d75c6f126cda865bb279e103",
+   "elevationZHash": "4a953588d6a4db14d447e8850f5025451501fdbefafc1668e7e703601beae6d1",
+   "voxelsOnlyHere": 0,
+   "voxelsMissing": 0,
+   "symmetricDifference": 0,
+   "symmetricDifferencePercent": 0.0,
+   "missingOccupiedByFluids": 0
+  },
+  {
+   "theme": "deepslate",
+   "pieces": 1148,
+   "voxels": 364378,
+   "fluidVoxels": 1082,
+   "bbox": [
+    1848,
+    129,
+    -72,
+    1992,
+    261,
+    72
+   ],
+   "occupied_bbox_including_fluids": [
+    1848,
+    0,
+    -72,
+    1992,
+    261,
+    72
+   ],
+   "footprintHash": "d2b61b228071700f985d2db613450ac654e6f83466f3ee285e75f312168d81d1",
+   "elevationXHash": "859f530410811a5d0e90778af49ead85e3b8b339d75c6f126cda865bb279e103",
+   "elevationZHash": "4a953588d6a4db14d447e8850f5025451501fdbefafc1668e7e703601beae6d1",
+   "voxelsOnlyHere": 0,
+   "voxelsMissing": 13,
+   "symmetricDifference": 13,
+   "symmetricDifferencePercent": 0.0036,
+   "missingOccupiedByFluids": 0
+  },
+  {
+   "theme": "sculk",
+   "pieces": 1148,
+   "voxels": 364376,
+   "fluidVoxels": 949,
+   "bbox": [
+    1848,
+    129,
+    -72,
+    1992,
+    261,
+    72
+   ],
+   "occupied_bbox_including_fluids": [
+    1848,
+    0,
+    -72,
+    1992,
+    261,
+    72
+   ],
+   "footprintHash": "d2b61b228071700f985d2db613450ac654e6f83466f3ee285e75f312168d81d1",
+   "elevationXHash": "859f530410811a5d0e90778af49ead85e3b8b339d75c6f126cda865bb279e103",
+   "elevationZHash": "4a953588d6a4db14d447e8850f5025451501fdbefafc1668e7e703601beae6d1",
+   "voxelsOnlyHere": 0,
+   "voxelsMissing": 15,
+   "symmetricDifference": 15,
+   "symmetricDifferencePercent": 0.0041,
+   "missingOccupiedByFluids": 0
+  },
+  {
+   "theme": "desert_tomb",
+   "pieces": 1148,
+   "voxels": 364378,
+   "fluidVoxels": 809,
+   "bbox": [
+    1848,
+    129,
+    -72,
+    1992,
+    261,
+    72
+   ],
+   "occupied_bbox_including_fluids": [
+    1848,
+    0,
+    -72,
+    1992,
+    261,
+    72
+   ],
+   "footprintHash": "d2b61b228071700f985d2db613450ac654e6f83466f3ee285e75f312168d81d1",
+   "elevationXHash": "859f530410811a5d0e90778af49ead85e3b8b339d75c6f126cda865bb279e103",
+   "elevationZHash": "4a953588d6a4db14d447e8850f5025451501fdbefafc1668e7e703601beae6d1",
+   "voxelsOnlyHere": 0,
+   "voxelsMissing": 13,
+   "symmetricDifference": 13,
+   "symmetricDifferencePercent": 0.0036,
+   "missingOccupiedByFluids": 0
+  },
+  {
+   "theme": "lush",
+   "pieces": 1148,
+   "voxels": 364377,
+   "fluidVoxels": 677,
+   "bbox": [
+    1848,
+    129,
+    -72,
+    1992,
+    261,
+    72
+   ],
+   "occupied_bbox_including_fluids": [
+    1848,
+    0,
+    -72,
+    1992,
+    261,
+    72
+   ],
+   "footprintHash": "d2b61b228071700f985d2db613450ac654e6f83466f3ee285e75f312168d81d1",
+   "elevationXHash": "859f530410811a5d0e90778af49ead85e3b8b339d75c6f126cda865bb279e103",
+   "elevationZHash": "4a953588d6a4db14d447e8850f5025451501fdbefafc1668e7e703601beae6d1",
+   "voxelsOnlyHere": 0,
+   "voxelsMissing": 14,
+   "symmetricDifference": 14,
+   "symmetricDifferencePercent": 0.0038,
+   "missingOccupiedByFluids": 0
+  },
+  {
+   "theme": "dripstone",
+   "pieces": 1148,
+   "voxels": 364378,
+   "fluidVoxels": 534,
+   "bbox": [
+    1848,
+    129,
+    -72,
+    1992,
+    261,
+    72
+   ],
+   "occupied_bbox_including_fluids": [
+    1848,
+    0,
+    -72,
+    1992,
+    261,
+    72
+   ],
+   "footprintHash": "d2b61b228071700f985d2db613450ac654e6f83466f3ee285e75f312168d81d1",
+   "elevationXHash": "859f530410811a5d0e90778af49ead85e3b8b339d75c6f126cda865bb279e103",
+   "elevationZHash": "4a953588d6a4db14d447e8850f5025451501fdbefafc1668e7e703601beae6d1",
+   "voxelsOnlyHere": 0,
+   "voxelsMissing": 13,
+   "symmetricDifference": 13,
+   "symmetricDifferencePercent": 0.0036,
+   "missingOccupiedByFluids": 0
+  },
+  {
+   "theme": "frozen",
+   "pieces": 1148,
+   "voxels": 364378,
+   "fluidVoxels": 402,
+   "bbox": [
+    1848,
+    129,
+    -72,
+    1992,
+    261,
+    72
+   ],
+   "occupied_bbox_including_fluids": [
+    1848,
+    0,
+    -72,
+    1992,
+    261,
+    72
+   ],
+   "footprintHash": "d2b61b228071700f985d2db613450ac654e6f83466f3ee285e75f312168d81d1",
+   "elevationXHash": "859f530410811a5d0e90778af49ead85e3b8b339d75c6f126cda865bb279e103",
+   "elevationZHash": "4a953588d6a4db14d447e8850f5025451501fdbefafc1668e7e703601beae6d1",
+   "voxelsOnlyHere": 0,
+   "voxelsMissing": 13,
+   "symmetricDifference": 13,
+   "symmetricDifferencePercent": 0.0036,
+   "missingOccupiedByFluids": 0
+  },
+  {
+   "theme": "ocean_ruin",
+   "pieces": 1148,
+   "voxels": 364378,
+   "fluidVoxels": 397,
+   "bbox": [
+    1848,
+    129,
+    -72,
+    1992,
+    261,
+    72
+   ],
+   "occupied_bbox_including_fluids": [
+    1848,
+    0,
+    -72,
+    1992,
+    261,
+    72
+   ],
+   "footprintHash": "d2b61b228071700f985d2db613450ac654e6f83466f3ee285e75f312168d81d1",
+   "elevationXHash": "859f530410811a5d0e90778af49ead85e3b8b339d75c6f126cda865bb279e103",
+   "elevationZHash": "4a953588d6a4db14d447e8850f5025451501fdbefafc1668e7e703601beae6d1",
+   "voxelsOnlyHere": 0,
+   "voxelsMissing": 13,
+   "symmetricDifference": 13,
+   "symmetricDifferencePercent": 0.0036,
+   "missingOccupiedByFluids": 0
+  },
+  {
+   "theme": "amethyst_geode",
+   "pieces": 1148,
+   "voxels": 364378,
+   "fluidVoxels": 394,
+   "bbox": [
+    1848,
+    129,
+    -72,
+    1992,
+    261,
+    72
+   ],
+   "occupied_bbox_including_fluids": [
+    1848,
+    0,
+    -72,
+    1992,
+    261,
+    72
+   ],
+   "footprintHash": "d2b61b228071700f985d2db613450ac654e6f83466f3ee285e75f312168d81d1",
+   "elevationXHash": "859f530410811a5d0e90778af49ead85e3b8b339d75c6f126cda865bb279e103",
+   "elevationZHash": "4a953588d6a4db14d447e8850f5025451501fdbefafc1668e7e703601beae6d1",
+   "voxelsOnlyHere": 0,
+   "voxelsMissing": 13,
+   "symmetricDifference": 13,
+   "symmetricDifferencePercent": 0.0036,
+   "missingOccupiedByFluids": 0
+  },
+  {
+   "theme": "copper",
+   "pieces": 1148,
+   "voxels": 364378,
+   "fluidVoxels": 397,
+   "bbox": [
+    1848,
+    129,
+    -72,
+    1992,
+    261,
+    72
+   ],
+   "occupied_bbox_including_fluids": [
+    1848,
+    0,
+    -72,
+    1992,
+    261,
+    72
+   ],
+   "footprintHash": "d2b61b228071700f985d2db613450ac654e6f83466f3ee285e75f312168d81d1",
+   "elevationXHash": "859f530410811a5d0e90778af49ead85e3b8b339d75c6f126cda865bb279e103",
+   "elevationZHash": "4a953588d6a4db14d447e8850f5025451501fdbefafc1668e7e703601beae6d1",
+   "voxelsOnlyHere": 0,
+   "voxelsMissing": 13,
+   "symmetricDifference": 13,
+   "symmetricDifferencePercent": 0.0036,
+   "missingOccupiedByFluids": 0
+  },
+  {
+   "theme": "stronghold",
+   "pieces": 1148,
+   "voxels": 364378,
+   "fluidVoxels": 398,
+   "bbox": [
+    1848,
+    129,
+    -72,
+    1992,
+    261,
+    72
+   ],
+   "occupied_bbox_including_fluids": [
+    1848,
+    0,
+    -72,
+    1992,
+    261,
+    72
+   ],
+   "footprintHash": "d2b61b228071700f985d2db613450ac654e6f83466f3ee285e75f312168d81d1",
+   "elevationXHash": "859f530410811a5d0e90778af49ead85e3b8b339d75c6f126cda865bb279e103",
+   "elevationZHash": "4a953588d6a4db14d447e8850f5025451501fdbefafc1668e7e703601beae6d1",
+   "voxelsOnlyHere": 0,
+   "voxelsMissing": 13,
+   "symmetricDifference": 13,
+   "symmetricDifferencePercent": 0.0036,
+   "missingOccupiedByFluids": 0
+  },
+  {
+   "theme": "nether_wastes",
+   "pieces": 1148,
+   "voxels": 362801,
+   "fluidVoxels": 7072,
+   "bbox": [
+    1848,
+    129,
+    -72,
+    1992,
+    261,
+    72
+   ],
+   "occupied_bbox_including_fluids": [
+    1847,
+    0,
+    -72,
+    1993,
+    261,
+    72
+   ],
+   "footprintHash": "f8cbf6ff0c9c4061b92c95678bfad014cffc917953e600c452c4ca135fdf85e8",
+   "elevationXHash": "859f530410811a5d0e90778af49ead85e3b8b339d75c6f126cda865bb279e103",
+   "elevationZHash": "91d9dec9b8aa618b553c6b0f8461cdbd6f78a1e360b7dff2b20b3dfe2e31d648",
+   "voxelsOnlyHere": 0,
+   "voxelsMissing": 1590,
+   "symmetricDifference": 1590,
+   "symmetricDifferencePercent": 0.4363,
+   "missingOccupiedByFluids": 1576
+  },
+  {
+   "theme": "crimson_forest",
+   "pieces": 1148,
+   "voxels": 364378,
+   "fluidVoxels": 1045,
+   "bbox": [
+    1848,
+    129,
+    -72,
+    1992,
+    261,
+    72
+   ],
+   "occupied_bbox_including_fluids": [
+    1848,
+    0,
+    -72,
+    1992,
+    261,
+    72
+   ],
+   "footprintHash": "d2b61b228071700f985d2db613450ac654e6f83466f3ee285e75f312168d81d1",
+   "elevationXHash": "859f530410811a5d0e90778af49ead85e3b8b339d75c6f126cda865bb279e103",
+   "elevationZHash": "4a953588d6a4db14d447e8850f5025451501fdbefafc1668e7e703601beae6d1",
+   "voxelsOnlyHere": 0,
+   "voxelsMissing": 13,
+   "symmetricDifference": 13,
+   "symmetricDifferencePercent": 0.0036,
+   "missingOccupiedByFluids": 0
+  },
+  {
+   "theme": "warped_forest",
+   "pieces": 1148,
+   "voxels": 364378,
+   "fluidVoxels": 1408,
+   "bbox": [
+    1848,
+    129,
+    -72,
+    1992,
+    261,
+    72
+   ],
+   "occupied_bbox_including_fluids": [
+    1848,
+    0,
+    -72,
+    1992,
+    261,
+    72
+   ],
+   "footprintHash": "d2b61b228071700f985d2db613450ac654e6f83466f3ee285e75f312168d81d1",
+   "elevationXHash": "859f530410811a5d0e90778af49ead85e3b8b339d75c6f126cda865bb279e103",
+   "elevationZHash": "4a953588d6a4db14d447e8850f5025451501fdbefafc1668e7e703601beae6d1",
+   "voxelsOnlyHere": 0,
+   "voxelsMissing": 13,
+   "symmetricDifference": 13,
+   "symmetricDifferencePercent": 0.0036,
+   "missingOccupiedByFluids": 0
+  },
+  {
+   "theme": "basalt_deltas",
+   "pieces": 1148,
+   "voxels": 364378,
+   "fluidVoxels": 1660,
+   "bbox": [
+    1848,
+    129,
+    -72,
+    1992,
+    261,
+    72
+   ],
+   "occupied_bbox_including_fluids": [
+    1848,
+    0,
+    -72,
+    1992,
+    261,
+    72
+   ],
+   "footprintHash": "d2b61b228071700f985d2db613450ac654e6f83466f3ee285e75f312168d81d1",
+   "elevationXHash": "859f530410811a5d0e90778af49ead85e3b8b339d75c6f126cda865bb279e103",
+   "elevationZHash": "4a953588d6a4db14d447e8850f5025451501fdbefafc1668e7e703601beae6d1",
+   "voxelsOnlyHere": 0,
+   "voxelsMissing": 13,
+   "symmetricDifference": 13,
+   "symmetricDifferencePercent": 0.0036,
+   "missingOccupiedByFluids": 0
+  },
+  {
+   "theme": "soul_sand_valley",
+   "pieces": 1148,
+   "voxels": 364378,
+   "fluidVoxels": 2044,
+   "bbox": [
+    1848,
+    129,
+    -72,
+    1992,
+    261,
+    72
+   ],
+   "occupied_bbox_including_fluids": [
+    1848,
+    0,
+    -72,
+    1992,
+    261,
+    72
+   ],
+   "footprintHash": "d2b61b228071700f985d2db613450ac654e6f83466f3ee285e75f312168d81d1",
+   "elevationXHash": "859f530410811a5d0e90778af49ead85e3b8b339d75c6f126cda865bb279e103",
+   "elevationZHash": "4a953588d6a4db14d447e8850f5025451501fdbefafc1668e7e703601beae6d1",
+   "voxelsOnlyHere": 0,
+   "voxelsMissing": 13,
+   "symmetricDifference": 13,
+   "symmetricDifferencePercent": 0.0036,
+   "missingOccupiedByFluids": 0
+  },
+  {
+   "theme": "nether_fortress",
+   "pieces": 1148,
+   "voxels": 364378,
+   "fluidVoxels": 2264,
+   "bbox": [
+    1848,
+    129,
+    -72,
+    1992,
+    261,
+    72
+   ],
+   "occupied_bbox_including_fluids": [
+    1848,
+    0,
+    -72,
+    1992,
+    261,
+    72
+   ],
+   "footprintHash": "d2b61b228071700f985d2db613450ac654e6f83466f3ee285e75f312168d81d1",
+   "elevationXHash": "859f530410811a5d0e90778af49ead85e3b8b339d75c6f126cda865bb279e103",
+   "elevationZHash": "4a953588d6a4db14d447e8850f5025451501fdbefafc1668e7e703601beae6d1",
+   "voxelsOnlyHere": 0,
+   "voxelsMissing": 13,
+   "symmetricDifference": 13,
+   "symmetricDifferencePercent": 0.0036,
+   "missingOccupiedByFluids": 0
+  },
+  {
+   "theme": "bastion",
+   "pieces": 1148,
+   "voxels": 364378,
+   "fluidVoxels": 2430,
+   "bbox": [
+    1848,
+    129,
+    -72,
+    1992,
+    261,
+    72
+   ],
+   "occupied_bbox_including_fluids": [
+    1848,
+    0,
+    -72,
+    1992,
+    261,
+    72
+   ],
+   "footprintHash": "d2b61b228071700f985d2db613450ac654e6f83466f3ee285e75f312168d81d1",
+   "elevationXHash": "859f530410811a5d0e90778af49ead85e3b8b339d75c6f126cda865bb279e103",
+   "elevationZHash": "4a953588d6a4db14d447e8850f5025451501fdbefafc1668e7e703601beae6d1",
+   "voxelsOnlyHere": 0,
+   "voxelsMissing": 13,
+   "symmetricDifference": 13,
+   "symmetricDifferencePercent": 0.0036,
+   "missingOccupiedByFluids": 0
+  },
+  {
+   "theme": "end_stone",
+   "pieces": 1148,
+   "voxels": 364378,
+   "fluidVoxels": 1613,
+   "bbox": [
+    1848,
+    129,
+    -72,
+    1992,
+    261,
+    72
+   ],
+   "occupied_bbox_including_fluids": [
+    1848,
+    0,
+    -72,
+    1992,
+    261,
+    72
+   ],
+   "footprintHash": "d2b61b228071700f985d2db613450ac654e6f83466f3ee285e75f312168d81d1",
+   "elevationXHash": "859f530410811a5d0e90778af49ead85e3b8b339d75c6f126cda865bb279e103",
+   "elevationZHash": "4a953588d6a4db14d447e8850f5025451501fdbefafc1668e7e703601beae6d1",
+   "voxelsOnlyHere": 0,
+   "voxelsMissing": 13,
+   "symmetricDifference": 13,
+   "symmetricDifferencePercent": 0.0036,
+   "missingOccupiedByFluids": 0
+  },
+  {
+   "theme": "end_city",
+   "pieces": 1148,
+   "voxels": 364378,
+   "fluidVoxels": 1012,
+   "bbox": [
+    1848,
+    129,
+    -72,
+    1992,
+    261,
+    72
+   ],
+   "occupied_bbox_including_fluids": [
+    1848,
+    0,
+    -72,
+    1992,
+    261,
+    72
+   ],
+   "footprintHash": "d2b61b228071700f985d2db613450ac654e6f83466f3ee285e75f312168d81d1",
+   "elevationXHash": "859f530410811a5d0e90778af49ead85e3b8b339d75c6f126cda865bb279e103",
+   "elevationZHash": "4a953588d6a4db14d447e8850f5025451501fdbefafc1668e7e703601beae6d1",
+   "voxelsOnlyHere": 0,
+   "voxelsMissing": 13,
+   "symmetricDifference": 13,
+   "symmetricDifferencePercent": 0.0036,
+   "missingOccupiedByFluids": 0
+  }
+ ]
+}

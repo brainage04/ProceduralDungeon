@@ -1,0 +1,1903 @@
+{
+ "candidates": [
+  {
+   "chunk_x": 0,
+   "chunk_z": 0,
+   "start_y": 200,
+   "world_seed": 20260910,
+   "rng_seed": 20260910,
+   "position": [
+    0.5,
+    200.0,
+    0.5
+   ],
+   "pieces": 752,
+   "seconds": 30.8,
+   "bbox": [
+    -71,
+    127,
+    -72,
+    72,
+    205,
+    71
+   ],
+   "blocks": 236535,
+   "size": [
+    144,
+    79,
+    144
+   ],
+   "label": "cx0cz0y200t5d20",
+   "tier": 5,
+   "depth": 20,
+   "silhouette": {
+    "voxels": 420204,
+    "fluids_excluded": [
+     "minecraft:flowing_lava",
+     "minecraft:flowing_water",
+     "minecraft:lava",
+     "minecraft:water"
+    ],
+    "projected_width_blocks": 192.33,
+    "projected_height_blocks": 150.12,
+    "height_over_width": 0.7805,
+    "screen_bbox_world_offsets": [
+     -96.167,
+     -221.535,
+     96.167,
+     -71.412
+    ],
+    "crop_side_blocks": 218.33304448274095,
+    "margins_blocks_lr": 13.0,
+    "margins_blocks_tb": 34.11,
+    "margins_px_lr_at_1024": 61.0,
+    "margins_px_tb_at_1024": 160.0
+   }
+  },
+  {
+   "chunk_x": 12,
+   "chunk_z": 0,
+   "start_y": 200,
+   "world_seed": 20260910,
+   "rng_seed": 12609781867858715766,
+   "position": [
+    192.5,
+    200.0,
+    0.5
+   ],
+   "pieces": 983,
+   "seconds": 30.3,
+   "bbox": [
+    120,
+    129,
+    -72,
+    264,
+    205,
+    73
+   ],
+   "blocks": 300402,
+   "size": [
+    145,
+    77,
+    146
+   ],
+   "label": "cx12cz0y200t5d20",
+   "tier": 5,
+   "depth": 20,
+   "silhouette": {
+    "voxels": 300133,
+    "fluids_excluded": [
+     "minecraft:flowing_lava",
+     "minecraft:flowing_water",
+     "minecraft:lava",
+     "minecraft:water"
+    ],
+    "projected_width_blocks": 195.87,
+    "projected_height_blocks": 139.2,
+    "height_over_width": 0.7107,
+    "screen_bbox_world_offsets": [
+     -231.931,
+     -136.014,
+     -36.062,
+     3.188
+    ],
+    "crop_side_blocks": 223.86857838867368,
+    "margins_blocks_lr": 14.0,
+    "margins_blocks_tb": 42.33,
+    "margins_px_lr_at_1024": 64.0,
+    "margins_px_tb_at_1024": 193.6
+   }
+  },
+  {
+   "chunk_x": 24,
+   "chunk_z": 0,
+   "start_y": 200,
+   "world_seed": 20260910,
+   "rng_seed": 6772819662022226078,
+   "position": [
+    384.5,
+    200.0,
+    0.5
+   ],
+   "tier": 5,
+   "depth": 20,
+   "pieces": 921,
+   "seconds": 33.4,
+   "bbox": [
+    312,
+    126,
+    -72,
+    455,
+    205,
+    71
+   ],
+   "blocks": 282462,
+   "size": [
+    144,
+    80,
+    144
+   ],
+   "label": "cx24cz0y200t5d20",
+   "silhouette": {
+    "voxels": 282165,
+    "fluids_excluded": [
+     "minecraft:flowing_lava",
+     "minecraft:flowing_water",
+     "minecraft:lava",
+     "minecraft:water"
+    ],
+    "projected_width_blocks": 194.45,
+    "projected_height_blocks": 130.87,
+    "height_over_width": 0.673,
+    "screen_bbox_world_offsets": [
+     -367.696,
+     -60.155,
+     -173.241,
+     70.716
+    ],
+    "crop_side_blocks": 222.45436482630055,
+    "margins_blocks_lr": 14.0,
+    "margins_blocks_tb": 45.79,
+    "margins_px_lr_at_1024": 64.4,
+    "margins_px_tb_at_1024": 210.8
+   }
+  },
+  {
+   "chunk_x": 36,
+   "chunk_z": 0,
+   "start_y": 200,
+   "world_seed": 20260910,
+   "rng_seed": 935857456184675622,
+   "position": [
+    576.5,
+    200.0,
+    0.5
+   ],
+   "tier": 5,
+   "depth": 20,
+   "pieces": 988,
+   "seconds": 38.3,
+   "bbox": [
+    504,
+    128,
+    -72,
+    648,
+    205,
+    72
+   ],
+   "blocks": 305996,
+   "size": [
+    145,
+    78,
+    145
+   ],
+   "label": "cx36cz0y200t5d20",
+   "silhouette": {
+    "voxels": 305718,
+    "fluids_excluded": [
+     "minecraft:flowing_lava",
+     "minecraft:flowing_water",
+     "minecraft:lava",
+     "minecraft:water"
+    ],
+    "projected_width_blocks": 195.16,
+    "projected_height_blocks": 130.77,
+    "height_over_width": 0.6701,
+    "screen_bbox_world_offsets": [
+     -504.874,
+     6.77,
+     -309.713,
+     137.538
+    ],
+    "crop_side_blocks": 223.1614716074871,
+    "margins_blocks_lr": 14.0,
+    "margins_blocks_tb": 46.2,
+    "margins_px_lr_at_1024": 64.2,
+    "margins_px_tb_at_1024": 212.0
+   }
+  },
+  {
+   "chunk_x": 48,
+   "chunk_z": 0,
+   "start_y": 200,
+   "world_seed": 20260910,
+   "rng_seed": 13545639324063897934,
+   "position": [
+    768.5,
+    200.0,
+    0.5
+   ],
+   "tier": 5,
+   "depth": 20,
+   "pieces": 825,
+   "seconds": 30.2,
+   "bbox": [
+    697,
+    127,
+    -72,
+    840,
+    205,
+    71
+   ],
+   "blocks": 258307,
+   "size": [
+    144,
+    79,
+    144
+   ],
+   "label": "cx48cz0y200t5d20",
+   "silhouette": {
+    "voxels": 258056,
+    "fluids_excluded": [
+     "minecraft:flowing_lava",
+     "minecraft:flowing_water",
+     "minecraft:lava",
+     "minecraft:water"
+    ],
+    "projected_width_blocks": 177.48,
+    "projected_height_blocks": 126.28,
+    "height_over_width": 0.7115,
+    "screen_bbox_world_offsets": [
+     -640.639,
+     78.791,
+     -463.155,
+     205.067
+    ],
+    "crop_side_blocks": 201.48380207782344,
+    "margins_blocks_lr": 12.0,
+    "margins_blocks_tb": 37.6,
+    "margins_px_lr_at_1024": 61.0,
+    "margins_px_tb_at_1024": 191.1
+   }
+  },
+  {
+   "chunk_x": 60,
+   "chunk_z": 0,
+   "start_y": 200,
+   "world_seed": 20260910,
+   "rng_seed": 7708677118226355606,
+   "position": [
+    960.5,
+    200.0,
+    0.5
+   ],
+   "tier": 5,
+   "depth": 20,
+   "pieces": 770,
+   "seconds": 30.7,
+   "bbox": [
+    889,
+    126,
+    -72,
+    1032,
+    205,
+    71
+   ],
+   "blocks": 239925,
+   "size": [
+    144,
+    80,
+    144
+   ],
+   "label": "cx60cz0y200t5d20",
+   "silhouette": {
+    "voxels": 239678,
+    "fluids_excluded": [
+     "minecraft:flowing_lava",
+     "minecraft:flowing_water",
+     "minecraft:lava",
+     "minecraft:water"
+    ],
+    "projected_width_blocks": 189.5,
+    "projected_height_blocks": 137.54,
+    "height_over_width": 0.7258,
+    "screen_bbox_world_offsets": [
+     -777.11,
+     137.886,
+     -587.606,
+     275.424
+    ],
+    "crop_side_blocks": 215.5046173579949,
+    "margins_blocks_lr": 13.0,
+    "margins_blocks_tb": 38.98,
+    "margins_px_lr_at_1024": 61.8,
+    "margins_px_tb_at_1024": 185.2
+   }
+  },
+  {
+   "chunk_x": 72,
+   "chunk_z": 0,
+   "start_y": 200,
+   "world_seed": 20260910,
+   "rng_seed": 1871714912423436862,
+   "position": [
+    1152.5,
+    200.0,
+    0.5
+   ],
+   "tier": 5,
+   "depth": 20,
+   "pieces": 1161,
+   "seconds": 31.2,
+   "bbox": [
+    1080,
+    126,
+    -72,
+    1223,
+    254,
+    70
+   ],
+   "blocks": 364692,
+   "size": [
+    144,
+    129,
+    143
+   ],
+   "label": "cx72cz0y200t5d20",
+   "silhouette": {
+    "voxels": 364345,
+    "fluids_excluded": [
+     "minecraft:flowing_lava",
+     "minecraft:flowing_water",
+     "minecraft:lava",
+     "minecraft:water"
+    ],
+    "projected_width_blocks": 183.85,
+    "projected_height_blocks": 162.35,
+    "height_over_width": 0.8831,
+    "screen_bbox_world_offsets": [
+     -905.097,
+     178.131,
+     -721.249,
+     340.478
+    ],
+    "crop_side_blocks": 209.84776310850236,
+    "margins_blocks_lr": 13.0,
+    "margins_blocks_tb": 23.75,
+    "margins_px_lr_at_1024": 63.4,
+    "margins_px_tb_at_1024": 115.9
+   }
+  },
+  {
+   "chunk_x": 84,
+   "chunk_z": 0,
+   "start_y": 200,
+   "world_seed": 20260910,
+   "rng_seed": 14481496780303973958,
+   "position": [
+    1344.5,
+    200.0,
+    0.5
+   ],
+   "tier": 5,
+   "depth": 20,
+   "pieces": 1089,
+   "seconds": 25.6,
+   "bbox": [
+    1272,
+    127,
+    -72,
+    1416,
+    205,
+    72
+   ],
+   "blocks": 334873,
+   "size": [
+    145,
+    79,
+    145
+   ],
+   "label": "cx84cz0y200t5d20",
+   "silhouette": {
+    "voxels": 334534,
+    "fluids_excluded": [
+     "minecraft:flowing_lava",
+     "minecraft:flowing_water",
+     "minecraft:lava",
+     "minecraft:water"
+    ],
+    "projected_width_blocks": 196.58,
+    "projected_height_blocks": 145.57,
+    "height_over_width": 0.7405,
+    "screen_bbox_world_offsets": [
+     -1048.639,
+     267.037,
+     -852.064,
+     412.602
+    ],
+    "crop_side_blocks": 224.57568516986032,
+    "margins_blocks_lr": 14.0,
+    "margins_blocks_tb": 39.5,
+    "margins_px_lr_at_1024": 63.8,
+    "margins_px_tb_at_1024": 180.1
+   }
+  },
+  {
+   "chunk_x": 96,
+   "chunk_z": 0,
+   "start_y": 200,
+   "world_seed": 20260910,
+   "rng_seed": 8644534574465370862,
+   "position": [
+    1536.5,
+    200.0,
+    0.5
+   ],
+   "tier": 5,
+   "depth": 20,
+   "pieces": 944,
+   "seconds": 25.9,
+   "bbox": [
+    1464,
+    126,
+    -72,
+    1608,
+    219,
+    72
+   ],
+   "blocks": 297198,
+   "size": [
+    145,
+    94,
+    145
+   ],
+   "label": "cx96cz0y200t5d20",
+   "silhouette": {
+    "voxels": 296929,
+    "fluids_excluded": [
+     "minecraft:flowing_lava",
+     "minecraft:flowing_water",
+     "minecraft:lava",
+     "minecraft:water"
+    ],
+    "projected_width_blocks": 200.11,
+    "projected_height_blocks": 134.71,
+    "height_over_width": 0.6732,
+    "screen_bbox_world_offsets": [
+     -1187.232,
+     336.937,
+     -987.121,
+     471.646
+    ],
+    "crop_side_blocks": 228.1112190757931,
+    "margins_blocks_lr": 14.0,
+    "margins_blocks_tb": 46.7,
+    "margins_px_lr_at_1024": 62.8,
+    "margins_px_tb_at_1024": 209.6
+   }
+  },
+  {
+   "chunk_x": 108,
+   "chunk_z": 0,
+   "start_y": 200,
+   "world_seed": 20260910,
+   "rng_seed": 2807572368627828534,
+   "position": [
+    1728.5,
+    200.0,
+    0.5
+   ],
+   "tier": 5,
+   "depth": 20,
+   "pieces": 837,
+   "seconds": 20.3,
+   "bbox": [
+    1656,
+    129,
+    -72,
+    1800,
+    240,
+    71
+   ],
+   "blocks": 259838,
+   "size": [
+    145,
+    112,
+    144
+   ],
+   "label": "cx108cz0y200t5d20",
+   "silhouette": {
+    "voxels": 259579,
+    "fluids_excluded": [
+     "minecraft:flowing_lava",
+     "minecraft:flowing_water",
+     "minecraft:lava",
+     "minecraft:water"
+    ],
+    "projected_width_blocks": 183.14,
+    "projected_height_blocks": 163.66,
+    "height_over_width": 0.8936,
+    "screen_bbox_world_offsets": [
+     -1308.148,
+     380.467,
+     -1125.007,
+     544.124
+    ],
+    "crop_side_blocks": 209.1406563273158,
+    "margins_blocks_lr": 13.0,
+    "margins_blocks_tb": 22.74,
+    "margins_px_lr_at_1024": 63.7,
+    "margins_px_tb_at_1024": 111.3
+   }
+  },
+  {
+   "chunk_x": 120,
+   "chunk_z": 0,
+   "start_y": 200,
+   "world_seed": 20260910,
+   "rng_seed": 15417354236509279070,
+   "position": [
+    1920.5,
+    200.0,
+    0.5
+   ],
+   "tier": 5,
+   "depth": 20,
+   "pieces": 1148,
+   "seconds": 25.8,
+   "bbox": [
+    1848,
+    127,
+    -72,
+    1992,
+    261,
+    72
+   ],
+   "blocks": 364699,
+   "size": [
+    145,
+    135,
+    145
+   ],
+   "label": "cx120cz0y200t5d20",
+   "silhouette": {
+    "voxels": 364378,
+    "fluids_excluded": [
+     "minecraft:flowing_lava",
+     "minecraft:flowing_water",
+     "minecraft:lava",
+     "minecraft:water"
+    ],
+    "projected_width_blocks": 183.85,
+    "projected_height_blocks": 188.86,
+    "height_over_width": 1.0273,
+    "screen_bbox_world_offsets": [
+     -1450.276,
+     424.204,
+     -1266.428,
+     613.067
+    ],
+    "crop_side_blocks": 214.86334852832124,
+    "margins_blocks_lr": 15.51,
+    "margins_blocks_tb": 13.0,
+    "margins_px_lr_at_1024": 73.9,
+    "margins_px_tb_at_1024": 62.0
+   }
+  },
+  {
+   "chunk_x": 132,
+   "chunk_z": 0,
+   "start_y": 200,
+   "world_seed": 20260910,
+   "rng_seed": 9580392030671630310,
+   "position": [
+    2112.5,
+    200.0,
+    0.5
+   ],
+   "tier": 5,
+   "depth": 20,
+   "pieces": 959,
+   "seconds": 26.2,
+   "bbox": [
+    2040,
+    127,
+    -72,
+    2184,
+    205,
+    72
+   ],
+   "blocks": 303676,
+   "size": [
+    145,
+    79,
+    145
+   ],
+   "label": "cx132cz0y200t5d20",
+   "silhouette": {
+    "voxels": 303413,
+    "fluids_excluded": [
+     "minecraft:flowing_lava",
+     "minecraft:flowing_water",
+     "minecraft:lava",
+     "minecraft:water"
+    ],
+    "projected_width_blocks": 198.7,
+    "projected_height_blocks": 127.43,
+    "height_over_width": 0.6413,
+    "screen_bbox_world_offsets": [
+     -1591.697,
+     545.637,
+     -1393.0,
+     673.068
+    ],
+    "crop_side_blocks": 226.69700551341998,
+    "margins_blocks_lr": 14.0,
+    "margins_blocks_tb": 49.63,
+    "margins_px_lr_at_1024": 63.2,
+    "margins_px_tb_at_1024": 224.2
+   }
+  },
+  {
+   "chunk_x": 144,
+   "chunk_z": 0,
+   "start_y": 200,
+   "world_seed": 20260910,
+   "rng_seed": 3743429824799489038,
+   "position": [
+    2304.5,
+    200.0,
+    0.5
+   ],
+   "tier": 5,
+   "depth": 20,
+   "pieces": 961,
+   "seconds": 25.4,
+   "bbox": [
+    2232,
+    126,
+    -72,
+    2376,
+    219,
+    72
+   ],
+   "blocks": 304876,
+   "size": [
+    145,
+    94,
+    145
+   ],
+   "label": "cx144cz0y200t5d20",
+   "silhouette": {
+    "voxels": 304555,
+    "fluids_excluded": [
+     "minecraft:flowing_lava",
+     "minecraft:flowing_water",
+     "minecraft:lava",
+     "minecraft:water"
+    ],
+    "projected_width_blocks": 191.63,
+    "projected_height_blocks": 133.6,
+    "height_over_width": 0.6972,
+    "screen_bbox_world_offsets": [
+     -1729.583,
+     615.942,
+     -1537.957,
+     749.539
+    ],
+    "crop_side_blocks": 217.62593770155445,
+    "margins_blocks_lr": 13.0,
+    "margins_blocks_tb": 42.01,
+    "margins_px_lr_at_1024": 61.2,
+    "margins_px_tb_at_1024": 197.7
+   }
+  },
+  {
+   "chunk_x": 156,
+   "chunk_z": 0,
+   "start_y": 200,
+   "world_seed": 20260910,
+   "rng_seed": 16353211692679874646,
+   "position": [
+    2496.5,
+    200.0,
+    0.5
+   ],
+   "tier": 5,
+   "depth": 20,
+   "pieces": 965,
+   "seconds": 25.8,
+   "bbox": [
+    2424,
+    126,
+    -72,
+    2568,
+    205,
+    71
+   ],
+   "blocks": 302208,
+   "size": [
+    145,
+    80,
+    144
+   ],
+   "label": "cx156cz0y200t5d20",
+   "silhouette": {
+    "voxels": 301894,
+    "fluids_excluded": [
+     "minecraft:flowing_lava",
+     "minecraft:flowing_water",
+     "minecraft:lava",
+     "minecraft:water"
+    ],
+    "projected_width_blocks": 182.43,
+    "projected_height_blocks": 124.35,
+    "height_over_width": 0.6816,
+    "screen_bbox_world_offsets": [
+     -1854.741,
+     683.876,
+     -1672.308,
+     808.229
+    ],
+    "crop_side_blocks": 208.43354954612937,
+    "margins_blocks_lr": 13.0,
+    "margins_blocks_tb": 42.04,
+    "margins_px_lr_at_1024": 63.9,
+    "margins_px_tb_at_1024": 206.5
+   }
+  },
+  {
+   "chunk_x": 168,
+   "chunk_z": 0,
+   "start_y": 200,
+   "world_seed": 20260910,
+   "rng_seed": 10516249486842987774,
+   "position": [
+    2688.5,
+    200.0,
+    0.5
+   ],
+   "tier": 5,
+   "depth": 20,
+   "pieces": 1043,
+   "seconds": 25.2,
+   "bbox": [
+    2616,
+    129,
+    -72,
+    2760,
+    219,
+    72
+   ],
+   "blocks": 323955,
+   "size": [
+    145,
+    91,
+    145
+   ],
+   "label": "cx168cz0y200t5d20",
+   "silhouette": {
+    "voxels": 323654,
+    "fluids_excluded": [
+     "minecraft:flowing_lava",
+     "minecraft:flowing_water",
+     "minecraft:lava",
+     "minecraft:water"
+    ],
+    "projected_width_blocks": 177.48,
+    "projected_height_blocks": 137.64,
+    "height_over_width": 0.7755,
+    "screen_bbox_world_offsets": [
+     -1988.384,
+     746.248,
+     -1810.9,
+     883.889
+    ],
+    "crop_side_blocks": 201.4838020778236,
+    "margins_blocks_lr": 12.0,
+    "margins_blocks_tb": 31.92,
+    "margins_px_lr_at_1024": 61.0,
+    "margins_px_tb_at_1024": 162.2
+   }
+  },
+  {
+   "chunk_x": 180,
+   "chunk_z": 0,
+   "start_y": 200,
+   "world_seed": 20260910,
+   "rng_seed": 4679287281004400902,
+   "position": [
+    2880.5,
+    200.0,
+    0.5
+   ],
+   "tier": 5,
+   "depth": 20,
+   "pieces": 1007,
+   "seconds": 25.5,
+   "bbox": [
+    2808,
+    127,
+    -72,
+    2952,
+    205,
+    72
+   ],
+   "blocks": 312689,
+   "size": [
+    145,
+    79,
+    145
+   ],
+   "label": "cx180cz0y200t5d20",
+   "silhouette": {
+    "voxels": 312339,
+    "fluids_excluded": [
+     "minecraft:flowing_lava",
+     "minecraft:flowing_water",
+     "minecraft:lava",
+     "minecraft:water"
+    ],
+    "projected_width_blocks": 195.16,
+    "projected_height_blocks": 131.93,
+    "height_over_width": 0.676,
+    "screen_bbox_world_offsets": [
+     -2134.755,
+     815.95,
+     -1939.594,
+     947.882
+    ],
+    "crop_side_blocks": 223.1614716074871,
+    "margins_blocks_lr": 14.0,
+    "margins_blocks_tb": 45.61,
+    "margins_px_lr_at_1024": 64.2,
+    "margins_px_tb_at_1024": 209.3
+   }
+  },
+  {
+   "chunk_x": 12,
+   "chunk_z": 12,
+   "start_y": 200,
+   "world_seed": 20260910,
+   "rng_seed": 851316457238018830,
+   "position": [
+    192.5,
+    200.0,
+    192.5
+   ],
+   "tier": 5,
+   "depth": 20,
+   "pieces": 1089,
+   "seconds": 25.8,
+   "bbox": [
+    120,
+    128,
+    120,
+    264,
+    219,
+    263
+   ],
+   "blocks": 336405,
+   "size": [
+    145,
+    92,
+    144
+   ],
+   "label": "cx12cz12y200t5d20",
+   "silhouette": {
+    "voxels": 336044,
+    "fluids_excluded": [
+     "minecraft:flowing_lava",
+     "minecraft:flowing_water",
+     "minecraft:lava",
+     "minecraft:water"
+    ],
+    "projected_width_blocks": 192.33,
+    "projected_height_blocks": 148.85,
+    "height_over_width": 0.7739,
+    "screen_bbox_world_offsets": [
+     -368.403,
+     -221.729,
+     -176.07,
+     -72.878
+    ],
+    "crop_side_blocks": 218.33304448274095,
+    "margins_blocks_lr": 13.0,
+    "margins_blocks_tb": 34.74,
+    "margins_px_lr_at_1024": 61.0,
+    "margins_px_tb_at_1024": 162.9
+   }
+  },
+  {
+   "chunk_x": 24,
+   "chunk_z": 12,
+   "start_y": 200,
+   "world_seed": 20260910,
+   "rng_seed": 17929790657331818470,
+   "position": [
+    384.5,
+    200.0,
+    192.5
+   ],
+   "tier": 5,
+   "depth": 20,
+   "pieces": 1038,
+   "seconds": 26.2,
+   "bbox": [
+    312,
+    129,
+    120,
+    456,
+    219,
+    264
+   ],
+   "blocks": 321048,
+   "size": [
+    145,
+    91,
+    145
+   ],
+   "label": "cx24cz12y200t5d20",
+   "silhouette": {
+    "voxels": 320705,
+    "fluids_excluded": [
+     "minecraft:flowing_lava",
+     "minecraft:flowing_water",
+     "minecraft:lava",
+     "minecraft:water"
+    ],
+    "projected_width_blocks": 197.99,
+    "projected_height_blocks": 161.38,
+    "height_over_width": 0.8151,
+    "screen_bbox_world_offsets": [
+     -505.581,
+     -166.679,
+     -307.591,
+     -5.298
+    ],
+    "crop_side_blocks": 225.9898987322333,
+    "margins_blocks_lr": 14.0,
+    "margins_blocks_tb": 32.3,
+    "margins_px_lr_at_1024": 63.4,
+    "margins_px_tb_at_1024": 146.4
+   }
+  },
+  {
+   "chunk_x": 36,
+   "chunk_z": 12,
+   "start_y": 200,
+   "world_seed": 20260910,
+   "rng_seed": 12236948037627613790,
+   "position": [
+    576.5,
+    200.0,
+    192.5
+   ],
+   "tier": 5,
+   "depth": 20,
+   "pieces": 806,
+   "seconds": 27.4,
+   "bbox": [
+    504,
+    129,
+    122,
+    648,
+    205,
+    264
+   ],
+   "blocks": 259814,
+   "size": [
+    145,
+    77,
+    143
+   ],
+   "label": "cx36cz12y200t5d20",
+   "silhouette": {
+    "voxels": 259549,
+    "fluids_excluded": [
+     "minecraft:flowing_lava",
+     "minecraft:flowing_water",
+     "minecraft:lava",
+     "minecraft:water"
+    ],
+    "projected_width_blocks": 188.09,
+    "projected_height_blocks": 126.98,
+    "height_over_width": 0.6751,
+    "screen_bbox_world_offsets": [
+     -637.103,
+     -60.509,
+     -449.013,
+     66.474
+    ],
+    "crop_side_blocks": 214.09040379562168,
+    "margins_blocks_lr": 13.0,
+    "margins_blocks_tb": 43.55,
+    "margins_px_lr_at_1024": 62.2,
+    "margins_px_tb_at_1024": 208.3
+   }
+  },
+  {
+   "chunk_x": 48,
+   "chunk_z": 12,
+   "start_y": 200,
+   "world_seed": 20260910,
+   "rng_seed": 2221766862274348598,
+   "position": [
+    768.5,
+    200.0,
+    192.5
+   ],
+   "tier": 5,
+   "depth": 20,
+   "pieces": 1276,
+   "seconds": 31.5,
+   "bbox": [
+    696,
+    126,
+    122,
+    840,
+    254,
+    264
+   ],
+   "blocks": 397169,
+   "size": [
+    145,
+    129,
+    143
+   ],
+   "label": "cx48cz12y200t5d20",
+   "silhouette": {
+    "voxels": 396713,
+    "fluids_excluded": [
+     "minecraft:flowing_lava",
+     "minecraft:flowing_water",
+     "minecraft:lava",
+     "minecraft:water"
+    ],
+    "projected_width_blocks": 193.04,
+    "projected_height_blocks": 163.5,
+    "height_over_width": 0.847,
+    "screen_bbox_world_offsets": [
+     -780.646,
+     -25.964,
+     -587.606,
+     137.538
+    ],
+    "crop_side_blocks": 221.04015126392744,
+    "margins_blocks_lr": 14.0,
+    "margins_blocks_tb": 28.77,
+    "margins_px_lr_at_1024": 64.9,
+    "margins_px_tb_at_1024": 133.3
+   }
+  },
+  {
+   "chunk_x": 60,
+   "chunk_z": 12,
+   "start_y": 200,
+   "world_seed": 20260910,
+   "rng_seed": 14975650724093659886,
+   "position": [
+    960.5,
+    200.0,
+    192.5
+   ],
+   "tier": 5,
+   "depth": 20,
+   "pieces": 813,
+   "seconds": 27.7,
+   "bbox": [
+    889,
+    129,
+    120,
+    1032,
+    205,
+    264
+   ],
+   "blocks": 250660,
+   "size": [
+    144,
+    77,
+    145
+   ],
+   "label": "cx60cz12y200t5d20",
+   "silhouette": {
+    "voxels": 250402,
+    "fluids_excluded": [
+     "minecraft:flowing_lava",
+     "minecraft:flowing_water",
+     "minecraft:lava",
+     "minecraft:water"
+    ],
+    "projected_width_blocks": 167.58,
+    "projected_height_blocks": 130.11,
+    "height_over_width": 0.7764,
+    "screen_bbox_world_offsets": [
+     -906.511,
+     69.297,
+     -738.927,
+     199.41
+    ],
+    "crop_side_blocks": 191.58430714121175,
+    "margins_blocks_lr": 12.0,
+    "margins_blocks_tb": 30.74,
+    "margins_px_lr_at_1024": 64.1,
+    "margins_px_tb_at_1024": 164.3
+   }
+  },
+  {
+   "chunk_x": 72,
+   "chunk_z": 12,
+   "start_y": 200,
+   "world_seed": 20260910,
+   "rng_seed": 13607380850444352838,
+   "position": [
+    1152.5,
+    200.0,
+    192.5
+   ],
+   "tier": 5,
+   "depth": 20,
+   "pieces": 978,
+   "seconds": 26.0,
+   "bbox": [
+    1080,
+    127,
+    120,
+    1224,
+    205,
+    264
+   ],
+   "blocks": 302184,
+   "size": [
+    145,
+    79,
+    145
+   ],
+   "label": "cx72cz12y200t5d20",
+   "silhouette": {
+    "voxels": 301922,
+    "fluids_excluded": [
+     "minecraft:flowing_lava",
+     "minecraft:flowing_water",
+     "minecraft:lava",
+     "minecraft:water"
+    ],
+    "projected_width_blocks": 193.75,
+    "projected_height_blocks": 142.74,
+    "height_over_width": 0.7367,
+    "screen_bbox_world_offsets": [
+     -1051.468,
+     132.686,
+     -857.721,
+     275.424
+    ],
+    "crop_side_blocks": 221.747258045114,
+    "margins_blocks_lr": 14.0,
+    "margins_blocks_tb": 39.5,
+    "margins_px_lr_at_1024": 64.7,
+    "margins_px_tb_at_1024": 182.4
+   }
+  },
+  {
+   "chunk_x": 12,
+   "chunk_z": 24,
+   "start_y": 200,
+   "world_seed": 20260910,
+   "rng_seed": 16475264511207070342,
+   "position": [
+    192.5,
+    200.0,
+    384.5
+   ],
+   "tier": 5,
+   "depth": 20,
+   "pieces": 854,
+   "seconds": 26.6,
+   "bbox": [
+    120,
+    126,
+    312,
+    263,
+    205,
+    456
+   ],
+   "blocks": 267973,
+   "size": [
+    144,
+    80,
+    145
+   ],
+   "label": "cx12cz24y200t5d20",
+   "silhouette": {
+    "voxels": 267725,
+    "fluids_excluded": [
+     "minecraft:flowing_lava",
+     "minecraft:flowing_water",
+     "minecraft:lava",
+     "minecraft:water"
+    ],
+    "projected_width_blocks": 184.55,
+    "projected_height_blocks": 135.01,
+    "height_over_width": 0.7315,
+    "screen_bbox_world_offsets": [
+     -504.874,
+     -270.416,
+     -320.319,
+     -135.405
+    ],
+    "crop_side_blocks": 210.55486988968897,
+    "margins_blocks_lr": 13.0,
+    "margins_blocks_tb": 37.77,
+    "margins_px_lr_at_1024": 63.2,
+    "margins_px_tb_at_1024": 183.7
+   }
+  },
+  {
+   "chunk_x": 24,
+   "chunk_z": 24,
+   "start_y": 200,
+   "world_seed": 20260910,
+   "rng_seed": 1702632914461920878,
+   "position": [
+    384.5,
+    200.0,
+    384.5
+   ],
+   "tier": 5,
+   "depth": 20,
+   "pieces": 855,
+   "seconds": 26.7,
+   "bbox": [
+    312,
+    127,
+    312,
+    456,
+    205,
+    456
+   ],
+   "blocks": 270195,
+   "size": [
+    145,
+    79,
+    145
+   ],
+   "label": "cx24cz24y200t5d20",
+   "silhouette": {
+    "voxels": 269937,
+    "fluids_excluded": [
+     "minecraft:flowing_lava",
+     "minecraft:flowing_water",
+     "minecraft:lava",
+     "minecraft:water"
+    ],
+    "projected_width_blocks": 173.24,
+    "projected_height_blocks": 143.44,
+    "height_over_width": 0.828,
+    "screen_bbox_world_offsets": [
+     -627.911,
+     -207.432,
+     -454.67,
+     -63.988
+    ],
+    "crop_side_blocks": 197.24116139070424,
+    "margins_blocks_lr": 12.0,
+    "margins_blocks_tb": 26.9,
+    "margins_px_lr_at_1024": 62.3,
+    "margins_px_tb_at_1024": 139.6
+   }
+  },
+  {
+   "chunk_x": 36,
+   "chunk_z": 24,
+   "start_y": 200,
+   "world_seed": 20260910,
+   "rng_seed": 5089561679611589590,
+   "position": [
+    576.5,
+    200.0,
+    384.5
+   ],
+   "tier": 5,
+   "depth": 20,
+   "pieces": 939,
+   "seconds": 23.7,
+   "bbox": [
+    504,
+    129,
+    312,
+    648,
+    205,
+    456
+   ],
+   "blocks": 291780,
+   "size": [
+    145,
+    77,
+    145
+   ],
+   "label": "cx36cz24y200t5d20",
+   "silhouette": {
+    "voxels": 291569,
+    "fluids_excluded": [
+     "minecraft:flowing_lava",
+     "minecraft:flowing_water",
+     "minecraft:lava",
+     "minecraft:water"
+    ],
+    "projected_width_blocks": 200.11,
+    "projected_height_blocks": 132.79,
+    "height_over_width": 0.6636,
+    "screen_bbox_world_offsets": [
+     -779.232,
+     -130.659,
+     -579.12,
+     2.127
+    ],
+    "crop_side_blocks": 228.11121907579286,
+    "margins_blocks_lr": 14.0,
+    "margins_blocks_tb": 47.66,
+    "margins_px_lr_at_1024": 62.8,
+    "margins_px_tb_at_1024": 214.0
+   }
+  },
+  {
+   "chunk_x": 48,
+   "chunk_z": 24,
+   "start_y": 200,
+   "world_seed": 20260910,
+   "rng_seed": 17412837240934868926,
+   "position": [
+    768.5,
+    200.0,
+    384.5
+   ],
+   "tier": 5,
+   "depth": 20,
+   "pieces": 971,
+   "seconds": 26.7,
+   "bbox": [
+    696,
+    127,
+    312,
+    840,
+    205,
+    456
+   ],
+   "blocks": 302843,
+   "size": [
+    145,
+    79,
+    145
+   ],
+   "label": "cx48cz24y200t5d20",
+   "silhouette": {
+    "voxels": 302578,
+    "fluids_excluded": [
+     "minecraft:flowing_lava",
+     "minecraft:flowing_water",
+     "minecraft:lava",
+     "minecraft:water"
+    ],
+    "projected_width_blocks": 181.73,
+    "projected_height_blocks": 135.77,
+    "height_over_width": 0.7471,
+    "screen_bbox_world_offsets": [
+     -912.168,
+     -66.468,
+     -730.441,
+     69.302
+    ],
+    "crop_side_blocks": 207.7264427649426,
+    "margins_blocks_lr": 13.0,
+    "margins_blocks_tb": 35.98,
+    "margins_px_lr_at_1024": 64.1,
+    "margins_px_tb_at_1024": 177.4
+   }
+  },
+  {
+   "chunk_x": 0,
+   "chunk_z": 0,
+   "start_y": 150,
+   "control": "start height 150 (RNG of chunk 0,0)",
+   "world_seed": 20260910,
+   "rng_seed": 20260910,
+   "position": [
+    0.5,
+    150.0,
+    0.5
+   ],
+   "tier": 5,
+   "depth": 20,
+   "pieces": 752,
+   "seconds": 22.8,
+   "bbox": [
+    -71,
+    79,
+    -72,
+    72,
+    205,
+    71
+   ],
+   "blocks": 453848,
+   "size": [
+    144,
+    127,
+    144
+   ],
+   "label": "cx0cz0y150t5d20",
+   "silhouette": {
+    "voxels": 585250,
+    "fluids_excluded": [
+     "minecraft:flowing_lava",
+     "minecraft:flowing_water",
+     "minecraft:lava",
+     "minecraft:water"
+    ],
+    "projected_width_blocks": 192.33,
+    "projected_height_blocks": 193.42,
+    "height_over_width": 1.0057,
+    "screen_bbox_world_offsets": [
+     -96.167,
+     -221.535,
+     96.167,
+     -28.111
+    ],
+    "crop_side_blocks": 221.42382646063632,
+    "margins_blocks_lr": 14.55,
+    "margins_blocks_tb": 14.0,
+    "margins_px_lr_at_1024": 67.3,
+    "margins_px_tb_at_1024": 64.7
+   }
+  },
+  {
+   "chunk_x": 0,
+   "chunk_z": 0,
+   "start_y": 250,
+   "control": "start height 250 (RNG of chunk 0,0)",
+   "world_seed": 20260910,
+   "rng_seed": 20260910,
+   "position": [
+    0.5,
+    250.0,
+    0.5
+   ],
+   "tier": 5,
+   "depth": 20,
+   "pieces": 752,
+   "seconds": 22.9,
+   "bbox": [
+    -71,
+    65,
+    -72,
+    72,
+    255,
+    71
+   ],
+   "blocks": 671536,
+   "size": [
+    144,
+    191,
+    144
+   ],
+   "label": "cx0cz0y250t5d20",
+   "silhouette": {
+    "voxels": 670475,
+    "fluids_excluded": [
+     "minecraft:flowing_lava",
+     "minecraft:flowing_water",
+     "minecraft:lava",
+     "minecraft:water"
+    ],
+    "projected_width_blocks": 192.33,
+    "projected_height_blocks": 208.64,
+    "height_over_width": 1.0848,
+    "screen_bbox_world_offsets": [
+     -96.167,
+     -236.746,
+     96.167,
+     -28.111
+    ],
+    "crop_side_blocks": 238.63546017039172,
+    "margins_blocks_lr": 23.15,
+    "margins_blocks_tb": 15.0,
+    "margins_px_lr_at_1024": 99.3,
+    "margins_px_tb_at_1024": 64.4
+   }
+  },
+  {
+   "chunk_x": 60,
+   "chunk_z": 24,
+   "start_y": 200,
+   "tier": 5,
+   "depth": 16,
+   "control": "tier 5 depth 16",
+   "world_seed": 20260910,
+   "rng_seed": 2353039524561021798,
+   "position": [
+    960.5,
+    200.0,
+    384.5
+   ],
+   "pieces": 920,
+   "seconds": 22.8,
+   "bbox": [
+    888,
+    129,
+    312,
+    1032,
+    205,
+    456
+   ],
+   "blocks": 288998,
+   "size": [
+    145,
+    77,
+    145
+   ],
+   "label": "cx60cz24y200t5d16",
+   "silhouette": {
+    "voxels": 288731,
+    "fluids_excluded": [
+     "minecraft:flowing_lava",
+     "minecraft:flowing_water",
+     "minecraft:lava",
+     "minecraft:water"
+    ],
+    "projected_width_blocks": 196.58,
+    "projected_height_blocks": 132.84,
+    "height_over_width": 0.6758,
+    "screen_bbox_world_offsets": [
+     -1048.639,
+     5.407,
+     -852.064,
+     138.245
+    ],
+    "crop_side_blocks": 224.5756851698602,
+    "margins_blocks_lr": 14.0,
+    "margins_blocks_tb": 45.87,
+    "margins_px_lr_at_1024": 63.8,
+    "margins_px_tb_at_1024": 209.1
+   }
+  },
+  {
+   "chunk_x": 72,
+   "chunk_z": 24,
+   "start_y": 200,
+   "tier": 5,
+   "depth": 12,
+   "control": "tier 5 depth 12",
+   "world_seed": 20260910,
+   "rng_seed": 6027152001491885262,
+   "position": [
+    1152.5,
+    200.0,
+    384.5
+   ],
+   "pieces": 332,
+   "seconds": 20.8,
+   "bbox": [
+    1089,
+    136,
+    313,
+    1224,
+    205,
+    454
+   ],
+   "blocks": 107546,
+   "size": [
+    136,
+    70,
+    142
+   ],
+   "label": "cx72cz24y200t5d12",
+   "silhouette": {
+    "voxels": 107465,
+    "fluids_excluded": [
+     "minecraft:flowing_lava",
+     "minecraft:flowing_water",
+     "minecraft:lava",
+     "minecraft:water"
+    ],
+    "projected_width_blocks": 157.68,
+    "projected_height_blocks": 109.56,
+    "height_over_width": 0.6948,
+    "screen_bbox_world_offsets": [
+     -1180.868,
+     75.255,
+     -1023.184,
+     184.81
+    ],
+    "crop_side_blocks": 179.68481220460012,
+    "margins_blocks_lr": 11.0,
+    "margins_blocks_tb": 35.06,
+    "margins_px_lr_at_1024": 62.7,
+    "margins_px_tb_at_1024": 199.8
+   }
+  },
+  {
+   "chunk_x": 84,
+   "chunk_z": 24,
+   "start_y": 200,
+   "tier": 5,
+   "depth": 8,
+   "control": "tier 5 depth 8",
+   "world_seed": 20260910,
+   "rng_seed": 9414080800992952502,
+   "position": [
+    1344.5,
+    200.0,
+    384.5
+   ],
+   "pieces": 182,
+   "seconds": 20.8,
+   "bbox": [
+    1291,
+    164,
+    325,
+    1415,
+    205,
+    436
+   ],
+   "blocks": 60887,
+   "size": [
+    125,
+    42,
+    112
+   ],
+   "label": "cx84cz24y200t5d8",
+   "silhouette": {
+    "voxels": 60850,
+    "fluids_excluded": [
+     "minecraft:flowing_lava",
+     "minecraft:flowing_water",
+     "minecraft:lava",
+     "minecraft:water"
+    ],
+    "projected_width_blocks": 127.99,
+    "projected_height_blocks": 78.54,
+    "height_over_width": 0.6136,
+    "screen_bbox_world_offsets": [
+     -1300.369,
+     142.784,
+     -1172.383,
+     221.321
+    ],
+    "crop_side_blocks": 145.9863273947651,
+    "margins_blocks_lr": 9.0,
+    "margins_blocks_tb": 33.72,
+    "margins_px_lr_at_1024": 63.1,
+    "margins_px_tb_at_1024": 236.6
+   }
+  },
+  {
+   "chunk_x": 96,
+   "chunk_z": 24,
+   "start_y": 200,
+   "tier": 4,
+   "depth": 20,
+   "control": "tier 4 depth 20",
+   "world_seed": 20260910,
+   "rng_seed": 4443533724502389790,
+   "position": [
+    1536.5,
+    200.0,
+    384.5
+   ],
+   "pieces": 344,
+   "seconds": 21.8,
+   "bbox": [
+    1464,
+    128,
+    314,
+    1607,
+    205,
+    456
+   ],
+   "blocks": 117709,
+   "size": [
+    144,
+    78,
+    143
+   ],
+   "label": "cx96cz24y200t4d20",
+   "silhouette": {
+    "voxels": 116987,
+    "fluids_excluded": [
+     "minecraft:flowing_lava",
+     "minecraft:flowing_water",
+     "minecraft:lava",
+     "minecraft:water"
+    ],
+    "projected_width_blocks": 176.78,
+    "projected_height_blocks": 113.44,
+    "height_over_width": 0.6417,
+    "screen_bbox_world_offsets": [
+     -1446.74,
+     207.89,
+     -1269.964,
+     321.334
+    ],
+    "crop_side_blocks": 200.77669529663717,
+    "margins_blocks_lr": 12.0,
+    "margins_blocks_tb": 43.67,
+    "margins_px_lr_at_1024": 61.2,
+    "margins_px_tb_at_1024": 222.7
+   }
+  },
+  {
+   "chunk_x": 108,
+   "chunk_z": 24,
+   "start_y": 200,
+   "tier": 4,
+   "depth": 16,
+   "control": "tier 4 depth 16",
+   "world_seed": 20260910,
+   "rng_seed": 7830515334929594822,
+   "position": [
+    1728.5,
+    200.0,
+    384.5
+   ],
+   "pieces": 253,
+   "seconds": 20.6,
+   "bbox": [
+    1669,
+    129,
+    314,
+    1789,
+    205,
+    455
+   ],
+   "blocks": 86329,
+   "size": [
+    121,
+    77,
+    142
+   ],
+   "label": "cx108cz24y200t4d16",
+   "silhouette": {
+    "voxels": 85869,
+    "fluids_excluded": [
+     "minecraft:flowing_lava",
+     "minecraft:flowing_water",
+     "minecraft:lava",
+     "minecraft:water"
+    ],
+    "projected_width_blocks": 148.49,
+    "projected_height_blocks": 100.36,
+    "height_over_width": 0.6759,
+    "screen_bbox_world_offsets": [
+     -1562.706,
+     278.902,
+     -1414.214,
+     379.265
+    ],
+    "crop_side_blocks": 168.49242404917482,
+    "margins_blocks_lr": 10.0,
+    "margins_blocks_tb": 34.06,
+    "margins_px_lr_at_1024": 60.8,
+    "margins_px_tb_at_1024": 207.0
+   }
+  },
+  {
+   "chunk_x": 120,
+   "chunk_z": 24,
+   "start_y": 200,
+   "tier": 3,
+   "depth": 20,
+   "control": "tier 3 depth 20",
+   "world_seed": 20260910,
+   "rng_seed": 11504557374422019502,
+   "position": [
+    1920.5,
+    200.0,
+    384.5
+   ],
+   "pieces": 127,
+   "seconds": 20.8,
+   "bbox": [
+    1869,
+    135,
+    345,
+    1984,
+    205,
+    447
+   ],
+   "blocks": 47312,
+   "size": [
+    116,
+    71,
+    103
+   ],
+   "label": "cx120cz24y200t3d20",
+   "silhouette": {
+    "voxels": 47142,
+    "fluids_excluded": [
+     "minecraft:flowing_lava",
+     "minecraft:flowing_water",
+     "minecraft:lava",
+     "minecraft:water"
+    ],
+    "projected_width_blocks": 120.92,
+    "projected_height_blocks": 102.79,
+    "height_over_width": 0.8501,
+    "screen_bbox_world_offsets": [
+     -1708.37,
+     346.888,
+     -1587.455,
+     449.674
+    ],
+    "crop_side_blocks": 136.91525958289958,
+    "margins_blocks_lr": 8.0,
+    "margins_blocks_tb": 17.06,
+    "margins_px_lr_at_1024": 59.8,
+    "margins_px_tb_at_1024": 127.6
+   }
+  },
+  {
+   "chunk_x": 132,
+   "chunk_z": 24,
+   "start_y": 200,
+   "tier": 3,
+   "depth": 14,
+   "control": "tier 3 depth 14",
+   "world_seed": 20260910,
+   "rng_seed": 14891565373128429846,
+   "position": [
+    2112.5,
+    200.0,
+    384.5
+   ],
+   "pieces": 67,
+   "seconds": 21.5,
+   "bbox": [
+    2064,
+    150,
+    370,
+    2172,
+    205,
+    435
+   ],
+   "blocks": 23074,
+   "size": [
+    109,
+    56,
+    66
+   ],
+   "label": "cx132cz24y200t3d14",
+   "silhouette": {
+    "voxels": 22900,
+    "fluids_excluded": [
+     "minecraft:flowing_lava",
+     "minecraft:flowing_water",
+     "minecraft:lava",
+     "minecraft:water"
+    ],
+    "projected_width_blocks": 115.97,
+    "projected_height_blocks": 63.03,
+    "height_over_width": 0.5435,
+    "screen_bbox_world_offsets": [
+     -1842.013,
+     419.263,
+     -1726.048,
+     482.295
+    ],
+    "crop_side_blocks": 131.96551211459382,
+    "margins_blocks_lr": 8.0,
+    "margins_blocks_tb": 34.47,
+    "margins_px_lr_at_1024": 62.1,
+    "margins_px_tb_at_1024": 267.4
+   }
+  }
+ ]
+}
