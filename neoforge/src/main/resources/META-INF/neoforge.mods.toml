@@ -6,6 +6,7 @@ license="MIT"
 modId="procedural_dungeon"
 version="${version}"
 displayName="ProceduralDungeon"
+logoFile="assets/procedural_dungeon/icon.png"
 description='''Adds a procedurally generated dungeon to Minecraft with many different themes and loot/difficulty tiers.'''
 authors="brainage04"
 
