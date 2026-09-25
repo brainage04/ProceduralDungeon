@@ -6,7 +6,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/trap/negative_potions",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/f1c9c8d348fad2df",
+        "processors": "procedural_dungeon:dungeon/profile/954dcf193cd214ac",
         "projection": "rigid",
         "spawner_tier": 4,
         "variant": "procedural_dungeon:dungeon/overworld/ocean_ruin/tier_4"

@@ -6,7 +6,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/loot/small",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/61a53b475f8b85c3",
+        "processors": "procedural_dungeon:dungeon/profile/ffafc5bfbf9ed1f8",
         "projection": "rigid",
         "spawner_tier": 2,
         "variant": "procedural_dungeon:dungeon/the_end/end_city/tier_2"
@@ -19,7 +19,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/loot/medium",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/519cf80f60dad089",
+        "processors": "procedural_dungeon:dungeon/profile/18b4f1b7189d2d15",
         "projection": "rigid",
         "spawner_tier": 2,
         "variant": "procedural_dungeon:dungeon/the_end/end_city/tier_2"
@@ -32,7 +32,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/loot/large",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/e6db2c4808e212ef",
+        "processors": "procedural_dungeon:dungeon/profile/ce908ba850b8aa8e",
         "projection": "rigid",
         "spawner_tier": 2,
         "variant": "procedural_dungeon:dungeon/the_end/end_city/tier_2"

@@ -6,7 +6,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/end/small",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/adfbda520addb46d",
+        "processors": "procedural_dungeon:dungeon/profile/40e91dec53700844",
         "projection": "rigid",
         "spawner_tier": 5,
         "variant": "procedural_dungeon:dungeon/overworld/ocean_ruin/tier_5"
@@ -19,7 +19,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/end/medium",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/4314556006f6e279",
+        "processors": "procedural_dungeon:dungeon/profile/ade5346863160a06",
         "projection": "rigid",
         "spawner_tier": 5,
         "variant": "procedural_dungeon:dungeon/overworld/ocean_ruin/tier_5"
@@ -32,7 +32,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/end/large",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/adfbda520addb46d",
+        "processors": "procedural_dungeon:dungeon/profile/40e91dec53700844",
         "projection": "rigid",
         "spawner_tier": 5,
         "variant": "procedural_dungeon:dungeon/overworld/ocean_ruin/tier_5"

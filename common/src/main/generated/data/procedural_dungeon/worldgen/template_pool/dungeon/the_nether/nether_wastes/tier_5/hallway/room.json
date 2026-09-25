@@ -6,7 +6,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/room/armorsmith/tier_5",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/4df04bb4db5e753e",
+        "processors": "procedural_dungeon:dungeon/profile/ad3b86848c862b5b",
         "projection": "rigid",
         "spawner_tier": 5,
         "variant": "procedural_dungeon:dungeon/the_nether/nether_wastes/tier_5"
@@ -19,7 +19,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/room/enchanter",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/8ce0b18bbb6ccc06",
+        "processors": "procedural_dungeon:dungeon/profile/537b82dabd35f0e6",
         "projection": "rigid",
         "spawner_tier": 5,
         "variant": "procedural_dungeon:dungeon/the_nether/nether_wastes/tier_5"
@@ -32,7 +32,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/room/spawner_corridor",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/4df04bb4db5e753e",
+        "processors": "procedural_dungeon:dungeon/profile/ad3b86848c862b5b",
         "projection": "rigid",
         "spawner_tier": 5,
         "variant": "procedural_dungeon:dungeon/the_nether/nether_wastes/tier_5"
@@ -95,9 +95,22 @@
       "element": {
         "branch_limit": 3,
         "element_type": "procedural_dungeon:variant_single_pool_element",
+        "location": "procedural_dungeon:dungeon/hallway/room/miniboss",
+        "override_liquid_settings": "ignore_waterlogging",
+        "processors": "procedural_dungeon:dungeon/the_nether/nether_wastes/tier_5",
+        "projection": "rigid",
+        "spawner_tier": 5,
+        "variant": "procedural_dungeon:dungeon/the_nether/nether_wastes/tier_5"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "branch_limit": 3,
+        "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/room/toolsmith/tier_5",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/4df04bb4db5e753e",
+        "processors": "procedural_dungeon:dungeon/profile/ad3b86848c862b5b",
         "projection": "rigid",
         "spawner_tier": 5,
         "variant": "procedural_dungeon:dungeon/the_nether/nether_wastes/tier_5"
@@ -110,7 +123,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/room/weaponsmith/tier_5",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/4df04bb4db5e753e",
+        "processors": "procedural_dungeon:dungeon/profile/ad3b86848c862b5b",
         "projection": "rigid",
         "spawner_tier": 5,
         "variant": "procedural_dungeon:dungeon/the_nether/nether_wastes/tier_5"

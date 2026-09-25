@@ -19,7 +19,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/trap/negative_potions",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/eb90c8912954e57c",
+        "processors": "procedural_dungeon:dungeon/profile/18defa509897c78d",
         "projection": "rigid",
         "spawner_tier": 1,
         "variant": "procedural_dungeon:dungeon/overworld/sculk/tier_1"

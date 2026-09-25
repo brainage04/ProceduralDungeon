@@ -6,7 +6,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/room/armorsmith/tier_3",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/c4f57a8a324353b5",
+        "processors": "procedural_dungeon:dungeon/profile/feeb2cc00c98f846",
         "projection": "rigid",
         "spawner_tier": 3,
         "variant": "procedural_dungeon:dungeon/the_nether/crimson_forest/tier_3"
@@ -19,7 +19,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/room/enchanter",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/58aa249cb8a586c2",
+        "processors": "procedural_dungeon:dungeon/profile/b22861c5c04ce3f0",
         "projection": "rigid",
         "spawner_tier": 3,
         "variant": "procedural_dungeon:dungeon/the_nether/crimson_forest/tier_3"
@@ -32,7 +32,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/room/spawner_corridor",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/c4f57a8a324353b5",
+        "processors": "procedural_dungeon:dungeon/profile/feeb2cc00c98f846",
         "projection": "rigid",
         "spawner_tier": 3,
         "variant": "procedural_dungeon:dungeon/the_nether/crimson_forest/tier_3"
@@ -95,9 +95,22 @@
       "element": {
         "branch_limit": 2,
         "element_type": "procedural_dungeon:variant_single_pool_element",
+        "location": "procedural_dungeon:dungeon/hallway/room/miniboss",
+        "override_liquid_settings": "ignore_waterlogging",
+        "processors": "procedural_dungeon:dungeon/the_nether/crimson_forest/tier_3",
+        "projection": "rigid",
+        "spawner_tier": 3,
+        "variant": "procedural_dungeon:dungeon/the_nether/crimson_forest/tier_3"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "branch_limit": 2,
+        "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/room/toolsmith/tier_3",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/c4f57a8a324353b5",
+        "processors": "procedural_dungeon:dungeon/profile/feeb2cc00c98f846",
         "projection": "rigid",
         "spawner_tier": 3,
         "variant": "procedural_dungeon:dungeon/the_nether/crimson_forest/tier_3"
@@ -110,7 +123,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/room/weaponsmith/tier_3",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/c4f57a8a324353b5",
+        "processors": "procedural_dungeon:dungeon/profile/feeb2cc00c98f846",
         "projection": "rigid",
         "spawner_tier": 3,
         "variant": "procedural_dungeon:dungeon/the_nether/crimson_forest/tier_3"

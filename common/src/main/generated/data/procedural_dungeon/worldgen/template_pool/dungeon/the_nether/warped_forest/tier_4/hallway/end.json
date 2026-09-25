@@ -6,7 +6,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/end/small",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/04f46cd04c35d483",
+        "processors": "procedural_dungeon:dungeon/profile/0f95063e6ac5afc6",
         "projection": "rigid",
         "spawner_tier": 4,
         "variant": "procedural_dungeon:dungeon/the_nether/warped_forest/tier_4"
@@ -19,7 +19,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/end/medium",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/bbe6750e88dc072a",
+        "processors": "procedural_dungeon:dungeon/profile/b71a8ffbc04e6ba7",
         "projection": "rigid",
         "spawner_tier": 4,
         "variant": "procedural_dungeon:dungeon/the_nether/warped_forest/tier_4"
@@ -32,7 +32,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/end/large",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/04f46cd04c35d483",
+        "processors": "procedural_dungeon:dungeon/profile/0f95063e6ac5afc6",
         "projection": "rigid",
         "spawner_tier": 4,
         "variant": "procedural_dungeon:dungeon/the_nether/warped_forest/tier_4"

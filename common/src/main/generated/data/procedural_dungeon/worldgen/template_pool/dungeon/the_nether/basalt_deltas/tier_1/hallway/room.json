@@ -6,7 +6,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/room/armorsmith/tier_1",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/bb221071f3ecb28b",
+        "processors": "procedural_dungeon:dungeon/profile/2f26d469509dd77a",
         "projection": "rigid",
         "spawner_tier": 1,
         "variant": "procedural_dungeon:dungeon/the_nether/basalt_deltas/tier_1"
@@ -19,7 +19,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/room/enchanter",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/3ced52acbb1f94ce",
+        "processors": "procedural_dungeon:dungeon/profile/c314b4ee84757ca6",
         "projection": "rigid",
         "spawner_tier": 1,
         "variant": "procedural_dungeon:dungeon/the_nether/basalt_deltas/tier_1"
@@ -32,7 +32,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/room/spawner_corridor",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/bb221071f3ecb28b",
+        "processors": "procedural_dungeon:dungeon/profile/2f26d469509dd77a",
         "projection": "rigid",
         "spawner_tier": 1,
         "variant": "procedural_dungeon:dungeon/the_nether/basalt_deltas/tier_1"
@@ -95,9 +95,22 @@
       "element": {
         "branch_limit": 1,
         "element_type": "procedural_dungeon:variant_single_pool_element",
+        "location": "procedural_dungeon:dungeon/hallway/room/miniboss",
+        "override_liquid_settings": "ignore_waterlogging",
+        "processors": "procedural_dungeon:dungeon/the_nether/basalt_deltas/tier_1",
+        "projection": "rigid",
+        "spawner_tier": 1,
+        "variant": "procedural_dungeon:dungeon/the_nether/basalt_deltas/tier_1"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "branch_limit": 1,
+        "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/room/toolsmith/tier_1",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/bb221071f3ecb28b",
+        "processors": "procedural_dungeon:dungeon/profile/2f26d469509dd77a",
         "projection": "rigid",
         "spawner_tier": 1,
         "variant": "procedural_dungeon:dungeon/the_nether/basalt_deltas/tier_1"
@@ -110,7 +123,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/room/weaponsmith/tier_1",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/bb221071f3ecb28b",
+        "processors": "procedural_dungeon:dungeon/profile/2f26d469509dd77a",
         "projection": "rigid",
         "spawner_tier": 1,
         "variant": "procedural_dungeon:dungeon/the_nether/basalt_deltas/tier_1"

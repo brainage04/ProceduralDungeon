@@ -6,7 +6,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/room/armorsmith/tier_1",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/b1638548cec5dfbb",
+        "processors": "procedural_dungeon:dungeon/profile/0aeb4b7bb639aa77",
         "projection": "rigid",
         "spawner_tier": 1,
         "variant": "procedural_dungeon:dungeon/overworld/cobblestone/tier_1"
@@ -19,7 +19,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/room/enchanter",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/71e6fc1b4debfb16",
+        "processors": "procedural_dungeon:dungeon/profile/56656be65f08b6b2",
         "projection": "rigid",
         "spawner_tier": 1,
         "variant": "procedural_dungeon:dungeon/overworld/cobblestone/tier_1"
@@ -32,7 +32,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/room/spawner_corridor",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/b1638548cec5dfbb",
+        "processors": "procedural_dungeon:dungeon/profile/0aeb4b7bb639aa77",
         "projection": "rigid",
         "spawner_tier": 1,
         "variant": "procedural_dungeon:dungeon/overworld/cobblestone/tier_1"
@@ -95,9 +95,22 @@
       "element": {
         "branch_limit": 1,
         "element_type": "procedural_dungeon:variant_single_pool_element",
+        "location": "procedural_dungeon:dungeon/hallway/room/miniboss",
+        "override_liquid_settings": "ignore_waterlogging",
+        "processors": "procedural_dungeon:dungeon/overworld/cobblestone/tier_1",
+        "projection": "rigid",
+        "spawner_tier": 1,
+        "variant": "procedural_dungeon:dungeon/overworld/cobblestone/tier_1"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "branch_limit": 1,
+        "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/room/toolsmith/tier_1",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/b1638548cec5dfbb",
+        "processors": "procedural_dungeon:dungeon/profile/0aeb4b7bb639aa77",
         "projection": "rigid",
         "spawner_tier": 1,
         "variant": "procedural_dungeon:dungeon/overworld/cobblestone/tier_1"
@@ -110,7 +123,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/room/weaponsmith/tier_1",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/b1638548cec5dfbb",
+        "processors": "procedural_dungeon:dungeon/profile/0aeb4b7bb639aa77",
         "projection": "rigid",
         "spawner_tier": 1,
         "variant": "procedural_dungeon:dungeon/overworld/cobblestone/tier_1"

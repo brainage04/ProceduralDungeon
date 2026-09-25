@@ -6,7 +6,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/loot/small",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/13c90ad4d9e6595a",
+        "processors": "procedural_dungeon:dungeon/profile/1f3f63653bb980c5",
         "projection": "rigid",
         "spawner_tier": 3,
         "variant": "procedural_dungeon:dungeon/the_nether/crimson_forest/tier_3"
@@ -19,7 +19,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/loot/medium",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/ef6a5cbd439f9950",
+        "processors": "procedural_dungeon:dungeon/profile/c8f3b5aa0a7980a3",
         "projection": "rigid",
         "spawner_tier": 3,
         "variant": "procedural_dungeon:dungeon/the_nether/crimson_forest/tier_3"
@@ -32,7 +32,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/loot/large",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/aaa4fe90cd48a3a1",
+        "processors": "procedural_dungeon:dungeon/profile/edae03bf9ad4da16",
         "projection": "rigid",
         "spawner_tier": 3,
         "variant": "procedural_dungeon:dungeon/the_nether/crimson_forest/tier_3"

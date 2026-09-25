@@ -19,7 +19,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/trap/negative_potions",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/43b27e6a9b905429",
+        "processors": "procedural_dungeon:dungeon/profile/58faddebc222089e",
         "projection": "rigid",
         "spawner_tier": 2,
         "variant": "procedural_dungeon:dungeon/the_nether/bastion/tier_2"

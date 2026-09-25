@@ -6,7 +6,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/loot/small",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/6d14ce7716eaa49e",
+        "processors": "procedural_dungeon:dungeon/profile/b5115753fde25463",
         "projection": "rigid",
         "spawner_tier": 4,
         "variant": "procedural_dungeon:dungeon/the_nether/soul_sand_valley/tier_4"
@@ -19,7 +19,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/loot/medium",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/9fb00b9702b1f49b",
+        "processors": "procedural_dungeon:dungeon/profile/0931cb016bfd4341",
         "projection": "rigid",
         "spawner_tier": 4,
         "variant": "procedural_dungeon:dungeon/the_nether/soul_sand_valley/tier_4"
@@ -32,7 +32,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/loot/large",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/88d28ea2cd214646",
+        "processors": "procedural_dungeon:dungeon/profile/62414ff2a0ec4c03",
         "projection": "rigid",
         "spawner_tier": 4,
         "variant": "procedural_dungeon:dungeon/the_nether/soul_sand_valley/tier_4"

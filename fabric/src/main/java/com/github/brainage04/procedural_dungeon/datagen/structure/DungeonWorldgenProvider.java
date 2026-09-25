@@ -4,6 +4,7 @@ import com.github.brainage04.procedural_dungeon.ProceduralDungeon;
 import com.github.brainage04.procedural_dungeon.datagen.core.ProceduralDungeonGenerator;
 import com.github.brainage04.procedural_dungeon.dungeon.DungeonTheme;
 import com.github.brainage04.procedural_dungeon.dungeon.DungeonTier;
+import com.github.brainage04.procedural_dungeon.worldgen.structure.DungeonProgressionRooms;
 import com.github.brainage04.procedural_dungeon.util.RegistryKeyUtils;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -71,6 +72,9 @@ public class DungeonWorldgenProvider implements DataProvider {
                     poolElement("dungeon/entrance/tier_%d/sunken_courtyard".formatted(tier), variantId, 3, Integer.MAX_VALUE),
                     poolElement("dungeon/entrance/tier_%d/ritual_descent".formatted(tier), variantId, 3, Integer.MAX_VALUE)
             ));
+            addTemplatePool(writer, futures, "%s/shaft_start".formatted(key), List.of(
+                    templatePoolElement(key, "dungeon/start", "dungeon/start_shaft", theme, tier, variantId, 1, startBranchLimit(variantId))
+            ));
         }
 
         addTemplatePool(writer, futures, "%s/start".formatted(key), List.of(
@@ -103,6 +107,7 @@ public class DungeonWorldgenProvider implements DataProvider {
         addRoomElement(roomElements, key, "staircase_diagonal_up", "dungeon/hallway/room/staircase_diagonal_down", "dungeon/hallway/room/staircase_diagonal_up", theme, tier, variantId, 1);
         addRoomElement(roomElements, key, "staircase_spiral_down", "dungeon/hallway/room/staircase_spiral_down", theme, tier, variantId, 16);
         addRoomElement(roomElements, key, "staircase_spiral_up", "dungeon/hallway/room/staircase_spiral_down", "dungeon/hallway/room/staircase_spiral_up", theme, tier, variantId, 1);
+        addRoomElement(roomElements, "miniboss", DungeonProgressionRooms.MINIBOSS_ROOM, theme, variantId, 1);
         addRoomElement(roomElements, key, "toolsmith", "dungeon/hallway/room/toolsmith", "dungeon/hallway/room/toolsmith/tier_%d".formatted(tier), theme, tier, variantId, 2);
         addRoomElement(roomElements, key, "weaponsmith", "dungeon/hallway/room/weaponsmith", "dungeon/hallway/room/weaponsmith/tier_%d".formatted(tier), theme, tier, variantId, 2);
         addTemplatePool(writer, futures, "%s/hallway/room".formatted(key), roomElements);
@@ -113,6 +118,30 @@ public class DungeonWorldgenProvider implements DataProvider {
         addTrapElement(trapElements, key, "negative_potions", theme, tier, variantId);
         addTrapElement(trapElements, key, "spawners", theme, tier, variantId);
         addTemplatePool(writer, futures, "%s/hallway/trap".formatted(key), trapElements);
+
+        addTemplatePool(writer, futures, "%s/%s".formatted(key, DungeonProgressionRooms.BOSS_ROOM_POOL), List.of(
+                poolElement(DungeonProgressionRooms.BOSS_ROOM.getPath(), variantId, 1, Integer.MAX_VALUE)
+        ));
+        addTemplatePool(writer, futures, "%s/%s".formatted(key, DungeonProgressionRooms.BOSS_KEY_VAULT_POOL), List.of(
+                poolElement(DungeonProgressionRooms.BOSS_KEY_VAULT.getPath(), variantId, 1, Integer.MAX_VALUE)
+        ));
+    }
+
+    /**
+     * A generated room template, processed with the full variant processor list like the generated entrances.
+     */
+    private static void addRoomElement(
+            List<JsonObject> elements,
+            String room,
+            Identifier template,
+            DungeonTheme theme,
+            Identifier variantId,
+            int defaultWeight
+    ) {
+        int weight = theme.profile.roomWeight(room, defaultWeight);
+        if (weight > 0) {
+            elements.add(poolElement(template.getPath(), variantId, weight, secondaryBranchLimit(variantId)));
+        }
     }
 
     private static void addRoomElement(
@@ -305,9 +334,12 @@ public class DungeonWorldgenProvider implements DataProvider {
         } else {
             structure.add("start_height", absoluteHeight(0));
             structure.addProperty("project_start_to_heightmap", "WORLD_SURFACE_WG");
+            if (theme.dimension.equals(Level.END)) {
+                // Same floor End cities use, so the entrance sits on island ground rather than over the void.
+                structure.addProperty("min_surface_y", 60);
+            }
         }
         structure.addProperty("max_distance_from_center", tier.maxDistanceFromCenter);
-        structure.addProperty("use_expansion_hack", true);
         structure.addProperty("liquid_settings", "ignore_waterlogging");
         structure.add("spawn_overrides", new JsonObject());
         return structure;
@@ -319,7 +351,8 @@ public class DungeonWorldgenProvider implements DataProvider {
         }
 
         if (theme.dimension.equals(Level.END)) {
-            return "#minecraft:is_end";
+            // The outer-island land biomes End cities use; excludes the central island (minecraft:the_end).
+            return "#minecraft:has_structure/end_city";
         }
 
         return "#minecraft:is_overworld";

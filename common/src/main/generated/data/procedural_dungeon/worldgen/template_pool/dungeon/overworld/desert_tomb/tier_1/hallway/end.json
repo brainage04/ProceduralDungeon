@@ -6,7 +6,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/end/small",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/316f74c57a929d1a",
+        "processors": "procedural_dungeon:dungeon/profile/67ecce29b2e43005",
         "projection": "rigid",
         "spawner_tier": 1,
         "variant": "procedural_dungeon:dungeon/overworld/desert_tomb/tier_1"
@@ -19,7 +19,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/end/medium",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/3798036bb77440c8",
+        "processors": "procedural_dungeon:dungeon/profile/68436f1d8d2d69d4",
         "projection": "rigid",
         "spawner_tier": 1,
         "variant": "procedural_dungeon:dungeon/overworld/desert_tomb/tier_1"
@@ -32,7 +32,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/end/large",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/316f74c57a929d1a",
+        "processors": "procedural_dungeon:dungeon/profile/67ecce29b2e43005",
         "projection": "rigid",
         "spawner_tier": 1,
         "variant": "procedural_dungeon:dungeon/overworld/desert_tomb/tier_1"

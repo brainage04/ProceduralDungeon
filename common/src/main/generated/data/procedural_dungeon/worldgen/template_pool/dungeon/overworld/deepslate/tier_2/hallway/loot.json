@@ -6,7 +6,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/loot/small",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/c197b8405306155b",
+        "processors": "procedural_dungeon:dungeon/profile/f709b103ffca6839",
         "projection": "rigid",
         "spawner_tier": 2,
         "variant": "procedural_dungeon:dungeon/overworld/deepslate/tier_2"
@@ -19,7 +19,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/loot/medium",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/7f4f287093cb3b1b",
+        "processors": "procedural_dungeon:dungeon/profile/7bba9f2384a73198",
         "projection": "rigid",
         "spawner_tier": 2,
         "variant": "procedural_dungeon:dungeon/overworld/deepslate/tier_2"
@@ -32,7 +32,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/loot/large",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/70aca00b9025007d",
+        "processors": "procedural_dungeon:dungeon/profile/6307f94417283bae",
         "projection": "rigid",
         "spawner_tier": 2,
         "variant": "procedural_dungeon:dungeon/overworld/deepslate/tier_2"

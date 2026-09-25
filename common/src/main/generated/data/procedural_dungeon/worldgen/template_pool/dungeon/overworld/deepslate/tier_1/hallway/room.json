@@ -6,7 +6,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/room/armorsmith/tier_1",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/9deeaff5e601c448",
+        "processors": "procedural_dungeon:dungeon/profile/3f1294be3e50a1a8",
         "projection": "rigid",
         "spawner_tier": 1,
         "variant": "procedural_dungeon:dungeon/overworld/deepslate/tier_1"
@@ -19,7 +19,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/room/enchanter",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/28eeb9d26bfc8661",
+        "processors": "procedural_dungeon:dungeon/profile/e1c3a0691b9a8282",
         "projection": "rigid",
         "spawner_tier": 1,
         "variant": "procedural_dungeon:dungeon/overworld/deepslate/tier_1"
@@ -32,7 +32,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/room/spawner_corridor",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/9deeaff5e601c448",
+        "processors": "procedural_dungeon:dungeon/profile/3f1294be3e50a1a8",
         "projection": "rigid",
         "spawner_tier": 1,
         "variant": "procedural_dungeon:dungeon/overworld/deepslate/tier_1"
@@ -95,9 +95,22 @@
       "element": {
         "branch_limit": 1,
         "element_type": "procedural_dungeon:variant_single_pool_element",
+        "location": "procedural_dungeon:dungeon/hallway/room/miniboss",
+        "override_liquid_settings": "ignore_waterlogging",
+        "processors": "procedural_dungeon:dungeon/overworld/deepslate/tier_1",
+        "projection": "rigid",
+        "spawner_tier": 1,
+        "variant": "procedural_dungeon:dungeon/overworld/deepslate/tier_1"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "branch_limit": 1,
+        "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/room/toolsmith/tier_1",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/9deeaff5e601c448",
+        "processors": "procedural_dungeon:dungeon/profile/3f1294be3e50a1a8",
         "projection": "rigid",
         "spawner_tier": 1,
         "variant": "procedural_dungeon:dungeon/overworld/deepslate/tier_1"
@@ -110,7 +123,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/room/weaponsmith/tier_1",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/9deeaff5e601c448",
+        "processors": "procedural_dungeon:dungeon/profile/3f1294be3e50a1a8",
         "projection": "rigid",
         "spawner_tier": 1,
         "variant": "procedural_dungeon:dungeon/overworld/deepslate/tier_1"

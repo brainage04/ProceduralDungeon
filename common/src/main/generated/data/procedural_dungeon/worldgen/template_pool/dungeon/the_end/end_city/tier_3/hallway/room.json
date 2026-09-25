@@ -6,7 +6,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/room/armorsmith/tier_3",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/7a6eb33dcde0710a",
+        "processors": "procedural_dungeon:dungeon/profile/e8c79a1764fb694f",
         "projection": "rigid",
         "spawner_tier": 3,
         "variant": "procedural_dungeon:dungeon/the_end/end_city/tier_3"
@@ -19,7 +19,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/room/enchanter",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/600513eb18fca672",
+        "processors": "procedural_dungeon:dungeon/profile/ec7f2c69e2a4ac04",
         "projection": "rigid",
         "spawner_tier": 3,
         "variant": "procedural_dungeon:dungeon/the_end/end_city/tier_3"
@@ -32,7 +32,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/room/spawner_corridor",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/7a6eb33dcde0710a",
+        "processors": "procedural_dungeon:dungeon/profile/e8c79a1764fb694f",
         "projection": "rigid",
         "spawner_tier": 3,
         "variant": "procedural_dungeon:dungeon/the_end/end_city/tier_3"
@@ -95,9 +95,22 @@
       "element": {
         "branch_limit": 2,
         "element_type": "procedural_dungeon:variant_single_pool_element",
+        "location": "procedural_dungeon:dungeon/hallway/room/miniboss",
+        "override_liquid_settings": "ignore_waterlogging",
+        "processors": "procedural_dungeon:dungeon/the_end/end_city/tier_3",
+        "projection": "rigid",
+        "spawner_tier": 3,
+        "variant": "procedural_dungeon:dungeon/the_end/end_city/tier_3"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "branch_limit": 2,
+        "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/room/toolsmith/tier_3",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/7a6eb33dcde0710a",
+        "processors": "procedural_dungeon:dungeon/profile/e8c79a1764fb694f",
         "projection": "rigid",
         "spawner_tier": 3,
         "variant": "procedural_dungeon:dungeon/the_end/end_city/tier_3"
@@ -110,7 +123,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/room/weaponsmith/tier_3",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/7a6eb33dcde0710a",
+        "processors": "procedural_dungeon:dungeon/profile/e8c79a1764fb694f",
         "projection": "rigid",
         "spawner_tier": 3,
         "variant": "procedural_dungeon:dungeon/the_end/end_city/tier_3"

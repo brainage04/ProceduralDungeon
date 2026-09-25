@@ -1,6 +1,7 @@
 package com.github.brainage04.procedural_dungeon.lock;
 
 import com.github.brainage04.procedural_dungeon.item.ModItems;
+import java.util.Optional;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -13,9 +14,11 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.ChestBlock;
+import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.ChestType;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.storage.loot.LootTable;
 
@@ -33,26 +36,34 @@ public final class DungeonLockManager {
 
     public static InteractionResult useBlock(Player player, ServerLevel level, BlockPos pos) {
         DungeonLockSaveData data = data(level);
-        if (!data.isLocked(pos.asLong())) {
+        Optional<DungeonKeyType> requiredKey = data.requiredKey(pos.asLong());
+        if (requiredKey.isEmpty()) {
             return InteractionResult.PASS;
         }
 
-        if (!consumeKey(player)) {
-            displayMessage(player, "This lock needs a Rusted Key.");
+        DungeonKeyType key = requiredKey.get();
+        if (!consumeKey(player, key)) {
+            displayMessage(player, "This lock needs a %s.".formatted(key.displayName()));
             return InteractionResult.FAIL;
         }
 
+        boolean door = data.isLockedDoor(pos.asLong());
         unlock(level, data, pos);
-        displayMessage(player, "Unlocked with a Rusted Key.");
+        displayMessage(player, "Unlocked with a %s.".formatted(key.displayName()));
+        if (door) {
+            openDoor(level, pos);
+            return InteractionResult.SUCCESS;
+        }
         return InteractionResult.PASS;
     }
 
     public static boolean canBreak(Player player, ServerLevel level, BlockPos pos) {
-        if (!data(level).isLocked(pos.asLong())) {
+        Optional<DungeonKeyType> requiredKey = data(level).requiredKey(pos.asLong());
+        if (requiredKey.isEmpty()) {
             return true;
         }
 
-        displayMessage(player, "This lock needs a Rusted Key.");
+        displayMessage(player, "This lock needs a %s.".formatted(requiredKey.get().displayName()));
         return false;
     }
 
@@ -83,10 +94,20 @@ public final class DungeonLockManager {
                 blockEntity.setChanged();
             }
         }
-    }
 
-    public static void registerLockedDoor(ServerLevel level, BlockPos pos) {
-        data(level).addLockedDoor(pos.asLong());
+        for (DungeonLockPlan.Door door : plan.doors()) {
+            BlockPos lower = BlockPos.of(door.pos());
+            if (!pieceBox.isInside(lower) || !(level.getBlockState(lower).getBlock() instanceof DoorBlock)) {
+                continue;
+            }
+
+            if (door.lock().isPresent()) {
+                data.addLockedDoor(lower.asLong(), door.lock().get());
+                data.addLockedDoor(lower.above().asLong(), door.lock().get());
+            } else {
+                openDoor(level, lower);
+            }
+        }
     }
 
     public static boolean isExplosionProtected(ServerLevel level, BlockPos pos) {
@@ -99,7 +120,7 @@ public final class DungeonLockManager {
 
     private static void addLockedChest(ServerLevel level, DungeonLockSaveData data, BlockPos pos) {
         data.addLockedChest(pos.asLong());
-        BlockPos connectedPos = connectedChestPos(level, pos);
+        BlockPos connectedPos = connectedPos(level, pos);
         if (connectedPos != null) {
             data.addLockedChest(connectedPos.asLong());
         }
@@ -107,14 +128,20 @@ public final class DungeonLockManager {
 
     private static void unlock(ServerLevel level, DungeonLockSaveData data, BlockPos pos) {
         data.unlock(pos.asLong());
-        BlockPos connectedPos = connectedChestPos(level, pos);
+        BlockPos connectedPos = connectedPos(level, pos);
         if (connectedPos != null) {
             data.unlock(connectedPos.asLong());
         }
     }
 
-    private static BlockPos connectedChestPos(ServerLevel level, BlockPos pos) {
+    /**
+     * The other block of a double chest or of a door, or {@code null} for single blocks.
+     */
+    private static BlockPos connectedPos(ServerLevel level, BlockPos pos) {
         BlockState state = level.getBlockState(pos);
+        if (state.getBlock() instanceof DoorBlock) {
+            return state.getValue(DoorBlock.HALF) == DoubleBlockHalf.LOWER ? pos.above() : pos.below();
+        }
         if (!(state.getBlock() instanceof ChestBlock) || !state.hasProperty(ChestBlock.TYPE)) {
             return null;
         }
@@ -124,11 +151,18 @@ public final class DungeonLockManager {
         return ChestBlock.getConnectedBlockPos(pos, state);
     }
 
-    private static boolean consumeKey(Player player) {
+    private static void openDoor(ServerLevel level, BlockPos pos) {
+        BlockState state = level.getBlockState(pos);
+        if (state.getBlock() instanceof DoorBlock door) {
+            door.setOpen(null, level, state, pos, true);
+        }
+    }
+
+    private static boolean consumeKey(Player player, DungeonKeyType type) {
         Inventory inventory = player.getInventory();
         for (int slot = 0; slot < inventory.getContainerSize(); slot++) {
             ItemStack stack = inventory.getItem(slot);
-            if (!stack.is(ModItems.rustedKey())) {
+            if (!stack.is(ModItems.key(type))) {
                 continue;
             }
 

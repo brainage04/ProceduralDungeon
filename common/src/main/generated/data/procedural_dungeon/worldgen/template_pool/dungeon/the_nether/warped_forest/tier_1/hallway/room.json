@@ -6,7 +6,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/room/armorsmith/tier_1",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/2e22feccda2cfe91",
+        "processors": "procedural_dungeon:dungeon/profile/2cac7be4e821da64",
         "projection": "rigid",
         "spawner_tier": 1,
         "variant": "procedural_dungeon:dungeon/the_nether/warped_forest/tier_1"
@@ -19,7 +19,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/room/enchanter",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/f4443b051e597b29",
+        "processors": "procedural_dungeon:dungeon/profile/102df4b0c6fa65b2",
         "projection": "rigid",
         "spawner_tier": 1,
         "variant": "procedural_dungeon:dungeon/the_nether/warped_forest/tier_1"
@@ -32,7 +32,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/room/spawner_corridor",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/2e22feccda2cfe91",
+        "processors": "procedural_dungeon:dungeon/profile/2cac7be4e821da64",
         "projection": "rigid",
         "spawner_tier": 1,
         "variant": "procedural_dungeon:dungeon/the_nether/warped_forest/tier_1"
@@ -95,9 +95,22 @@
       "element": {
         "branch_limit": 1,
         "element_type": "procedural_dungeon:variant_single_pool_element",
+        "location": "procedural_dungeon:dungeon/hallway/room/miniboss",
+        "override_liquid_settings": "ignore_waterlogging",
+        "processors": "procedural_dungeon:dungeon/the_nether/warped_forest/tier_1",
+        "projection": "rigid",
+        "spawner_tier": 1,
+        "variant": "procedural_dungeon:dungeon/the_nether/warped_forest/tier_1"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "branch_limit": 1,
+        "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/room/toolsmith/tier_1",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/2e22feccda2cfe91",
+        "processors": "procedural_dungeon:dungeon/profile/2cac7be4e821da64",
         "projection": "rigid",
         "spawner_tier": 1,
         "variant": "procedural_dungeon:dungeon/the_nether/warped_forest/tier_1"
@@ -110,7 +123,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/room/weaponsmith/tier_1",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/2e22feccda2cfe91",
+        "processors": "procedural_dungeon:dungeon/profile/2cac7be4e821da64",
         "projection": "rigid",
         "spawner_tier": 1,
         "variant": "procedural_dungeon:dungeon/the_nether/warped_forest/tier_1"

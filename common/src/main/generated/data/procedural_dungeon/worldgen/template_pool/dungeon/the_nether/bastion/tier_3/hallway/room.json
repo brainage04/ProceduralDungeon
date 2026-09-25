@@ -6,7 +6,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/room/armorsmith/tier_3",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/d5b74f8e120a26dc",
+        "processors": "procedural_dungeon:dungeon/profile/99cc534d9e86d785",
         "projection": "rigid",
         "spawner_tier": 3,
         "variant": "procedural_dungeon:dungeon/the_nether/bastion/tier_3"
@@ -19,7 +19,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/room/enchanter",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/e0836019d12f69de",
+        "processors": "procedural_dungeon:dungeon/profile/b4ecc7c2a1076f80",
         "projection": "rigid",
         "spawner_tier": 3,
         "variant": "procedural_dungeon:dungeon/the_nether/bastion/tier_3"
@@ -32,7 +32,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/room/spawner_corridor",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/d5b74f8e120a26dc",
+        "processors": "procedural_dungeon:dungeon/profile/99cc534d9e86d785",
         "projection": "rigid",
         "spawner_tier": 3,
         "variant": "procedural_dungeon:dungeon/the_nether/bastion/tier_3"
@@ -95,9 +95,22 @@
       "element": {
         "branch_limit": 2,
         "element_type": "procedural_dungeon:variant_single_pool_element",
+        "location": "procedural_dungeon:dungeon/hallway/room/miniboss",
+        "override_liquid_settings": "ignore_waterlogging",
+        "processors": "procedural_dungeon:dungeon/the_nether/bastion/tier_3",
+        "projection": "rigid",
+        "spawner_tier": 3,
+        "variant": "procedural_dungeon:dungeon/the_nether/bastion/tier_3"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "branch_limit": 2,
+        "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/room/toolsmith/tier_3",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/d5b74f8e120a26dc",
+        "processors": "procedural_dungeon:dungeon/profile/99cc534d9e86d785",
         "projection": "rigid",
         "spawner_tier": 3,
         "variant": "procedural_dungeon:dungeon/the_nether/bastion/tier_3"
@@ -110,7 +123,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/room/weaponsmith/tier_3",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/d5b74f8e120a26dc",
+        "processors": "procedural_dungeon:dungeon/profile/99cc534d9e86d785",
         "projection": "rigid",
         "spawner_tier": 3,
         "variant": "procedural_dungeon:dungeon/the_nether/bastion/tier_3"

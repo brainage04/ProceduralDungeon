@@ -6,7 +6,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/loot/small",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/96c03125d80a9d6f",
+        "processors": "procedural_dungeon:dungeon/profile/c9c0ce7c6215b089",
         "projection": "rigid",
         "spawner_tier": 4,
         "variant": "procedural_dungeon:dungeon/the_nether/nether_fortress/tier_4"
@@ -19,7 +19,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/loot/medium",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/4eae1befbb6cf2a5",
+        "processors": "procedural_dungeon:dungeon/profile/425686b80595cc29",
         "projection": "rigid",
         "spawner_tier": 4,
         "variant": "procedural_dungeon:dungeon/the_nether/nether_fortress/tier_4"
@@ -32,7 +32,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/loot/large",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/0a3f857cbc77dec4",
+        "processors": "procedural_dungeon:dungeon/profile/a60b13c619b9a9a2",
         "projection": "rigid",
         "spawner_tier": 4,
         "variant": "procedural_dungeon:dungeon/the_nether/nether_fortress/tier_4"

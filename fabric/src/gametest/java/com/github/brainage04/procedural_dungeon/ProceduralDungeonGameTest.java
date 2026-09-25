@@ -14,4 +14,29 @@ public final class ProceduralDungeonGameTest {
     public void seededLootSelectionIsRepeatableAndTierBounded(GameTestHelper helper) {
         DungeonGameTestSuite.seededLootSelectionIsRepeatableAndTierBounded(helper);
     }
+
+    @GameTest
+    public void everyLayoutHasABossRoomAndABossKeyVault(GameTestHelper helper) {
+        DungeonGameTestSuite.everyLayoutHasABossRoomAndABossKeyVault(helper);
+    }
+
+    @GameTest
+    public void guardedDoorOpensOnlyWithItsKey(GameTestHelper helper) {
+        DungeonGameTestSuite.guardedDoorOpensOnlyWithItsKey(helper);
+    }
+
+    @GameTest
+    public void placedBossRoomIsGuardedLockedAndStocked(GameTestHelper helper) {
+        DungeonGameTestSuite.placedBossRoomIsGuardedLockedAndStocked(helper);
+    }
+
+    @GameTest
+    public void trialSpawnersEjectTieredDungeonLoot(GameTestHelper helper) {
+        DungeonGameTestSuite.trialSpawnersEjectTieredDungeonLoot(helper);
+    }
+
+    @GameTest
+    public void surfaceEntrancesLeadDownIntoAFullDungeon(GameTestHelper helper) {
+        DungeonGameTestSuite.surfaceEntrancesLeadDownIntoAFullDungeon(helper);
+    }
 }

@@ -6,7 +6,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/start",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/9a28cf094f3aaf3a",
+        "processors": "procedural_dungeon:dungeon/profile/e77983aa1554ca37",
         "projection": "rigid",
         "spawner_tier": 4,
         "variant": "procedural_dungeon:dungeon/overworld/amethyst_geode/tier_4"

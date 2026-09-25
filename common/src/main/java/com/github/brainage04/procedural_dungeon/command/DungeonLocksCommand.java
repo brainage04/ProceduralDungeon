@@ -1,13 +1,16 @@
 package com.github.brainage04.procedural_dungeon.command;
 
+import com.github.brainage04.procedural_dungeon.lock.DungeonKeyType;
 import com.github.brainage04.procedural_dungeon.lock.DungeonLockSaveData;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.math.Transformation;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.core.BlockPos;
@@ -18,6 +21,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ChestBlock;
+import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Quaternionf;
@@ -62,6 +66,31 @@ public final class DungeonLocksCommand {
                                         Target.LOCKED_CHEST,
                                         IntegerArgumentType.getInteger(context, "radius")
                                 ))
+                        )
+                )
+                .then(literal("doors")
+                        .then(literal("list")
+                                .executes(context -> list(context.getSource(), Target.LOCKED_DOOR, 10))
+                                .then(argument("limit", IntegerArgumentType.integer(1, 100))
+                                        .executes(context -> list(
+                                                context.getSource(),
+                                                Target.LOCKED_DOOR,
+                                                IntegerArgumentType.getInteger(context, "limit")
+                                        ))
+                                )
+                        )
+                        .then(literal("nearest")
+                                .executes(context -> nearest(context.getSource(), Target.LOCKED_DOOR))
+                        )
+                        .then(literal("reveal")
+                                .executes(context -> reveal(context.getSource(), Target.LOCKED_DOOR, 128))
+                                .then(argument("radius", IntegerArgumentType.integer(1, 512))
+                                        .executes(context -> reveal(
+                                                context.getSource(),
+                                                Target.LOCKED_DOOR,
+                                                IntegerArgumentType.getInteger(context, "radius")
+                                        ))
+                                )
                         )
                 )
                 .then(literal("keys")
@@ -172,6 +201,7 @@ public final class DungeonLocksCommand {
         DungeonLockSaveData data = level.getDataStorage().computeIfAbsent(DungeonLockSaveData.TYPE);
         List<Long> positions = switch (target) {
             case LOCKED_CHEST -> data.getLockedChests();
+            case LOCKED_DOOR -> lockedDoorLowerHalves(data);
             case KEY_SOURCE_CHEST -> data.getKeySourceChests();
         };
         return positions.stream()
@@ -205,9 +235,26 @@ public final class DungeonLocksCommand {
         return false;
     }
 
+    /**
+     * Locked doors are stored per block; list each door once, by its lower half.
+     */
+    private static List<Long> lockedDoorLowerHalves(DungeonLockSaveData data) {
+        List<Long> doors = new ArrayList<>();
+        for (DungeonKeyType key : DungeonKeyType.values()) {
+            List<Long> halves = data.getLockedDoors(key);
+            Set<Long> positions = new HashSet<>(halves);
+            for (long pos : halves) {
+                if (!positions.contains(BlockPos.of(pos).below().asLong())) {
+                    doors.add(pos);
+                }
+            }
+        }
+        return doors;
+    }
+
     private static BlockState markerBlockState(ServerLevel level, BlockPos pos) {
         BlockState state = level.getBlockState(pos);
-        if (state.getBlock() instanceof ChestBlock) {
+        if (state.getBlock() instanceof ChestBlock || state.getBlock() instanceof DoorBlock) {
             return state;
         }
         return Blocks.CHEST.defaultBlockState();
@@ -261,7 +308,8 @@ public final class DungeonLocksCommand {
 
     private enum Target {
         LOCKED_CHEST("Locked chests", "locked chest"),
-        KEY_SOURCE_CHEST("Rusted Key chests", "Rusted Key chest");
+        LOCKED_DOOR("Locked doors", "locked door"),
+        KEY_SOURCE_CHEST("Key chests", "key chest");
 
         private final String label;
         private final String singularLabel;

@@ -6,7 +6,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/room/armorsmith/tier_3",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/1b31e83370ccebd6",
+        "processors": "procedural_dungeon:dungeon/profile/12f4e06ba57eb847",
         "projection": "rigid",
         "spawner_tier": 3,
         "variant": "procedural_dungeon:dungeon/overworld/sculk/tier_3"
@@ -19,7 +19,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/room/enchanter",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/d1d2ca321b47d8d5",
+        "processors": "procedural_dungeon:dungeon/profile/6d753de407169689",
         "projection": "rigid",
         "spawner_tier": 3,
         "variant": "procedural_dungeon:dungeon/overworld/sculk/tier_3"
@@ -32,7 +32,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/room/spawner_corridor",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/1b31e83370ccebd6",
+        "processors": "procedural_dungeon:dungeon/profile/12f4e06ba57eb847",
         "projection": "rigid",
         "spawner_tier": 3,
         "variant": "procedural_dungeon:dungeon/overworld/sculk/tier_3"
@@ -95,9 +95,22 @@
       "element": {
         "branch_limit": 2,
         "element_type": "procedural_dungeon:variant_single_pool_element",
+        "location": "procedural_dungeon:dungeon/hallway/room/miniboss",
+        "override_liquid_settings": "ignore_waterlogging",
+        "processors": "procedural_dungeon:dungeon/overworld/sculk/tier_3",
+        "projection": "rigid",
+        "spawner_tier": 3,
+        "variant": "procedural_dungeon:dungeon/overworld/sculk/tier_3"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "branch_limit": 2,
+        "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/room/toolsmith/tier_3",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/1b31e83370ccebd6",
+        "processors": "procedural_dungeon:dungeon/profile/12f4e06ba57eb847",
         "projection": "rigid",
         "spawner_tier": 3,
         "variant": "procedural_dungeon:dungeon/overworld/sculk/tier_3"
@@ -110,7 +123,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/room/weaponsmith/tier_3",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/1b31e83370ccebd6",
+        "processors": "procedural_dungeon:dungeon/profile/12f4e06ba57eb847",
         "projection": "rigid",
         "spawner_tier": 3,
         "variant": "procedural_dungeon:dungeon/overworld/sculk/tier_3"

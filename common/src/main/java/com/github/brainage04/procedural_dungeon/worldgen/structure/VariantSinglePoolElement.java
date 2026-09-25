@@ -1,5 +1,6 @@
 package com.github.brainage04.procedural_dungeon.worldgen.structure;
 
+import com.github.brainage04.procedural_dungeon.guardian.DungeonGuardian;
 import com.github.brainage04.procedural_dungeon.ProceduralDungeon;
 import com.github.brainage04.procedural_dungeon.worldgen.processor.FusedDungeonProcessor;
 import com.mojang.serialization.Codec;
@@ -270,10 +271,36 @@ public class VariantSinglePoolElement extends StructurePoolElement {
                 liquidSettings,
                 keepJigsaws
         );
+        if (placed) {
+            placeGuardians(structureTemplateManager, world, pos, rotation, box);
+        }
         if (DungeonGenerationProfiler.isActive()) {
             DungeonGenerationProfiler.recordPiece(variant, delegate.getTemplateLocation(), boundingBox, placed, System.nanoTime() - placementStart);
         }
         return placed;
+    }
+
+    /**
+     * Spawns the guardian of every {@link DungeonGuardian} data marker. Markers are read straight from the template:
+     * the placement processors drop structure blocks, so they never reach {@link #handleDataMarker}.
+     */
+    private void placeGuardians(
+            StructureTemplateManager structureTemplateManager,
+            WorldGenLevel world,
+            BlockPos pos,
+            Rotation rotation,
+            BoundingBox box
+    ) {
+        StructureTemplate template = structureTemplateManager.getOrCreate(delegate.getTemplateLocation());
+        StructurePlaceSettings settings = new StructurePlaceSettings().setRotation(rotation);
+        for (StructureTemplate.StructureBlockInfo marker : getDataMarkerBlocks(structureTemplateManager, template, pos, rotation)) {
+            BlockPos markerPos = StructureTemplate.calculateRelativePosition(settings, marker.pos()).offset(pos);
+            if (marker.nbt() == null || !box.isInside(markerPos)) {
+                continue;
+            }
+            DungeonGuardian.fromMarker(marker.nbt().getStringOr("metadata", ""))
+                    .ifPresent(guardian -> guardian.spawn(world, markerPos, rotation, spawnerTier));
+        }
     }
 
     private boolean placeFast(
@@ -312,24 +339,6 @@ public class VariantSinglePoolElement extends StructurePoolElement {
             );
         }
 
-        List<StructureTemplate.StructureBlockInfo> dataMarkerBlocks = getDataMarkerBlocks(
-                structureTemplateManager,
-                template,
-                pos,
-                rotation
-        );
-        if (!dataMarkerBlocks.isEmpty()) {
-            List<StructureTemplate.StructureBlockInfo> dataMarkers = StructureTemplate.processBlockInfos(
-                    world,
-                    pos,
-                    pivot,
-                    settings,
-                    dataMarkerBlocks
-            );
-            for (StructureTemplate.StructureBlockInfo marker : dataMarkers) {
-                handleDataMarker(world, marker, pos, rotation, random, box);
-            }
-        }
         return true;
     }
 

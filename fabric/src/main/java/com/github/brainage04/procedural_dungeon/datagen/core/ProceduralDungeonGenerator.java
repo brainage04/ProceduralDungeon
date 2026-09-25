@@ -81,13 +81,19 @@ public class ProceduralDungeonGenerator extends FabricDynamicRegistryProvider {
             .collect(Collectors.toUnmodifiableMap(structure -> structure, ProceduralDungeonGenerator::readTemplateCapabilities));
 
     private static final List<String> TIERED_LOOT_TABLES = List.of(
+            "starter_loot",
             "hallway_end",
             "hallway_loot",
             "armorsmith",
             "weaponsmith",
             "toolsmith",
             "enchanter",
-            "hallway/trap/negative_potions"
+            "hallway/trap/negative_potions",
+            "boss_key_vault",
+            "boss_room",
+            "miniboss_room",
+            "trial_spawner",
+            "trial_spawner/ominous"
     );
 
     public ProceduralDungeonGenerator(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {

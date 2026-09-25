@@ -1,0 +1,7 @@
+{
+  "environment": "minecraft:default",
+  "structure": "minecraft:empty",
+  "max_ticks": 20,
+  "type": "minecraft:function",
+  "function": "procedural_dungeon:placed_boss_room_is_guarded_locked_and_stocked"
+}

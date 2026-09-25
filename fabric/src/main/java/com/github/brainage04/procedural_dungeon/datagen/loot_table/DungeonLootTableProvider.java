@@ -35,26 +35,35 @@ import java.util.function.BiConsumer;
 public class DungeonLootTableProvider extends SimpleFabricLootTableSubProvider {
     private static final Gson GSON = new Gson();
     private static final Path SPEC_PATH = Path.of("common/src/main/datagen/procedural_dungeon/loot_tables.json");
-    private static final String[] NON_TIERED_TABLE_ORDER = {
-            "starter_loot"
-    };
     private static final String[] TIERED_TABLE_ORDER = {
+            "starter_loot",
             "hallway_end",
             "hallway_end/key_source",
+            "hallway_end/miniboss_key_source",
             "hallway_loot",
             "hallway_loot/key_source",
+            "hallway_loot/miniboss_key_source",
             "armorsmith",
             "weaponsmith",
             "toolsmith",
             "enchanter",
-            "hallway/trap/negative_potions"
+            "hallway/trap/negative_potions",
+            "boss_key_vault",
+            "boss_room",
+            "miniboss_room",
+            "trial_spawner",
+            "trial_spawner/ominous"
     };
     private static final Set<String> THEME_FLAVOURED_TABLES = Set.of(
             "hallway_end",
             "hallway_end/key_source",
+            "hallway_end/miniboss_key_source",
             "hallway_loot",
             "hallway_loot/key_source",
-            "enchanter"
+            "hallway_loot/miniboss_key_source",
+            "enchanter",
+            "boss_room",
+            "miniboss_room"
     );
 
     private final CompletableFuture<HolderLookup.Provider> registryLookup;
@@ -86,10 +95,6 @@ public class DungeonLootTableProvider extends SimpleFabricLootTableSubProvider {
         return THEME_FLAVOURED_TABLES.contains(tableName) && !theme.profile.lootFlavour().isEmpty()
                 ? getLootTableId(tableName, theme, tier)
                 : getLootTableId(tableName, tier);
-    }
-
-    private static ResourceKey<LootTable> getLootTableRegistryKey(String tableName) {
-        return ResourceKey.create(Registries.LOOT_TABLE, getLootTableId(tableName));
     }
 
     private static ResourceKey<LootTable> getLootTableRegistryKey(String tableName, DungeonTier tier) {
@@ -339,7 +344,7 @@ public class DungeonLootTableProvider extends SimpleFabricLootTableSubProvider {
         JsonElement rolls = spec.get("rolls");
         if (rolls.isJsonArray()) {
             JsonArray range = rolls.getAsJsonArray();
-            return new int[]{range.get(0).getAsInt(), range.get(1).getAsInt()};
+            return new int[]{intValue(range.get(0), dungeonTier), intValue(range.get(1), dungeonTier)};
         }
 
         int exactRolls = intValue(rolls, dungeonTier);
@@ -500,13 +505,6 @@ public class DungeonLootTableProvider extends SimpleFabricLootTableSubProvider {
 
     @Override
     public void generate(BiConsumer<ResourceKey<LootTable>, LootTable.Builder> biConsumer) {
-        for (String tableName : NON_TIERED_TABLE_ORDER) {
-            biConsumer.accept(
-                    getLootTableRegistryKey(tableName),
-                    fromSpec(lootTableSpecs, lootTableSpecs.getAsJsonArray(tableName), DungeonTier.TIER_1, registryLookup)
-            );
-        }
-
         for (DungeonTier dungeonTier : DungeonTier.values()) {
             for (String tableName : TIERED_TABLE_ORDER) {
                 biConsumer.accept(

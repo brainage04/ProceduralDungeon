@@ -3,11 +3,16 @@ package com.github.brainage04.procedural_dungeon.worldgen.structure;
 import com.github.brainage04.procedural_dungeon.ProceduralDungeon;
 import com.github.brainage04.procedural_dungeon.lock.DungeonLockPlan;
 import com.github.brainage04.procedural_dungeon.lock.DungeonLockPlanner;
+import java.util.Comparator;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.function.UnaryOperator;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
@@ -16,6 +21,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.SequencedPriorityIterator;
+import net.minecraft.util.Util;
 import net.minecraft.world.level.LevelHeightAccessor;
 import net.minecraft.world.level.block.JigsawBlock;
 import net.minecraft.world.level.block.Rotation;
@@ -35,6 +41,16 @@ public final class StagedDungeonLayoutCompiler {
     private static final int OCCUPANCY_BUCKET_SIZE = 32;
     private static final String TRAP_POOL_SUFFIX = "/hallway/trap";
     private static final String TRAP_TEMPLATE_PREFIX = "dungeon/hallway/trap/";
+    /**
+     * Progression rooms attach to free room sockets and to free hallway ends, never to the start room.
+     */
+    private static final Set<Identifier> PROGRESSION_SOCKET_TARGETS = Set.of(
+            Identifier.withDefaultNamespace("room"),
+            Identifier.withDefaultNamespace("end")
+    );
+    private static final Identifier HALLWAY_SOCKET_TARGET = Identifier.withDefaultNamespace("start");
+    private static final int MAX_HALLWAY_EXTENSIONS = 4;
+    private static final long MIN_KEY_VAULT_DISTANCE_SQR = 32L * 32L;
 
     private StagedDungeonLayoutCompiler() {}
 
@@ -44,7 +60,6 @@ public final class StagedDungeonLayoutCompiler {
             Optional<Identifier> startJigsawName,
             int maxDepth,
             BlockPos startPos,
-            boolean useExpansionHack,
             Optional<Heightmap.Types> projectStartToHeightmap,
             JigsawStructure.MaxDistance maxDistanceFromCenter,
             LiquidSettings liquidSettings
@@ -56,7 +71,6 @@ public final class StagedDungeonLayoutCompiler {
                 startJigsawName,
                 maxDepth,
                 startPos,
-                useExpansionHack,
                 projectStartToHeightmap,
                 maxDistanceFromCenter
         );
@@ -72,7 +86,6 @@ public final class StagedDungeonLayoutCompiler {
             Optional<Identifier> startJigsawName,
             int maxDepth,
             BlockPos startPos,
-            boolean useExpansionHack,
             Optional<Heightmap.Types> projectStartToHeightmap,
             JigsawStructure.MaxDistance maxDistanceFromCenter
     ) {
@@ -121,6 +134,7 @@ public final class StagedDungeonLayoutCompiler {
         AllowedBounds allowedBounds = AllowedBounds.create(locator, maxDistanceFromCenter, context.heightAccessor());
         BoxOccupancy occupancy = new BoxOccupancy();
         ArrayList<StagedDungeonPieceSpec> pieces = new ArrayList<>();
+        Map<StagedDungeonPieceSpec, Integer> depths = new IdentityHashMap<>();
         StagedDungeonPieceSpec startPiece = new StagedDungeonPieceSpec(
                 startElement,
                 piecePos,
@@ -130,18 +144,19 @@ public final class StagedDungeonLayoutCompiler {
                 true
         );
         pieces.add(startPiece);
+        depths.put(startPiece, 0);
         occupancy.add(startBox);
 
         SequencedPriorityIterator<PendingPiece> queue = new SequencedPriorityIterator<>();
-        expandChildren(context, pools, templateManager, random, pieces, occupancy, queue, startPiece, 0,
-                maxDepth, useExpansionHack, allowedBounds);
+        expandChildren(context, pools, templateManager, random, pieces, depths, occupancy, queue, startPiece, 0,
+                maxDepth, allowedBounds);
         while (queue.hasNext()) {
             PendingPiece pending = queue.next();
-            expandChildren(context, pools, templateManager, random, pieces, occupancy, queue, pending.piece(), pending.depth(),
-                    maxDepth, useExpansionHack, allowedBounds);
+            expandChildren(context, pools, templateManager, random, pieces, depths, occupancy, queue, pending.piece(), pending.depth(),
+                    maxDepth, allowedBounds);
         }
 
-        if (pieces.isEmpty()) {
+        if (!attachProgressionRooms(context, pools, templateManager, random, pieces, depths, occupancy, allowedBounds)) {
             return Optional.empty();
         }
 
@@ -152,6 +167,171 @@ public final class StagedDungeonLayoutCompiler {
         StagedDungeonLayout baseLayout = new StagedDungeonLayout(context.chunkPos(), locator, boundingBox, List.copyOf(pieces));
         DungeonLockPlan lockPlan = DungeonLockPlanner.create(baseLayout, templateManager, random);
         return Optional.of(new StagedDungeonLayout(context.chunkPos(), locator, boundingBox, baseLayout.pieces(), lockPlan));
+    }
+
+    /**
+     * Attaches the boss room to the deepest free room or hallway-end socket and the boss key vault to the deepest free
+     * socket away from it. Both rooms are dead ends reached through ordinary hallways, so every compiled layout has a
+     * walkable route to the key and to the boss door. When a small layout has no free socket that fits, spare hallway
+     * sockets of the start room grow extra hallways first; a layout that still has no room is rejected.
+     */
+    private static boolean attachProgressionRooms(
+            Structure.GenerationContext context,
+            Registry<StructureTemplatePool> pools,
+            StructureTemplateManager templateManager,
+            RandomSource random,
+            List<StagedDungeonPieceSpec> pieces,
+            Map<StagedDungeonPieceSpec, Integer> depths,
+            BoxOccupancy occupancy,
+            AllowedBounds allowedBounds
+    ) {
+        if (!(pieces.getFirst().element() instanceof VariantSinglePoolElement start)) {
+            return true;
+        }
+
+        Optional<Holder.Reference<StructureTemplatePool>> bossPool =
+                pools.get(DungeonProgressionRooms.pool(start.variant(), DungeonProgressionRooms.BOSS_ROOM_POOL));
+        Optional<Holder.Reference<StructureTemplatePool>> vaultPool =
+                pools.get(DungeonProgressionRooms.pool(start.variant(), DungeonProgressionRooms.BOSS_KEY_VAULT_POOL));
+        if (bossPool.isEmpty() || vaultPool.isEmpty()) {
+            ProceduralDungeon.LOGGER.warn("Dungeon variant {} has no boss room or boss key vault pool", start.variant());
+            return false;
+        }
+
+        LayoutGrowth growth = new LayoutGrowth(context, pools, templateManager, random, pieces, depths, occupancy, allowedBounds);
+        Optional<StagedDungeonPieceSpec> bossRoom = growth.attachProgressionRoom(bossPool.get(), sockets -> sockets);
+        if (bossRoom.isEmpty()) {
+            return false;
+        }
+
+        BlockPos bossCenter = bossRoom.get().boundingBox().getCenter();
+        return growth.attachProgressionRoom(vaultPool.get(), sockets -> {
+            ArrayList<RoomSocket> farFirst = new ArrayList<>(sockets.size());
+            sockets.stream()
+                    .filter(socket -> horizontalDistanceSqr(socket.attachmentPos(), bossCenter) >= MIN_KEY_VAULT_DISTANCE_SQR)
+                    .forEach(farFirst::add);
+            sockets.stream()
+                    .filter(socket -> horizontalDistanceSqr(socket.attachmentPos(), bossCenter) < MIN_KEY_VAULT_DISTANCE_SQR)
+                    .forEach(farFirst::add);
+            return farFirst;
+        }).isPresent();
+    }
+
+    private static long horizontalDistanceSqr(BlockPos first, BlockPos second) {
+        long dx = first.getX() - second.getX();
+        long dz = first.getZ() - second.getZ();
+        return dx * dx + dz * dz;
+    }
+
+    private record LayoutGrowth(
+            Structure.GenerationContext context,
+            Registry<StructureTemplatePool> pools,
+            StructureTemplateManager templateManager,
+            RandomSource random,
+            List<StagedDungeonPieceSpec> pieces,
+            Map<StagedDungeonPieceSpec, Integer> depths,
+            BoxOccupancy occupancy,
+            AllowedBounds allowedBounds
+    ) {
+        private Optional<StagedDungeonPieceSpec> attachProgressionRoom(
+                Holder<StructureTemplatePool> pool,
+                UnaryOperator<List<RoomSocket>> socketOrder
+        ) {
+            List<StructurePoolElement> rooms = pool.value().getShuffledTemplates(random);
+            for (int extensions = 0; ; extensions++) {
+                Optional<StagedDungeonPieceSpec> room = attachToFirstSocket(
+                        socketOrder.apply(sockets(PROGRESSION_SOCKET_TARGETS)), socket -> rooms, false);
+                if (room.isPresent() || extensions == MAX_HALLWAY_EXTENSIONS) {
+                    return room;
+                }
+                if (attachToFirstSocket(sockets(Set.of(HALLWAY_SOCKET_TARGET)), this::socketPoolTemplates, true).isEmpty()) {
+                    return Optional.empty();
+                }
+            }
+        }
+
+        private List<StructurePoolElement> socketPoolTemplates(RoomSocket socket) {
+            return pools.get(PoolAliasLookup.EMPTY.lookup(socket.jigsaw().pool()))
+                    .map(pool -> pool.value().getShuffledTemplates(random))
+                    .orElse(List.of());
+        }
+
+        /**
+         * Every horizontal socket with one of {@code targets}, deepest first; sockets at the same depth are in random
+         * order. Jigsaws at BlockPos.ZERO bypass the branch limit, so sockets skipped during expansion are offered too;
+         * occupied sockets are rejected later by the collision check.
+         */
+        private List<RoomSocket> sockets(Set<Identifier> targets) {
+            ArrayList<RoomSocket> sockets = new ArrayList<>();
+            for (StagedDungeonPieceSpec piece : pieces) {
+                for (StructureTemplate.JigsawBlockInfo jigsaw : piece.element().getShuffledJigsawBlocks(
+                        templateManager, BlockPos.ZERO, piece.rotation(), random)) {
+                    if (!targets.contains(jigsaw.target())
+                            || !JigsawBlock.getFrontFacing(jigsaw.info().state()).getAxis().isHorizontal()) {
+                        continue;
+                    }
+                    StructureTemplate.StructureBlockInfo info = jigsaw.info();
+                    StructureTemplate.JigsawBlockInfo placed = jigsaw.withInfo(new StructureTemplate.StructureBlockInfo(
+                            info.pos().offset(piece.position()),
+                            info.state(),
+                            info.nbt()
+                    ));
+                    sockets.add(new RoomSocket(piece, placed, depths.getOrDefault(piece, 0)));
+                }
+            }
+            Util.shuffle(sockets, random);
+            sockets.sort(Comparator.comparingInt(RoomSocket::depth).reversed());
+            return sockets;
+        }
+
+        /**
+         * Places the first candidate that fits any socket, in socket order. Progression rooms only need an opposite
+         * facing entrance; hallway extensions must also match the socket's jigsaw names.
+         */
+        private Optional<StagedDungeonPieceSpec> attachToFirstSocket(
+                List<RoomSocket> sockets,
+                Function<RoomSocket, List<StructurePoolElement>> candidatesForSocket,
+                boolean matchJigsawNames
+        ) {
+            for (RoomSocket socket : sockets) {
+                StagedDungeonPieceSpec parent = socket.parent();
+                StructureTemplate.StructureBlockInfo sourceInfo = socket.jigsaw().info();
+                Direction sourceFacing = JigsawBlock.getFrontFacing(sourceInfo.state());
+                int sourceDeltaY = sourceInfo.pos().getY() - parent.boundingBox().minY();
+                boolean parentRigid = parent.element().getProjection() == StructureTemplatePool.Projection.RIGID;
+
+                for (StructurePoolElement candidate : candidatesForSocket.apply(socket)) {
+                    for (Rotation rotation : Rotation.getShuffled(random)) {
+                        List<StructureTemplate.JigsawBlockInfo> targetJigsaws =
+                                candidate.getShuffledJigsawBlocks(templateManager, BlockPos.ZERO, rotation, random);
+                        for (StructureTemplate.JigsawBlockInfo targetJigsaw : targetJigsaws) {
+                            boolean attaches = matchJigsawNames
+                                    ? JigsawBlock.canAttach(socket.jigsaw(), targetJigsaw)
+                                    : JigsawBlock.getFrontFacing(targetJigsaw.info().state()) == sourceFacing.getOpposite();
+                            if (!attaches) {
+                                continue;
+                            }
+
+                            CandidatePlacement placement = createCandidatePlacement(context, parent, parentRigid, sourceInfo,
+                                    sourceFacing, sourceDeltaY, socket.attachmentPos(), candidate, rotation, targetJigsaw,
+                                    templateManager);
+                            if (!allowedBounds.containsDeflated(placement.boundingBox())
+                                    || occupancy.intersectsDeflated(placement.boundingBox(), false)) {
+                                continue;
+                            }
+
+                            StagedDungeonPieceSpec piece = new StagedDungeonPieceSpec(candidate, placement.position(), rotation,
+                                    placement.boundingBox(), placement.groundLevelDelta());
+                            pieces.add(piece);
+                            depths.put(piece, socket.depth() + 1);
+                            occupancy.add(placement.boundingBox());
+                            return Optional.of(piece);
+                        }
+                    }
+                }
+            }
+            return Optional.empty();
+        }
     }
 
     private static Optional<BlockPos> findNamedJigsaw(
@@ -176,12 +356,12 @@ public final class StagedDungeonLayoutCompiler {
             StructureTemplateManager templateManager,
             RandomSource random,
             List<StagedDungeonPieceSpec> pieces,
+            Map<StagedDungeonPieceSpec, Integer> depths,
             BoxOccupancy occupancy,
             SequencedPriorityIterator<PendingPiece> queue,
             StagedDungeonPieceSpec parent,
             int depth,
             int maxDepth,
-            boolean useExpansionHack,
             AllowedBounds allowedBounds
     ) {
         StructurePoolElement parentElement = parent.element();
@@ -238,8 +418,6 @@ public final class StagedDungeonLayoutCompiler {
                             rotation,
                             random
                     );
-                    BoundingBox baseBox = candidate.getBoundingBox(templateManager, BlockPos.ZERO, rotation);
-                    int expansionHeight = expansionHeight(context, pools, templateManager, useExpansionHack, baseBox, targetJigsaws);
 
                     for (StructureTemplate.JigsawBlockInfo targetJigsaw : targetJigsaws) {
                         if (!JigsawBlock.canAttach(sourceJigsaw, targetJigsaw)) {
@@ -260,7 +438,6 @@ public final class StagedDungeonLayoutCompiler {
                                 candidate,
                                 rotation,
                                 targetJigsaw,
-                                expansionHeight,
                                 templateManager
                         );
                         if (!allowedBounds.containsDeflated(placement.boundingBox())) {
@@ -285,6 +462,7 @@ public final class StagedDungeonLayoutCompiler {
                                 placement.groundLevelDelta()
                         );
                         pieces.add(piece);
+                        depths.put(piece, depth + 1);
                         occupancy.add(placement.boundingBox());
                         DungeonGenerationProfiler.recordGraphAcceptedPiece();
                         DungeonGenerationProfiler.recordGraphCandidateTemplateAccepted(candidateTemplate);
@@ -366,33 +544,6 @@ public final class StagedDungeonLayoutCompiler {
         return pool.value().size() == 0 && !pool.unwrapKey().map(key -> key.identifier().equals(Identifier.withDefaultNamespace("empty"))).orElse(false);
     }
 
-    private static int expansionHeight(
-            Structure.GenerationContext context,
-            Registry<StructureTemplatePool> pools,
-            StructureTemplateManager templateManager,
-            boolean useExpansionHack,
-            BoundingBox baseBox,
-            List<StructureTemplate.JigsawBlockInfo> targetJigsaws
-    ) {
-        if (!useExpansionHack || baseBox.getYSpan() > 16) {
-            return 0;
-        }
-
-        int max = 0;
-        for (StructureTemplate.JigsawBlockInfo info : targetJigsaws) {
-            StructureTemplate.StructureBlockInfo blockInfo = info.info();
-            if (!baseBox.isInside(blockInfo.pos().relative(JigsawBlock.getFrontFacing(blockInfo.state())))) {
-                continue;
-            }
-
-            Optional<Holder.Reference<StructureTemplatePool>> pool = pools.get(PoolAliasLookup.EMPTY.lookup(info.pool()));
-            int directSize = pool.map(holder -> holder.value().getMaxSize(templateManager)).orElse(0);
-            int fallbackSize = pool.map(holder -> holder.value().getFallback().value().getMaxSize(templateManager)).orElse(0);
-            max = Math.max(max, Math.max(directSize, fallbackSize));
-        }
-        return max;
-    }
-
     private static CandidatePlacement createCandidatePlacement(
             Structure.GenerationContext context,
             StagedDungeonPieceSpec parent,
@@ -404,7 +555,6 @@ public final class StagedDungeonLayoutCompiler {
             StructurePoolElement candidate,
             Rotation rotation,
             StructureTemplate.JigsawBlockInfo targetJigsaw,
-            int expansionHeight,
             StructureTemplateManager templateManager
     ) {
         BlockPos targetPos = targetJigsaw.info().pos();
@@ -429,13 +579,6 @@ public final class StagedDungeonLayoutCompiler {
         int moveY = targetY - candidateBox.minY();
         BoundingBox movedBox = candidateBox.moved(0, moveY, 0);
         BlockPos movedPos = candidatePos.offset(0, moveY, 0);
-        if (expansionHeight > 0) {
-            int height = Math.max(expansionHeight + 1, movedBox.maxY() - movedBox.minY());
-            movedBox = BoundingBox.encapsulating(
-                    movedBox,
-                    new BoundingBox(new BlockPos(movedBox.minX(), movedBox.minY() + height, movedBox.minZ()))
-            );
-        }
 
         int groundLevelDelta = candidateRigid
                 ? parent.groundLevelDelta() - connectionOffsetY
@@ -448,6 +591,12 @@ public final class StagedDungeonLayoutCompiler {
     }
 
     private record PendingPiece(StagedDungeonPieceSpec piece, int depth) {}
+
+    private record RoomSocket(StagedDungeonPieceSpec parent, StructureTemplate.JigsawBlockInfo jigsaw, int depth) {
+        private BlockPos attachmentPos() {
+            return jigsaw.info().pos().relative(JigsawBlock.getFrontFacing(jigsaw.info().state()));
+        }
+    }
 
     private record CandidatePlacement(BlockPos position, BoundingBox boundingBox, int groundLevelDelta) {}
 

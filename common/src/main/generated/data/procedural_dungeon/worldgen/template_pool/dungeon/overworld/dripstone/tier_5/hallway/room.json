@@ -6,7 +6,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/room/armorsmith/tier_5",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/335e4d49a77f8792",
+        "processors": "procedural_dungeon:dungeon/profile/9ac7cc97b571671d",
         "projection": "rigid",
         "spawner_tier": 5,
         "variant": "procedural_dungeon:dungeon/overworld/dripstone/tier_5"
@@ -19,7 +19,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/room/enchanter",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/8bced8e76c7cfdb8",
+        "processors": "procedural_dungeon:dungeon/profile/1a9343382bf4f83b",
         "projection": "rigid",
         "spawner_tier": 5,
         "variant": "procedural_dungeon:dungeon/overworld/dripstone/tier_5"
@@ -32,7 +32,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/room/spawner_corridor",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/335e4d49a77f8792",
+        "processors": "procedural_dungeon:dungeon/profile/9ac7cc97b571671d",
         "projection": "rigid",
         "spawner_tier": 5,
         "variant": "procedural_dungeon:dungeon/overworld/dripstone/tier_5"
@@ -95,9 +95,22 @@
       "element": {
         "branch_limit": 3,
         "element_type": "procedural_dungeon:variant_single_pool_element",
+        "location": "procedural_dungeon:dungeon/hallway/room/miniboss",
+        "override_liquid_settings": "ignore_waterlogging",
+        "processors": "procedural_dungeon:dungeon/overworld/dripstone/tier_5",
+        "projection": "rigid",
+        "spawner_tier": 5,
+        "variant": "procedural_dungeon:dungeon/overworld/dripstone/tier_5"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "branch_limit": 3,
+        "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/room/toolsmith/tier_5",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/335e4d49a77f8792",
+        "processors": "procedural_dungeon:dungeon/profile/9ac7cc97b571671d",
         "projection": "rigid",
         "spawner_tier": 5,
         "variant": "procedural_dungeon:dungeon/overworld/dripstone/tier_5"
@@ -110,7 +123,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/room/weaponsmith/tier_5",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/335e4d49a77f8792",
+        "processors": "procedural_dungeon:dungeon/profile/9ac7cc97b571671d",
         "projection": "rigid",
         "spawner_tier": 5,
         "variant": "procedural_dungeon:dungeon/overworld/dripstone/tier_5"

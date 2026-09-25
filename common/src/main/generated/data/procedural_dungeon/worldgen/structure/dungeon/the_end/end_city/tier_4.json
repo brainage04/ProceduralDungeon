@@ -1,8 +1,9 @@
 {
   "type": "procedural_dungeon:staged_dungeon",
-  "biomes": "#minecraft:is_end",
+  "biomes": "#minecraft:has_structure/end_city",
   "liquid_settings": "ignore_waterlogging",
   "max_distance_from_center": 72,
+  "min_surface_y": 60,
   "project_start_to_heightmap": "WORLD_SURFACE_WG",
   "size": 15,
   "spawn_overrides": {},
@@ -12,6 +13,5 @@
   "start_jigsaw_name": "minecraft:start",
   "start_pool": "procedural_dungeon:dungeon/the_end/end_city/tier_4/entrance",
   "step": "underground_structures",
-  "terrain_adaptation": "bury",
-  "use_expansion_hack": true
+  "terrain_adaptation": "bury"
 }

@@ -17,6 +17,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.resources.Identifier;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
@@ -25,6 +26,7 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CrossCollisionBlock;
+import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.StairBlock;
@@ -39,6 +41,8 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 
 public class FusedDungeonProcessor implements StructureProcessor { public static final String SPAWNER_MARKER_TAG = "procedural_dungeon_spawner_marker";
 public static final String SPAWNER_TIER_TAG = "procedural_dungeon_spawner_tier";
+public static final String TRIAL_SPAWNER_LOOT = "procedural_dungeon:trial_spawner";
+public static final String TRIAL_SPAWNER_OMINOUS_LOOT = "procedural_dungeon:trial_spawner/ominous";
 
 private static final Map<Block, Shape> INPUT_SHAPES = inputShapes();
 private static final BlockState[] NON_MOSSY_SLAB_REPLACEMENTS = new BlockState[] {
@@ -152,9 +156,12 @@ public StructureTemplate.StructureBlockInfo processBlock(
         return null;
     }
 
-    result = applyRot(result, data.getRandom(result.pos()));
-    if (result == null) {
-        return null;
+    // Block entities, doors, and door frames of guarded rooms never rot, so loot, keys, and locks always generate.
+    if (result.nbt() == null && !classification.rotProtected()) {
+        result = applyRot(result, data.getRandom(result.pos()));
+        if (result == null) {
+            return null;
+        }
     }
 
     classification = classify(result.state());
@@ -348,7 +355,8 @@ private static StateClassification createClassification(BlockState state) {
     } else {
         ageKind = AgeKind.NONE;
     }
-    return new StateClassification(state.isAir(), ageKind, INPUT_SHAPES.get(block));
+    boolean rotProtected = block instanceof DoorBlock || state.is(Blocks.REINFORCED_DEEPSLATE);
+    return new StateClassification(state.isAir(), ageKind, INPUT_SHAPES.get(block), rotProtected);
 }
 
 private StructureTemplate.StructureBlockInfo applyLootAndBlockEntity(
@@ -364,6 +372,10 @@ private StructureTemplate.StructureBlockInfo applyLootAndBlockEntity(
 
         if (!(blockInfo.state().getBlock() instanceof EntityBlock)) {
             return new StructureTemplate.StructureBlockInfo(blockInfo.pos(), blockInfo.state(), null);
+        }
+
+        if (blockInfo.state().is(Blocks.TRIAL_SPAWNER)) {
+            return applyTrialSpawnerLoot(blockInfo);
         }
 
         String oldLootTable = nbt.getString("LootTable").orElse(null);
@@ -385,6 +397,42 @@ private StructureTemplate.StructureBlockInfo applyLootAndBlockEntity(
             DungeonGenerationProfiler.recordProcessor("procedural_dungeon:loot_tables_and_block_entities", System.nanoTime() - start);
         }
     }
+}
+
+/**
+ * Points the inline normal and ominous configs of a trial spawner at the dungeon's tiered reward tables. Configs that
+ * reference a registry entry keep their own rewards.
+ */
+private StructureTemplate.StructureBlockInfo applyTrialSpawnerLoot(StructureTemplate.StructureBlockInfo blockInfo) {
+    String normal = lootTableReplacementStrings.get(TRIAL_SPAWNER_LOOT);
+    String ominous = lootTableReplacementStrings.get(TRIAL_SPAWNER_OMINOUS_LOOT);
+    if (normal == null && ominous == null) {
+        return blockInfo;
+    }
+
+    CompoundTag copy = blockInfo.nbt().copy();
+    if (normal != null) {
+        setEjectedLoot(copy, "normal_config", normal);
+    }
+    if (ominous != null) {
+        setEjectedLoot(copy, "ominous_config", ominous);
+    }
+    return new StructureTemplate.StructureBlockInfo(blockInfo.pos(), blockInfo.state(), copy);
+}
+
+private static void setEjectedLoot(CompoundTag nbt, String configKey, String lootTable) {
+    if (nbt.contains(configKey) && nbt.getCompound(configKey).isEmpty()) {
+        return;
+    }
+
+    CompoundTag config = nbt.getCompound(configKey).orElseGet(CompoundTag::new);
+    CompoundTag entry = new CompoundTag();
+    entry.putString("data", lootTable);
+    entry.putInt("weight", 1);
+    ListTag lootTables = new ListTag();
+    lootTables.add(entry);
+    config.put("loot_tables_to_eject", lootTables);
+    nbt.put(configKey, config);
 }
 
 private static Map<Block, Shape> inputShapes() {
@@ -569,7 +617,7 @@ private record IndexedRuleGroup(Map<Block, List<CompiledRule>> rulesByInput) {
 private record CompiledRule(float probability, BlockState outputState) {
 }
 
-private record StateClassification(boolean air, AgeKind ageKind, Shape shape) {
+private record StateClassification(boolean air, AgeKind ageKind, Shape shape, boolean rotProtected) {
 }
 
 private enum AgeKind {

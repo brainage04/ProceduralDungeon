@@ -10,10 +10,12 @@ import net.minecraft.resources.Identifier;
 public final class DungeonJigsawPoolReplacements {
     private static final String DUNGEON_PREFIX = "dungeon/";
     private static final String START_POOL = "dungeon/start";
+    private static final String SHAFT_START_POOL = "dungeon/shaft_start";
     private static final String HALLWAY_PREFIX = "dungeon/hallway";
 
     private static final List<Identifier> BASE_POOLS = List.of(
             ProceduralDungeon.of(START_POOL),
+            ProceduralDungeon.of(SHAFT_START_POOL),
             ProceduralDungeon.of("dungeon/hallway"),
             ProceduralDungeon.of("dungeon/hallway/end"),
             ProceduralDungeon.of("dungeon/hallway/loot"),
@@ -37,8 +39,8 @@ public final class DungeonJigsawPoolReplacements {
         }
 
         String path = pool.getPath();
-        if (path.equals(START_POOL)) {
-            return Identifier.fromNamespaceAndPath(variant.getNamespace(), "%s/start".formatted(variant.getPath()));
+        if (path.equals(START_POOL) || path.equals(SHAFT_START_POOL)) {
+            return Identifier.fromNamespaceAndPath(variant.getNamespace(), "%s/%s".formatted(variant.getPath(), path.substring(DUNGEON_PREFIX.length())));
         }
 
         if (path.equals(HALLWAY_PREFIX) || path.startsWith(HALLWAY_PREFIX + "/")) {

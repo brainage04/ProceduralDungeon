@@ -6,7 +6,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/room/armorsmith/tier_5",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/c9268cac1a9dbb6c",
+        "processors": "procedural_dungeon:dungeon/profile/b51f029da680d923",
         "projection": "rigid",
         "spawner_tier": 5,
         "variant": "procedural_dungeon:dungeon/overworld/ocean_ruin/tier_5"
@@ -19,7 +19,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/room/enchanter",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/cead1e26c026e548",
+        "processors": "procedural_dungeon:dungeon/profile/0210b3d0bf27f550",
         "projection": "rigid",
         "spawner_tier": 5,
         "variant": "procedural_dungeon:dungeon/overworld/ocean_ruin/tier_5"
@@ -32,7 +32,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/room/spawner_corridor",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/c9268cac1a9dbb6c",
+        "processors": "procedural_dungeon:dungeon/profile/b51f029da680d923",
         "projection": "rigid",
         "spawner_tier": 5,
         "variant": "procedural_dungeon:dungeon/overworld/ocean_ruin/tier_5"
@@ -95,9 +95,22 @@
       "element": {
         "branch_limit": 3,
         "element_type": "procedural_dungeon:variant_single_pool_element",
+        "location": "procedural_dungeon:dungeon/hallway/room/miniboss",
+        "override_liquid_settings": "ignore_waterlogging",
+        "processors": "procedural_dungeon:dungeon/overworld/ocean_ruin/tier_5",
+        "projection": "rigid",
+        "spawner_tier": 5,
+        "variant": "procedural_dungeon:dungeon/overworld/ocean_ruin/tier_5"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "branch_limit": 3,
+        "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/room/toolsmith/tier_5",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/c9268cac1a9dbb6c",
+        "processors": "procedural_dungeon:dungeon/profile/b51f029da680d923",
         "projection": "rigid",
         "spawner_tier": 5,
         "variant": "procedural_dungeon:dungeon/overworld/ocean_ruin/tier_5"
@@ -110,7 +123,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/room/weaponsmith/tier_5",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/c9268cac1a9dbb6c",
+        "processors": "procedural_dungeon:dungeon/profile/b51f029da680d923",
         "projection": "rigid",
         "spawner_tier": 5,
         "variant": "procedural_dungeon:dungeon/overworld/ocean_ruin/tier_5"

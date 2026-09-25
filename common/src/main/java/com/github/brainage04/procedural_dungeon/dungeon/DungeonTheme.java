@@ -48,6 +48,7 @@ public enum DungeonTheme implements StringRepresentable {
     private static final Set<String> VALID_ROOMS = Set.of(
             "armorsmith",
             "enchanter",
+            "miniboss",
             "spawner_corridor",
             "staircase_diagonal_down",
             "staircase_diagonal_up",

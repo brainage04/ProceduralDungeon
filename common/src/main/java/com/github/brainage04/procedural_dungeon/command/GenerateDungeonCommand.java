@@ -3,6 +3,8 @@ package com.github.brainage04.procedural_dungeon.command;
 import com.github.brainage04.procedural_dungeon.command.core.ModSuggestionProviders;
 import com.github.brainage04.procedural_dungeon.dungeon.DungeonTheme;
 import com.github.brainage04.procedural_dungeon.dungeon.DungeonTier;
+import com.github.brainage04.procedural_dungeon.lock.DungeonKeyType;
+import com.github.brainage04.procedural_dungeon.lock.DungeonLockPlan;
 import com.github.brainage04.procedural_dungeon.util.RegistryKeyUtils;
 import com.github.brainage04.procedural_dungeon.worldgen.structure.StagedDungeonGenerationManager;
 import com.github.brainage04.procedural_dungeon.worldgen.structure.StagedDungeonLayout;
@@ -18,6 +20,7 @@ import net.minecraft.commands.synchronization.SuggestionProviders;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.ChunkPos;
@@ -39,8 +42,6 @@ public class GenerateDungeonCommand {
 
         DungeonTier tier = getTier(tierNumber);
         String key = RegistryKeyUtils.getKeyString(theme, tier);
-        ResourceKey<StructureTemplatePool> poolKey = RegistryKeyUtils.create(Registries.TEMPLATE_POOL, "%s/start".formatted(key));
-        var pool = source.registryAccess().lookupOrThrow(Registries.TEMPLATE_POOL).getOrThrow(poolKey);
         BlockPos pos = BlockPos.containing(source.getPosition());
         ChunkPos chunkPos = ChunkPos.containing(pos);
 
@@ -49,29 +50,7 @@ public class GenerateDungeonCommand {
                         .formatted(tier.tier, theme.getName().getString(), depth)
         ), true);
 
-        var chunkGenerator = source.getLevel().getChunkSource().getGenerator();
-        Structure.GenerationContext generationContext = new Structure.GenerationContext(
-                source.registryAccess(),
-                chunkGenerator,
-                chunkGenerator.getBiomeSource(),
-                source.getLevel().getChunkSource().randomState(),
-                source.getLevel().getStructureManager(),
-                source.getLevel().getSeed(),
-                chunkPos,
-                source.getLevel(),
-                ignored -> true
-        );
-        Optional<StagedDungeonLayout> layout = StagedDungeonLayoutCompiler.compile(
-                generationContext,
-                pool,
-                Optional.of(Identifier.withDefaultNamespace("start")),
-                depth,
-                pos,
-                false,
-                Optional.empty(),
-                new JigsawStructure.MaxDistance(tier.maxDistanceFromCenter),
-                LiquidSettings.IGNORE_WATERLOGGING
-        );
+        Optional<StagedDungeonLayout> layout = compileLayout(source.getLevel(), theme, tier, depth, pos);
         if (layout.isEmpty()) {
             source.sendFailure(Component.literal("Failed to compile dungeon layout."));
             return 0;
@@ -85,20 +64,54 @@ public class GenerateDungeonCommand {
                 layout.get().lockPlan()
         );
 
+        DungeonLockPlan lockPlan = layout.get().lockPlan();
         source.sendSuccess(() -> Component.literal(
-                "Scheduled %s at %d %d %d with %d pieces, %d locked chest(s), and %d key chest(s)."
+                "Scheduled %s at %d %d %d with %d pieces, %d boss door(s), %d miniboss door(s), %d locked chest(s), and %d key chest(s)."
                         .formatted(
                                 key,
                                 pos.getX(),
                                 pos.getY(),
                                 pos.getZ(),
                                 layout.get().pieces().size(),
-                                layout.get().lockPlan().lockedChests().size(),
-                                layout.get().lockPlan().keySources().size()
+                                lockPlan.lockedDoorCount(DungeonKeyType.BOSS),
+                                lockPlan.lockedDoorCount(DungeonKeyType.MINIBOSS),
+                                lockPlan.lockedChests().size(),
+                                lockPlan.keySources().size()
                         )
         ), true);
 
         return depth;
+    }
+
+    /**
+     * Compiles the layout {@code /generatedungeon} would place from {@code pos}, without an entrance.
+     */
+    public static Optional<StagedDungeonLayout> compileLayout(ServerLevel level, DungeonTheme theme, DungeonTier tier, int depth, BlockPos pos) {
+        String key = RegistryKeyUtils.getKeyString(theme, tier);
+        ResourceKey<StructureTemplatePool> poolKey = RegistryKeyUtils.create(Registries.TEMPLATE_POOL, "%s/start".formatted(key));
+        var pool = level.registryAccess().lookupOrThrow(Registries.TEMPLATE_POOL).getOrThrow(poolKey);
+        var chunkGenerator = level.getChunkSource().getGenerator();
+        Structure.GenerationContext generationContext = new Structure.GenerationContext(
+                level.registryAccess(),
+                chunkGenerator,
+                chunkGenerator.getBiomeSource(),
+                level.getChunkSource().randomState(),
+                level.getStructureManager(),
+                level.getSeed(),
+                ChunkPos.containing(pos),
+                level,
+                ignored -> true
+        );
+        return StagedDungeonLayoutCompiler.compile(
+                generationContext,
+                pool,
+                Optional.of(Identifier.withDefaultNamespace("start")),
+                depth,
+                pos,
+                Optional.empty(),
+                new JigsawStructure.MaxDistance(tier.maxDistanceFromCenter),
+                LiquidSettings.IGNORE_WATERLOGGING
+        );
     }
 
     public static void initialize(CommandDispatcher<CommandSourceStack> dispatcher) {

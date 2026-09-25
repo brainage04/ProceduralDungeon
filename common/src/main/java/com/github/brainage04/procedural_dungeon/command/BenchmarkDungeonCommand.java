@@ -349,7 +349,6 @@ public class BenchmarkDungeonCommand {
                 Optional.of(net.minecraft.resources.Identifier.withDefaultNamespace("start")),
                 sample.tier.size,
                 pos,
-                false,
                 Optional.empty(),
                 new JigsawStructure.MaxDistance(sample.tier.maxDistanceFromCenter),
                 LiquidSettings.IGNORE_WATERLOGGING

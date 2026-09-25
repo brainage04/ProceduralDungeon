@@ -5,6 +5,7 @@ import com.github.brainage04.procedural_dungeon.datagen.core.ProceduralDungeonGe
 import com.github.brainage04.procedural_dungeon.datagen.structure.DungeonWorldgenProvider;
 import com.github.brainage04.procedural_dungeon.datagen.structure.DungeonStructureVariantProvider;
 import com.github.brainage04.procedural_dungeon.datagen.structure.EntranceStructureProvider;
+import com.github.brainage04.procedural_dungeon.datagen.structure.ProgressionRoomStructureProvider;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 
@@ -22,5 +23,7 @@ public class ModDataGenerator implements DataGeneratorEntrypoint {
         pack.addProvider(DungeonStructureVariantProvider::new);
 
         pack.addProvider(EntranceStructureProvider::new);
+
+        pack.addProvider(ProgressionRoomStructureProvider::new);
     }
 }

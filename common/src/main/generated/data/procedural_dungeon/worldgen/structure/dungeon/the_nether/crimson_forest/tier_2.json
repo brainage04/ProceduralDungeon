@@ -17,6 +17,5 @@
   "start_jigsaw_name": "minecraft:start",
   "start_pool": "procedural_dungeon:dungeon/the_nether/crimson_forest/tier_2/start",
   "step": "underground_structures",
-  "terrain_adaptation": "bury",
-  "use_expansion_hack": true
+  "terrain_adaptation": "bury"
 }

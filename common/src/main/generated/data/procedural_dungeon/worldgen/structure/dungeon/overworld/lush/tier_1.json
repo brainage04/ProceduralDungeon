@@ -12,6 +12,5 @@
   "start_jigsaw_name": "minecraft:start",
   "start_pool": "procedural_dungeon:dungeon/overworld/lush/tier_1/entrance",
   "step": "underground_structures",
-  "terrain_adaptation": "bury",
-  "use_expansion_hack": true
+  "terrain_adaptation": "bury"
 }

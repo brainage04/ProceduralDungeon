@@ -16,7 +16,7 @@
           { "item": "minecraft:gravel", "weight": 1 }
         ],
         "count": [6, 16],
-        "rolls": 1
+        "rolls": [0, "$badRolls"]
       },
       {
         "items": [
@@ -27,7 +27,7 @@
           { "item": "minecraft:stick", "weight": 4 }
         ],
         "count": [2, 6],
-        "rolls": 1
+        "rolls": [0, "$badRolls"]
       },
       {
         "items": [
@@ -62,8 +62,9 @@
           { "item": "minecraft:candle", "weight": 1 }
         ],
         "count": [1, 3],
-        "rolls": [1, 2]
-      }
+        "rolls": [1, "$badRolls"]
+      },
+      { "tierItems": "resources", "count": [1, 2], "rolls": 1 }
     ],
     "hallway_end": [
       {
@@ -75,7 +76,7 @@
           { "item": "minecraft:spider_eye", "weight": 1 }
         ],
         "count": [1, 3],
-        "rolls": 1
+        "rolls": [0, "$badRolls"]
       },
       {
         "items": [
@@ -118,7 +119,7 @@
           { "item": "minecraft:spider_eye", "weight": 1 }
         ],
         "count": [1, 3],
-        "rolls": [2, 3]
+        "rolls": [1, "$badRolls"]
       },
       {
         "items": [
@@ -151,6 +152,127 @@
       { "copy": "hallway_loot" },
       { "item": "procedural_dungeon:rusted_key", "count": 1, "rolls": 1 }
     ],
+    "hallway_end/miniboss_key_source": [
+      { "copy": "hallway_end" },
+      { "item": "procedural_dungeon:miniboss_key", "count": 1, "rolls": 1 }
+    ],
+    "hallway_loot/miniboss_key_source": [
+      { "copy": "hallway_loot" },
+      { "item": "procedural_dungeon:miniboss_key", "count": 1, "rolls": 1 }
+    ],
+    "boss_key_vault": [
+      { "item": "procedural_dungeon:boss_key", "count": 1, "rolls": 1 },
+      { "tierItems": "resources", "count": [1, 3], "rolls": 1 },
+      {
+        "items": [
+          { "item": "minecraft:torch", "weight": 3 },
+          { "item": "minecraft:arrow", "weight": 2 },
+          { "item": "minecraft:cooked_beef", "weight": 2 },
+          { "item": "minecraft:golden_carrot", "weight": 1 }
+        ],
+        "count": [2, 6],
+        "rolls": [1, 2]
+      }
+    ],
+    "boss_room": [
+      {
+        "equipmentChoices": [
+          { "tierEquipment": ["sword", "axe"], "enchant": "damage" },
+          { "item": "minecraft:bow", "enchant": "bow" },
+          { "item": "minecraft:crossbow", "enchant": "crossbow" }
+        ],
+        "levels": "$levels*2",
+        "rolls": 1
+      },
+      { "tierEquipment": ["helmet", "chestplate", "leggings", "boots"], "enchant": "armor", "levels": "$levels*2", "rolls": 1 },
+      { "tierItems": "resources", "count": [2, 4], "rolls": "$goodRolls" },
+      {
+        "items": [
+          { "item": "minecraft:golden_apple", "weight": 6 },
+          { "item": "minecraft:enchanted_golden_apple", "weight": 1 }
+        ],
+        "count": [1, 2],
+        "rolls": 1
+      },
+      { "item": "minecraft:experience_bottle", "count": [4, 10], "rolls": 1 },
+      {
+        "enchantedBooks": [
+          { "enchantment": "minecraft:protection", "weight": 4 },
+          { "enchantment": "minecraft:sharpness", "weight": 4 },
+          { "enchantment": "minecraft:unbreaking", "weight": 4 },
+          { "enchantment": "minecraft:efficiency", "weight": 3 },
+          { "enchantment": "minecraft:power", "weight": 3 },
+          { "enchantment": "minecraft:fortune", "weight": 2 },
+          { "enchantment": "minecraft:looting", "weight": 2 },
+          { "enchantment": "minecraft:feather_falling", "weight": 2 },
+          { "enchantment": "minecraft:silk_touch", "weight": 1 },
+          { "enchantment": "minecraft:mending", "weight": 1 }
+        ],
+        "rolls": [1, 2]
+      },
+      { "netheriteUpgradeSmithingTemplate": true }
+    ],
+    "miniboss_room": [
+      {
+        "equipmentChoices": [
+          { "tierEquipment": ["sword", "axe"], "enchant": "damage" },
+          { "tierEquipment": ["helmet", "chestplate", "leggings", "boots"], "enchant": "armor" },
+          { "item": "minecraft:bow", "enchant": "bow" },
+          { "item": "minecraft:crossbow", "enchant": "crossbow" }
+        ],
+        "levels": "$levels",
+        "rolls": 1
+      },
+      { "tierItems": "resources", "count": [1, 3], "rolls": "$goodRolls" },
+      {
+        "items": [
+          { "item": "minecraft:golden_apple", "weight": 12 },
+          { "item": "minecraft:enchanted_golden_apple", "weight": 1 }
+        ],
+        "count": 1,
+        "rolls": [0, 1]
+      },
+      { "item": "minecraft:experience_bottle", "count": [2, 5], "rolls": 1 }
+    ],
+    "trial_spawner": [
+      {
+        "items": [
+          { "item": "minecraft:arrow", "weight": 4 },
+          { "item": "minecraft:bread", "weight": 3 },
+          { "item": "minecraft:cooked_beef", "weight": 2 },
+          { "item": "minecraft:baked_potato", "weight": 2 },
+          { "item": "minecraft:golden_carrot", "weight": 1 },
+          { "item": "minecraft:honey_bottle", "weight": 1 }
+        ],
+        "count": [2, 4],
+        "rolls": [1, 2]
+      },
+      { "tierItems": "resources", "count": [1, 2], "rolls": 1 },
+      { "item": "minecraft:emerald", "count": [1, 3], "rolls": [0, 1] }
+    ],
+    "trial_spawner/ominous": [
+      { "copy": "trial_spawner" },
+      { "tierItems": "resources", "count": [1, 3], "rolls": "$goodRolls" },
+      {
+        "items": [
+          { "item": "minecraft:golden_apple", "weight": 8 },
+          { "item": "minecraft:enchanted_golden_apple", "weight": 1 }
+        ],
+        "count": 1,
+        "rolls": 1
+      },
+      {
+        "enchantedBooks": [
+          { "enchantment": "minecraft:sharpness", "weight": 4 },
+          { "enchantment": "minecraft:power", "weight": 4 },
+          { "enchantment": "minecraft:protection", "weight": 4 },
+          { "enchantment": "minecraft:unbreaking", "weight": 3 },
+          { "enchantment": "minecraft:quick_charge", "weight": 2 },
+          { "enchantment": "minecraft:mending", "weight": 1 }
+        ],
+        "rolls": 1
+      }
+    ],
     "armorsmith": [
       {
         "items": [
@@ -160,7 +282,7 @@
           { "item": "minecraft:string", "weight": 1 }
         ],
         "count": [1, 2],
-        "rolls": [1, 2]
+        "rolls": [0, "$badRolls"]
       },
       { "tierEquipment": ["helmet", "chestplate", "leggings", "boots"], "enchant": "armor", "levels": "$levels", "distinct": true },
       { "netheriteUpgradeSmithingTemplate": true }
@@ -174,7 +296,7 @@
           { "item": "minecraft:string", "weight": 1 }
         ],
         "count": [1, 2],
-        "rolls": [1, 2]
+        "rolls": [0, "$badRolls"]
       },
       {
         "equipmentChoices": [
@@ -196,7 +318,7 @@
           { "item": "minecraft:bone", "weight": 1 }
         ],
         "count": [1, 2],
-        "rolls": [1, 2]
+        "rolls": [0, "$badRolls"]
       },
       { "tierEquipment": ["axe", "shovel", "pickaxe", "hoe"], "enchant": "mining", "levels": "$levels", "distinct": true },
       { "netheriteUpgradeSmithingTemplate": true }

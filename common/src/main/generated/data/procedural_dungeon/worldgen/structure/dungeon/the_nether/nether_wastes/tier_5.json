@@ -17,6 +17,5 @@
   "start_jigsaw_name": "minecraft:start",
   "start_pool": "procedural_dungeon:dungeon/the_nether/nether_wastes/tier_5/start",
   "step": "underground_structures",
-  "terrain_adaptation": "bury",
-  "use_expansion_hack": true
+  "terrain_adaptation": "bury"
 }

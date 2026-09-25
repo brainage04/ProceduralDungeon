@@ -6,6 +6,7 @@ import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
@@ -78,6 +79,9 @@ public class StagedDungeonMarkerPiece extends StructurePiece {
             ChunkPos chunkPos,
             BlockPos pivot
     ) {
-        StagedDungeonGenerationManager.enqueueFromWorldgenMarker(world.getLevel(), startChunk, pieces, liquidSettings, lockPlan);
+        // Features are decorated on worker threads, but the staged job queue belongs to the server thread.
+        ServerLevel level = world.getLevel();
+        level.getServer().execute(() -> StagedDungeonGenerationManager.enqueueFromWorldgenMarker(
+                level, startChunk, pieces, liquidSettings, lockPlan));
     }
 }

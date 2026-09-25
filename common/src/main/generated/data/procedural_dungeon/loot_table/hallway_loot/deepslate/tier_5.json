@@ -75,11 +75,7 @@
           "name": "minecraft:spider_eye"
         }
       ],
-      "rolls": {
-        "type": "minecraft:uniform",
-        "max": 3.0,
-        "min": 2.0
-      }
+      "rolls": 1.0
     },
     {
       "entries": [

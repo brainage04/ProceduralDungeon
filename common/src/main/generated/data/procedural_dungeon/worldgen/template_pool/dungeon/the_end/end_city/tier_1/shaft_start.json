@@ -1,0 +1,18 @@
+{
+  "elements": [
+    {
+      "element": {
+        "branch_limit": 1,
+        "element_type": "procedural_dungeon:variant_single_pool_element",
+        "location": "procedural_dungeon:dungeon/start_shaft",
+        "override_liquid_settings": "ignore_waterlogging",
+        "processors": "procedural_dungeon:dungeon/profile/cee086dedbab082a",
+        "projection": "rigid",
+        "spawner_tier": 1,
+        "variant": "procedural_dungeon:dungeon/the_end/end_city/tier_1"
+      },
+      "weight": 1
+    }
+  ],
+  "fallback": "minecraft:empty"
+}

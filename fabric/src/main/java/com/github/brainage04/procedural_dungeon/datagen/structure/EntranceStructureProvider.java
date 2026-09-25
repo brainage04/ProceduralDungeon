@@ -2,28 +2,21 @@ package com.github.brainage04.procedural_dungeon.datagen.structure;
 
 import com.github.brainage04.procedural_dungeon.ProceduralDungeon;
 import com.github.brainage04.procedural_dungeon.dungeon.DungeonTier;
-import com.google.common.hash.Hashing;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
-import net.minecraft.SharedConstants;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.IntTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.NbtIo;
 import net.minecraft.resources.Identifier;
 
+import static com.github.brainage04.procedural_dungeon.datagen.structure.StructureBuilder.properties;
+
 public class EntranceStructureProvider implements DataProvider {
-    private static final int MAX_STRUCTURE_BLOCK_AXIS = 48;
     private static final int MAX_DECORATIVE_ENTRANCE_DEPTH = 22;
 
     private final PackOutput.PathProvider structureResolver;
@@ -36,9 +29,9 @@ public class EntranceStructureProvider implements DataProvider {
     public CompletableFuture<?> run(CachedOutput writer) {
         List<CompletableFuture<?>> futures = new ArrayList<>();
         for (DungeonTier tier : DungeonTier.values()) {
-            futures.add(saveNbt(writer, ruinedArchway(tier), structurePath(tier, "ruined_archway")));
-            futures.add(saveNbt(writer, sunkenCourtyard(tier), structurePath(tier, "sunken_courtyard")));
-            futures.add(saveNbt(writer, ritualDescent(tier), structurePath(tier, "ritual_descent")));
+            futures.add(StructureBuilder.save(writer, ruinedArchway(tier), structurePath(tier, "ruined_archway")));
+            futures.add(StructureBuilder.save(writer, sunkenCourtyard(tier), structurePath(tier, "sunken_courtyard")));
+            futures.add(StructureBuilder.save(writer, ritualDescent(tier), structurePath(tier, "ritual_descent")));
         }
 
         return CompletableFuture.allOf(futures.toArray(CompletableFuture[]::new));
@@ -106,8 +99,8 @@ public class EntranceStructureProvider implements DataProvider {
             builder.block(center, y, center - 2, "minecraft:ladder", properties("facing", "south", "waterlogged", "false"));
         }
 
-        builder.startJigsaw(center, surfaceY + 1, center);
-        builder.dungeonJigsaw(center, 0, center);
+        startJigsaw(builder, center, surfaceY + 1, center);
+        shaftAccess(builder, center, surfaceY);
         return builder.build();
     }
 
@@ -164,8 +157,8 @@ public class EntranceStructureProvider implements DataProvider {
         placeTierSkulls(builder, center - tier.tier, surfaceY + 1, min + 3, tier, "south");
         addTierCampFeatures(builder, center, surfaceY + 1, center, radius, tier, 23);
 
-        builder.startJigsaw(center, surfaceY + 1, center);
-        builder.dungeonJigsaw(center, 0, center);
+        startJigsaw(builder, center, surfaceY + 1, center);
+        shaftAccess(builder, center, surfaceY);
         return builder.build();
     }
 
@@ -231,7 +224,6 @@ public class EntranceStructureProvider implements DataProvider {
             builder.block(x, y - 1, z, "minecraft:deepslate_brick_stairs", properties("facing", facing, "half", "bottom", "shape", "straight", "waterlogged", "false"));
         }
 
-        builder.block(center, surfaceY + 1, center, "minecraft:chiseled_deepslate");
         for (int offset = -inner; offset <= inner; offset++) {
             if (Math.abs(offset) == inner || Math.floorMod(offset + tier.tier, 3) == 0) {
                 builder.block(center + offset, surfaceY + 1, center - inner, "minecraft:deepslate_tile_slab", properties("type", "bottom", "waterlogged", "false"));
@@ -241,9 +233,25 @@ public class EntranceStructureProvider implements DataProvider {
         scatterRubble(builder, center, surfaceY + 1, center, radius, tier.tier + 2, 37);
         placeTierSkulls(builder, center + inner + 1, surfaceY + 1, center - inner, tier, "west");
         addTierCampFeatures(builder, center, surfaceY + 1, center, radius, tier, 37);
-        builder.startJigsaw(center, surfaceY + 2, center);
-        builder.dungeonJigsaw(center, 0, center);
+        startJigsaw(builder, center, surfaceY + 2, center);
+        shaftAccess(builder, center, surfaceY);
         return builder.build();
+    }
+
+    private static void startJigsaw(StructureBuilder builder, int x, int y, int z) {
+        builder.jigsaw(x, y, z, "down_north", "minecraft:start", "minecraft:empty", "minecraft:empty", "minecraft:air", "aligned");
+    }
+
+    /**
+     * Connects the bottom of the shaft to the ceiling of the start room below it and fills the shaft centre with a
+     * scaffolding column, which continues down through the start room's ceiling hole to its floor.
+     */
+    private static void shaftAccess(StructureBuilder builder, int center, int surfaceY) {
+        builder.jigsaw(center, 0, center, "down_north", "procedural_dungeon:entrance", "procedural_dungeon:dungeon/shaft_start",
+                "procedural_dungeon:shaft", DungeonShaft.SCAFFOLDING, "aligned");
+        for (int y = 1; y <= surfaceY; y++) {
+            builder.block(center, y, center, "minecraft:scaffolding", DungeonShaft.SCAFFOLDING_PROPERTIES);
+        }
     }
 
     private static void carveVerticalShaft(StructureBuilder builder, int centerX, int centerZ, int surfaceY, int radius) {
@@ -269,7 +277,7 @@ public class EntranceStructureProvider implements DataProvider {
     }
 
     private static int entranceFootprint(DungeonTier tier, int baseSize) {
-        return Math.min(baseSize + tier.tier * 4, MAX_STRUCTURE_BLOCK_AXIS);
+        return Math.min(baseSize + tier.tier * 4, StructureBuilder.MAX_STRUCTURE_BLOCK_AXIS);
     }
 
     private static int surfaceRadius(DungeonTier tier) {
@@ -561,169 +569,8 @@ public class EntranceStructureProvider implements DataProvider {
         return properties("east", "none", "north", "none", "south", "none", "up", "true", "waterlogged", "false", "west", "none");
     }
 
-    private static CompletableFuture<?> saveNbt(CachedOutput writer, CompoundTag nbt, Path path) {
-        return CompletableFuture.runAsync(() -> {
-            try {
-                byte[] bytes = writeCompressed(nbt);
-                writer.writeIfNeeded(path, bytes, Hashing.sha256().hashBytes(bytes));
-            } catch (IOException e) {
-                throw new IllegalStateException("Failed to write entrance structure: " + path, e);
-            }
-        });
-    }
-
-    private static byte[] writeCompressed(CompoundTag nbt) throws IOException {
-        ByteArrayOutputStream output = new ByteArrayOutputStream();
-        NbtIo.writeCompressed(nbt, output);
-        return output.toByteArray();
-    }
-
-    private static ListTag intList(int... values) {
-        ListTag list = new ListTag();
-        for (int value : values) {
-            list.add(IntTag.valueOf(value));
-        }
-        return list;
-    }
-
-    private static Map<String, String> properties(String... values) {
-        if (values.length % 2 != 0) {
-            throw new IllegalArgumentException("Properties must be provided as key/value pairs.");
-        }
-
-        Map<String, String> properties = new LinkedHashMap<>();
-        for (int i = 0; i < values.length; i += 2) {
-            properties.put(values[i], values[i + 1]);
-        }
-        return properties;
-    }
-
     @Override
     public String getName() {
         return "Procedural Dungeon Entrance Structures";
-    }
-
-    private static class StructureBuilder {
-        private final int xSize;
-        private final int ySize;
-        private final int zSize;
-        private final List<PaletteState> palette = new ArrayList<>();
-        private final Map<PaletteState, Integer> paletteIndexes = new LinkedHashMap<>();
-        private final Map<String, CompoundTag> blocks = new LinkedHashMap<>();
-
-        private StructureBuilder(int xSize, int ySize, int zSize) {
-            this.xSize = xSize;
-            this.ySize = ySize;
-            this.zSize = zSize;
-        }
-
-        private void block(int x, int y, int z, String name) {
-            block(x, y, z, name, Map.of());
-        }
-
-        private void block(int x, int y, int z, String name, Map<String, String> properties) {
-            if (x < 0 || x >= xSize || y < 0 || y >= ySize || z < 0 || z >= zSize) {
-                return;
-            }
-
-            putBlock(x, y, z, paletteIndex(new PaletteState(name, properties)), null);
-        }
-
-        private void startJigsaw(int x, int y, int z) {
-            putBlock(
-                    x,
-                    y,
-                    z,
-                    paletteIndex(new PaletteState("minecraft:jigsaw", properties("orientation", "down_north"))),
-                    jigsawNbt("minecraft:start", "minecraft:empty", "minecraft:empty", "minecraft:air")
-            );
-        }
-
-        private void dungeonJigsaw(int x, int y, int z) {
-            putBlock(
-                    x,
-                    y,
-                    z,
-                    paletteIndex(new PaletteState("minecraft:jigsaw", properties("orientation", "down_north"))),
-                    jigsawNbt("procedural_dungeon:entrance", "procedural_dungeon:dungeon/start", "minecraft:start", "minecraft:cobblestone")
-            );
-        }
-
-        private CompoundTag build() {
-            if (xSize > MAX_STRUCTURE_BLOCK_AXIS || ySize > MAX_STRUCTURE_BLOCK_AXIS || zSize > MAX_STRUCTURE_BLOCK_AXIS) {
-                throw new IllegalStateException(
-                        "Generated entrance structure exceeds the Structure Block limit: %dx%dx%d"
-                                .formatted(xSize, ySize, zSize)
-                );
-            }
-
-            CompoundTag structure = new CompoundTag();
-            structure.putInt("DataVersion", SharedConstants.getCurrentVersion().dataVersion().version());
-            structure.put("size", intList(xSize, ySize, zSize));
-            structure.put("entities", new ListTag());
-
-            ListTag paletteTag = new ListTag();
-            for (PaletteState state : palette) {
-                paletteTag.add(state.toTag());
-            }
-            structure.put("palette", paletteTag);
-            ListTag blockList = new ListTag();
-            blocks.values().forEach(blockList::add);
-            structure.put("blocks", blockList);
-            return structure;
-        }
-
-        private int paletteIndex(PaletteState state) {
-            Integer existing = paletteIndexes.get(state);
-            if (existing != null) {
-                return existing;
-            }
-
-            int index = palette.size();
-            palette.add(state);
-            paletteIndexes.put(state, index);
-            return index;
-        }
-
-        private void putBlock(int x, int y, int z, int state, CompoundTag nbt) {
-            blocks.put("%d,%d,%d".formatted(x, y, z), createBlock(x, y, z, state, nbt));
-        }
-
-        private static CompoundTag createBlock(int x, int y, int z, int state, CompoundTag nbt) {
-            CompoundTag block = new CompoundTag();
-            block.put("pos", intList(x, y, z));
-            block.putInt("state", state);
-            if (nbt != null) {
-                block.put("nbt", nbt);
-            }
-            return block;
-        }
-
-        private static CompoundTag jigsawNbt(String name, String pool, String target, String finalState) {
-            CompoundTag nbt = new CompoundTag();
-            nbt.put("components", new CompoundTag());
-            nbt.putString("joint", "aligned");
-            nbt.putString("name", name);
-            nbt.putString("pool", pool);
-            nbt.putString("final_state", finalState);
-            nbt.putInt("placement_priority", 0);
-            nbt.putInt("selection_priority", 0);
-            nbt.putString("id", "minecraft:jigsaw");
-            nbt.putString("target", target);
-            return nbt;
-        }
-    }
-
-    private record PaletteState(String name, Map<String, String> properties) {
-        private CompoundTag toTag() {
-            CompoundTag tag = new CompoundTag();
-            tag.putString("Name", name);
-            if (!properties.isEmpty()) {
-                CompoundTag propertiesTag = new CompoundTag();
-                properties.forEach(propertiesTag::putString);
-                tag.put("Properties", propertiesTag);
-            }
-            return tag;
-        }
     }
 }

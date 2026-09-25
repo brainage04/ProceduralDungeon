@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -54,7 +55,77 @@ public class DungeonStructureVariantProvider implements DataProvider {
                 staircaseUpVariant(readStructure("dungeon/hallway/room/staircase_spiral_down")),
                 structurePath("dungeon/hallway/room/staircase_spiral_up")
         ));
+        futures.add(saveNbt(
+                writer,
+                startShaftVariant(readStructure("dungeon/start")),
+                structurePath(DungeonShaft.START_TEMPLATE)
+        ));
         return CompletableFuture.allOf(futures.toArray(CompletableFuture[]::new));
+    }
+
+    /**
+     * The start room with a jigsaw in the centre of its ceiling, where a surface entrance's shaft attaches, and a
+     * scaffolding column from the floor up through that ceiling hole.
+     */
+    private static CompoundTag startShaftVariant(CompoundTag structure) {
+        CompoundTag copy = structure.copy();
+        ListTag size = copy.getListOrEmpty("size");
+        int centerX = size.getIntOr(0, 0) / 2;
+        int ceilingY = size.getIntOr(1, 0) - 1;
+        int centerZ = size.getIntOr(2, 0) / 2;
+
+        CompoundTag jigsaw = new CompoundTag();
+        jigsaw.put("components", new CompoundTag());
+        jigsaw.putString("joint", "aligned");
+        jigsaw.putString("name", DungeonShaft.JIGSAW_NAME);
+        jigsaw.putString("pool", "minecraft:empty");
+        jigsaw.putString("final_state", DungeonShaft.SCAFFOLDING);
+        jigsaw.putInt("placement_priority", 0);
+        jigsaw.putInt("selection_priority", 0);
+        jigsaw.putString("id", "minecraft:jigsaw");
+        jigsaw.putString("target", "minecraft:empty");
+        setBlock(copy, centerX, ceilingY, centerZ, paletteEntry("minecraft:jigsaw", Map.of("orientation", "up_north")), jigsaw);
+        for (int y = 1; y < ceilingY; y++) {
+            setBlock(copy, centerX, y, centerZ, paletteEntry("minecraft:scaffolding", DungeonShaft.SCAFFOLDING_PROPERTIES), null);
+        }
+        return copy;
+    }
+
+    private static CompoundTag paletteEntry(String name, Map<String, String> properties) {
+        CompoundTag entry = new CompoundTag();
+        entry.putString("Name", name);
+        CompoundTag propertiesTag = new CompoundTag();
+        properties.forEach(propertiesTag::putString);
+        entry.put("Properties", propertiesTag);
+        return entry;
+    }
+
+    private static void setBlock(CompoundTag structure, int x, int y, int z, CompoundTag state, CompoundTag nbt) {
+        ListTag palette = structure.getListOrEmpty("palette");
+        int stateIndex = palette.indexOf(state);
+        if (stateIndex < 0) {
+            stateIndex = palette.size();
+            palette.add(state);
+            structure.put("palette", palette);
+        }
+
+        ListTag blocks = structure.getListOrEmpty("blocks");
+        CompoundTag block = null;
+        for (int i = 0; i < blocks.size() && block == null; i++) {
+            ListTag pos = blocks.getCompoundOrEmpty(i).getListOrEmpty("pos");
+            if (pos.getIntOr(0, -1) == x && pos.getIntOr(1, -1) == y && pos.getIntOr(2, -1) == z) {
+                block = blocks.getCompoundOrEmpty(i);
+            }
+        }
+        if (block == null) {
+            throw new IllegalStateException("Start room has no block at %d %d %d".formatted(x, y, z));
+        }
+        block.putInt("state", stateIndex);
+        if (nbt == null) {
+            block.remove("nbt");
+        } else {
+            block.put("nbt", nbt);
+        }
     }
 
     private Path structurePath(String path) {

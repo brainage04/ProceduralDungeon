@@ -1,1 +1,15 @@
-{}
+{
+  "slug": "procedural-dungeon",
+  "title": "ProceduralDungeon",
+  "description": "Procedurally generated, themed dungeons with tiered loot, traps, locked vaults, a guaranteed boss room, and optional miniboss rooms.",
+  "categories": [
+    "worldgen",
+    "adventure"
+  ],
+  "additional_categories": [
+    "game-mechanics"
+  ],
+  "client_side": "required",
+  "server_side": "required",
+  "dependency_overrides": {}
+}

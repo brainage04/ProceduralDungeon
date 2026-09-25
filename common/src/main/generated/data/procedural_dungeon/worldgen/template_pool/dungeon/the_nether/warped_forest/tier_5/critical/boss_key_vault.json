@@ -1,0 +1,18 @@
+{
+  "elements": [
+    {
+      "element": {
+        "branch_limit": 2147483647,
+        "element_type": "procedural_dungeon:variant_single_pool_element",
+        "location": "procedural_dungeon:dungeon/critical/boss_key_vault",
+        "override_liquid_settings": "ignore_waterlogging",
+        "processors": "procedural_dungeon:dungeon/the_nether/warped_forest/tier_5",
+        "projection": "rigid",
+        "spawner_tier": 5,
+        "variant": "procedural_dungeon:dungeon/the_nether/warped_forest/tier_5"
+      },
+      "weight": 1
+    }
+  ],
+  "fallback": "minecraft:empty"
+}
