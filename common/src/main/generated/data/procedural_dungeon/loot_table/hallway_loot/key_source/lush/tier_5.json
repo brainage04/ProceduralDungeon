@@ -91,22 +91,7 @@
               "function": "minecraft:set_count"
             }
           ],
-          "name": "minecraft:golden_apple",
-          "weight": 12
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 1.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "minecraft:enchanted_golden_apple"
+          "name": "minecraft:golden_apple"
         }
       ],
       "rolls": 1.0

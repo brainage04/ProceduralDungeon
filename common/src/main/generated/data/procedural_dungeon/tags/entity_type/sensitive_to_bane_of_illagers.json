@@ -1,0 +1,9 @@
+{
+  "values": [
+    {
+      "id": "#minecraft:raiders",
+      "required": false
+    },
+    "minecraft:vex"
+  ]
+}

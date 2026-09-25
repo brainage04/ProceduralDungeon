@@ -39,4 +39,14 @@ public final class ProceduralDungeonGameTest {
     public void surfaceEntrancesLeadDownIntoAFullDungeon(GameTestHelper helper) {
         DungeonGameTestSuite.surfaceEntrancesLeadDownIntoAFullDungeon(helper);
     }
+
+    @GameTest
+    public void dungeonEnchantmentsAreRewardOnlyAndTakeEffect(GameTestHelper helper) {
+        DungeonGameTestSuite.dungeonEnchantmentsAreRewardOnlyAndTakeEffect(helper);
+    }
+
+    @GameTest
+    public void bossRewardsAreExclusiveAndRelicsKeepBaseStats(GameTestHelper helper) {
+        DungeonGameTestSuite.bossRewardsAreExclusiveAndRelicsKeepBaseStats(helper);
+    }
 }

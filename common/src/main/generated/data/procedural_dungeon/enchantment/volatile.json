@@ -1,0 +1,76 @@
+{
+  "anvil_cost": 8,
+  "description": "Volatile",
+  "effects": {
+    "minecraft:damage_immunity": [
+      {
+        "effect": {},
+        "requirements": {
+          "condition": "minecraft:damage_source_properties",
+          "predicate": {
+            "tags": [
+              {
+                "expected": true,
+                "id": "procedural_dungeon:volatile_immune"
+              },
+              {
+                "expected": false,
+                "id": "minecraft:bypasses_invulnerability"
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "minecraft:post_attack": [
+      {
+        "affected": "victim",
+        "effect": {
+          "type": "minecraft:explode",
+          "block_interaction": "none",
+          "damage_type": "procedural_dungeon:volatile_blast",
+          "large_particle": {
+            "type": "minecraft:explosion_emitter"
+          },
+          "offset": [
+            0.0,
+            0.5,
+            0.0
+          ],
+          "radius": {
+            "type": "minecraft:linear",
+            "base": 1.5,
+            "per_level_above_first": 0.5
+          },
+          "small_particle": {
+            "type": "minecraft:explosion"
+          },
+          "sound": "minecraft:entity.generic.explode"
+        },
+        "enchanted": "attacker",
+        "requirements": {
+          "condition": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:nbt": "{Health:0.0f}"
+          }
+        }
+      }
+    ]
+  },
+  "max_cost": {
+    "base": 45,
+    "per_level_above_first": 10
+  },
+  "max_level": 3,
+  "min_cost": {
+    "base": 15,
+    "per_level_above_first": 10
+  },
+  "primary_items": "#procedural_dungeon:enchantable/affliction",
+  "slots": [
+    "mainhand"
+  ],
+  "supported_items": "#procedural_dungeon:enchantable/affliction",
+  "weight": 1
+}

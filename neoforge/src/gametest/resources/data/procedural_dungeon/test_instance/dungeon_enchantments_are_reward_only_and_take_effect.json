@@ -1,0 +1,7 @@
+{
+  "environment": "minecraft:default",
+  "structure": "minecraft:empty",
+  "max_ticks": 20,
+  "type": "minecraft:function",
+  "function": "procedural_dungeon:dungeon_enchantments_are_reward_only_and_take_effect"
+}

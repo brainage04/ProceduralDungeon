@@ -8,8 +8,8 @@
           "functions": [
             {
               "function": "minecraft:enchant_with_levels",
-              "levels": 20.0,
-              "options": "#minecraft:exclusive_set/damage"
+              "levels": 30.0,
+              "options": "#procedural_dungeon:loot_options/damage"
             }
           ],
           "name": "minecraft:wooden_sword",
@@ -20,8 +20,8 @@
           "functions": [
             {
               "function": "minecraft:enchant_with_levels",
-              "levels": 20.0,
-              "options": "#minecraft:exclusive_set/damage"
+              "levels": 30.0,
+              "options": "#procedural_dungeon:loot_options/damage"
             }
           ],
           "name": "minecraft:copper_sword",
@@ -32,8 +32,8 @@
           "functions": [
             {
               "function": "minecraft:enchant_with_levels",
-              "levels": 20.0,
-              "options": "#minecraft:exclusive_set/damage"
+              "levels": 30.0,
+              "options": "#procedural_dungeon:loot_options/damage"
             }
           ],
           "name": "minecraft:iron_sword",
@@ -44,8 +44,8 @@
           "functions": [
             {
               "function": "minecraft:enchant_with_levels",
-              "levels": 20.0,
-              "options": "#minecraft:exclusive_set/damage"
+              "levels": 30.0,
+              "options": "#procedural_dungeon:loot_options/damage"
             }
           ],
           "name": "minecraft:diamond_sword",
@@ -56,8 +56,8 @@
           "functions": [
             {
               "function": "minecraft:enchant_with_levels",
-              "levels": 20.0,
-              "options": "#minecraft:exclusive_set/damage"
+              "levels": 30.0,
+              "options": "#procedural_dungeon:loot_options/damage"
             }
           ],
           "name": "minecraft:netherite_sword",
@@ -68,8 +68,8 @@
           "functions": [
             {
               "function": "minecraft:enchant_with_levels",
-              "levels": 20.0,
-              "options": "#minecraft:exclusive_set/damage"
+              "levels": 30.0,
+              "options": "#procedural_dungeon:loot_options/damage"
             }
           ],
           "name": "minecraft:wooden_axe",
@@ -80,8 +80,8 @@
           "functions": [
             {
               "function": "minecraft:enchant_with_levels",
-              "levels": 20.0,
-              "options": "#minecraft:exclusive_set/damage"
+              "levels": 30.0,
+              "options": "#procedural_dungeon:loot_options/damage"
             }
           ],
           "name": "minecraft:copper_axe",
@@ -92,8 +92,8 @@
           "functions": [
             {
               "function": "minecraft:enchant_with_levels",
-              "levels": 20.0,
-              "options": "#minecraft:exclusive_set/damage"
+              "levels": 30.0,
+              "options": "#procedural_dungeon:loot_options/damage"
             }
           ],
           "name": "minecraft:iron_axe",
@@ -104,8 +104,8 @@
           "functions": [
             {
               "function": "minecraft:enchant_with_levels",
-              "levels": 20.0,
-              "options": "#minecraft:exclusive_set/damage"
+              "levels": 30.0,
+              "options": "#procedural_dungeon:loot_options/damage"
             }
           ],
           "name": "minecraft:diamond_axe",
@@ -116,8 +116,8 @@
           "functions": [
             {
               "function": "minecraft:enchant_with_levels",
-              "levels": 20.0,
-              "options": "#minecraft:exclusive_set/damage"
+              "levels": 30.0,
+              "options": "#procedural_dungeon:loot_options/damage"
             }
           ],
           "name": "minecraft:netherite_axe",
@@ -128,7 +128,7 @@
           "functions": [
             {
               "function": "minecraft:enchant_with_levels",
-              "levels": 20.0,
+              "levels": 30.0,
               "options": "#minecraft:exclusive_set/armor"
             }
           ],
@@ -140,7 +140,7 @@
           "functions": [
             {
               "function": "minecraft:enchant_with_levels",
-              "levels": 20.0,
+              "levels": 30.0,
               "options": "#minecraft:exclusive_set/armor"
             }
           ],
@@ -152,7 +152,7 @@
           "functions": [
             {
               "function": "minecraft:enchant_with_levels",
-              "levels": 20.0,
+              "levels": 30.0,
               "options": "#minecraft:exclusive_set/armor"
             }
           ],
@@ -164,7 +164,7 @@
           "functions": [
             {
               "function": "minecraft:enchant_with_levels",
-              "levels": 20.0,
+              "levels": 30.0,
               "options": "#minecraft:exclusive_set/armor"
             }
           ],
@@ -176,7 +176,7 @@
           "functions": [
             {
               "function": "minecraft:enchant_with_levels",
-              "levels": 20.0,
+              "levels": 30.0,
               "options": "#minecraft:exclusive_set/armor"
             }
           ],
@@ -188,7 +188,7 @@
           "functions": [
             {
               "function": "minecraft:enchant_with_levels",
-              "levels": 20.0,
+              "levels": 30.0,
               "options": "#minecraft:exclusive_set/armor"
             }
           ],
@@ -200,7 +200,7 @@
           "functions": [
             {
               "function": "minecraft:enchant_with_levels",
-              "levels": 20.0,
+              "levels": 30.0,
               "options": "#minecraft:exclusive_set/armor"
             }
           ],
@@ -212,7 +212,7 @@
           "functions": [
             {
               "function": "minecraft:enchant_with_levels",
-              "levels": 20.0,
+              "levels": 30.0,
               "options": "#minecraft:exclusive_set/armor"
             }
           ],
@@ -224,7 +224,7 @@
           "functions": [
             {
               "function": "minecraft:enchant_with_levels",
-              "levels": 20.0,
+              "levels": 30.0,
               "options": "#minecraft:exclusive_set/armor"
             }
           ],
@@ -236,7 +236,7 @@
           "functions": [
             {
               "function": "minecraft:enchant_with_levels",
-              "levels": 20.0,
+              "levels": 30.0,
               "options": "#minecraft:exclusive_set/armor"
             }
           ],
@@ -248,7 +248,7 @@
           "functions": [
             {
               "function": "minecraft:enchant_with_levels",
-              "levels": 20.0,
+              "levels": 30.0,
               "options": "#minecraft:exclusive_set/armor"
             }
           ],
@@ -260,7 +260,7 @@
           "functions": [
             {
               "function": "minecraft:enchant_with_levels",
-              "levels": 20.0,
+              "levels": 30.0,
               "options": "#minecraft:exclusive_set/armor"
             }
           ],
@@ -272,7 +272,7 @@
           "functions": [
             {
               "function": "minecraft:enchant_with_levels",
-              "levels": 20.0,
+              "levels": 30.0,
               "options": "#minecraft:exclusive_set/armor"
             }
           ],
@@ -284,7 +284,7 @@
           "functions": [
             {
               "function": "minecraft:enchant_with_levels",
-              "levels": 20.0,
+              "levels": 30.0,
               "options": "#minecraft:exclusive_set/armor"
             }
           ],
@@ -296,7 +296,7 @@
           "functions": [
             {
               "function": "minecraft:enchant_with_levels",
-              "levels": 20.0,
+              "levels": 30.0,
               "options": "#minecraft:exclusive_set/armor"
             }
           ],
@@ -308,7 +308,7 @@
           "functions": [
             {
               "function": "minecraft:enchant_with_levels",
-              "levels": 20.0,
+              "levels": 30.0,
               "options": "#minecraft:exclusive_set/armor"
             }
           ],
@@ -320,7 +320,7 @@
           "functions": [
             {
               "function": "minecraft:enchant_with_levels",
-              "levels": 20.0,
+              "levels": 30.0,
               "options": "#minecraft:exclusive_set/armor"
             }
           ],
@@ -332,7 +332,7 @@
           "functions": [
             {
               "function": "minecraft:enchant_with_levels",
-              "levels": 20.0,
+              "levels": 30.0,
               "options": "#minecraft:exclusive_set/armor"
             }
           ],
@@ -344,7 +344,7 @@
           "functions": [
             {
               "function": "minecraft:enchant_with_levels",
-              "levels": 20.0,
+              "levels": 30.0,
               "options": "#minecraft:exclusive_set/armor"
             }
           ],
@@ -356,7 +356,7 @@
           "functions": [
             {
               "function": "minecraft:enchant_with_levels",
-              "levels": 20.0,
+              "levels": 30.0,
               "options": "#minecraft:exclusive_set/armor"
             }
           ],
@@ -368,7 +368,7 @@
           "functions": [
             {
               "function": "minecraft:enchant_with_levels",
-              "levels": 20.0,
+              "levels": 30.0,
               "options": "#minecraft:exclusive_set/bow"
             }
           ],
@@ -380,7 +380,7 @@
           "functions": [
             {
               "function": "minecraft:enchant_with_levels",
-              "levels": 20.0,
+              "levels": 30.0,
               "options": "#minecraft:exclusive_set/crossbow"
             }
           ],
@@ -506,35 +506,16 @@
             {
               "count": {
                 "type": "minecraft:uniform",
-                "max": 1.0,
+                "max": 2.0,
                 "min": 1.0
               },
               "function": "minecraft:set_count"
             }
           ],
-          "name": "minecraft:golden_apple",
-          "weight": 12
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 1.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "minecraft:enchanted_golden_apple"
+          "name": "minecraft:golden_apple"
         }
       ],
-      "rolls": {
-        "type": "minecraft:uniform",
-        "max": 1.0,
-        "min": 0.0
-      }
+      "rolls": 1.0
     },
     {
       "entries": [
@@ -551,6 +532,336 @@
             }
           ],
           "name": "minecraft:experience_bottle"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "enchantments": {
+                "procedural_dungeon:venom": 2.0
+              },
+              "function": "minecraft:set_enchantments"
+            }
+          ],
+          "name": "minecraft:book",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "enchantments": {
+                "procedural_dungeon:withering": 2.0
+              },
+              "function": "minecraft:set_enchantments"
+            }
+          ],
+          "name": "minecraft:book",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "enchantments": {
+                "procedural_dungeon:crippling": 2.0
+              },
+              "function": "minecraft:set_enchantments"
+            }
+          ],
+          "name": "minecraft:book",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "enchantments": {
+                "procedural_dungeon:blinding": 2.0
+              },
+              "function": "minecraft:set_enchantments"
+            }
+          ],
+          "name": "minecraft:book",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "enchantments": {
+                "procedural_dungeon:eclipse": 2.0
+              },
+              "function": "minecraft:set_enchantments"
+            }
+          ],
+          "name": "minecraft:book",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "enchantments": {
+                "procedural_dungeon:famine": 2.0
+              },
+              "function": "minecraft:set_enchantments"
+            }
+          ],
+          "name": "minecraft:book",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "enchantments": {
+                "procedural_dungeon:infestation": 2.0
+              },
+              "function": "minecraft:set_enchantments"
+            }
+          ],
+          "name": "minecraft:book",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "enchantments": {
+                "procedural_dungeon:updraft": 2.0
+              },
+              "function": "minecraft:set_enchantments"
+            }
+          ],
+          "name": "minecraft:book",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "enchantments": {
+                "procedural_dungeon:drifting": 2.0
+              },
+              "function": "minecraft:set_enchantments"
+            }
+          ],
+          "name": "minecraft:book",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "enchantments": {
+                "procedural_dungeon:sapping": 2.0
+              },
+              "function": "minecraft:set_enchantments"
+            }
+          ],
+          "name": "minecraft:book",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "enchantments": {
+                "procedural_dungeon:vertigo": 2.0
+              },
+              "function": "minecraft:set_enchantments"
+            }
+          ],
+          "name": "minecraft:book",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "enchantments": {
+                "procedural_dungeon:oozing": 2.0
+              },
+              "function": "minecraft:set_enchantments"
+            }
+          ],
+          "name": "minecraft:book",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "enchantments": {
+                "procedural_dungeon:bane_of_the_deep": 3.0
+              },
+              "function": "minecraft:set_enchantments"
+            }
+          ],
+          "name": "minecraft:book",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "enchantments": {
+                "procedural_dungeon:bane_of_the_nether": 3.0
+              },
+              "function": "minecraft:set_enchantments"
+            }
+          ],
+          "name": "minecraft:book",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "enchantments": {
+                "procedural_dungeon:bane_of_the_end": 3.0
+              },
+              "function": "minecraft:set_enchantments"
+            }
+          ],
+          "name": "minecraft:book",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "enchantments": {
+                "procedural_dungeon:bane_of_illagers": 3.0
+              },
+              "function": "minecraft:set_enchantments"
+            }
+          ],
+          "name": "minecraft:book",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "enchantments": {
+                "procedural_dungeon:duelist": 3.0
+              },
+              "function": "minecraft:set_enchantments"
+            }
+          ],
+          "name": "minecraft:book",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "enchantments": {
+                "minecraft:sharpness": 6.0
+              },
+              "function": "minecraft:set_enchantments"
+            }
+          ],
+          "name": "minecraft:book",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "enchantments": {
+                "minecraft:protection": 5.0
+              },
+              "function": "minecraft:set_enchantments"
+            }
+          ],
+          "name": "minecraft:book",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "enchantments": {
+                "minecraft:power": 6.0
+              },
+              "function": "minecraft:set_enchantments"
+            }
+          ],
+          "name": "minecraft:book",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "enchantments": {
+                "minecraft:efficiency": 6.0
+              },
+              "function": "minecraft:set_enchantments"
+            }
+          ],
+          "name": "minecraft:book",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "enchantments": {
+                "minecraft:unbreaking": 4.0
+              },
+              "function": "minecraft:set_enchantments"
+            }
+          ],
+          "name": "minecraft:book",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "enchantments": {
+                "minecraft:feather_falling": 5.0
+              },
+              "function": "minecraft:set_enchantments"
+            }
+          ],
+          "name": "minecraft:book",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "enchantments": {
+                "minecraft:looting": 4.0
+              },
+              "function": "minecraft:set_enchantments"
+            }
+          ],
+          "name": "minecraft:book",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "enchantments": {
+                "minecraft:fortune": 4.0
+              },
+              "function": "minecraft:set_enchantments"
+            }
+          ],
+          "name": "minecraft:book",
+          "weight": 2
         }
       ],
       "rolls": 1.0

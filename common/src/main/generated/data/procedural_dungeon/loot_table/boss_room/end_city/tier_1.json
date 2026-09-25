@@ -9,7 +9,7 @@
             {
               "function": "minecraft:enchant_with_levels",
               "levels": 20.0,
-              "options": "#minecraft:exclusive_set/damage"
+              "options": "#procedural_dungeon:loot_options/damage"
             }
           ],
           "name": "minecraft:wooden_sword",
@@ -21,7 +21,7 @@
             {
               "function": "minecraft:enchant_with_levels",
               "levels": 20.0,
-              "options": "#minecraft:exclusive_set/damage"
+              "options": "#procedural_dungeon:loot_options/damage"
             }
           ],
           "name": "minecraft:copper_sword",
@@ -33,7 +33,7 @@
             {
               "function": "minecraft:enchant_with_levels",
               "levels": 20.0,
-              "options": "#minecraft:exclusive_set/damage"
+              "options": "#procedural_dungeon:loot_options/damage"
             }
           ],
           "name": "minecraft:iron_sword",
@@ -45,7 +45,7 @@
             {
               "function": "minecraft:enchant_with_levels",
               "levels": 20.0,
-              "options": "#minecraft:exclusive_set/damage"
+              "options": "#procedural_dungeon:loot_options/damage"
             }
           ],
           "name": "minecraft:wooden_axe",
@@ -57,7 +57,7 @@
             {
               "function": "minecraft:enchant_with_levels",
               "levels": 20.0,
-              "options": "#minecraft:exclusive_set/damage"
+              "options": "#procedural_dungeon:loot_options/damage"
             }
           ],
           "name": "minecraft:copper_axe",
@@ -69,7 +69,7 @@
             {
               "function": "minecraft:enchant_with_levels",
               "levels": 20.0,
-              "options": "#minecraft:exclusive_set/damage"
+              "options": "#procedural_dungeon:loot_options/damage"
             }
           ],
           "name": "minecraft:iron_axe",
@@ -322,20 +322,469 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 2.0,
-                "min": 1.0
+              "components": {
+                "minecraft:item_name": "Warden's Cleaver"
               },
-              "function": "minecraft:set_count"
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:rarity": "epic"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:lore": [
+                  {
+                    "color": "gray",
+                    "italic": false,
+                    "text": "Pried from the grip of a dungeon's warden."
+                  },
+                  {
+                    "color": "dark_purple",
+                    "italic": false,
+                    "text": "Relic of a tier 1 dungeon"
+                  }
+                ]
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:enchantments": {
+                  "minecraft:sharpness": 4
+                }
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:unbreakable": {}
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "function": "minecraft:set_attributes",
+              "modifiers": [
+                {
+                  "amount": 1.0,
+                  "attribute": "minecraft:attack_damage",
+                  "id": "procedural_dungeon:relic/wardens_cleaver/attack_damage",
+                  "operation": "add_value",
+                  "slot": "mainhand"
+                }
+              ],
+              "replace": false
             }
           ],
-          "name": "minecraft:golden_apple",
-          "weight": 6
+          "name": "minecraft:wooden_axe"
         },
         {
           "type": "minecraft:item",
           "functions": [
+            {
+              "components": {
+                "minecraft:item_name": "Aegis of the Depths"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:rarity": "epic"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:lore": [
+                  {
+                    "color": "gray",
+                    "italic": false,
+                    "text": "It has turned aside worse than you."
+                  },
+                  {
+                    "color": "dark_purple",
+                    "italic": false,
+                    "text": "Relic of a tier 1 dungeon"
+                  }
+                ]
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:enchantments": {
+                  "minecraft:protection": 3
+                }
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:unbreakable": {}
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "function": "minecraft:set_attributes",
+              "modifiers": [
+                {
+                  "amount": 2.0,
+                  "attribute": "minecraft:max_health",
+                  "id": "procedural_dungeon:relic/aegis_of_the_depths/max_health",
+                  "operation": "add_value",
+                  "slot": "chest"
+                },
+                {
+                  "amount": 0.05,
+                  "attribute": "minecraft:knockback_resistance",
+                  "id": "procedural_dungeon:relic/aegis_of_the_depths/knockback_resistance",
+                  "operation": "add_value",
+                  "slot": "chest"
+                }
+              ],
+              "replace": false
+            }
+          ],
+          "name": "minecraft:leather_chestplate"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "minecraft:item_name": "Stridewalkers"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:rarity": "epic"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:lore": [
+                  {
+                    "color": "gray",
+                    "italic": false,
+                    "text": "Every stair is a single step."
+                  },
+                  {
+                    "color": "dark_purple",
+                    "italic": false,
+                    "text": "Relic of a tier 1 dungeon"
+                  }
+                ]
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:enchantments": {
+                  "minecraft:feather_falling": 4
+                }
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:unbreakable": {}
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "function": "minecraft:set_attributes",
+              "modifiers": [
+                {
+                  "amount": 0.04,
+                  "attribute": "minecraft:movement_speed",
+                  "id": "procedural_dungeon:relic/stridewalkers/movement_speed",
+                  "operation": "add_multiplied_base",
+                  "slot": "feet"
+                },
+                {
+                  "amount": 0.6,
+                  "attribute": "minecraft:step_height",
+                  "id": "procedural_dungeon:relic/stridewalkers/step_height",
+                  "operation": "add_value",
+                  "slot": "feet"
+                }
+              ],
+              "replace": false
+            }
+          ],
+          "name": "minecraft:leather_boots"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "minecraft:item_name": "Crown of the Fallen"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:rarity": "epic"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:lore": [
+                  {
+                    "color": "gray",
+                    "italic": false,
+                    "text": "Fortune favours whoever wears it next."
+                  },
+                  {
+                    "color": "dark_purple",
+                    "italic": false,
+                    "text": "Relic of a tier 1 dungeon"
+                  }
+                ]
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:enchantments": {
+                  "minecraft:protection": 2,
+                  "minecraft:respiration": 3
+                }
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:unbreakable": {}
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "function": "minecraft:set_attributes",
+              "modifiers": [
+                {
+                  "amount": 1.0,
+                  "attribute": "minecraft:max_health",
+                  "id": "procedural_dungeon:relic/crown_of_the_fallen/max_health",
+                  "operation": "add_value",
+                  "slot": "head"
+                },
+                {
+                  "amount": 1.0,
+                  "attribute": "minecraft:luck",
+                  "id": "procedural_dungeon:relic/crown_of_the_fallen/luck",
+                  "operation": "add_value",
+                  "slot": "head"
+                }
+              ],
+              "replace": false
+            }
+          ],
+          "name": "minecraft:leather_helmet"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "minecraft:item_name": "Stormstring"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:rarity": "epic"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:lore": [
+                  {
+                    "color": "gray",
+                    "italic": false,
+                    "text": "Every arrow carries the storm."
+                  },
+                  {
+                    "color": "dark_purple",
+                    "italic": false,
+                    "text": "Relic of a tier 1 dungeon"
+                  }
+                ]
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:enchantments": {
+                  "minecraft:power": 4,
+                  "procedural_dungeon:stormcaller": 1
+                }
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:unbreakable": {}
+              },
+              "function": "minecraft:set_components"
+            }
+          ],
+          "name": "minecraft:bow"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "minecraft:item_name": "Phylactery"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:rarity": "epic"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:lore": [
+                  {
+                    "color": "gray",
+                    "italic": false,
+                    "text": "Hold it, and death lets go of you once."
+                  }
+                ]
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:death_protection": {
+                  "death_effects": [
+                    {
+                      "type": "minecraft:clear_all_effects"
+                    },
+                    {
+                      "type": "minecraft:apply_effects",
+                      "effects": [
+                        {
+                          "amplifier": 1,
+                          "duration": 900,
+                          "id": "minecraft:regeneration",
+                          "show_icon": true
+                        },
+                        {
+                          "amplifier": 1,
+                          "duration": 100,
+                          "id": "minecraft:absorption",
+                          "show_icon": true
+                        },
+                        {
+                          "duration": 800,
+                          "id": "minecraft:fire_resistance",
+                          "show_icon": true
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:max_stack_size": 1
+              },
+              "function": "minecraft:set_components"
+            }
+          ],
+          "name": "minecraft:heart_of_the_sea"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "minecraft:item_name": "Victor's Feast"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:rarity": "epic"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:lore": [
+                  {
+                    "color": "gray",
+                    "italic": false,
+                    "text": "Eaten only by those who beat the dungeon."
+                  }
+                ]
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:food": {
+                  "can_always_eat": true,
+                  "nutrition": 10,
+                  "saturation": 20.0
+                }
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:consumable": {
+                  "on_consume_effects": [
+                    {
+                      "type": "minecraft:apply_effects",
+                      "effects": [
+                        {
+                          "amplifier": 1,
+                          "duration": 200,
+                          "id": "minecraft:regeneration",
+                          "show_icon": true
+                        },
+                        {
+                          "duration": 900,
+                          "id": "minecraft:strength",
+                          "show_icon": true
+                        },
+                        {
+                          "duration": 900,
+                          "id": "minecraft:resistance",
+                          "show_icon": true
+                        },
+                        {
+                          "duration": 900,
+                          "id": "minecraft:fire_resistance",
+                          "show_icon": true
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              "function": "minecraft:set_components"
+            },
             {
               "count": {
                 "type": "minecraft:uniform",
@@ -345,7 +794,59 @@
               "function": "minecraft:set_count"
             }
           ],
+          "name": "minecraft:golden_carrot"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 1.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
           "name": "minecraft:enchanted_golden_apple"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 3.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "minecraft:golden_apple"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:heavy_core",
+          "weight": 3500
+        },
+        {
+          "type": "minecraft:empty",
+          "weight": 6500
         }
       ],
       "rolls": 1.0
@@ -516,6 +1017,53 @@
         "type": "minecraft:uniform",
         "max": 2.0,
         "min": 1.0
+      }
+    },
+    {
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "enchantments": {
+                "procedural_dungeon:annihilation": 1.0
+              },
+              "function": "minecraft:set_enchantments"
+            }
+          ],
+          "name": "minecraft:book"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "enchantments": {
+                "procedural_dungeon:stormcaller": 1.0
+              },
+              "function": "minecraft:set_enchantments"
+            }
+          ],
+          "name": "minecraft:book",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "enchantments": {
+                "procedural_dungeon:volatile": 1.0
+              },
+              "function": "minecraft:set_enchantments"
+            }
+          ],
+          "name": "minecraft:book",
+          "weight": 2
+        }
+      ],
+      "rolls": {
+        "type": "minecraft:uniform",
+        "max": 1.0,
+        "min": 0.0
       }
     },
     {

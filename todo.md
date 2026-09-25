@@ -7,9 +7,10 @@
 - [x] Define trial-spawner loot.
 - [ ] Replace the placeholder boss (Dungeon Warden) and miniboss (Dungeon Sentinel) with real encounters.
 - [ ] Add more room templates.
-- [ ] Add puzzle rooms built from vanilla mechanics, each with a reward chest.
-- [ ] Give puzzle, miniboss, and boss rooms rewards found nowhere else, ranked puzzle < miniboss < boss; today every item in them also appears in ordinary chests.
-- [ ] Review and overhaul every loot table (tiers, rooms, traps, trial spawners) together.
+- [ ] Add puzzle rooms built from vanilla mechanics, each with a reward chest of vanilla rarities (armour trims, music discs, pottery sherds) found nowhere else.
+- [x] Give miniboss and boss rooms exclusive rewards: dungeon enchantments, over-max books, relics, and boss-only signature items.
+- [ ] Decide attribute enchantments, on-kill effects, Warden-themed effects, and how enchantments and attribute bonuses can be salvaged and moved between items.
+- [ ] Review and overhaul the remaining loot tables (tiers, ordinary rooms, traps, trial spawners) together.
 
 ## Validation and tuning
 

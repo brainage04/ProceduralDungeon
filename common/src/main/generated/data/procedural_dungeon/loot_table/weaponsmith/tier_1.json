@@ -82,7 +82,7 @@
                       {
                         "function": "minecraft:enchant_with_levels",
                         "levels": 10.0,
-                        "options": "#minecraft:exclusive_set/damage"
+                        "options": "#procedural_dungeon:loot_options/damage"
                       }
                     ],
                     "name": "minecraft:wooden_sword"
@@ -106,7 +106,7 @@
                       {
                         "function": "minecraft:enchant_with_levels",
                         "levels": 10.0,
-                        "options": "#minecraft:exclusive_set/damage"
+                        "options": "#procedural_dungeon:loot_options/damage"
                       }
                     ],
                     "name": "minecraft:copper_sword"
@@ -130,7 +130,7 @@
                       {
                         "function": "minecraft:enchant_with_levels",
                         "levels": 10.0,
-                        "options": "#minecraft:exclusive_set/damage"
+                        "options": "#procedural_dungeon:loot_options/damage"
                       }
                     ],
                     "name": "minecraft:iron_sword"
@@ -154,7 +154,7 @@
                       {
                         "function": "minecraft:enchant_with_levels",
                         "levels": 10.0,
-                        "options": "#minecraft:exclusive_set/damage"
+                        "options": "#procedural_dungeon:loot_options/damage"
                       }
                     ],
                     "name": "minecraft:wooden_axe"
@@ -178,7 +178,7 @@
                       {
                         "function": "minecraft:enchant_with_levels",
                         "levels": 10.0,
-                        "options": "#minecraft:exclusive_set/damage"
+                        "options": "#procedural_dungeon:loot_options/damage"
                       }
                     ],
                     "name": "minecraft:copper_axe"
@@ -202,7 +202,7 @@
                       {
                         "function": "minecraft:enchant_with_levels",
                         "levels": 10.0,
-                        "options": "#minecraft:exclusive_set/damage"
+                        "options": "#procedural_dungeon:loot_options/damage"
                       }
                     ],
                     "name": "minecraft:iron_axe"
@@ -274,7 +274,7 @@
                       {
                         "function": "minecraft:enchant_with_levels",
                         "levels": 10.0,
-                        "options": "#minecraft:exclusive_set/damage"
+                        "options": "#procedural_dungeon:loot_options/damage"
                       }
                     ],
                     "name": "minecraft:wooden_sword"
@@ -290,7 +290,7 @@
                       {
                         "function": "minecraft:enchant_with_levels",
                         "levels": 10.0,
-                        "options": "#minecraft:exclusive_set/damage"
+                        "options": "#procedural_dungeon:loot_options/damage"
                       }
                     ],
                     "name": "minecraft:wooden_axe"
@@ -314,7 +314,7 @@
                       {
                         "function": "minecraft:enchant_with_levels",
                         "levels": 10.0,
-                        "options": "#minecraft:exclusive_set/damage"
+                        "options": "#procedural_dungeon:loot_options/damage"
                       }
                     ],
                     "name": "minecraft:wooden_sword"
@@ -330,7 +330,7 @@
                       {
                         "function": "minecraft:enchant_with_levels",
                         "levels": 10.0,
-                        "options": "#minecraft:exclusive_set/damage"
+                        "options": "#procedural_dungeon:loot_options/damage"
                       }
                     ],
                     "name": "minecraft:copper_axe"
@@ -354,7 +354,7 @@
                       {
                         "function": "minecraft:enchant_with_levels",
                         "levels": 10.0,
-                        "options": "#minecraft:exclusive_set/damage"
+                        "options": "#procedural_dungeon:loot_options/damage"
                       }
                     ],
                     "name": "minecraft:wooden_sword"
@@ -370,7 +370,7 @@
                       {
                         "function": "minecraft:enchant_with_levels",
                         "levels": 10.0,
-                        "options": "#minecraft:exclusive_set/damage"
+                        "options": "#procedural_dungeon:loot_options/damage"
                       }
                     ],
                     "name": "minecraft:iron_axe"
@@ -394,7 +394,7 @@
                       {
                         "function": "minecraft:enchant_with_levels",
                         "levels": 10.0,
-                        "options": "#minecraft:exclusive_set/damage"
+                        "options": "#procedural_dungeon:loot_options/damage"
                       }
                     ],
                     "name": "minecraft:copper_sword"
@@ -410,7 +410,7 @@
                       {
                         "function": "minecraft:enchant_with_levels",
                         "levels": 10.0,
-                        "options": "#minecraft:exclusive_set/damage"
+                        "options": "#procedural_dungeon:loot_options/damage"
                       }
                     ],
                     "name": "minecraft:wooden_axe"
@@ -434,7 +434,7 @@
                       {
                         "function": "minecraft:enchant_with_levels",
                         "levels": 10.0,
-                        "options": "#minecraft:exclusive_set/damage"
+                        "options": "#procedural_dungeon:loot_options/damage"
                       }
                     ],
                     "name": "minecraft:copper_sword"
@@ -450,7 +450,7 @@
                       {
                         "function": "minecraft:enchant_with_levels",
                         "levels": 10.0,
-                        "options": "#minecraft:exclusive_set/damage"
+                        "options": "#procedural_dungeon:loot_options/damage"
                       }
                     ],
                     "name": "minecraft:copper_axe"
@@ -474,7 +474,7 @@
                       {
                         "function": "minecraft:enchant_with_levels",
                         "levels": 10.0,
-                        "options": "#minecraft:exclusive_set/damage"
+                        "options": "#procedural_dungeon:loot_options/damage"
                       }
                     ],
                     "name": "minecraft:copper_sword"
@@ -490,7 +490,7 @@
                       {
                         "function": "minecraft:enchant_with_levels",
                         "levels": 10.0,
-                        "options": "#minecraft:exclusive_set/damage"
+                        "options": "#procedural_dungeon:loot_options/damage"
                       }
                     ],
                     "name": "minecraft:iron_axe"
@@ -513,7 +513,7 @@
                       {
                         "function": "minecraft:enchant_with_levels",
                         "levels": 10.0,
-                        "options": "#minecraft:exclusive_set/damage"
+                        "options": "#procedural_dungeon:loot_options/damage"
                       }
                     ],
                     "name": "minecraft:iron_sword"
@@ -529,7 +529,7 @@
                       {
                         "function": "minecraft:enchant_with_levels",
                         "levels": 10.0,
-                        "options": "#minecraft:exclusive_set/damage"
+                        "options": "#procedural_dungeon:loot_options/damage"
                       }
                     ],
                     "name": "minecraft:wooden_axe"
@@ -553,7 +553,7 @@
                       {
                         "function": "minecraft:enchant_with_levels",
                         "levels": 10.0,
-                        "options": "#minecraft:exclusive_set/damage"
+                        "options": "#procedural_dungeon:loot_options/damage"
                       }
                     ],
                     "name": "minecraft:iron_sword"
@@ -569,7 +569,7 @@
                       {
                         "function": "minecraft:enchant_with_levels",
                         "levels": 10.0,
-                        "options": "#minecraft:exclusive_set/damage"
+                        "options": "#procedural_dungeon:loot_options/damage"
                       }
                     ],
                     "name": "minecraft:copper_axe"
@@ -592,7 +592,7 @@
                       {
                         "function": "minecraft:enchant_with_levels",
                         "levels": 10.0,
-                        "options": "#minecraft:exclusive_set/damage"
+                        "options": "#procedural_dungeon:loot_options/damage"
                       }
                     ],
                     "name": "minecraft:iron_sword"
@@ -608,7 +608,7 @@
                       {
                         "function": "minecraft:enchant_with_levels",
                         "levels": 10.0,
-                        "options": "#minecraft:exclusive_set/damage"
+                        "options": "#procedural_dungeon:loot_options/damage"
                       }
                     ],
                     "name": "minecraft:iron_axe"
@@ -631,7 +631,7 @@
                       {
                         "function": "minecraft:enchant_with_levels",
                         "levels": 10.0,
-                        "options": "#minecraft:exclusive_set/damage"
+                        "options": "#procedural_dungeon:loot_options/damage"
                       }
                     ],
                     "name": "minecraft:wooden_sword"
@@ -671,7 +671,7 @@
                       {
                         "function": "minecraft:enchant_with_levels",
                         "levels": 10.0,
-                        "options": "#minecraft:exclusive_set/damage"
+                        "options": "#procedural_dungeon:loot_options/damage"
                       }
                     ],
                     "name": "minecraft:copper_sword"
@@ -711,7 +711,7 @@
                       {
                         "function": "minecraft:enchant_with_levels",
                         "levels": 10.0,
-                        "options": "#minecraft:exclusive_set/damage"
+                        "options": "#procedural_dungeon:loot_options/damage"
                       }
                     ],
                     "name": "minecraft:iron_sword"
@@ -751,7 +751,7 @@
                       {
                         "function": "minecraft:enchant_with_levels",
                         "levels": 10.0,
-                        "options": "#minecraft:exclusive_set/damage"
+                        "options": "#procedural_dungeon:loot_options/damage"
                       }
                     ],
                     "name": "minecraft:wooden_sword"
@@ -791,7 +791,7 @@
                       {
                         "function": "minecraft:enchant_with_levels",
                         "levels": 10.0,
-                        "options": "#minecraft:exclusive_set/damage"
+                        "options": "#procedural_dungeon:loot_options/damage"
                       }
                     ],
                     "name": "minecraft:copper_sword"
@@ -831,7 +831,7 @@
                       {
                         "function": "minecraft:enchant_with_levels",
                         "levels": 10.0,
-                        "options": "#minecraft:exclusive_set/damage"
+                        "options": "#procedural_dungeon:loot_options/damage"
                       }
                     ],
                     "name": "minecraft:iron_sword"
@@ -871,7 +871,7 @@
                       {
                         "function": "minecraft:enchant_with_levels",
                         "levels": 10.0,
-                        "options": "#minecraft:exclusive_set/damage"
+                        "options": "#procedural_dungeon:loot_options/damage"
                       }
                     ],
                     "name": "minecraft:wooden_axe"
@@ -911,7 +911,7 @@
                       {
                         "function": "minecraft:enchant_with_levels",
                         "levels": 10.0,
-                        "options": "#minecraft:exclusive_set/damage"
+                        "options": "#procedural_dungeon:loot_options/damage"
                       }
                     ],
                     "name": "minecraft:copper_axe"
@@ -951,7 +951,7 @@
                       {
                         "function": "minecraft:enchant_with_levels",
                         "levels": 10.0,
-                        "options": "#minecraft:exclusive_set/damage"
+                        "options": "#procedural_dungeon:loot_options/damage"
                       }
                     ],
                     "name": "minecraft:iron_axe"
@@ -991,7 +991,7 @@
                       {
                         "function": "minecraft:enchant_with_levels",
                         "levels": 10.0,
-                        "options": "#minecraft:exclusive_set/damage"
+                        "options": "#procedural_dungeon:loot_options/damage"
                       }
                     ],
                     "name": "minecraft:wooden_axe"
@@ -1031,7 +1031,7 @@
                       {
                         "function": "minecraft:enchant_with_levels",
                         "levels": 10.0,
-                        "options": "#minecraft:exclusive_set/damage"
+                        "options": "#procedural_dungeon:loot_options/damage"
                       }
                     ],
                     "name": "minecraft:copper_axe"
@@ -1071,7 +1071,7 @@
                       {
                         "function": "minecraft:enchant_with_levels",
                         "levels": 10.0,
-                        "options": "#minecraft:exclusive_set/damage"
+                        "options": "#procedural_dungeon:loot_options/damage"
                       }
                     ],
                     "name": "minecraft:iron_axe"

@@ -1,5 +1,6 @@
 package com.github.brainage04.procedural_dungeon.util;
 
+import com.github.brainage04.procedural_dungeon.reward.Reward;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,7 +10,6 @@ import java.util.concurrent.ExecutionException;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.HolderSet;
-import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.TypedDataComponent;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
@@ -28,6 +28,7 @@ import net.minecraft.world.level.storage.loot.entries.LootPoolSingletonContainer
 import net.minecraft.world.level.storage.loot.entries.NestedLootTable;
 import net.minecraft.world.level.storage.loot.functions.EnchantWithLevelsFunction;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunction;
+import net.minecraft.world.level.storage.loot.functions.SetAttributesFunction;
 import net.minecraft.world.level.storage.loot.functions.SetComponentsFunction;
 import net.minecraft.world.level.storage.loot.functions.SetEnchantmentsFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
@@ -277,6 +278,78 @@ public class LootTableUtils {
         return enchantment.getMinLevel() + Math.round((tier - 1) * range / (float) (tierCount - 1));
     }
 
+    /**
+     * One book per roll, only from {@code books}; an {@code overMax} book carries its enchantment one level above the
+     * vanilla maximum, the rest scale with tier like {@link #addEnchantedBookPool}.
+     */
+    public static LootTable.Builder addExclusiveBookPool(
+            LootTable.Builder input,
+            List<ExclusiveBook> books,
+            int tier,
+            int tierCount,
+            int minRolls,
+            int maxRolls,
+            CompletableFuture<HolderLookup.Provider> registryLookup
+    ) {
+        HolderLookup.RegistryLookup<Enchantment> registry;
+        try {
+            registry = registryLookup.get().lookupOrThrow(Registries.ENCHANTMENT);
+        } catch (ExecutionException e) {
+            throw new IllegalStateException("Failed to look up enchantment registry", e);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new IllegalStateException("Interrupted while looking up enchantment registry", e);
+        }
+
+        LootPool.Builder builder = LootPool.lootPool().setRolls(rolls(minRolls, maxRolls));
+        for (ExclusiveBook book : books) {
+            Holder<Enchantment> holder = registry.getOrThrow(ResourceKey.create(Registries.ENCHANTMENT, book.id()));
+            int level = book.overMax() ? holder.value().getMaxLevel() + 1 : bookLevel(holder.value(), tier, tierCount);
+            builder = builder.add(
+                    LootItem.lootTableItem(Items.BOOK)
+                            .setWeight(book.weight())
+                            .apply(new SetEnchantmentsFunction.Builder().withEnchantment(holder, ConstantValue.exactly(level)))
+            );
+        }
+        return input.withPool(builder);
+    }
+
+    /**
+     * Picks one of {@code rewards} per roll by weight, as {@code minCount}–{@code maxCount} of its item with its
+     * components.
+     */
+    public static LootTable.Builder addRewardPool(
+            LootTable.Builder input,
+            List<Reward> rewards,
+            int minCount,
+            int maxCount,
+            int minRolls,
+            int maxRolls
+    ) {
+        LootPool.Builder builder = LootPool.lootPool().setRolls(rolls(minRolls, maxRolls));
+        for (Reward reward : rewards) {
+            LootPoolSingletonContainer.Builder<?> entry = LootItem.lootTableItem(reward.item()).setWeight(reward.weight());
+            for (TypedDataComponent<?> component : reward.components()) {
+                entry.apply(setComponent(component));
+            }
+            if (!reward.bonuses().isEmpty()) {
+                // Not replacing keeps the item's own modifiers, such as a weapon's base attack damage.
+                SetAttributesFunction.Builder attributes = new SetAttributesFunction.Builder(false);
+                for (Reward.AttributeBonus bonus : reward.bonuses()) {
+                    attributes.withModifier(new SetAttributesFunction.ModifierBuilder(
+                            bonus.id(), bonus.attribute(), bonus.operation(), ConstantValue.exactly((float) bonus.amount())
+                    ).forSlot(bonus.slot()));
+                }
+                entry.apply(attributes);
+            }
+            if (minCount != 1 || maxCount != 1) {
+                entry.apply(SetItemCountFunction.setCount(UniformGenerator.between(minCount, maxCount)));
+            }
+            builder = builder.add(entry);
+        }
+        return input.withPool(builder);
+    }
+
     public static LootTable.Builder addWeightedPool(LootTable.Builder input, WeightedItem[] items, int min, int max, int rolls) {
         return addWeightedPool(input, items, min, max, rolls, rolls);
     }
@@ -302,17 +375,6 @@ public class LootTableUtils {
 
     public static LootTable.Builder addPool(LootTable.Builder input, Item[] items, int min, int max, int rolls) {
         return addPool(input, items, min, max, rolls, rolls);
-    }
-
-    /**
-     * One guaranteed {@code item} carrying every component in {@code components}.
-     */
-    public static LootTable.Builder addComponentItemPool(LootTable.Builder input, Item item, DataComponentMap components) {
-        LootPoolSingletonContainer.Builder<?> entry = LootItem.lootTableItem(item);
-        for (TypedDataComponent<?> component : components) {
-            entry.apply(setComponent(component));
-        }
-        return input.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(entry));
     }
 
     private static <T> LootItemFunction.Builder setComponent(TypedDataComponent<T> component) {
@@ -399,6 +461,8 @@ public class LootTableUtils {
                         )
         );
     }
+
+    public record ExclusiveBook(Identifier id, int weight, boolean overMax) {}
 
     public record WeightedItem(Item item, int weight) {}
 

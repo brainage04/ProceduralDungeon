@@ -3,7 +3,10 @@ package com.github.brainage04.procedural_dungeon.datagen.loot_table;
 import com.github.brainage04.procedural_dungeon.ProceduralDungeon;
 import com.github.brainage04.procedural_dungeon.dungeon.DungeonTheme;
 import com.github.brainage04.procedural_dungeon.dungeon.DungeonTier;
+import com.github.brainage04.procedural_dungeon.enchantment.DungeonEnchantments;
 import com.github.brainage04.procedural_dungeon.lock.DungeonKeyType;
+import com.github.brainage04.procedural_dungeon.reward.DungeonRelics;
+import com.github.brainage04.procedural_dungeon.reward.Reward;
 import com.github.brainage04.procedural_dungeon.util.LootTableUtils;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -277,7 +280,42 @@ public class DungeonLootTableProvider extends SimpleFabricLootTableSubProvider {
             if (key == null) {
                 throw new IllegalArgumentException("Unknown dungeon key: " + spec);
             }
-            return LootTableUtils.addComponentItemPool(builder, key.item(), key.components());
+            return LootTableUtils.addRewardPool(builder, List.of(new Reward(key.item(), key.components())), 1, 1, 1, 1);
+        }
+
+        if (spec.has("relics")) {
+            if (!spec.get("relics").getAsString().equals("boss")) {
+                throw new IllegalArgumentException("Unknown relic pool: " + spec);
+            }
+            int[] rolls = rollsRange(spec, dungeonTier);
+            return LootTableUtils.addRewardPool(builder, DungeonRelics.bossRelics(dungeonTier, registryLookup.join()), 1, 1, rolls[0], rolls[1]);
+        }
+
+        if (spec.has("reward")) {
+            if (!spec.get("reward").getAsString().equals("victors_feast")) {
+                throw new IllegalArgumentException("Unknown reward: " + spec);
+            }
+            int[] count = countRange(spec);
+            int[] rolls = rollsRange(spec, dungeonTier);
+            return LootTableUtils.addRewardPool(builder, List.of(DungeonRelics.victorsFeast(dungeonTier)), count[0], count[1], rolls[0], rolls[1]);
+        }
+
+        if (spec.has("exclusiveBooks")) {
+            List<LootTableUtils.ExclusiveBook> books = new ArrayList<>();
+            for (JsonElement element : spec.getAsJsonArray("exclusiveBooks")) {
+                JsonObject book = element.getAsJsonObject();
+                books.add(new LootTableUtils.ExclusiveBook(
+                        Identifier.parse(book.get("enchantment").getAsString()),
+                        intValue(book.get("weight"), dungeonTier),
+                        book.has("overMax") && book.get("overMax").getAsBoolean()
+                ));
+            }
+            int[] rolls = rollsRange(spec, dungeonTier);
+            return LootTableUtils.addExclusiveBookPool(builder, books, dungeonTier.tier, DungeonTier.values().length, rolls[0], rolls[1], registryLookup);
+        }
+
+        if (spec.has("chance")) {
+            return LootTableUtils.addChancePool(builder, item(spec.get("item").getAsString()), spec.get("chance").getAsDouble());
         }
 
         if (spec.has("netheriteUpgradeSmithingTemplate")) {
@@ -479,7 +517,8 @@ public class DungeonLootTableProvider extends SimpleFabricLootTableSubProvider {
     private static TagKey<Enchantment> enchantTag(String key) {
         return switch (key) {
             case "armor" -> EnchantmentTags.ARMOR_EXCLUSIVE;
-            case "damage" -> EnchantmentTags.DAMAGE_EXCLUSIVE;
+            // Vanilla damage enchantments only; the dungeon banes share their exclusive set but stay reward-only.
+            case "damage" -> DungeonEnchantments.LOOT_DAMAGE_OPTIONS;
             case "bow" -> EnchantmentTags.BOW_EXCLUSIVE;
             case "crossbow" -> EnchantmentTags.CROSSBOW_EXCLUSIVE;
             case "mining" -> EnchantmentTags.MINING_EXCLUSIVE;
@@ -505,11 +544,7 @@ public class DungeonLootTableProvider extends SimpleFabricLootTableSubProvider {
             default -> throw new IllegalArgumentException("Unknown tier variable: " + parts[0]);
         };
 
-        if (parts.length == 2) {
-            value *= Integer.parseInt(parts[1]);
-        }
-
-        return value;
+        return parts.length == 2 ? (int) Math.round(value * Double.parseDouble(parts[1])) : value;
     }
 
     @Override

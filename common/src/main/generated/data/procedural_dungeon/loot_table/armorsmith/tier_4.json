@@ -4266,20 +4266,6 @@
         }
       ],
       "rolls": 1.0
-    },
-    {
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "name": "minecraft:netherite_upgrade_smithing_template",
-          "weight": 214
-        },
-        {
-          "type": "minecraft:empty",
-          "weight": 9786
-        }
-      ],
-      "rolls": 1.0
     }
   ]
 }

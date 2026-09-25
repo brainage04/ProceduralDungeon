@@ -1,0 +1,147 @@
+{
+  "anvil_cost": 8,
+  "description": "Stormcaller",
+  "effects": {
+    "minecraft:post_attack": [
+      {
+        "affected": "victim",
+        "effect": {
+          "type": "minecraft:all_of",
+          "effects": [
+            {
+              "type": "minecraft:summon_entity",
+              "entity": "minecraft:lightning_bolt"
+            },
+            {
+              "type": "minecraft:play_sound",
+              "pitch": 1.0,
+              "sound": "minecraft:item.trident.thunder",
+              "volume": 5.0
+            }
+          ]
+        },
+        "enchanted": "attacker",
+        "requirements": {
+          "condition": "minecraft:all_of",
+          "terms": [
+            {
+              "chance": {
+                "type": "minecraft:enchantment_level",
+                "amount": {
+                  "type": "minecraft:linear",
+                  "base": 0.15,
+                  "per_level_above_first": 0.15
+                }
+              },
+              "condition": "minecraft:random_chance"
+            },
+            {
+              "condition": "minecraft:entity_properties",
+              "entity": "attacker",
+              "predicate": {
+                "minecraft:distance": {
+                  "horizontal": {
+                    "min": 4.0
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "affected": "victim",
+        "effect": {
+          "type": "minecraft:all_of",
+          "effects": [
+            {
+              "type": "minecraft:damage_entity",
+              "damage_type": "minecraft:lightning_bolt",
+              "max_damage": {
+                "type": "minecraft:linear",
+                "base": 5.0,
+                "per_level_above_first": 1.0
+              },
+              "min_damage": {
+                "type": "minecraft:linear",
+                "base": 3.0,
+                "per_level_above_first": 1.0
+              }
+            },
+            {
+              "type": "minecraft:spawn_particles",
+              "horizontal_position": {
+                "type": "in_bounding_box"
+              },
+              "horizontal_velocity": {
+                "base": 0.5
+              },
+              "particle": {
+                "type": "minecraft:electric_spark"
+              },
+              "speed": 1.0,
+              "vertical_position": {
+                "type": "in_bounding_box"
+              },
+              "vertical_velocity": {
+                "base": 0.5
+              }
+            },
+            {
+              "type": "minecraft:play_sound",
+              "pitch": 1.6,
+              "sound": "minecraft:item.trident.thunder",
+              "volume": 0.6
+            }
+          ]
+        },
+        "enchanted": "attacker",
+        "requirements": {
+          "condition": "minecraft:all_of",
+          "terms": [
+            {
+              "chance": {
+                "type": "minecraft:enchantment_level",
+                "amount": {
+                  "type": "minecraft:linear",
+                  "base": 0.15,
+                  "per_level_above_first": 0.15
+                }
+              },
+              "condition": "minecraft:random_chance"
+            },
+            {
+              "condition": "minecraft:inverted",
+              "term": {
+                "condition": "minecraft:entity_properties",
+                "entity": "attacker",
+                "predicate": {
+                  "minecraft:distance": {
+                    "horizontal": {
+                      "min": 4.0
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "max_cost": {
+    "base": 45,
+    "per_level_above_first": 10
+  },
+  "max_level": 3,
+  "min_cost": {
+    "base": 15,
+    "per_level_above_first": 10
+  },
+  "primary_items": "#procedural_dungeon:enchantable/affliction",
+  "slots": [
+    "mainhand"
+  ],
+  "supported_items": "#procedural_dungeon:enchantable/affliction",
+  "weight": 1
+}

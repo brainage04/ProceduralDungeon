@@ -3,6 +3,7 @@ package com.github.brainage04.procedural_dungeon;
 import com.github.brainage04.procedural_dungeon.command.GenerateDungeonCommand;
 import com.github.brainage04.procedural_dungeon.dungeon.DungeonTheme;
 import com.github.brainage04.procedural_dungeon.dungeon.DungeonTier;
+import com.github.brainage04.procedural_dungeon.enchantment.DungeonEnchantments;
 import com.github.brainage04.procedural_dungeon.guardian.DungeonGuardian;
 import com.github.brainage04.procedural_dungeon.lock.DungeonKeyType;
 import com.github.brainage04.procedural_dungeon.lock.DungeonLockManager;
@@ -12,15 +13,18 @@ import com.github.brainage04.procedural_dungeon.util.RegistryKeyUtils;
 import com.github.brainage04.procedural_dungeon.worldgen.structure.DungeonProgressionRooms;
 import com.github.brainage04.procedural_dungeon.worldgen.structure.StagedDungeonGenerationManager;
 import com.github.brainage04.procedural_dungeon.worldgen.structure.StagedDungeonLayout;
-import com.github.brainage04.procedural_dungeon.worldgen.structure.StagedDungeonPieceSpec;
 import com.github.brainage04.procedural_dungeon.worldgen.structure.StagedDungeonLayoutCompiler;
+import com.github.brainage04.procedural_dungeon.worldgen.structure.StagedDungeonPieceSpec;
 import com.github.brainage04.procedural_dungeon.worldgen.structure.VariantSinglePoolElement;
+import com.mojang.serialization.JsonOps;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.gametest.framework.GameTestHelper;
@@ -28,12 +32,29 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.EnchantmentTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.random.Weighted;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EntityTypes;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.animal.pig.Pig;
+import net.minecraft.world.entity.monster.Blaze;
+import net.minecraft.world.entity.monster.illager.Pillager;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DoorBlock;
@@ -42,14 +63,17 @@ import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.entity.TrialSpawnerBlockEntity;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.pools.StructurePoolElement;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
-import net.minecraft.world.level.levelgen.structure.templatesystem.LiquidSettings;
-import net.minecraft.world.level.storage.loot.LootTable;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.structures.JigsawStructure;
+import net.minecraft.world.level.levelgen.structure.templatesystem.LiquidSettings;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 
 public final class DungeonGameTestSuite {
     private static final List<DungeonTheme> LAYOUT_THEMES = List.of(
@@ -74,7 +98,9 @@ public final class DungeonGameTestSuite {
                 new TestCase("guarded_door_opens_only_with_its_key", DungeonGameTestSuite::guardedDoorOpensOnlyWithItsKey),
                 new TestCase("placed_boss_room_is_guarded_locked_and_stocked", DungeonGameTestSuite::placedBossRoomIsGuardedLockedAndStocked),
                 new TestCase("trial_spawners_eject_tiered_dungeon_loot", DungeonGameTestSuite::trialSpawnersEjectTieredDungeonLoot),
-                new TestCase("surface_entrances_lead_down_into_a_full_dungeon", DungeonGameTestSuite::surfaceEntrancesLeadDownIntoAFullDungeon)
+                new TestCase("surface_entrances_lead_down_into_a_full_dungeon", DungeonGameTestSuite::surfaceEntrancesLeadDownIntoAFullDungeon),
+                new TestCase("dungeon_enchantments_are_reward_only_and_take_effect", DungeonGameTestSuite::dungeonEnchantmentsAreRewardOnlyAndTakeEffect),
+                new TestCase("boss_rewards_are_exclusive_and_relics_keep_base_stats", DungeonGameTestSuite::bossRewardsAreExclusiveAndRelicsKeepBaseStats)
         );
     }
 
@@ -296,6 +322,129 @@ public final class DungeonGameTestSuite {
             }
         }
         helper.succeed();
+    }
+
+    /**
+     * Dungeon enchantments exist only as dungeon rewards: no vanilla source (enchanting table, trading, random loot,
+     * mob equipment, enchant-with-levels loot) may roll them. Their effects must reach the victim, and a Volatile kill
+     * must hurt bystanders but not the wielder.
+     */
+    public static void dungeonEnchantmentsAreRewardOnlyAndTakeEffect(GameTestHelper helper) {
+        ServerLevel level = helper.getLevel();
+        HolderLookup.RegistryLookup<Enchantment> enchantments = level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
+        List<TagKey<Enchantment>> vanillaSources = List.of(
+                EnchantmentTags.IN_ENCHANTING_TABLE,
+                EnchantmentTags.ON_RANDOM_LOOT,
+                EnchantmentTags.TRADEABLE,
+                EnchantmentTags.ON_TRADED_EQUIPMENT,
+                EnchantmentTags.ON_MOB_SPAWN_EQUIPMENT,
+                DungeonEnchantments.LOOT_DAMAGE_OPTIONS
+        );
+        for (ResourceKey<Enchantment> key : DungeonEnchantments.all()) {
+            Holder<Enchantment> enchantment = enchantments.get(key).orElseThrow(() -> new AssertionError("Missing enchantment " + key));
+            for (TagKey<Enchantment> source : vanillaSources) {
+                helper.assertTrue(!enchantment.is(source), key.identifier() + " must not be obtainable through " + source.location());
+            }
+        }
+
+        Player player = helper.makeMockPlayer(GameType.SURVIVAL);
+        // Undead are immune to poison, so the victim is a pillager.
+        Pillager venomTarget = helper.spawnWithNoFreeWill(EntityTypes.PILLAGER, new BlockPos(1, 1, 1));
+        player.setItemInHand(InteractionHand.MAIN_HAND, enchanted(enchantments, Items.IRON_SWORD, key("venom"), 1));
+        player.attack(venomTarget);
+        helper.assertTrue(venomTarget.hasEffect(MobEffects.POISON), "Venom must poison the victim");
+
+        ItemStack netherBane = enchanted(enchantments, Items.IRON_SWORD, key("bane_of_the_nether"), 5);
+        Blaze blaze = helper.spawnWithNoFreeWill(EntityTypes.BLAZE, new BlockPos(3, 1, 1));
+        DamageSource source = level.damageSources().playerAttack(player);
+        helper.assertTrue(
+                EnchantmentHelper.modifyDamage(level, netherBane, blaze, source, 1.0F) >= 13.5F
+                        && EnchantmentHelper.modifyDamage(level, netherBane, venomTarget, source, 1.0F) == 1.0F,
+                "Bane of the Nether V must add 12.5 damage against nether mobs and nothing against others"
+        );
+
+        // Pigs never spawn with armour that could absorb the weak follow-up hit.
+        Pig doomed = helper.spawnWithNoFreeWill(EntityTypes.PIG, new BlockPos(1, 1, 5));
+        Pig bystander = helper.spawnWithNoFreeWill(EntityTypes.PIG, new BlockPos(2, 1, 5));
+        // A mock player's held-item attributes only apply after it ticks, so its hit deals barely any damage.
+        doomed.setHealth(0.1F);
+        player.snapTo(helper.absoluteVec(new Vec3(1.5, 1.0, 7.0)));
+        player.setItemInHand(InteractionHand.MAIN_HAND, enchanted(enchantments, Items.IRON_SWORD, DungeonEnchantments.VOLATILE, 3));
+        float playerHealth = player.getHealth();
+        player.attack(doomed);
+        helper.assertTrue(doomed.isDeadOrDying(), "The Volatile victim must die from the hit");
+        helper.assertTrue(bystander.getHealth() < bystander.getMaxHealth(), "A Volatile kill must blast nearby mobs");
+        helper.assertTrue(player.getHealth() == playerHealth, "The Volatile wielder must be immune to its own blast");
+        helper.succeed();
+    }
+
+    /**
+     * Enchanted golden apples, heavy cores, netherite templates, Mending, and relics come only from boss chests, every
+     * boss chest holds one relic, and a relic's bonus adds to the base item's stats instead of replacing them.
+     */
+    public static void bossRewardsAreExclusiveAndRelicsKeepBaseStats(GameTestHelper helper) {
+        ServerLevel level = helper.getLevel();
+        HolderLookup.Provider registries = level.getServer().reloadableRegistries().lookup();
+        var ops = level.registryAccess().createSerializationContext(JsonOps.INSTANCE);
+        List<String> bossOnly = List.of(
+                "minecraft:enchanted_golden_apple",
+                "minecraft:heavy_core",
+                "minecraft:netherite_upgrade_smithing_template",
+                "minecraft:mending",
+                "minecraft:unbreakable",
+                "minecraft:death_protection"
+        );
+        registries.lookupOrThrow(Registries.LOOT_TABLE).listElementIds()
+                .filter(key -> key.identifier().getNamespace().equals(ProceduralDungeon.MOD_ID))
+                .filter(key -> !key.identifier().getPath().startsWith("boss_room/"))
+                .forEach(key -> {
+                    String json = LootTable.DIRECT_CODEC.encodeStart(ops, level.getServer().reloadableRegistries().getLootTable(key))
+                            .getOrThrow().toString();
+                    for (String item : bossOnly) {
+                        helper.assertTrue(!json.contains(item), key.identifier() + " must not contain boss-only " + item);
+                    }
+                });
+
+        LootParams params = new LootParams.Builder(level)
+                .withParameter(LootContextParams.ORIGIN, helper.absoluteVec(Vec3.ZERO))
+                .create(LootContextParamSets.CHEST);
+        for (DungeonTier tier : DungeonTier.values()) {
+            LootTable bossRoom = level.getServer().reloadableRegistries().getLootTable(
+                    ResourceKey.create(Registries.LOOT_TABLE, ProceduralDungeon.of("boss_room/tier_%d".formatted(tier.tier))));
+            boolean sawAxe = false;
+            RandomSource random = RandomSource.create(tier.tier);
+            for (int roll = 0; roll < 64; roll++) {
+                List<ItemStack> loot = bossRoom.getRandomItems(params, random);
+                List<ItemStack> relics = loot.stream()
+                        .filter(stack -> stack.has(DataComponents.UNBREAKABLE) || stack.has(DataComponents.DEATH_PROTECTION))
+                        .toList();
+                helper.assertTrue(relics.size() == 1, "Every tier %d boss chest must hold one relic: %s".formatted(tier.tier, loot));
+                helper.assertTrue(loot.stream().anyMatch(stack -> stack.is(Items.ENCHANTED_GOLDEN_APPLE)),
+                        "Every boss chest must hold an enchanted golden apple");
+                ItemStack relic = relics.getFirst();
+                if (relic.is(tier.axe)) {
+                    sawAxe = true;
+                    double damage = relic.getOrDefault(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.EMPTY)
+                            .compute(Attributes.ATTACK_DAMAGE, 1.0, EquipmentSlot.MAINHAND);
+                    double baseDamage = new ItemStack(tier.axe).getOrDefault(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.EMPTY)
+                            .compute(Attributes.ATTACK_DAMAGE, 1.0, EquipmentSlot.MAINHAND);
+                    helper.assertTrue(damage == baseDamage + tier.tier,
+                            "The Warden's Cleaver must add %d attack damage to its base %s, got %s".formatted(tier.tier, baseDamage, damage));
+                }
+            }
+            helper.assertTrue(sawAxe, "64 tier %d boss chests must include a Warden's Cleaver".formatted(tier.tier));
+        }
+        helper.succeed();
+    }
+
+    private static ItemStack enchanted(HolderLookup.RegistryLookup<Enchantment> enchantments, Item item, ResourceKey<Enchantment> key, int level) {
+        ItemStack stack = new ItemStack(item);
+        stack.enchant(enchantments.getOrThrow(key), level);
+        return stack;
+    }
+
+    private static ResourceKey<Enchantment> key(String name) {
+        return ResourceKey.create(Registries.ENCHANTMENT, ProceduralDungeon.of(name));
     }
 
     private static int keyCount(Player player, DungeonKeyType type) {

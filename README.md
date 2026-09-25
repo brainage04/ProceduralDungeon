@@ -71,6 +71,36 @@ Hallway loot rooms:
 - Medium: 2 chests
 - Large: 4 chests
 
+# Rewards
+
+The best loot is reserved for the rooms that are hardest to reach. Ordinary chests never hold enchanted golden apples, heavy cores, netherite upgrade templates, Mending, relics, or dungeon enchantments.
+
+- **Miniboss chests:** an enchanted weapon or armour piece at 1.5× the tier's enchantment level, and one exclusive book: an affliction or bane enchantment (below), or a vanilla enchantment one level above its normal maximum (for example Sharpness VI or Protection V).
+- **Boss chests:** one **relic**, a **Victor's Feast** (a golden carrot that feeds like a feast and grants Regeneration, Strength, Resistance, and Fire Resistance), an enchanted golden apple, a weapon and armour piece at twice the tier's enchantment level, and chances at a heavy core, a netherite upgrade template, Mending, and the rarest enchantments (Annihilation, Stormcaller, Volatile).
+
+Relics are named, unbreakable items built from the dungeon tier's material, with enchantments above the vanilla maximum and attribute bonuses on top of the item's own stats. Bonuses grow with the tier (`t`):
+
+| Relic | Item | Enchantments | Bonuses |
+|---|---|---|---|
+| Warden's Cleaver | Axe | Sharpness 3+t | +t attack damage |
+| Aegis of the Depths | Chestplate | Protection 2+t | +2t max health, +0.05t knockback resistance |
+| Stridewalkers | Boots | Feather Falling 3+t | +4t% movement speed, step up full blocks |
+| Crown of the Fallen | Helmet | Protection 1+t, Respiration III | +t max health, +t luck |
+| Stormstring | Bow | Power 3+t, Stormcaller | |
+| Phylactery | Heart of the Sea | | Saves you from death once when held, like a Totem of Undying |
+
+## Dungeon enchantments
+
+These enchantments exist only in dungeon reward chests; enchanting tables, villagers, and other loot never roll them.
+
+- **Banes** (weapons, I–V, +2.5 damage per level against their targets, exclusive with Sharpness and Smite): Bane of the Deep (wardens), Bane of the Nether (blazes, ghasts, magma cubes, piglins, hoglins, zoglins, withers, wither skeletons), Bane of the End (the dragon, endermen, endermites, shulkers), Bane of Illagers (raiders and vexes), Duelist (players).
+- **Annihilation** (weapons, I–V, boss only): +2.5 damage per level against everything.
+- **Afflictions** (weapons, bows, crossbows, and tridents, I–III): each hit applies an effect that lasts longer, and for most grows stronger, per level. Venom (Poison), Withering (Wither), Crippling (Slowness), Blinding (Blindness), Eclipse (Darkness), Famine (Hunger), Infestation (Infested), Updraft (Levitation), Drifting (Slow Falling), Sapping (Mining Fatigue), Vertigo (Nausea), Oozing (Oozing).
+- **Stormcaller** (I–III, boss only): each hit has a 15% chance per level to call lightning. From 4 or more blocks away a real bolt strikes the target; closer in, the target takes a lightning jolt instead, so the bolt never hits the attacker.
+- **Volatile** (I–III, boss only): a killing blow makes the victim explode without breaking blocks. The wielder is immune to the blast; other players nearby are not.
+
+Dungeon items are made of vanilla items and components, so they work for unmodded clients.
+
 # Tiers
 
 Loot tiers:
