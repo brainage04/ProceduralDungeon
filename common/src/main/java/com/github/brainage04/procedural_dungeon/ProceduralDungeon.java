@@ -1,6 +1,5 @@
 package com.github.brainage04.procedural_dungeon;
 
-import com.github.brainage04.procedural_dungeon.item.ModItems;
 import com.github.brainage04.procedural_dungeon.lock.DungeonLockManager;
 import com.github.brainage04.procedural_dungeon.worldgen.processor.ModStructureProcessorTypes;
 import com.github.brainage04.procedural_dungeon.worldgen.structure.ModStructureTypes;
@@ -21,7 +20,6 @@ public final class ProceduralDungeon {
 	public static void initialize() {
         LOGGER.info("{} initialising...", MOD_NAME);
 
-        ModItems.initialize();
         DungeonLockManager.initialize();
 
 

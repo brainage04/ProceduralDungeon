@@ -5,8 +5,6 @@ import com.github.brainage04.procedural_dungeon.command.DungeonLocksCommand;
 import com.github.brainage04.procedural_dungeon.command.StructureGalleryCommand;
 import com.github.brainage04.procedural_dungeon.command.core.ModCommands;
 import com.github.brainage04.procedural_dungeon.lock.DungeonLockManager;
-import com.github.brainage04.procedural_dungeon.lock.DungeonKeyType;
-import com.github.brainage04.procedural_dungeon.item.ModItems;
 import com.github.brainage04.procedural_dungeon.worldgen.processor.ModStructureProcessorTypes;
 import com.github.brainage04.procedural_dungeon.worldgen.structure.ModStructurePoolElementTypes;
 import com.github.brainage04.procedural_dungeon.worldgen.structure.ModStructureTypes;
@@ -19,16 +17,11 @@ import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
 
 public final class ProceduralDungeonFabric implements ModInitializer {
     @Override
     public void onInitialize() {
-        for (DungeonKeyType type : DungeonKeyType.values()) {
-            var key = Registry.register(BuiltInRegistries.ITEM, type.itemId(), ModItems.createKey(type));
-            ModItems.registerKey(type, () -> key);
-        }
         ModStructureProcessorTypes.registerAll((name, codec) -> Registry.register(BuiltInRegistries.STRUCTURE_PROCESSOR, ProceduralDungeon.of(name), codec));
         ModStructurePoolElementTypes.registerAll((name, type) -> ModStructurePoolElementTypes.setVariantSinglePoolElement(
                 Registry.register(BuiltInRegistries.STRUCTURE_POOL_ELEMENT, ProceduralDungeon.of(name), type)));

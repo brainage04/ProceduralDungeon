@@ -107,7 +107,7 @@
     ],
     "hallway_end/key_source": [
       { "copy": "hallway_end" },
-      { "item": "procedural_dungeon:rusted_key", "count": 1, "rolls": 1 }
+      { "dungeonKey": "rusted_key" }
     ],
     "hallway_loot": [
       {
@@ -150,18 +150,18 @@
     ],
     "hallway_loot/key_source": [
       { "copy": "hallway_loot" },
-      { "item": "procedural_dungeon:rusted_key", "count": 1, "rolls": 1 }
+      { "dungeonKey": "rusted_key" }
     ],
     "hallway_end/miniboss_key_source": [
       { "copy": "hallway_end" },
-      { "item": "procedural_dungeon:miniboss_key", "count": 1, "rolls": 1 }
+      { "dungeonKey": "miniboss_key" }
     ],
     "hallway_loot/miniboss_key_source": [
       { "copy": "hallway_loot" },
-      { "item": "procedural_dungeon:miniboss_key", "count": 1, "rolls": 1 }
+      { "dungeonKey": "miniboss_key" }
     ],
     "boss_key_vault": [
-      { "item": "procedural_dungeon:boss_key", "count": 1, "rolls": 1 },
+      { "dungeonKey": "boss_key" },
       { "tierItems": "resources", "count": [1, 3], "rolls": 1 },
       {
         "items": [

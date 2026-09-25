@@ -8,9 +8,6 @@
 	"entrypoints": {
 		"fabric-gametest": [
 			"com.github.brainage04.procedural_dungeon.ProceduralDungeonGameTest"
-		],
-		"fabric-client-gametest": [
-			"com.github.brainage04.procedural_dungeon.ProceduralDungeonClientGameTest"
 		]
 	}
 }

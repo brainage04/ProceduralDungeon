@@ -1,6 +1,5 @@
 package com.github.brainage04.procedural_dungeon.lock;
 
-import com.github.brainage04.procedural_dungeon.item.ModItems;
 import java.util.Optional;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
@@ -162,7 +161,7 @@ public final class DungeonLockManager {
         Inventory inventory = player.getInventory();
         for (int slot = 0; slot < inventory.getContainerSize(); slot++) {
             ItemStack stack = inventory.getItem(slot);
-            if (!stack.is(ModItems.key(type))) {
+            if (!type.matches(stack)) {
                 continue;
             }
 

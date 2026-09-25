@@ -4,5 +4,3 @@ fabricApi {
 		outputDirectory.set(project(':common').layout.projectDirectory.file('src/main/generated'))
 	}
 }
-
-clientGameTestRecorder { guiScale.set('3') }

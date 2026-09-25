@@ -3,6 +3,7 @@ package com.github.brainage04.procedural_dungeon.datagen.loot_table;
 import com.github.brainage04.procedural_dungeon.ProceduralDungeon;
 import com.github.brainage04.procedural_dungeon.dungeon.DungeonTheme;
 import com.github.brainage04.procedural_dungeon.dungeon.DungeonTier;
+import com.github.brainage04.procedural_dungeon.lock.DungeonKeyType;
 import com.github.brainage04.procedural_dungeon.util.LootTableUtils;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -269,6 +270,14 @@ public class DungeonLootTableProvider extends SimpleFabricLootTableSubProvider {
                     rolls[1],
                     registryLookup
             );
+        }
+
+        if (spec.has("dungeonKey")) {
+            DungeonKeyType key = DungeonKeyType.CODEC.byName(spec.get("dungeonKey").getAsString());
+            if (key == null) {
+                throw new IllegalArgumentException("Unknown dungeon key: " + spec);
+            }
+            return LootTableUtils.addComponentItemPool(builder, key.item(), key.components());
         }
 
         if (spec.has("netheriteUpgradeSmithingTemplate")) {

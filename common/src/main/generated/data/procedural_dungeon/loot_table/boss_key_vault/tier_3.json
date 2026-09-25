@@ -7,15 +7,39 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 1.0,
-                "min": 1.0
+              "components": {
+                "minecraft:item_name": "Boss Key"
               },
-              "function": "minecraft:set_count"
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:rarity": "epic"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:lore": [
+                  {
+                    "color": "gray",
+                    "italic": false,
+                    "text": "Opens the boss room door"
+                  }
+                ]
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:custom_data": {
+                  "procedural_dungeon_key": "boss_key"
+                }
+              },
+              "function": "minecraft:set_components"
             }
           ],
-          "name": "procedural_dungeon:boss_key"
+          "name": "minecraft:ominous_trial_key"
         }
       ],
       "rolls": 1.0

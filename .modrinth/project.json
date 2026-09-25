@@ -9,7 +9,7 @@
   "additional_categories": [
     "game-mechanics"
   ],
-  "client_side": "required",
+  "client_side": "unsupported",
   "server_side": "required",
   "dependency_overrides": {}
 }

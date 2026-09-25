@@ -5,8 +5,6 @@ import com.github.brainage04.procedural_dungeon.command.DungeonLocksCommand;
 import com.github.brainage04.procedural_dungeon.command.StructureGalleryCommand;
 import com.github.brainage04.procedural_dungeon.command.core.ModCommands;
 import com.github.brainage04.procedural_dungeon.lock.DungeonLockManager;
-import com.github.brainage04.procedural_dungeon.lock.DungeonKeyType;
-import com.github.brainage04.procedural_dungeon.item.ModItems;
 import com.github.brainage04.procedural_dungeon.worldgen.processor.ModStructureProcessorTypes;
 import com.github.brainage04.procedural_dungeon.worldgen.structure.ModStructurePoolElementTypes;
 import com.github.brainage04.procedural_dungeon.worldgen.structure.ModStructureTypes;
@@ -15,7 +13,6 @@ import com.github.brainage04.procedural_dungeon.worldgen.structure.VariantSingle
 import com.github.brainage04.procedural_dungeon.worldgen.structure.StagedDungeonGenerationManager;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.item.Item;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -34,18 +31,14 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.pools.StructurePoolElementType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import com.mojang.serialization.MapCodec;
-import java.util.EnumMap;
-import java.util.Map;
 
 @Mod(ProceduralDungeon.MOD_ID)
 @EventBusSubscriber(modid = ProceduralDungeon.MOD_ID)
 public final class ProceduralDungeonNeoForge {
-    private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(Registries.ITEM, ProceduralDungeon.MOD_ID);
     private static final DeferredRegister<MapCodec<? extends StructureProcessor>> PROCESSORS = DeferredRegister.create(Registries.STRUCTURE_PROCESSOR, ProceduralDungeon.MOD_ID);
     private static final DeferredRegister<StructurePoolElementType<?>> POOL_ELEMENTS = DeferredRegister.create(Registries.STRUCTURE_POOL_ELEMENT, ProceduralDungeon.MOD_ID);
     private static final DeferredRegister<StructureType<?>> STRUCTURES = DeferredRegister.create(Registries.STRUCTURE_TYPE, ProceduralDungeon.MOD_ID);
     private static final DeferredRegister<StructurePieceType> PIECES = DeferredRegister.create(Registries.STRUCTURE_PIECE, ProceduralDungeon.MOD_ID);
-    private static final Map<DungeonKeyType, DeferredHolder<Item, Item>> KEYS = registerKeys();
     private static final DeferredHolder<StructurePoolElementType<?>, StructurePoolElementType<VariantSinglePoolElement>> VARIANT_SINGLE_POOL_ELEMENT =
             POOL_ELEMENTS.<StructurePoolElementType<VariantSinglePoolElement>>register(
                     "variant_single_pool_element",
@@ -60,27 +53,17 @@ public final class ProceduralDungeonNeoForge {
             PIECES.register("staged_dungeon_marker", () -> com.github.brainage04.procedural_dungeon.worldgen.structure.StagedDungeonMarkerPiece::new);
 
     public ProceduralDungeonNeoForge(IEventBus modBus) {
-        ITEMS.register(modBus);
         PROCESSORS.register(modBus);
         POOL_ELEMENTS.register(modBus);
         STRUCTURES.register(modBus);
         PIECES.register(modBus);
         ModStructureProcessorTypes.registerAll((name, codec) -> PROCESSORS.register(name, () -> codec));
-        KEYS.forEach((type, holder) -> ModItems.registerKey(type, holder::get));
         modBus.addListener((FMLCommonSetupEvent event) -> event.enqueueWork(() -> {
             ModStructurePoolElementTypes.setVariantSinglePoolElement(VARIANT_SINGLE_POOL_ELEMENT.get());
             ModStructureTypes.setStagedDungeon(STAGED_DUNGEON.get());
             ModStructureTypes.setStagedDungeonMarker(STAGED_DUNGEON_MARKER.get());
             ProceduralDungeon.initialize();
         }));
-    }
-
-    private static Map<DungeonKeyType, DeferredHolder<Item, Item>> registerKeys() {
-        Map<DungeonKeyType, DeferredHolder<Item, Item>> keys = new EnumMap<>(DungeonKeyType.class);
-        for (DungeonKeyType type : DungeonKeyType.values()) {
-            keys.put(type, ITEMS.register(type.getSerializedName(), () -> ModItems.createKey(type)));
-        }
-        return keys;
     }
 
     @SubscribeEvent

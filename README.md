@@ -6,9 +6,13 @@ ProceduralDungeon adds procedurally generated dungeons to Minecraft. Every dunge
 
 ProceduralDungeon supports both Fabric and NeoForge on Minecraft 26.2. `./gradlew build` creates one production JAR per loader under `build/libs`; Fabric data generation and production GameTests remain available, and NeoForge GameTests run with `./gradlew runNeoForgeGameTests`.
 
-## Migrating from the Fabric-only release
+## Installing
 
-Install exactly one ProceduralDungeon JAR matching your loader—Fabric or NeoForge—and remove the old Fabric-only JAR before switching. The mod ID remains `procedural_dungeon`, so existing world data and datapack paths under that namespace are retained. Because dungeon content is required on both sides, install the same loader-specific JAR on the client and server. Fabric installations also require Fabric API; NeoForge installations use NeoForge without Fabric API. Building from source with `./gradlew build` emits both loader artifacts under `build/libs`.
+ProceduralDungeon is server-side only: install it on the server (or in singleplayer) and players can join with an unmodded vanilla client. Install exactly one ProceduralDungeon JAR matching your loader—Fabric or NeoForge. Fabric installations also require Fabric API; NeoForge installations use NeoForge without Fabric API.
+
+## Migrating from older releases
+
+Remove the old JAR before switching loaders; the mod ID remains `procedural_dungeon`, so existing world data and datapack paths under that namespace are retained. Older releases registered their own key items; those keys disappear from existing worlds, and newly generated dungeons use the trial-key-based keys described below.
 
 # Finding dungeons
 
@@ -25,7 +29,7 @@ Higher tiers are rarer, larger, and more dangerous.
 - **Miniboss rooms (optional):** miniboss rooms appear randomly in place of ordinary rooms. Each one is guarded by a miniboss, holds one miniboss loot chest, and sits behind an iron door that opens with a **Miniboss Key**. The key for each miniboss room is hidden in one of the dungeon's ordinary loot chests.
 - **Rusted Keys:** a few end-room chests are locked and need a **Rusted Key**, which is hidden in another loot chest of the same dungeon.
 
-Keys are used up when they open a lock. Locked chests and doors cannot be broken or blown up until they are unlocked, and the chests holding keys are also protected from explosions.
+Keys are trial keys (the Boss Key is an ominous trial key) with their own name and a hidden tag, so renaming an ordinary trial key does not make a dungeon key, and dungeon keys do not open trial chamber vaults. Keys are used up when they open a lock. Locked chests and doors cannot be broken or blown up until they are unlocked, and the chests holding keys are also protected from explosions.
 
 The boss and miniboss are placeholders for now:
 

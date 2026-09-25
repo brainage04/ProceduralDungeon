@@ -362,15 +362,39 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 1.0,
-                "min": 1.0
+              "components": {
+                "minecraft:item_name": "Miniboss Key"
               },
-              "function": "minecraft:set_count"
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:rarity": "rare"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:lore": [
+                  {
+                    "color": "gray",
+                    "italic": false,
+                    "text": "Opens a miniboss room door"
+                  }
+                ]
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:custom_data": {
+                  "procedural_dungeon_key": "miniboss_key"
+                }
+              },
+              "function": "minecraft:set_components"
             }
           ],
-          "name": "procedural_dungeon:miniboss_key"
+          "name": "minecraft:trial_key"
         }
       ],
       "rolls": 1.0

@@ -4,7 +4,6 @@ import com.github.brainage04.procedural_dungeon.command.GenerateDungeonCommand;
 import com.github.brainage04.procedural_dungeon.dungeon.DungeonTheme;
 import com.github.brainage04.procedural_dungeon.dungeon.DungeonTier;
 import com.github.brainage04.procedural_dungeon.guardian.DungeonGuardian;
-import com.github.brainage04.procedural_dungeon.item.ModItems;
 import com.github.brainage04.procedural_dungeon.lock.DungeonKeyType;
 import com.github.brainage04.procedural_dungeon.lock.DungeonLockManager;
 import com.github.brainage04.procedural_dungeon.lock.DungeonLockPlan;
@@ -22,8 +21,10 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.gametest.framework.GameTestHelper;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
@@ -160,19 +161,24 @@ public final class DungeonGameTestSuite {
         helper.assertTrue(!DungeonLockManager.canBreak(player, level, lower) && !DungeonLockManager.canBreak(player, level, upper),
                 "Both halves of a locked door must be unbreakable");
 
-        player.getInventory().add(new ItemStack(ModItems.key(DungeonKeyType.RUSTED)));
-        player.getInventory().add(new ItemStack(ModItems.key(DungeonKeyType.MINIBOSS)));
+        player.getInventory().add(DungeonKeyType.RUSTED.createStack());
+        player.getInventory().add(DungeonKeyType.MINIBOSS.createStack());
+        ItemStack forgedBossKey = new ItemStack(DungeonKeyType.BOSS.item());
+        forgedBossKey.set(DataComponents.ITEM_NAME, Component.literal(DungeonKeyType.BOSS.displayName()));
+        player.getInventory().add(forgedBossKey);
         helper.assertTrue(DungeonLockManager.useBlock(player, level, lower) == InteractionResult.FAIL,
-                "A boss door must refuse rusted and miniboss keys");
-        helper.assertTrue(player.getInventory().countItem(ModItems.key(DungeonKeyType.RUSTED)) == 1
-                        && player.getInventory().countItem(ModItems.key(DungeonKeyType.MINIBOSS)) == 1,
+                "A boss door must refuse rusted and miniboss keys, and a plain key merely named like a boss key");
+        helper.assertTrue(player.getInventory().countItem(DungeonKeyType.BOSS.item()) == 1,
+                "The forged key must not be consumed");
+        helper.assertTrue(keyCount(player, DungeonKeyType.RUSTED) == 1
+                        && keyCount(player, DungeonKeyType.MINIBOSS) == 1,
                 "A refused key must not be consumed");
         helper.assertTrue(!level.getBlockState(lower).getValue(DoorBlock.OPEN), "A refused door must stay shut");
 
-        player.getInventory().add(new ItemStack(ModItems.key(DungeonKeyType.BOSS)));
+        player.getInventory().add(DungeonKeyType.BOSS.createStack());
         helper.assertTrue(DungeonLockManager.useBlock(player, level, upper) == InteractionResult.SUCCESS,
                 "The boss key must unlock the boss door");
-        helper.assertTrue(player.getInventory().countItem(ModItems.key(DungeonKeyType.BOSS)) == 0, "Unlocking consumes the boss key");
+        helper.assertTrue(keyCount(player, DungeonKeyType.BOSS) == 0, "Unlocking consumes the boss key");
         helper.assertTrue(level.getBlockState(lower).getValue(DoorBlock.OPEN) && level.getBlockState(upper).getValue(DoorBlock.OPEN),
                 "An unlocked door opens");
         helper.assertTrue(DungeonLockManager.canBreak(player, level, lower) && DungeonLockManager.canBreak(player, level, upper),
@@ -290,6 +296,17 @@ public final class DungeonGameTestSuite {
             }
         }
         helper.succeed();
+    }
+
+    private static int keyCount(Player player, DungeonKeyType type) {
+        int count = 0;
+        for (int slot = 0; slot < player.getInventory().getContainerSize(); slot++) {
+            ItemStack stack = player.getInventory().getItem(slot);
+            if (type.matches(stack)) {
+                count += stack.getCount();
+            }
+        }
+        return count;
     }
 
     private static void place(ServerLevel level, StagedDungeonLayout layout, StagedDungeonPieceSpec piece) {

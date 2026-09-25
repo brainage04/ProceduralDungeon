@@ -9,6 +9,8 @@ import java.util.concurrent.ExecutionException;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.HolderSet;
+import net.minecraft.core.component.DataComponentMap;
+import net.minecraft.core.component.TypedDataComponent;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
@@ -22,8 +24,11 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.EmptyLootItem;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
+import net.minecraft.world.level.storage.loot.entries.LootPoolSingletonContainer;
 import net.minecraft.world.level.storage.loot.entries.NestedLootTable;
 import net.minecraft.world.level.storage.loot.functions.EnchantWithLevelsFunction;
+import net.minecraft.world.level.storage.loot.functions.LootItemFunction;
+import net.minecraft.world.level.storage.loot.functions.SetComponentsFunction;
 import net.minecraft.world.level.storage.loot.functions.SetEnchantmentsFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.functions.SetPotionFunction;
@@ -297,6 +302,21 @@ public class LootTableUtils {
 
     public static LootTable.Builder addPool(LootTable.Builder input, Item[] items, int min, int max, int rolls) {
         return addPool(input, items, min, max, rolls, rolls);
+    }
+
+    /**
+     * One guaranteed {@code item} carrying every component in {@code components}.
+     */
+    public static LootTable.Builder addComponentItemPool(LootTable.Builder input, Item item, DataComponentMap components) {
+        LootPoolSingletonContainer.Builder<?> entry = LootItem.lootTableItem(item);
+        for (TypedDataComponent<?> component : components) {
+            entry.apply(setComponent(component));
+        }
+        return input.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(entry));
+    }
+
+    private static <T> LootItemFunction.Builder setComponent(TypedDataComponent<T> component) {
+        return SetComponentsFunction.setComponent(component.type(), component.value());
     }
 
     public static LootTable.Builder addPool(LootTable.Builder input, Item[] items, int min, int max, int minRolls, int maxRolls) {
