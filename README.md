@@ -75,7 +75,7 @@ Hallway loot rooms:
 
 The best loot is reserved for the rooms that are hardest to reach. Ordinary chests never hold enchanted golden apples, heavy cores, netherite upgrade templates, Mending, relics, or dungeon enchantments.
 
-- **Miniboss chests:** an enchanted weapon or armour piece at 1.5× the tier's enchantment level, and one exclusive book: an affliction or bane enchantment (below), or a vanilla enchantment one level above its normal maximum (for example Sharpness VI or Protection V).
+- **Miniboss chests:** an enchanted weapon or armour piece at 1.5× the tier's enchantment level, and one exclusive book: an affliction or bane enchantment (below), or a vanilla enchantment one level above its normal maximum (for example Sharpness VI or Protection V). Anvils keep over-max levels when applying these books or combining items that already have them, but never raise a level past the highest one supplied.
 - **Boss chests:** one **relic**, a **Victor's Feast** (a golden carrot that feeds like a feast and grants Regeneration, Strength, Resistance, and Fire Resistance), an enchanted golden apple, a weapon and armour piece at twice the tier's enchantment level, and chances at a heavy core, a netherite upgrade template, Mending, and the rarest enchantments (Annihilation, Stormcaller, Volatile).
 
 Relics are named, unbreakable items built from the dungeon tier's material, with enchantments above the vanilla maximum and attribute bonuses on top of the item's own stats. Bonuses grow with the tier (`t`):

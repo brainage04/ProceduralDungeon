@@ -48,12 +48,16 @@ import net.minecraft.world.entity.animal.pig.Pig;
 import net.minecraft.world.entity.monster.Blaze;
 import net.minecraft.world.entity.monster.illager.Pillager;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AnvilMenu;
+import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.block.Blocks;
@@ -100,7 +104,8 @@ public final class DungeonGameTestSuite {
                 new TestCase("trial_spawners_eject_tiered_dungeon_loot", DungeonGameTestSuite::trialSpawnersEjectTieredDungeonLoot),
                 new TestCase("surface_entrances_lead_down_into_a_full_dungeon", DungeonGameTestSuite::surfaceEntrancesLeadDownIntoAFullDungeon),
                 new TestCase("dungeon_enchantments_are_reward_only_and_take_effect", DungeonGameTestSuite::dungeonEnchantmentsAreRewardOnlyAndTakeEffect),
-                new TestCase("boss_rewards_are_exclusive_and_relics_keep_base_stats", DungeonGameTestSuite::bossRewardsAreExclusiveAndRelicsKeepBaseStats)
+                new TestCase("boss_rewards_are_exclusive_and_relics_keep_base_stats", DungeonGameTestSuite::bossRewardsAreExclusiveAndRelicsKeepBaseStats),
+                new TestCase("over_max_books_apply_through_anvils", DungeonGameTestSuite::overMaxBooksApplyThroughAnvils)
         );
     }
 
@@ -435,6 +440,45 @@ public final class DungeonGameTestSuite {
             helper.assertTrue(sawAxe, "64 tier %d boss chests must include a Warden's Cleaver".formatted(tier.tier));
         }
         helper.succeed();
+    }
+
+    /**
+     * An over-max reward book keeps its level on an anvil, but anvils never raise a level past the highest one supplied.
+     */
+    public static void overMaxBooksApplyThroughAnvils(GameTestHelper helper) {
+        HolderLookup.RegistryLookup<Enchantment> enchantments = helper.getLevel().registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
+        Holder<Enchantment> sharpness = enchantments.getOrThrow(Enchantments.SHARPNESS);
+        Player player = helper.makeMockPlayer(GameType.CREATIVE);
+
+        ItemStack book = new ItemStack(Items.ENCHANTED_BOOK);
+        book.set(DataComponents.STORED_ENCHANTMENTS, storedEnchantment(sharpness, 6));
+        helper.assertTrue(anvil(player, new ItemStack(Items.IRON_SWORD), book).getEnchantments().getLevel(sharpness) == 6,
+                "A Sharpness VI book must give a sword Sharpness VI");
+
+        ItemStack sixSword = enchanted(enchantments, Items.IRON_SWORD, Enchantments.SHARPNESS, 6);
+        helper.assertTrue(anvil(player, sixSword, book).getEnchantments().getLevel(sharpness) == 6,
+                "Combining two Sharpness VI must not reach VII");
+
+        ItemStack fiveSword = enchanted(enchantments, Items.IRON_SWORD, Enchantments.SHARPNESS, 5);
+        ItemStack fiveBook = new ItemStack(Items.ENCHANTED_BOOK);
+        fiveBook.set(DataComponents.STORED_ENCHANTMENTS, storedEnchantment(sharpness, 5));
+        helper.assertTrue(anvil(player, fiveSword, fiveBook).getEnchantments().getLevel(sharpness) == 5,
+                "Vanilla maximums still cap ordinary combinations");
+        helper.succeed();
+    }
+
+    private static ItemStack anvil(Player player, ItemStack input, ItemStack addition) {
+        AnvilMenu menu = new AnvilMenu(0, player.getInventory(), ContainerLevelAccess.NULL);
+        menu.getSlot(0).set(input);
+        menu.getSlot(1).set(addition);
+        menu.createResult();
+        return menu.getSlot(2).getItem();
+    }
+
+    private static ItemEnchantments storedEnchantment(Holder<Enchantment> enchantment, int level) {
+        ItemEnchantments.Mutable stored = new ItemEnchantments.Mutable(ItemEnchantments.EMPTY);
+        stored.set(enchantment, level);
+        return stored.toImmutable();
     }
 
     private static ItemStack enchanted(HolderLookup.RegistryLookup<Enchantment> enchantments, Item item, ResourceKey<Enchantment> key, int level) {

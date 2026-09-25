@@ -49,4 +49,9 @@ public final class ProceduralDungeonGameTest {
     public void bossRewardsAreExclusiveAndRelicsKeepBaseStats(GameTestHelper helper) {
         DungeonGameTestSuite.bossRewardsAreExclusiveAndRelicsKeepBaseStats(helper);
     }
+
+    @GameTest
+    public void overMaxBooksApplyThroughAnvils(GameTestHelper helper) {
+        DungeonGameTestSuite.overMaxBooksApplyThroughAnvils(helper);
+    }
 }
