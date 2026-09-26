@@ -6,7 +6,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/room/armorsmith/tier_4",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/321ba4491a417990",
+        "processors": "procedural_dungeon:dungeon/profile/a9bf5b23eb921def",
         "projection": "rigid",
         "spawner_tier": 4,
         "variant": "procedural_dungeon:dungeon/overworld/sculk/tier_4"
@@ -19,7 +19,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/room/enchanter",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/b1fca81381f1ed17",
+        "processors": "procedural_dungeon:dungeon/profile/1fcf4d7cbe109354",
         "projection": "rigid",
         "spawner_tier": 4,
         "variant": "procedural_dungeon:dungeon/overworld/sculk/tier_4"
@@ -32,7 +32,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/room/spawner_corridor",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/321ba4491a417990",
+        "processors": "procedural_dungeon:dungeon/profile/a9bf5b23eb921def",
         "projection": "rigid",
         "spawner_tier": 4,
         "variant": "procedural_dungeon:dungeon/overworld/sculk/tier_4"
@@ -108,9 +108,113 @@
       "element": {
         "branch_limit": 2,
         "element_type": "procedural_dungeon:variant_single_pool_element",
+        "location": "procedural_dungeon:dungeon/hallway/room/puzzle/frames",
+        "override_liquid_settings": "ignore_waterlogging",
+        "processors": "procedural_dungeon:dungeon/overworld/sculk/tier_4",
+        "projection": "rigid",
+        "spawner_tier": 4,
+        "variant": "procedural_dungeon:dungeon/overworld/sculk/tier_4"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "branch_limit": 2,
+        "element_type": "procedural_dungeon:variant_single_pool_element",
+        "location": "procedural_dungeon:dungeon/hallway/room/puzzle/bookshelves",
+        "override_liquid_settings": "ignore_waterlogging",
+        "processors": "procedural_dungeon:dungeon/overworld/sculk/tier_4",
+        "projection": "rigid",
+        "spawner_tier": 4,
+        "variant": "procedural_dungeon:dungeon/overworld/sculk/tier_4"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "branch_limit": 2,
+        "element_type": "procedural_dungeon:variant_single_pool_element",
+        "location": "procedural_dungeon:dungeon/hallway/room/puzzle/targets",
+        "override_liquid_settings": "ignore_waterlogging",
+        "processors": "procedural_dungeon:dungeon/overworld/sculk/tier_4",
+        "projection": "rigid",
+        "spawner_tier": 4,
+        "variant": "procedural_dungeon:dungeon/overworld/sculk/tier_4"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "branch_limit": 2,
+        "element_type": "procedural_dungeon:variant_single_pool_element",
+        "location": "procedural_dungeon:dungeon/hallway/room/puzzle/chord",
+        "override_liquid_settings": "ignore_waterlogging",
+        "processors": "procedural_dungeon:dungeon/overworld/sculk/tier_4",
+        "projection": "rigid",
+        "spawner_tier": 4,
+        "variant": "procedural_dungeon:dungeon/overworld/sculk/tier_4"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "branch_limit": 2,
+        "element_type": "procedural_dungeon:variant_single_pool_element",
+        "location": "procedural_dungeon:dungeon/hallway/room/puzzle/sluice",
+        "override_liquid_settings": "ignore_waterlogging",
+        "processors": "procedural_dungeon:dungeon/overworld/sculk/tier_4",
+        "projection": "rigid",
+        "spawner_tier": 4,
+        "variant": "procedural_dungeon:dungeon/overworld/sculk/tier_4"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "branch_limit": 2,
+        "element_type": "procedural_dungeon:variant_single_pool_element",
+        "location": "procedural_dungeon:dungeon/hallway/room/puzzle/crafter",
+        "override_liquid_settings": "ignore_waterlogging",
+        "processors": "procedural_dungeon:dungeon/overworld/sculk/tier_4",
+        "projection": "rigid",
+        "spawner_tier": 4,
+        "variant": "procedural_dungeon:dungeon/overworld/sculk/tier_4"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "branch_limit": 2,
+        "element_type": "procedural_dungeon:variant_single_pool_element",
+        "location": "procedural_dungeon:dungeon/hallway/room/puzzle/stealth",
+        "override_liquid_settings": "ignore_waterlogging",
+        "processors": "procedural_dungeon:dungeon/overworld/sculk/tier_4",
+        "projection": "rigid",
+        "spawner_tier": 4,
+        "variant": "procedural_dungeon:dungeon/overworld/sculk/tier_4"
+      },
+      "weight": 2
+    },
+    {
+      "element": {
+        "branch_limit": 2,
+        "element_type": "procedural_dungeon:variant_single_pool_element",
+        "location": "procedural_dungeon:dungeon/hallway/room/puzzle/parkour",
+        "override_liquid_settings": "ignore_waterlogging",
+        "processors": "procedural_dungeon:dungeon/overworld/sculk/tier_4",
+        "projection": "rigid",
+        "spawner_tier": 4,
+        "variant": "procedural_dungeon:dungeon/overworld/sculk/tier_4"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "branch_limit": 2,
+        "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/room/toolsmith/tier_4",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/321ba4491a417990",
+        "processors": "procedural_dungeon:dungeon/profile/a9bf5b23eb921def",
         "projection": "rigid",
         "spawner_tier": 4,
         "variant": "procedural_dungeon:dungeon/overworld/sculk/tier_4"
@@ -123,7 +227,7 @@
         "element_type": "procedural_dungeon:variant_single_pool_element",
         "location": "procedural_dungeon:dungeon/hallway/room/weaponsmith/tier_4",
         "override_liquid_settings": "ignore_waterlogging",
-        "processors": "procedural_dungeon:dungeon/profile/321ba4491a417990",
+        "processors": "procedural_dungeon:dungeon/profile/a9bf5b23eb921def",
         "projection": "rigid",
         "spawner_tier": 4,
         "variant": "procedural_dungeon:dungeon/overworld/sculk/tier_4"

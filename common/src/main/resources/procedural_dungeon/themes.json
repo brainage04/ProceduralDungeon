@@ -315,7 +315,8 @@
         ],
         "room_weights": {
           "spawner_corridor": 3,
-          "enchanter": 3
+          "enchanter": 3,
+          "puzzle_stealth": 2
         },
         "spawner_mobs": [
           {

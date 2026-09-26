@@ -18,6 +18,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.ProblemReporter;
 import net.minecraft.util.Util;
 import net.minecraft.util.RandomSource;
@@ -273,6 +274,12 @@ public class VariantSinglePoolElement extends StructurePoolElement {
         );
         if (placed) {
             placeGuardians(structureTemplateManager, world, pos, rotation, box);
+            if (world instanceof ServerLevel level && DungeonPuzzleRooms.isPuzzle(delegate.getTemplateLocation())) {
+                DungeonPuzzleRooms.finishPlacement(level, new BoundingBox(
+                        Math.max(boundingBox.minX(), box.minX()), Math.max(boundingBox.minY(), box.minY()), Math.max(boundingBox.minZ(), box.minZ()),
+                        Math.min(boundingBox.maxX(), box.maxX()), Math.min(boundingBox.maxY(), box.maxY()), Math.min(boundingBox.maxZ(), box.maxZ())
+                ));
+            }
         }
         if (DungeonGenerationProfiler.isActive()) {
             DungeonGenerationProfiler.recordPiece(variant, delegate.getTemplateLocation(), boundingBox, placed, System.nanoTime() - placementStart);
@@ -281,8 +288,9 @@ public class VariantSinglePoolElement extends StructurePoolElement {
     }
 
     /**
-     * Spawns the guardian of every {@link DungeonGuardian} data marker. Markers are read straight from the template:
-     * the placement processors drop structure blocks, so they never reach {@link #handleDataMarker}.
+     * Spawns the guardian of every {@link DungeonGuardian} data marker and hangs the frames of puzzle rooms. Markers are
+     * read straight from the template: the placement processors drop structure blocks, so they never reach
+     * {@link #handleDataMarker}.
      */
     private void placeGuardians(
             StructureTemplateManager structureTemplateManager,
@@ -298,7 +306,12 @@ public class VariantSinglePoolElement extends StructurePoolElement {
             if (marker.nbt() == null || !box.isInside(markerPos)) {
                 continue;
             }
-            DungeonGuardian.fromMarker(marker.nbt().getStringOr("metadata", ""))
+            String metadata = marker.nbt().getStringOr("metadata", "");
+            if (metadata.startsWith(DungeonPuzzleRooms.FRAME_MARKER) && world instanceof ServerLevel level) {
+                DungeonPuzzleRooms.hangFrame(level, markerPos, rotation, metadata);
+                continue;
+            }
+            DungeonGuardian.fromMarker(metadata)
                     .ifPresent(guardian -> guardian.spawn(world, markerPos, rotation, spawnerTier));
         }
     }

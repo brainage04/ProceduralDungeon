@@ -55,6 +55,7 @@ public class DungeonLootTableProvider extends SimpleFabricLootTableSubProvider {
             "boss_key_vault",
             "boss_room",
             "miniboss_room",
+            "puzzle_room",
             "trial_spawner",
             "trial_spawner/ominous"
     };

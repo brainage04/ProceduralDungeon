@@ -25,7 +25,9 @@ public class DungeonLockSaveData extends SavedData {
             LOCKED_DOOR_CODEC.listOf().optionalFieldOf("key_doors", List.of())
                     .forGetter(DungeonLockSaveData::lockedDoors),
             Codec.LONG.listOf().optionalFieldOf("key_source_chests", List.of())
-                    .forGetter(DungeonLockSaveData::keySourceChests)
+                    .forGetter(DungeonLockSaveData::keySourceChests),
+            Codec.LONG.listOf().optionalFieldOf("puzzle_chests", List.of())
+                    .forGetter(DungeonLockSaveData::puzzleChests)
     ).apply(instance, DungeonLockSaveData::new));
 
     public static final SavedDataType<DungeonLockSaveData> TYPE = new SavedDataType<>(
@@ -38,13 +40,28 @@ public class DungeonLockSaveData extends SavedData {
     private final LongSet lockedChests = new LongOpenHashSet();
     private final Long2ObjectMap<DungeonKeyType> lockedDoors = new Long2ObjectOpenHashMap<>();
     private final LongSet keySourceChests = new LongOpenHashSet();
+    private final LongSet puzzleChests = new LongOpenHashSet();
 
     public DungeonLockSaveData() {}
 
-    private DungeonLockSaveData(List<Long> lockedChests, List<LockedDoor> lockedDoors, List<Long> keySourceChests) {
+    private DungeonLockSaveData(List<Long> lockedChests, List<LockedDoor> lockedDoors, List<Long> keySourceChests, List<Long> puzzleChests) {
         this.lockedChests.addAll(lockedChests);
         lockedDoors.forEach(door -> this.lockedDoors.put(door.pos(), door.key()));
         this.keySourceChests.addAll(keySourceChests);
+        this.puzzleChests.addAll(puzzleChests);
+    }
+
+    /**
+     * Whether {@code pos} is a puzzle reward chest that its room's mechanism still holds shut.
+     */
+    public boolean isPuzzleLocked(long pos) {
+        return puzzleChests.contains(pos);
+    }
+
+    public void addPuzzleChest(long pos) {
+        if (puzzleChests.add(pos)) {
+            setDirty();
+        }
     }
 
     /**
@@ -62,7 +79,7 @@ public class DungeonLockSaveData extends SavedData {
     }
 
     public boolean isExplosionProtected(long pos) {
-        return lockedChests.contains(pos) || lockedDoors.containsKey(pos) || keySourceChests.contains(pos);
+        return lockedChests.contains(pos) || lockedDoors.containsKey(pos) || keySourceChests.contains(pos) || puzzleChests.contains(pos);
     }
 
     public List<Long> getLockedChests() {
@@ -99,7 +116,7 @@ public class DungeonLockSaveData extends SavedData {
     }
 
     public void unlock(long pos) {
-        boolean changed = lockedChests.remove(pos) | lockedDoors.remove(pos) != null;
+        boolean changed = lockedChests.remove(pos) | lockedDoors.remove(pos) != null | puzzleChests.remove(pos);
         if (changed) {
             setDirty();
         }
@@ -117,6 +134,10 @@ public class DungeonLockSaveData extends SavedData {
 
     private List<Long> keySourceChests() {
         return keySourceChests.longStream().boxed().toList();
+    }
+
+    private List<Long> puzzleChests() {
+        return puzzleChests.longStream().boxed().toList();
     }
 
     private record LockedDoor(long pos, DungeonKeyType key) {}

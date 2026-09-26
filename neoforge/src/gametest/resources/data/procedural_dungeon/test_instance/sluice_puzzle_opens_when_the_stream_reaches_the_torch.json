@@ -1,0 +1,7 @@
+{
+  "environment": "minecraft:default",
+  "structure": "minecraft:empty",
+  "max_ticks": 400,
+  "type": "minecraft:function",
+  "function": "procedural_dungeon:sluice_puzzle_opens_when_the_stream_reaches_the_torch"
+}

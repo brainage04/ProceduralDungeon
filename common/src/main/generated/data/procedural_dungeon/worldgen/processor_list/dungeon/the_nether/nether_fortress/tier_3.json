@@ -11,6 +11,7 @@
         "procedural_dungeon:hallway_end": "procedural_dungeon:hallway_end/nether_fortress/tier_3",
         "procedural_dungeon:hallway_loot": "procedural_dungeon:hallway_loot/nether_fortress/tier_3",
         "procedural_dungeon:miniboss_room": "procedural_dungeon:miniboss_room/nether_fortress/tier_3",
+        "procedural_dungeon:puzzle_room": "procedural_dungeon:puzzle_room/tier_3",
         "procedural_dungeon:starter_loot": "procedural_dungeon:starter_loot/tier_3",
         "procedural_dungeon:toolsmith": "procedural_dungeon:toolsmith/tier_3",
         "procedural_dungeon:trial_spawner": "procedural_dungeon:trial_spawner/tier_3",

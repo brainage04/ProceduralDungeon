@@ -5,6 +5,7 @@ import com.github.brainage04.procedural_dungeon.datagen.core.ProceduralDungeonGe
 import com.github.brainage04.procedural_dungeon.dungeon.DungeonTheme;
 import com.github.brainage04.procedural_dungeon.dungeon.DungeonTier;
 import com.github.brainage04.procedural_dungeon.worldgen.structure.DungeonProgressionRooms;
+import com.github.brainage04.procedural_dungeon.worldgen.structure.DungeonPuzzleRooms;
 import com.github.brainage04.procedural_dungeon.util.RegistryKeyUtils;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -108,6 +109,11 @@ public class DungeonWorldgenProvider implements DataProvider {
         addRoomElement(roomElements, key, "staircase_spiral_down", "dungeon/hallway/room/staircase_spiral_down", theme, tier, variantId, 16);
         addRoomElement(roomElements, key, "staircase_spiral_up", "dungeon/hallway/room/staircase_spiral_down", "dungeon/hallway/room/staircase_spiral_up", theme, tier, variantId, 1);
         addRoomElement(roomElements, "miniboss", DungeonProgressionRooms.MINIBOSS_ROOM, theme, variantId, 1);
+        for (DungeonPuzzleRooms.Puzzle puzzle : DungeonPuzzleRooms.Puzzle.values()) {
+            // The stealth room can summon the Warden, so only themes that opt in through their room weights get it.
+            int weight = puzzle == DungeonPuzzleRooms.Puzzle.STEALTH ? 0 : 1;
+            addRoomElement(roomElements, puzzle.roomName(), puzzle.template(), theme, variantId, weight);
+        }
         addRoomElement(roomElements, key, "toolsmith", "dungeon/hallway/room/toolsmith", "dungeon/hallway/room/toolsmith/tier_%d".formatted(tier), theme, tier, variantId, 2);
         addRoomElement(roomElements, key, "weaponsmith", "dungeon/hallway/room/weaponsmith", "dungeon/hallway/room/weaponsmith/tier_%d".formatted(tier), theme, tier, variantId, 2);
         addTemplatePool(writer, futures, "%s/hallway/room".formatted(key), roomElements);

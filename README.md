@@ -6,6 +6,8 @@ ProceduralDungeon adds procedurally generated dungeons to Minecraft. Every dunge
 
 ProceduralDungeon supports both Fabric and NeoForge on Minecraft 26.2. `./gradlew build` creates one production JAR per loader under `build/libs`; Fabric data generation and production GameTests remain available, and NeoForge GameTests run with `./gradlew runNeoForgeGameTests`.
 
+`./gradlew runClientPlayTest` starts a Fabric development client for playtesting. It replaces the world `procedural_dungeon_playtest` with a fresh one, builds a dungeon of a random theme and tier, puts you in its start room in survival, and gives you gear for the tier: enchanted armour, sword, bow, pickaxe and axe, a shield, food, golden apples, torches, blocks, and a grindstone, anvil, books, and 30 levels for trying the salvage. `-PplaytestTheme=<theme>` and `-PplaytestTier=<1-5>` pick them instead, and `/playtest [theme] [tier]` builds another dungeon in the same world.
+
 ## Installing
 
 ProceduralDungeon is server-side only: install it on the server (or in singleplayer) and players can join with an unmodded vanilla client. Install exactly one ProceduralDungeon JAR matching your loader—Fabric or NeoForge. Fabric installations also require Fabric API; NeoForge installations use NeoForge without Fabric API.
@@ -52,6 +54,7 @@ Hallway rooms:
 - Spiral Staircases (up and down; branch into 2 hallways and 2 hallway rooms)
 - Diagonal Staircases (up and down; end with a hallway)
 - Miniboss Room (see [Progression](#progression))
+- Puzzle Rooms (see below)
 
 Hallway traps (varies by theme):
 - Dripstone
@@ -70,6 +73,19 @@ Hallway loot rooms:
 - Small: 1 chest
 - Medium: 2 chests
 - Large: 4 chests
+
+## Puzzle rooms
+
+Puzzle rooms are optional dead ends. Each one holds a reward chest of vanilla rarities found in no other chest: one armour trim template, one or two pottery sherds, and sometimes a music disc, plus tier resources and experience. Except in the parkour and stealth rooms, the chest sits in a wall of reinforced deepslate and stays locked until the puzzle is solved. Redstone sealed behind that wall checks the answer and powers the block under the chest, so breaking in or wiring a torch next to the chest does not open it. A sign in each room gives the clue, and every copy of a room has the same answer.
+
+- **Frames:** three arrows in item frames; turn every arrow to point straight up.
+- **Bookshelves:** three chiseled bookshelves, each missing its last (bottom-right) book; the last book touched on each shelf must be that one.
+- **Targets:** three targets, each toggling the copper bulb above it; light all three bulbs.
+- **Chord:** five levers, each ringing a note block; only the first, third, and fourth may be on.
+- **Sluice:** a stream behind two piston gates, with a drain beside the channel; open both gates but keep the drain shut, so the water washes away the torch at the end of the channel.
+- **Crafter:** craft Music Disc 5 from the nine fragments in the barrel and press the button; the disc drops into a jukebox and plays.
+- **Parkour:** cross a lava pit on stepping stones and a slime block to reach the chest.
+- **Stealth** (Sculk dungeons only): sculk sensors cover the floor, and the shriekers can summon the Warden. The chest is not locked; reaching it quietly is the puzzle.
 
 # Rewards
 
@@ -101,7 +117,7 @@ Affix pools (an affix never repeats one of the relic's signature bonuses):
 
 - **Grindstone + book:** an enchanted item and a plain book make an enchanted book holding all of the item's enchantments except curses. The item stays in the grindstone with only its curses; one book is used, and it costs one experience level per enchantment level (at most 30).
 - **Grindstone, relic alone:** grinding an item that carries relic bonuses gives a **Relic Essence** holding those bonuses. The item keeps its enchantments and base stats.
-- **Anvil + Relic Essence:** combining an item with an essence moves the bonuses onto it for 10 levels. Armour bonuses fit any armour piece (and move to that piece's slot); weapon and tool bonuses fit any weapon or tool. An item carries one set of bonuses at a time, so grind an item's bonuses off before giving it new ones.
+- **Anvil + Relic Essence:** combining an item with an essence moves the bonuses onto it for 10 levels. Armour bonuses fit any armour piece (and move to that piece's slot); weapon and tool bonuses fit any weapon or tool. Essences stack: an item can take any number of them.
 
 ## Dungeon enchantments
 

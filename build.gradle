@@ -1,3 +1,9 @@
 plugins {
 	id 'io.github.brainage04.multiloader-mod-conventions' version "${fabricmoddingconventions_version}"
 }
+
+tasks.register('runClientPlayTest') {
+	group = 'application'
+	description = 'Launches a Fabric client that creates a fresh world and drops you into a random dungeon (-PplaytestTheme, -PplaytestTier).'
+	dependsOn ':fabric:runPlaytest'
+}

@@ -12,6 +12,7 @@ import com.github.brainage04.procedural_dungeon.reward.RelicEssence;
 import com.github.brainage04.procedural_dungeon.test.DungeonVariantSmokeTester;
 import com.github.brainage04.procedural_dungeon.util.RegistryKeyUtils;
 import com.github.brainage04.procedural_dungeon.worldgen.structure.DungeonProgressionRooms;
+import com.github.brainage04.procedural_dungeon.worldgen.structure.DungeonPuzzleRooms;
 import com.github.brainage04.procedural_dungeon.worldgen.structure.StagedDungeonGenerationManager;
 import com.github.brainage04.procedural_dungeon.worldgen.structure.StagedDungeonLayout;
 import com.github.brainage04.procedural_dungeon.worldgen.structure.StagedDungeonLayoutCompiler;
@@ -22,8 +23,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
@@ -54,10 +57,12 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.pig.Pig;
 import net.minecraft.world.entity.animal.wolf.Wolf;
+import net.minecraft.world.entity.decoration.ItemFrame;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Blaze;
 import net.minecraft.world.entity.monster.illager.Pillager;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.arrow.Arrow;
 import net.minecraft.world.inventory.AnvilMenu;
 import net.minecraft.world.inventory.ContainerInput;
 import net.minecraft.world.inventory.ContainerLevelAccess;
@@ -73,9 +78,14 @@ import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.CopperBulbBlock;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.SculkShriekerBlock;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
+import net.minecraft.world.level.block.entity.ChiseledBookShelfBlockEntity;
+import net.minecraft.world.level.block.entity.CrafterBlockEntity;
+import net.minecraft.world.level.block.entity.JukeboxBlockEntity;
 import net.minecraft.world.level.block.entity.TrialSpawnerBlockEntity;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
@@ -84,11 +94,14 @@ import net.minecraft.world.level.levelgen.structure.pools.StructurePoolElement;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import net.minecraft.world.level.levelgen.structure.structures.JigsawStructure;
 import net.minecraft.world.level.levelgen.structure.templatesystem.LiquidSettings;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.scores.PlayerTeam;
 import net.minecraft.world.scores.Scoreboard;
@@ -123,7 +136,14 @@ public final class DungeonGameTestSuite {
                 new TestCase("enchantment_blasts_spare_allies", DungeonGameTestSuite::enchantmentBlastsSpareAllies),
                 new TestCase("kill_enchantments_reward_the_killer_and_burst_on_enemies", DungeonGameTestSuite::killEnchantmentsRewardTheKillerAndBurstOnEnemies),
                 new TestCase("soulbound_items_survive_death", DungeonGameTestSuite::soulboundItemsSurviveDeath),
-                new TestCase("grindstones_salvage_books_and_essence_that_anvils_reapply", DungeonGameTestSuite::grindstonesSalvageBooksAndEssenceThatAnvilsReapply)
+                new TestCase("grindstones_salvage_books_and_essence_that_anvils_reapply", DungeonGameTestSuite::grindstonesSalvageBooksAndEssenceThatAnvilsReapply),
+                new TestCase("puzzle_rooms_place_whole_and_hold_their_chests", DungeonGameTestSuite::puzzleRoomsPlaceWholeAndHoldTheirChests),
+                new TestCase("frame_puzzle_opens_when_every_arrow_points_up", DungeonGameTestSuite::framePuzzleOpensWhenEveryArrowPointsUp),
+                new TestCase("bookshelf_puzzle_opens_when_every_shelf_ends_on_its_last_slot", DungeonGameTestSuite::bookshelfPuzzleOpensWhenEveryShelfEndsOnItsLastSlot),
+                new TestCase("target_puzzle_opens_when_every_bulb_is_lit", DungeonGameTestSuite::targetPuzzleOpensWhenEveryBulbIsLit),
+                new TestCase("chord_puzzle_opens_only_for_its_chord", DungeonGameTestSuite::chordPuzzleOpensOnlyForItsChord),
+                new TestCase("sluice_puzzle_opens_when_the_stream_reaches_the_torch", DungeonGameTestSuite::sluicePuzzleOpensWhenTheStreamReachesTheTorch),
+                new TestCase("crafter_puzzle_opens_when_the_disc_plays", DungeonGameTestSuite::crafterPuzzleOpensWhenTheDiscPlays)
         );
     }
 
@@ -319,22 +339,27 @@ public final class DungeonGameTestSuite {
                 String label = "%s tier %d".formatted(theme.getSerializedName(), tier.tier);
                 ResourceKey<StructureTemplatePool> entrancePool = RegistryKeyUtils.create(
                         Registries.TEMPLATE_POOL, "%s/entrance".formatted(RegistryKeyUtils.getKeyString(theme, tier)));
-                BlockPos origin = new BlockPos(tier.tier * 512, 150, -tier.tier * 512);
                 var generator = level.getChunkSource().getGenerator();
-                Structure.GenerationContext context = new Structure.GenerationContext(level.registryAccess(), generator,
-                        generator.getBiomeSource(), level.getChunkSource().randomState(), level.getStructureManager(),
-                        level.getSeed(), ChunkPos.containing(origin), level, ignored -> true);
-                Optional<StagedDungeonLayout> compiled = StagedDungeonLayoutCompiler.compile(
-                        context,
-                        level.registryAccess().lookupOrThrow(Registries.TEMPLATE_POOL).getOrThrow(entrancePool),
-                        Optional.of(Identifier.withDefaultNamespace("start")),
-                        tier.worldgenSize,
-                        origin,
-                        Optional.empty(),
-                        new JigsawStructure.MaxDistance(tier.maxDistanceFromCenter),
-                        LiquidSettings.IGNORE_WATERLOGGING
-                );
-                helper.assertTrue(compiled.isPresent(), "Entrance layout must compile: " + label);
+                // A layout that cannot fit its boss room is dropped, and a few tier 5 spots are; so each tier is
+                // checked at the first of a handful of spots that compiles.
+                Optional<StagedDungeonLayout> compiled = Optional.empty();
+                for (int attempt = 0; attempt < 8 && compiled.isEmpty(); attempt++) {
+                    BlockPos origin = new BlockPos(tier.tier * 512 + attempt * 1024, 150, -tier.tier * 512 - attempt * 2048);
+                    Structure.GenerationContext context = new Structure.GenerationContext(level.registryAccess(), generator,
+                            generator.getBiomeSource(), level.getChunkSource().randomState(), level.getStructureManager(),
+                            level.getSeed(), ChunkPos.containing(origin), level, ignored -> true);
+                    compiled = StagedDungeonLayoutCompiler.compile(
+                            context,
+                            level.registryAccess().lookupOrThrow(Registries.TEMPLATE_POOL).getOrThrow(entrancePool),
+                            Optional.of(Identifier.withDefaultNamespace("start")),
+                            tier.worldgenSize,
+                            origin,
+                            Optional.empty(),
+                            new JigsawStructure.MaxDistance(tier.maxDistanceFromCenter),
+                            LiquidSettings.IGNORE_WATERLOGGING
+                    );
+                }
+                helper.assertTrue(compiled.isPresent(), "Entrance layouts must compile: " + label);
                 StagedDungeonLayout layout = compiled.get();
                 BoundingBox entrance = layout.pieces().getFirst().boundingBox();
                 List<StagedDungeonPieceSpec> startRooms = pieces(layout, ProceduralDungeon.of("dungeon/start_shaft"));
@@ -643,8 +668,261 @@ public final class DungeonGameTestSuite {
         double health = helmet.getOrDefault(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.EMPTY)
                 .compute(Attributes.MAX_HEALTH, 20.0, EquipmentSlot.HEAD);
         helper.assertTrue(health == 24.0, "Armour essence must move its bonus onto a helmet's head slot, got " + health);
-        helper.assertTrue(RelicEssence.applyTo(helmet, essence).isEmpty(), "An item carries one set of dungeon bonuses at a time");
+        ItemStack twice = RelicEssence.applyTo(helmet, essence).orElseThrow(() -> new AssertionError("Essences must stack on one item"));
+        double stacked = twice.getOrDefault(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.EMPTY)
+                .compute(Attributes.MAX_HEALTH, 20.0, EquipmentSlot.HEAD);
+        helper.assertTrue(stacked == 28.0, "Two essences must add both bonuses, got " + stacked);
         helper.succeed();
+    }
+
+    /**
+     * Every puzzle room places whole in any rotation: machine rooms hold their chest shut and start unsolved, the
+     * parkour and stealth rooms leave theirs open. Their rarities (trims, sherds, discs) are found in no other chest.
+     */
+    public static void puzzleRoomsPlaceWholeAndHoldTheirChests(GameTestHelper helper) {
+        ServerLevel level = helper.getLevel();
+        List<PlacedPuzzle> placed = new ArrayList<>();
+        for (DungeonPuzzleRooms.Puzzle puzzle : DungeonPuzzleRooms.Puzzle.values()) {
+            for (Rotation rotation : List.of(Rotation.NONE, Rotation.CLOCKWISE_180)) {
+                placed.add(placePuzzle(helper, puzzle, rotation));
+            }
+        }
+
+        var ops = level.registryAccess().createSerializationContext(JsonOps.INSTANCE);
+        level.getServer().reloadableRegistries().lookup().lookupOrThrow(Registries.LOOT_TABLE).listElementIds()
+                .filter(key -> key.identifier().getNamespace().equals(ProceduralDungeon.MOD_ID))
+                .filter(key -> !key.identifier().getPath().startsWith(DungeonPuzzleRooms.LOOT_TABLE + "/"))
+                .forEach(key -> {
+                    String json = LootTable.DIRECT_CODEC.encodeStart(ops, level.getServer().reloadableRegistries().getLootTable(key))
+                            .getOrThrow().toString();
+                    for (String rarity : List.of("_armor_trim_smithing_template", "_pottery_sherd", "minecraft:music_disc_")) {
+                        helper.assertTrue(!json.contains(rarity), key.identifier() + " must not contain puzzle rarity " + rarity);
+                    }
+                });
+
+        helper.runAfterDelay(10, () -> {
+            for (PlacedPuzzle room : placed) {
+                String label = room.puzzle() + " " + room.rotation();
+                boolean machine = room.puzzle() != DungeonPuzzleRooms.Puzzle.PARKOUR && room.puzzle() != DungeonPuzzleRooms.Puzzle.STEALTH;
+                helper.assertTrue(level.getBlockState(room.chest()).is(Blocks.CHEST), label + " must hold a reward chest");
+                helper.assertTrue(DungeonLockManager.isPuzzleLocked(level, room.chest()) == machine,
+                        label + (machine ? " must hold its chest shut" : " must leave its chest open"));
+                helper.assertTrue(!room.solved(), label + " must start unsolved");
+            }
+            PlacedPuzzle stealth = placed.stream().filter(room -> room.puzzle() == DungeonPuzzleRooms.Puzzle.STEALTH).findFirst().orElseThrow();
+            helper.assertTrue(level.getBlockState(stealth.at(1, 1, 9)).getValue(SculkShriekerBlock.CAN_SUMMON),
+                    "The stealth room's shriekers must be able to summon the Warden");
+            PlacedPuzzle parkour = placed.stream().filter(room -> room.puzzle() == DungeonPuzzleRooms.Puzzle.PARKOUR).findFirst().orElseThrow();
+            helper.assertTrue(level.getBlockState(parkour.at(5, 1, 5)).is(Blocks.LAVA), "The parkour room's pit must be lava");
+            placed.forEach(PlacedPuzzle::release);
+            helper.succeed();
+        });
+    }
+
+    /**
+     * Arrows in frames, placed in a rotated room, must all point up (frame rotation 7) to open the chest.
+     */
+    public static void framePuzzleOpensWhenEveryArrowPointsUp(GameTestHelper helper) {
+        ServerLevel level = helper.getLevel();
+        PlacedPuzzle room = placePuzzle(helper, DungeonPuzzleRooms.Puzzle.FRAMES, Rotation.CLOCKWISE_90);
+        // Entities join a freshly loaded chunk a few ticks after it loads.
+        helper.runAfterDelay(20, () -> framesPlaced(helper, level, room));
+    }
+
+    private static void framesPlaced(GameTestHelper helper, ServerLevel level, PlacedPuzzle room) {
+        List<ItemFrame> frames = level.getEntitiesOfClass(ItemFrame.class, AABB.of(room.box()));
+        helper.assertTrue(frames.size() == 3, "The frame puzzle must hang three frames, found " + frames.size());
+        for (ItemFrame frame : frames) {
+            helper.assertTrue(frame.getDirection() == Rotation.CLOCKWISE_90.rotate(Direction.NORTH) && frame.getItem().is(Items.ARROW),
+                    "Frames must hold arrows and turn with the room");
+        }
+        frames.get(0).setRotation(7);
+        frames.get(1).setRotation(7);
+        helper.runAfterDelay(10, () -> {
+            helper.assertTrue(!room.solved(), "Two of three arrows must not open the chest");
+            frames.get(2).setRotation(7);
+            helper.runAfterDelay(10, () -> {
+                helper.assertTrue(room.solved(), "Three upward arrows must open the chest");
+                Player player = helper.makeMockPlayer(GameType.SURVIVAL);
+                helper.assertTrue(DungeonLockManager.useBlock(player, level, room.chest()) == InteractionResult.PASS
+                        && !DungeonLockManager.isPuzzleLocked(level, room.chest()), "A solved puzzle must release its chest");
+                room.release();
+                helper.succeed();
+            });
+        });
+    }
+
+    /**
+     * Each chiseled bookshelf's last touched slot must be its last one (bottom right).
+     */
+    public static void bookshelfPuzzleOpensWhenEveryShelfEndsOnItsLastSlot(GameTestHelper helper) {
+        ServerLevel level = helper.getLevel();
+        PlacedPuzzle room = placePuzzle(helper, DungeonPuzzleRooms.Puzzle.BOOKSHELVES, Rotation.NONE);
+        List<ChiseledBookShelfBlockEntity> shelves = List.of(2, 5, 8).stream()
+                .map(x -> (ChiseledBookShelfBlockEntity) level.getBlockEntity(room.at(x, 3, 11)))
+                .toList();
+        shelves.forEach(shelf -> shelf.setItem(5, new ItemStack(Items.BOOK)));
+        shelves.get(1).removeItem(0, 1);
+        helper.runAfterDelay(10, () -> {
+            helper.assertTrue(!room.solved(), "A shelf last touched on another slot must keep the chest shut");
+            shelves.get(1).setItem(0, new ItemStack(Items.BOOK));
+            shelves.get(1).removeItem(5, 1);
+            shelves.get(1).setItem(5, new ItemStack(Items.BOOK));
+            helper.runAfterDelay(10, () -> {
+                helper.assertTrue(room.solved(), "Every shelf ending on its last slot must open the chest");
+                room.release();
+                helper.succeed();
+            });
+        });
+    }
+
+    /**
+     * Arrows toggle the copper bulb over each target; all three lit opens the chest.
+     */
+    public static void targetPuzzleOpensWhenEveryBulbIsLit(GameTestHelper helper) {
+        ServerLevel level = helper.getLevel();
+        PlacedPuzzle room = placePuzzle(helper, DungeonPuzzleRooms.Puzzle.TARGETS, Rotation.NONE);
+        shootAt(level, room, 2);
+        shootAt(level, room, 5);
+        helper.runAfterDelay(30, () -> {
+            helper.assertTrue(level.getBlockState(room.at(2, 4, 11)).getValue(CopperBulbBlock.LIT), "A hit target must light its bulb");
+            helper.assertTrue(!room.solved(), "Two lit bulbs must not open the chest");
+            shootAt(level, room, 8);
+            helper.runAfterDelay(30, () -> {
+                helper.assertTrue(room.solved(), "Three lit bulbs must open the chest");
+                room.release();
+                helper.succeed();
+            });
+        });
+    }
+
+    /**
+     * Only the first, third, and fourth levers on (the second and last off) open the chest.
+     */
+    public static void chordPuzzleOpensOnlyForItsChord(GameTestHelper helper) {
+        ServerLevel level = helper.getLevel();
+        PlacedPuzzle room = placePuzzle(helper, DungeonPuzzleRooms.Puzzle.CHORD, Rotation.CLOCKWISE_180);
+        Player player = helper.makeMockPlayer(GameType.SURVIVAL);
+        for (int x = 3; x <= 7; x++) {
+            use(level, player, room.at(x, 3, 10));
+        }
+        helper.runAfterDelay(10, () -> {
+            helper.assertTrue(!room.solved(), "Every lever on must keep the chest shut");
+            use(level, player, room.at(4, 3, 10));
+            use(level, player, room.at(7, 3, 10));
+            helper.runAfterDelay(10, () -> {
+                helper.assertTrue(room.solved(), "The chord (first, third, fourth) must open the chest");
+                room.release();
+                helper.succeed();
+            });
+        });
+    }
+
+    /**
+     * With the drain open the stream never reaches the torch; with both gates open and the drain shut it washes the
+     * torch away and opens the chest.
+     */
+    public static void sluicePuzzleOpensWhenTheStreamReachesTheTorch(GameTestHelper helper) {
+        ServerLevel level = helper.getLevel();
+        PlacedPuzzle room = placePuzzle(helper, DungeonPuzzleRooms.Puzzle.SLUICE, Rotation.NONE);
+        Player player = helper.makeMockPlayer(GameType.SURVIVAL);
+        use(level, player, room.at(4, 4, 4));
+        use(level, player, room.at(4, 3, 9));
+        use(level, player, room.at(5, 3, 7));
+        helper.runAfterDelay(120, () -> {
+            helper.assertTrue(level.getBlockState(room.at(2, 2, 11)).is(Blocks.REDSTONE_TORCH), "An open drain must divert the stream from the torch");
+            helper.assertTrue(!room.solved(), "The torch standing must keep the chest shut");
+            use(level, player, room.at(5, 3, 7));
+            helper.runAfterDelay(120, () -> {
+                helper.assertTrue(!level.getBlockState(room.at(2, 2, 11)).is(Blocks.REDSTONE_TORCH), "The stream must wash the torch away");
+                helper.assertTrue(room.solved(), "Washing the torch away must open the chest");
+                room.release();
+                helper.succeed();
+            });
+        });
+    }
+
+    /**
+     * Crafting Music Disc 5 in the crafter sends the disc into the jukebox, which opens the chest.
+     */
+    public static void crafterPuzzleOpensWhenTheDiscPlays(GameTestHelper helper) {
+        ServerLevel level = helper.getLevel();
+        PlacedPuzzle room = placePuzzle(helper, DungeonPuzzleRooms.Puzzle.CRAFTER, Rotation.NONE);
+        CrafterBlockEntity crafter = (CrafterBlockEntity) level.getBlockEntity(room.at(5, 3, 11));
+        for (int slot = 0; slot < 9; slot++) {
+            crafter.setItem(slot, new ItemStack(Items.DISC_FRAGMENT_5));
+        }
+        use(level, helper.makeMockPlayer(GameType.SURVIVAL), room.at(5, 3, 10));
+        helper.runAfterDelay(20, () -> {
+            JukeboxBlockEntity jukebox = (JukeboxBlockEntity) level.getBlockEntity(room.at(5, 3, 12));
+            helper.assertTrue(jukebox.getTheItem().is(Items.MUSIC_DISC_5), "The crafted disc must land in the jukebox");
+            helper.assertTrue(room.solved(), "A playing disc must open the chest");
+            room.release();
+            helper.succeed();
+        });
+    }
+
+    private static final AtomicInteger PUZZLE_SLOTS = new AtomicInteger();
+    private static final int PUZZLE_RUN_X = 12288 + 1024 * new Random().nextInt(4096);
+
+    private static PlacedPuzzle placePuzzle(GameTestHelper helper, DungeonPuzzleRooms.Puzzle puzzle, Rotation rotation) {
+        ServerLevel level = helper.getLevel();
+        // Sculk dungeons are the only ones whose room pool includes the stealth room.
+        ResourceKey<StructureTemplatePool> poolKey = RegistryKeyUtils.create(
+                Registries.TEMPLATE_POOL, RegistryKeyUtils.getKeyString(DungeonTheme.SCULK, DungeonTier.TIER_1) + "/hallway/room");
+        StructurePoolElement element = level.registryAccess().lookupOrThrow(Registries.TEMPLATE_POOL).getOrThrow(poolKey).value()
+                .getShuffledTemplates(RandomSource.create(0)).stream()
+                .filter(candidate -> candidate instanceof VariantSinglePoolElement variant && variant.templateLocation().equals(puzzle.template()))
+                .findFirst()
+                .orElseThrow(() -> new AssertionError("The sculk room pool must offer " + puzzle));
+        // Far from the test grid, each room in its own chunks, so one test releasing its chunks never stops another's.
+        // The test world is kept between runs, so every run builds in fresh chunks, away from the last run's frames.
+        int slot = PUZZLE_SLOTS.getAndIncrement();
+        BlockPos origin = new BlockPos(PUZZLE_RUN_X + 64 * (slot % 16), 100, 12288 + 64 * (slot / 16));
+        BoundingBox box = element.getBoundingBox(level.getStructureManager(), origin, rotation);
+        forceChunks(level, box, true);
+        element.place(level.getStructureManager(), level, level.structureManager(), level.getChunkSource().getGenerator(),
+                origin, origin, rotation, box, RandomSource.create(0), LiquidSettings.IGNORE_WATERLOGGING, false);
+        return new PlacedPuzzle(level, puzzle, origin, rotation, box);
+    }
+
+    private static void forceChunks(ServerLevel level, BoundingBox box, boolean forced) {
+        for (int x = box.minX() >> 4; x <= box.maxX() >> 4; x++) {
+            for (int z = box.minZ() >> 4; z <= box.maxZ() >> 4; z++) {
+                level.setChunkForced(x, z, forced);
+            }
+        }
+    }
+
+    private static void use(ServerLevel level, Player player, BlockPos pos) {
+        level.getBlockState(pos).useWithoutItem(level, player, new BlockHitResult(Vec3.atCenterOf(pos), Direction.UP, pos, false));
+    }
+
+    private static void shootAt(ServerLevel level, PlacedPuzzle room, int x) {
+        Vec3 from = Vec3.atCenterOf(room.at(x, 3, 8));
+        Vec3 to = Vec3.atCenterOf(room.at(x, 3, 11));
+        Arrow arrow = new Arrow(level, from.x, from.y, from.z, new ItemStack(Items.ARROW), null);
+        Vec3 direction = to.subtract(from);
+        arrow.shoot(direction.x, direction.y, direction.z, 2.0F, 0.0F);
+        level.addFreshEntity(arrow);
+    }
+
+    private record PlacedPuzzle(ServerLevel level, DungeonPuzzleRooms.Puzzle puzzle, BlockPos origin, Rotation rotation, BoundingBox box) {
+        BlockPos at(int x, int y, int z) {
+            return StructureTemplate.calculateRelativePosition(new StructurePlaceSettings().setRotation(rotation), new BlockPos(x, y, z)).offset(origin);
+        }
+
+        BlockPos chest() {
+            return at(9, 2, 11);
+        }
+
+        boolean solved() {
+            return DungeonPuzzleRooms.isSolved(level, chest());
+        }
+
+        void release() {
+            forceChunks(level, box, false);
+        }
     }
 
     private static void killWith(GameTestHelper helper, Player player, ItemStack weapon, BlockPos pos) {

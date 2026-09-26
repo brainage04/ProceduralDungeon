@@ -7,8 +7,8 @@
 - [x] Define trial-spawner loot.
 - [ ] Replace the placeholder boss (Dungeon Warden) and miniboss (Dungeon Sentinel) with real encounters.
 - [ ] Add more room templates.
-- [ ] Decide whether to add a ghost-ally on-kill enchantment (a Mannequin wearing the killer's skin, driven by hand-written server AI).
-- [ ] Add puzzle rooms built from vanilla mechanics, each with a reward chest of vanilla rarities (armour trims, music discs, pottery sherds) found nowhere else.
+- [ ] Add a ghost-ally on-kill enchantment: an invisible SparringBots bot (Fabric-only optional dependency) fighting mobs for the killer. Waits for the SparringBots session to commit, then needs mob targeting and an ally API in SparringBots.
+- [x] Add puzzle rooms built from vanilla mechanics, each with a reward chest of vanilla rarities (armour trims, music discs, pottery sherds) found nowhere else.
 - [x] Give miniboss and boss rooms exclusive rewards: dungeon enchantments, over-max books, relics, and boss-only signature items.
 - [x] Add on-kill and Warden-themed enchantments, Soulbound, relic affixes, and grindstone/anvil salvage for enchantments and relic bonuses.
 - [ ] Review and overhaul the remaining loot tables (tiers, ordinary rooms, traps, trial spawners) together.

@@ -74,4 +74,39 @@ public final class ProceduralDungeonGameTest {
     public void grindstonesSalvageBooksAndEssenceThatAnvilsReapply(GameTestHelper helper) {
         DungeonGameTestSuite.grindstonesSalvageBooksAndEssenceThatAnvilsReapply(helper);
     }
+
+    @GameTest(maxTicks = 100)
+    public void puzzleRoomsPlaceWholeAndHoldTheirChests(GameTestHelper helper) {
+        DungeonGameTestSuite.puzzleRoomsPlaceWholeAndHoldTheirChests(helper);
+    }
+
+    @GameTest(maxTicks = 100)
+    public void framePuzzleOpensWhenEveryArrowPointsUp(GameTestHelper helper) {
+        DungeonGameTestSuite.framePuzzleOpensWhenEveryArrowPointsUp(helper);
+    }
+
+    @GameTest(maxTicks = 100)
+    public void bookshelfPuzzleOpensWhenEveryShelfEndsOnItsLastSlot(GameTestHelper helper) {
+        DungeonGameTestSuite.bookshelfPuzzleOpensWhenEveryShelfEndsOnItsLastSlot(helper);
+    }
+
+    @GameTest(maxTicks = 150)
+    public void targetPuzzleOpensWhenEveryBulbIsLit(GameTestHelper helper) {
+        DungeonGameTestSuite.targetPuzzleOpensWhenEveryBulbIsLit(helper);
+    }
+
+    @GameTest(maxTicks = 100)
+    public void chordPuzzleOpensOnlyForItsChord(GameTestHelper helper) {
+        DungeonGameTestSuite.chordPuzzleOpensOnlyForItsChord(helper);
+    }
+
+    @GameTest(maxTicks = 400)
+    public void sluicePuzzleOpensWhenTheStreamReachesTheTorch(GameTestHelper helper) {
+        DungeonGameTestSuite.sluicePuzzleOpensWhenTheStreamReachesTheTorch(helper);
+    }
+
+    @GameTest(maxTicks = 100)
+    public void crafterPuzzleOpensWhenTheDiscPlays(GameTestHelper helper) {
+        DungeonGameTestSuite.crafterPuzzleOpensWhenTheDiscPlays(helper);
+    }
 }

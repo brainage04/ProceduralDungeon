@@ -11,6 +11,7 @@
         "procedural_dungeon:hallway_end": "procedural_dungeon:hallway_end/amethyst_geode/tier_2",
         "procedural_dungeon:hallway_loot": "procedural_dungeon:hallway_loot/amethyst_geode/tier_2",
         "procedural_dungeon:miniboss_room": "procedural_dungeon:miniboss_room/amethyst_geode/tier_2",
+        "procedural_dungeon:puzzle_room": "procedural_dungeon:puzzle_room/tier_2",
         "procedural_dungeon:starter_loot": "procedural_dungeon:starter_loot/tier_2",
         "procedural_dungeon:toolsmith": "procedural_dungeon:toolsmith/tier_2",
         "procedural_dungeon:trial_spawner": "procedural_dungeon:trial_spawner/tier_2",

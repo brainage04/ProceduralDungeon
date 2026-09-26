@@ -277,6 +277,91 @@
         "rolls": 1
       }
     ],
+    "puzzle_room": [
+      {
+        "items": [
+          { "item": "minecraft:bolt_armor_trim_smithing_template", "weight": 1 },
+          { "item": "minecraft:coast_armor_trim_smithing_template", "weight": 1 },
+          { "item": "minecraft:dune_armor_trim_smithing_template", "weight": 1 },
+          { "item": "minecraft:eye_armor_trim_smithing_template", "weight": 1 },
+          { "item": "minecraft:flow_armor_trim_smithing_template", "weight": 1 },
+          { "item": "minecraft:host_armor_trim_smithing_template", "weight": 1 },
+          { "item": "minecraft:raiser_armor_trim_smithing_template", "weight": 1 },
+          { "item": "minecraft:rib_armor_trim_smithing_template", "weight": 1 },
+          { "item": "minecraft:sentry_armor_trim_smithing_template", "weight": 1 },
+          { "item": "minecraft:shaper_armor_trim_smithing_template", "weight": 1 },
+          { "item": "minecraft:silence_armor_trim_smithing_template", "weight": 1 },
+          { "item": "minecraft:snout_armor_trim_smithing_template", "weight": 1 },
+          { "item": "minecraft:spire_armor_trim_smithing_template", "weight": 1 },
+          { "item": "minecraft:tide_armor_trim_smithing_template", "weight": 1 },
+          { "item": "minecraft:vex_armor_trim_smithing_template", "weight": 1 },
+          { "item": "minecraft:ward_armor_trim_smithing_template", "weight": 1 },
+          { "item": "minecraft:wayfinder_armor_trim_smithing_template", "weight": 1 },
+          { "item": "minecraft:wild_armor_trim_smithing_template", "weight": 1 }
+        ],
+        "count": 1,
+        "rolls": 1
+      },
+      {
+        "items": [
+          { "item": "minecraft:angler_pottery_sherd", "weight": 1 },
+          { "item": "minecraft:archer_pottery_sherd", "weight": 1 },
+          { "item": "minecraft:arms_up_pottery_sherd", "weight": 1 },
+          { "item": "minecraft:blade_pottery_sherd", "weight": 1 },
+          { "item": "minecraft:brewer_pottery_sherd", "weight": 1 },
+          { "item": "minecraft:burn_pottery_sherd", "weight": 1 },
+          { "item": "minecraft:danger_pottery_sherd", "weight": 1 },
+          { "item": "minecraft:explorer_pottery_sherd", "weight": 1 },
+          { "item": "minecraft:flow_pottery_sherd", "weight": 1 },
+          { "item": "minecraft:friend_pottery_sherd", "weight": 1 },
+          { "item": "minecraft:guster_pottery_sherd", "weight": 1 },
+          { "item": "minecraft:heart_pottery_sherd", "weight": 1 },
+          { "item": "minecraft:heartbreak_pottery_sherd", "weight": 1 },
+          { "item": "minecraft:howl_pottery_sherd", "weight": 1 },
+          { "item": "minecraft:miner_pottery_sherd", "weight": 1 },
+          { "item": "minecraft:mourner_pottery_sherd", "weight": 1 },
+          { "item": "minecraft:plenty_pottery_sherd", "weight": 1 },
+          { "item": "minecraft:prize_pottery_sherd", "weight": 1 },
+          { "item": "minecraft:scrape_pottery_sherd", "weight": 1 },
+          { "item": "minecraft:sheaf_pottery_sherd", "weight": 1 },
+          { "item": "minecraft:shelter_pottery_sherd", "weight": 1 },
+          { "item": "minecraft:skull_pottery_sherd", "weight": 1 },
+          { "item": "minecraft:snort_pottery_sherd", "weight": 1 }
+        ],
+        "count": 1,
+        "rolls": [1, 2]
+      },
+      {
+        "items": [
+          { "item": "minecraft:music_disc_11", "weight": 1 },
+          { "item": "minecraft:music_disc_13", "weight": 1 },
+          { "item": "minecraft:music_disc_5", "weight": 1 },
+          { "item": "minecraft:music_disc_blocks", "weight": 1 },
+          { "item": "minecraft:music_disc_bounce", "weight": 1 },
+          { "item": "minecraft:music_disc_cat", "weight": 1 },
+          { "item": "minecraft:music_disc_chirp", "weight": 1 },
+          { "item": "minecraft:music_disc_creator", "weight": 1 },
+          { "item": "minecraft:music_disc_creator_music_box", "weight": 1 },
+          { "item": "minecraft:music_disc_far", "weight": 1 },
+          { "item": "minecraft:music_disc_lava_chicken", "weight": 1 },
+          { "item": "minecraft:music_disc_mall", "weight": 1 },
+          { "item": "minecraft:music_disc_mellohi", "weight": 1 },
+          { "item": "minecraft:music_disc_otherside", "weight": 1 },
+          { "item": "minecraft:music_disc_pigstep", "weight": 1 },
+          { "item": "minecraft:music_disc_precipice", "weight": 1 },
+          { "item": "minecraft:music_disc_relic", "weight": 1 },
+          { "item": "minecraft:music_disc_stal", "weight": 1 },
+          { "item": "minecraft:music_disc_strad", "weight": 1 },
+          { "item": "minecraft:music_disc_tears", "weight": 1 },
+          { "item": "minecraft:music_disc_wait", "weight": 1 },
+          { "item": "minecraft:music_disc_ward", "weight": 1 }
+        ],
+        "count": 1,
+        "rolls": [0, 1]
+      },
+      { "tierItems": "resources", "count": [1, 2], "rolls": "$goodRolls" },
+      { "item": "minecraft:experience_bottle", "count": [2, 4], "rolls": 1 }
+    ],
     "trial_spawner": [
       {
         "items": [

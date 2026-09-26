@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
@@ -26,6 +27,7 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CrossCollisionBlock;
+import net.minecraft.world.level.block.CopperBulbBlock;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.SlabBlock;
@@ -49,6 +51,35 @@ private static final BlockState[] NON_MOSSY_SLAB_REPLACEMENTS = new BlockState[]
         Blocks.STONE_SLAB.defaultBlockState(),
         Blocks.STONE_BRICK_SLAB.defaultBlockState()
 };
+/**
+ * Blocks that never rot: guarded-room door frames, and the mechanisms, fluids, and air of puzzle rooms, whose
+ * redstone, water channels, and lava pits only work complete. Puzzle rooms use cave air so the air rules and decay of
+ * ordinary rooms leave their interiors alone.
+ */
+private static final Set<Block> PUZZLE_MECHANISM = Set.of(
+        Blocks.REINFORCED_DEEPSLATE,
+        Blocks.CAVE_AIR,
+        Blocks.GLASS,
+        Blocks.SMOOTH_STONE,
+        Blocks.CLAY,
+        Blocks.WATER,
+        Blocks.LAVA,
+        Blocks.REDSTONE_WIRE,
+        Blocks.REPEATER,
+        Blocks.COMPARATOR,
+        Blocks.REDSTONE_TORCH,
+        Blocks.REDSTONE_WALL_TORCH,
+        Blocks.LEVER,
+        Blocks.STONE_BUTTON,
+        Blocks.STONE_PRESSURE_PLATE,
+        Blocks.TARGET,
+        Blocks.NOTE_BLOCK,
+        Blocks.PISTON,
+        Blocks.PISTON_HEAD,
+        Blocks.SLIME_BLOCK,
+        Blocks.SCULK_SENSOR,
+        Blocks.SCULK_SHRIEKER
+);
 private static final BlockState CRACKED_STONE_BRICKS = Blocks.CRACKED_STONE_BRICKS.defaultBlockState();
 private static final BlockState MOSSY_STONE_BRICKS = Blocks.MOSSY_STONE_BRICKS.defaultBlockState();
 private static final BlockState MOSSY_STONE_BRICK_SLAB = Blocks.MOSSY_STONE_BRICK_SLAB.defaultBlockState();
@@ -355,7 +386,7 @@ private static StateClassification createClassification(BlockState state) {
     } else {
         ageKind = AgeKind.NONE;
     }
-    boolean rotProtected = block instanceof DoorBlock || state.is(Blocks.REINFORCED_DEEPSLATE);
+    boolean rotProtected = block instanceof DoorBlock || block instanceof CopperBulbBlock || PUZZLE_MECHANISM.contains(block);
     return new StateClassification(state.isAir(), ageKind, INPUT_SHAPES.get(block), rotProtected);
 }
 

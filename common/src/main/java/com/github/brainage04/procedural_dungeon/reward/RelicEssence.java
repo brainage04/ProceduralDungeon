@@ -23,7 +23,7 @@ import net.minecraft.world.item.component.ItemLore;
 /**
  * Relic Essence: the attribute bonuses of a relic (or of an item an essence was applied to), ground off on a
  * grindstone and carried to another item on an anvil. An essence of armour bonuses fits any armour piece; an essence of
- * held bonuses fits any weapon or tool. An item carries at most one set of dungeon bonuses at a time.
+ * held bonuses fits any weapon or tool. Essences stack: an item takes any number of them.
  *
  * <p>An essence is a vanilla echo shard: its bonuses live in custom data so they never apply while it is carried, and
  * its lore lists them for vanilla clients.
@@ -103,11 +103,11 @@ public final class RelicEssence {
     }
 
     /**
-     * {@code target} with {@code essence}'s bonuses moved onto the slot it is worn or held in, or empty when the essence
-     * does not fit it or it already carries dungeon bonuses.
+     * {@code target} with {@code essence}'s bonuses added for the slot it is worn or held in, or empty when the essence
+     * does not fit it.
      */
     public static Optional<ItemStack> applyTo(ItemStack target, ItemStack essence) {
-        if (!isEssence(essence) || target.getCount() != 1 || isEssence(target) || hasBonuses(target)) {
+        if (!isEssence(essence) || target.getCount() != 1 || isEssence(target)) {
             return Optional.empty();
         }
         CompoundTag data = essence.get(DataComponents.CUSTOM_DATA).copyTag().getCompoundOrEmpty(TAG);
@@ -121,12 +121,17 @@ public final class RelicEssence {
                 : ItemAttributeModifiers.CODEC.parse(NbtOps.INSTANCE, data.get("bonuses")).getOrThrow().modifiers();
 
         ItemAttributeModifiers modifiers = target.getOrDefault(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.EMPTY);
+        int applied = (int) modifiers.modifiers().stream()
+                .filter(entry -> entry.modifier().id().getNamespace().equals(ProceduralDungeon.MOD_ID))
+                .filter(entry -> entry.modifier().id().getPath().startsWith("essence/"))
+                .count();
         for (int i = 0; i < bonuses.size(); i++) {
             ItemAttributeModifiers.Entry bonus = bonuses.get(i);
             String attribute = bonus.attribute().unwrapKey().orElseThrow().identifier().getPath();
-            // Ids are unique per slot, so the same essence bonus on two worn items never collides.
+            // Ids are unique per slot and per bonus already applied, so bonuses on two worn items, or several essences
+            // on one item, never collide.
             AttributeModifier modifier = new AttributeModifier(
-                    ProceduralDungeon.of("essence/%s/%d_%s".formatted(slot.get().getSerializedName(), i, attribute)),
+                    ProceduralDungeon.of("essence/%s/%d_%s".formatted(slot.get().getSerializedName(), applied + i, attribute)),
                     bonus.modifier().amount(),
                     bonus.modifier().operation()
             );

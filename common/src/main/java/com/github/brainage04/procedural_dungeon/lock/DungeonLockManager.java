@@ -1,5 +1,6 @@
 package com.github.brainage04.procedural_dungeon.lock;
 
+import com.github.brainage04.procedural_dungeon.worldgen.structure.DungeonPuzzleRooms;
 import java.util.Optional;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
@@ -35,6 +36,15 @@ public final class DungeonLockManager {
 
     public static InteractionResult useBlock(Player player, ServerLevel level, BlockPos pos) {
         DungeonLockSaveData data = data(level);
+        if (data.isPuzzleLocked(pos.asLong())) {
+            if (!DungeonPuzzleRooms.isSolved(level, pos)) {
+                displayMessage(player, "The room's mechanism holds this chest shut.");
+                return InteractionResult.FAIL;
+            }
+            unlock(level, data, pos);
+            displayMessage(player, "The mechanism releases the chest.");
+            return InteractionResult.PASS;
+        }
         Optional<DungeonKeyType> requiredKey = data.requiredKey(pos.asLong());
         if (requiredKey.isEmpty()) {
             return InteractionResult.PASS;
@@ -57,7 +67,12 @@ public final class DungeonLockManager {
     }
 
     public static boolean canBreak(Player player, ServerLevel level, BlockPos pos) {
-        Optional<DungeonKeyType> requiredKey = data(level).requiredKey(pos.asLong());
+        DungeonLockSaveData data = data(level);
+        if (data.isPuzzleLocked(pos.asLong())) {
+            displayMessage(player, "The room's mechanism holds this chest shut.");
+            return false;
+        }
+        Optional<DungeonKeyType> requiredKey = data.requiredKey(pos.asLong());
         if (requiredKey.isEmpty()) {
             return true;
         }
@@ -107,6 +122,17 @@ public final class DungeonLockManager {
                 openDoor(level, lower);
             }
         }
+    }
+
+    /**
+     * Holds a puzzle room's reward chest shut until {@link DungeonPuzzleRooms#isSolved} reports its mechanism solved.
+     */
+    public static void lockPuzzleChest(ServerLevel level, BlockPos pos) {
+        data(level).addPuzzleChest(pos.asLong());
+    }
+
+    public static boolean isPuzzleLocked(ServerLevel level, BlockPos pos) {
+        return data(level).isPuzzleLocked(pos.asLong());
     }
 
     public static boolean isExplosionProtected(ServerLevel level, BlockPos pos) {
