@@ -1,0 +1,98 @@
+{
+  "anvil_cost": 8,
+  "description": "Warden's Wrath",
+  "effects": {
+    "minecraft:post_attack": [
+      {
+        "affected": "victim",
+        "effect": {
+          "type": "minecraft:apply_mob_effect",
+          "max_amplifier": 0.0,
+          "max_duration": {
+            "type": "minecraft:linear",
+            "base": 3.0,
+            "per_level_above_first": 1.0
+          },
+          "min_amplifier": 0.0,
+          "min_duration": {
+            "type": "minecraft:linear",
+            "base": 3.0,
+            "per_level_above_first": 1.0
+          },
+          "to_apply": "minecraft:darkness"
+        },
+        "enchanted": "attacker"
+      },
+      {
+        "affected": "victim",
+        "effect": {
+          "type": "minecraft:all_of",
+          "effects": [
+            {
+              "type": "minecraft:damage_entity",
+              "damage_type": "minecraft:sonic_boom",
+              "max_damage": {
+                "type": "minecraft:linear",
+                "base": 6.0,
+                "per_level_above_first": 2.0
+              },
+              "min_damage": {
+                "type": "minecraft:linear",
+                "base": 6.0,
+                "per_level_above_first": 2.0
+              }
+            },
+            {
+              "type": "minecraft:spawn_particles",
+              "horizontal_position": {
+                "type": "in_bounding_box"
+              },
+              "horizontal_velocity": {},
+              "particle": {
+                "type": "minecraft:sonic_boom"
+              },
+              "speed": 1.0,
+              "vertical_position": {
+                "type": "in_bounding_box"
+              },
+              "vertical_velocity": {}
+            },
+            {
+              "type": "minecraft:play_sound",
+              "pitch": 1.0,
+              "sound": "minecraft:entity.warden.sonic_boom",
+              "volume": 3.0
+            }
+          ]
+        },
+        "enchanted": "attacker",
+        "requirements": {
+          "chance": {
+            "type": "minecraft:enchantment_level",
+            "amount": {
+              "type": "minecraft:linear",
+              "base": 0.1,
+              "per_level_above_first": 0.1
+            }
+          },
+          "condition": "minecraft:random_chance"
+        }
+      }
+    ]
+  },
+  "max_cost": {
+    "base": 50,
+    "per_level_above_first": 10
+  },
+  "max_level": 3,
+  "min_cost": {
+    "base": 20,
+    "per_level_above_first": 10
+  },
+  "primary_items": "#procedural_dungeon:enchantable/affliction",
+  "slots": [
+    "mainhand"
+  ],
+  "supported_items": "#procedural_dungeon:enchantable/affliction",
+  "weight": 1
+}

@@ -1,0 +1,58 @@
+{
+  "anvil_cost": 4,
+  "description": "Warding",
+  "effects": {
+    "minecraft:post_attack": [
+      {
+        "affected": "attacker",
+        "effect": {
+          "type": "minecraft:apply_mob_effect",
+          "max_amplifier": {
+            "type": "minecraft:linear",
+            "base": 0.0,
+            "per_level_above_first": 1.0
+          },
+          "max_duration": {
+            "type": "minecraft:linear",
+            "base": 15.0,
+            "per_level_above_first": 5.0
+          },
+          "min_amplifier": {
+            "type": "minecraft:linear",
+            "base": 0.0,
+            "per_level_above_first": 1.0
+          },
+          "min_duration": {
+            "type": "minecraft:linear",
+            "base": 15.0,
+            "per_level_above_first": 5.0
+          },
+          "to_apply": "minecraft:absorption"
+        },
+        "enchanted": "attacker",
+        "requirements": {
+          "condition": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:nbt": "{Health:0.0f}"
+          }
+        }
+      }
+    ]
+  },
+  "max_cost": {
+    "base": 40,
+    "per_level_above_first": 10
+  },
+  "max_level": 3,
+  "min_cost": {
+    "base": 10,
+    "per_level_above_first": 10
+  },
+  "primary_items": "#procedural_dungeon:enchantable/affliction",
+  "slots": [
+    "mainhand"
+  ],
+  "supported_items": "#procedural_dungeon:enchantable/affliction",
+  "weight": 1
+}

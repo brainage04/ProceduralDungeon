@@ -95,6 +95,7 @@ public final class DungeonEnchantmentTagProviders {
             );
             var damageExclusive = builder(EnchantmentTags.DAMAGE_EXCLUSIVE).add(DungeonEnchantments.ANNIHILATION);
             DungeonEnchantments.BANES.forEach(bane -> damageExclusive.add(bane.key()));
+            builder(DungeonEnchantments.DETONATION_EXCLUSIVE).add(DungeonEnchantments.VOLATILE, DungeonEnchantments.CATACLYSM);
         }
     }
 
@@ -105,8 +106,8 @@ public final class DungeonEnchantmentTagProviders {
 
         @Override
         protected void addTags(HolderLookup.Provider registries) {
-            builder(DungeonEnchantments.VOLATILE_IMMUNE).add(DungeonDamageTypes.VOLATILE_BLAST);
-            builder(DamageTypeTags.IS_EXPLOSION).add(DungeonDamageTypes.VOLATILE_BLAST);
+            builder(DungeonDamageTypes.SPARES_ALLIES).add(DungeonDamageTypes.DUNGEON_BLAST);
+            builder(DamageTypeTags.IS_EXPLOSION).add(DungeonDamageTypes.DUNGEON_BLAST);
         }
     }
 }

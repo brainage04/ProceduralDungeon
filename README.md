@@ -75,10 +75,10 @@ Hallway loot rooms:
 
 The best loot is reserved for the rooms that are hardest to reach. Ordinary chests never hold enchanted golden apples, heavy cores, netherite upgrade templates, Mending, relics, or dungeon enchantments.
 
-- **Miniboss chests:** an enchanted weapon or armour piece at 1.5× the tier's enchantment level, and one exclusive book: an affliction or bane enchantment (below), or a vanilla enchantment one level above its normal maximum (for example Sharpness VI or Protection V). Anvils keep over-max levels when applying these books or combining items that already have them, but never raise a level past the highest one supplied.
-- **Boss chests:** one **relic**, a **Victor's Feast** (a golden carrot that feeds like a feast and grants Regeneration, Strength, Resistance, and Fire Resistance), an enchanted golden apple, a weapon and armour piece at twice the tier's enchantment level, and chances at a heavy core, a netherite upgrade template, Mending, and the rarest enchantments (Annihilation, Stormcaller, Volatile).
+- **Miniboss chests:** an enchanted weapon or armour piece at 1.5× the tier's enchantment level, and one exclusive book: an affliction, bane, on-kill, or nova enchantment (below), or a vanilla enchantment one level above its normal maximum (for example Sharpness VI or Protection V). Anvils keep over-max levels when applying these books or combining items that already have them, but never raise a level past the highest one supplied.
+- **Boss chests:** one **relic**, a **Victor's Feast** (a golden carrot that feeds like a feast and grants Regeneration, Strength, Resistance, and Fire Resistance), an enchanted golden apple, a weapon and armour piece at twice the tier's enchantment level, and chances at a heavy core, a netherite upgrade template, Mending, and the rarest enchantments (Annihilation, Stormcaller, Volatile, Cataclysm, Warden's Wrath, Soulbound).
 
-Relics are named, unbreakable items built from the dungeon tier's material, with enchantments above the vanilla maximum and attribute bonuses on top of the item's own stats. Bonuses grow with the tier (`t`):
+Relics are named, unbreakable items built from the dungeon tier's material, with enchantments above the vanilla maximum and attribute bonuses on top of the item's own stats. Bonuses grow with the tier (`t`). Besides its signature bonuses, every relic except the Phylactery rolls one random **affix** from its pool; each relic is equally likely to drop whatever the size of its pool.
 
 | Relic | Item | Enchantments | Bonuses |
 |---|---|---|---|
@@ -86,8 +86,22 @@ Relics are named, unbreakable items built from the dungeon tier's material, with
 | Aegis of the Depths | Chestplate | Protection 2+t | +2t max health, +0.05t knockback resistance |
 | Stridewalkers | Boots | Feather Falling 3+t | +4t% movement speed, step up full blocks |
 | Crown of the Fallen | Helmet | Protection 1+t, Respiration III | +t max health, +t luck |
+| Delver's Pick | Pickaxe | Efficiency 4+t, Fortune III | +10t% block break speed |
 | Stormstring | Bow | Power 3+t, Stormcaller | |
 | Phylactery | Heart of the Sea | | Saves you from death once when held, like a Totem of Undying |
+
+Affix pools (an affix never repeats one of the relic's signature bonuses):
+
+- **Armour** (Aegis, Stridewalkers, Crown): +t max health, +t max absorption, +0.5t armour, +0.5t armour toughness, +0.04t knockback resistance, +0.1t explosion knockback resistance, +2t% movement speed, +10t% sneaking speed, +3t% jump strength, +0.5 step height, +t safe fall distance, −8t% fall damage, +0.1t water movement efficiency, +t oxygen bonus, −10t% burning time, +0.5t luck.
+- **Combat** (Warden's Cleaver): +0.5t attack damage, +0.1t attack speed, +0.2t attack knockback, +0.1t sweeping damage ratio, +0.25t attack reach.
+- **Mining** (Delver's Pick): +0.5t block reach, +2t mining efficiency, +10t% block break speed, +0.16t submerged mining speed.
+- **Mobility** (Stormstring): +2t% movement speed, +10t% sneaking speed, +3t% jump strength, +t safe fall distance.
+
+## Salvage
+
+- **Grindstone + book:** an enchanted item and a plain book make an enchanted book holding all of the item's enchantments except curses. The item stays in the grindstone with only its curses; one book is used, and it costs one experience level per enchantment level (at most 30).
+- **Grindstone, relic alone:** grinding an item that carries relic bonuses gives a **Relic Essence** holding those bonuses. The item keeps its enchantments and base stats.
+- **Anvil + Relic Essence:** combining an item with an essence moves the bonuses onto it for 10 levels. Armour bonuses fit any armour piece (and move to that piece's slot); weapon and tool bonuses fit any weapon or tool. An item carries one set of bonuses at a time, so grind an item's bonuses off before giving it new ones.
 
 ## Dungeon enchantments
 
@@ -95,9 +109,19 @@ These enchantments exist only in dungeon reward chests; enchanting tables, villa
 
 - **Banes** (weapons, I–V, +2.5 damage per level against their targets, exclusive with Sharpness and Smite): Bane of the Deep (wardens), Bane of the Nether (blazes, ghasts, magma cubes, piglins, hoglins, zoglins, withers, wither skeletons), Bane of the End (the dragon, endermen, endermites, shulkers), Bane of Illagers (raiders and vexes), Duelist (players).
 - **Annihilation** (weapons, I–V, boss only): +2.5 damage per level against everything.
-- **Afflictions** (weapons, bows, crossbows, and tridents, I–III): each hit applies an effect that lasts longer, and for most grows stronger, per level. Venom (Poison), Withering (Wither), Crippling (Slowness), Blinding (Blindness), Eclipse (Darkness), Famine (Hunger), Infestation (Infested), Updraft (Levitation), Drifting (Slow Falling), Sapping (Mining Fatigue), Vertigo (Nausea), Oozing (Oozing).
+- **Afflictions** (weapons, bows, crossbows, and tridents, I–III): each hit applies an effect that lasts longer, and for most grows stronger, per level. Venom (Poison), Withering (Wither), Crippling (Slowness), Blinding (Blindness), Eclipse (Darkness), Famine (Hunger), Infestation (Infested), Updraft (Levitation), Drifting (Slow Falling), Sapping (Mining Fatigue), Vertigo (Nausea), Oozing (Oozing), Enfeebling (Weakness).
 - **Stormcaller** (I–III, boss only): each hit has a 15% chance per level to call lightning. From 4 or more blocks away a real bolt strikes the target; closer in, the target takes a lightning jolt instead, so the bolt never hits the attacker.
-- **Volatile** (I–III, boss only): a killing blow makes the victim explode without breaking blocks. The wielder is immune to the blast; other players nearby are not.
+- **Volatile** (I–III, boss only): a killing blow makes the victim explode without breaking blocks.
+- **Cataclysm** (I–III, boss only): like Volatile, with a bigger blast that breaks blocks like TNT. It cannot share a weapon with Volatile.
+- **Siphon** (I–II): a kill heals you 4 health per level.
+- **Warding** (I–III): a kill gives you Absorption (level I–III) for 15–25 seconds.
+- **Bloodlust** (I–II): a kill gives you Speed and Strength (level I–II) for 8–12 seconds.
+- **Insight** (I–III): kills drop 1.5×, 2×, or 2.5× experience.
+- **Novas** (I–III): a kill bursts over everything within 3, 4.5, or 6 blocks of the victim for 5, 7, or 9 seconds, with effects at the enchantment's level. Pyre sets them on fire, Plague poisons them, and Dread weakens and slows them.
+- **Warden's Wrath** (I–III, boss only): every hit applies Darkness, and has a 10% chance per level to fire a sonic boom that deals 6, 8, or 10 damage through armour.
+- **Soulbound** (any enchantable item, boss only): the item stays with you when you die, in the same slot. Curse of Vanishing still destroys it.
+
+Explosions and novas never touch their wielder, the wielder's tamed pets, teammates on the wielder's scoreboard team, or players the wielder cannot hurt (friendly fire off, or PvP disabled). Everyone else in range is affected.
 
 Dungeon items are made of vanilla items and components, so they work for unmodded clients.
 

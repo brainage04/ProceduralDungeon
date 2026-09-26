@@ -54,4 +54,24 @@ public final class ProceduralDungeonGameTest {
     public void overMaxBooksApplyThroughAnvils(GameTestHelper helper) {
         DungeonGameTestSuite.overMaxBooksApplyThroughAnvils(helper);
     }
+
+    @GameTest
+    public void enchantmentBlastsSpareAllies(GameTestHelper helper) {
+        DungeonGameTestSuite.enchantmentBlastsSpareAllies(helper);
+    }
+
+    @GameTest
+    public void killEnchantmentsRewardTheKillerAndBurstOnEnemies(GameTestHelper helper) {
+        DungeonGameTestSuite.killEnchantmentsRewardTheKillerAndBurstOnEnemies(helper);
+    }
+
+    @GameTest
+    public void soulboundItemsSurviveDeath(GameTestHelper helper) {
+        DungeonGameTestSuite.soulboundItemsSurviveDeath(helper);
+    }
+
+    @GameTest
+    public void grindstonesSalvageBooksAndEssenceThatAnvilsReapply(GameTestHelper helper) {
+        DungeonGameTestSuite.grindstonesSalvageBooksAndEssenceThatAnvilsReapply(helper);
+    }
 }

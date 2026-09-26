@@ -8,6 +8,7 @@ import com.github.brainage04.procedural_dungeon.guardian.DungeonGuardian;
 import com.github.brainage04.procedural_dungeon.lock.DungeonKeyType;
 import com.github.brainage04.procedural_dungeon.lock.DungeonLockManager;
 import com.github.brainage04.procedural_dungeon.lock.DungeonLockPlan;
+import com.github.brainage04.procedural_dungeon.reward.RelicEssence;
 import com.github.brainage04.procedural_dungeon.test.DungeonVariantSmokeTester;
 import com.github.brainage04.procedural_dungeon.util.RegistryKeyUtils;
 import com.github.brainage04.procedural_dungeon.worldgen.structure.DungeonProgressionRooms;
@@ -32,6 +33,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.EnchantmentTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
@@ -39,17 +41,27 @@ import net.minecraft.util.random.Weighted;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.EquipmentSlotGroup;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.pig.Pig;
+import net.minecraft.world.entity.animal.wolf.Wolf;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Blaze;
 import net.minecraft.world.entity.monster.illager.Pillager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AnvilMenu;
+import net.minecraft.world.inventory.ContainerInput;
 import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.world.inventory.GrindstoneMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -78,6 +90,8 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.scores.PlayerTeam;
+import net.minecraft.world.scores.Scoreboard;
 
 public final class DungeonGameTestSuite {
     private static final List<DungeonTheme> LAYOUT_THEMES = List.of(
@@ -105,7 +119,11 @@ public final class DungeonGameTestSuite {
                 new TestCase("surface_entrances_lead_down_into_a_full_dungeon", DungeonGameTestSuite::surfaceEntrancesLeadDownIntoAFullDungeon),
                 new TestCase("dungeon_enchantments_are_reward_only_and_take_effect", DungeonGameTestSuite::dungeonEnchantmentsAreRewardOnlyAndTakeEffect),
                 new TestCase("boss_rewards_are_exclusive_and_relics_keep_base_stats", DungeonGameTestSuite::bossRewardsAreExclusiveAndRelicsKeepBaseStats),
-                new TestCase("over_max_books_apply_through_anvils", DungeonGameTestSuite::overMaxBooksApplyThroughAnvils)
+                new TestCase("over_max_books_apply_through_anvils", DungeonGameTestSuite::overMaxBooksApplyThroughAnvils),
+                new TestCase("enchantment_blasts_spare_allies", DungeonGameTestSuite::enchantmentBlastsSpareAllies),
+                new TestCase("kill_enchantments_reward_the_killer_and_burst_on_enemies", DungeonGameTestSuite::killEnchantmentsRewardTheKillerAndBurstOnEnemies),
+                new TestCase("soulbound_items_survive_death", DungeonGameTestSuite::soulboundItemsSurviveDeath),
+                new TestCase("grindstones_salvage_books_and_essence_that_anvils_reapply", DungeonGameTestSuite::grindstonesSalvageBooksAndEssenceThatAnvilsReapply)
         );
     }
 
@@ -331,8 +349,7 @@ public final class DungeonGameTestSuite {
 
     /**
      * Dungeon enchantments exist only as dungeon rewards: no vanilla source (enchanting table, trading, random loot,
-     * mob equipment, enchant-with-levels loot) may roll them. Their effects must reach the victim, and a Volatile kill
-     * must hurt bystanders but not the wielder.
+     * mob equipment, enchant-with-levels loot) may roll them. Their effects must reach the victim.
      */
     public static void dungeonEnchantmentsAreRewardOnlyAndTakeEffect(GameTestHelper helper) {
         ServerLevel level = helper.getLevel();
@@ -368,18 +385,6 @@ public final class DungeonGameTestSuite {
                 "Bane of the Nether V must add 12.5 damage against nether mobs and nothing against others"
         );
 
-        // Pigs never spawn with armour that could absorb the weak follow-up hit.
-        Pig doomed = helper.spawnWithNoFreeWill(EntityTypes.PIG, new BlockPos(1, 1, 5));
-        Pig bystander = helper.spawnWithNoFreeWill(EntityTypes.PIG, new BlockPos(2, 1, 5));
-        // A mock player's held-item attributes only apply after it ticks, so its hit deals barely any damage.
-        doomed.setHealth(0.1F);
-        player.snapTo(helper.absoluteVec(new Vec3(1.5, 1.0, 7.0)));
-        player.setItemInHand(InteractionHand.MAIN_HAND, enchanted(enchantments, Items.IRON_SWORD, DungeonEnchantments.VOLATILE, 3));
-        float playerHealth = player.getHealth();
-        player.attack(doomed);
-        helper.assertTrue(doomed.isDeadOrDying(), "The Volatile victim must die from the hit");
-        helper.assertTrue(bystander.getHealth() < bystander.getMaxHealth(), "A Volatile kill must blast nearby mobs");
-        helper.assertTrue(player.getHealth() == playerHealth, "The Volatile wielder must be immune to its own blast");
         helper.succeed();
     }
 
@@ -465,6 +470,203 @@ public final class DungeonGameTestSuite {
         helper.assertTrue(anvil(player, fiveSword, fiveBook).getEnchantments().getLevel(sharpness) == 5,
                 "Vanilla maximums still cap ordinary combinations");
         helper.succeed();
+    }
+
+    /**
+     * Volatile and Cataclysm blasts hurt strangers but spare the wielder's teammates and pets; only Cataclysm breaks
+     * blocks.
+     */
+    public static void enchantmentBlastsSpareAllies(GameTestHelper helper) {
+        ServerLevel level = helper.getLevel();
+        HolderLookup.RegistryLookup<Enchantment> enchantments = level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
+        Player player = helper.makeMockPlayer(GameType.SURVIVAL);
+        Scoreboard scoreboard = level.getScoreboard();
+        PlayerTeam team = scoreboard.addPlayerTeam("pd_allies_" + helper.absolutePos(BlockPos.ZERO).asLong());
+        scoreboard.addPlayerToTeam(player.getScoreboardName(), team);
+        try {
+            for (ResourceKey<Enchantment> key : List.of(DungeonEnchantments.VOLATILE, DungeonEnchantments.CATACLYSM)) {
+                // Neighbouring tests build right up to this 8-block area, so everything stays near its middle, where
+                // their blocks cannot shield the stranger from the blast. The Cataclysm row runs last so its bigger
+                // blast cannot skew the first.
+                int z = key == DungeonEnchantments.VOLATILE ? 2 : 5;
+                Pig doomed = helper.spawnWithNoFreeWill(EntityTypes.PIG, new BlockPos(4, 1, z));
+                Pig stranger = helper.spawnWithNoFreeWill(EntityTypes.PIG, new BlockPos(3, 1, z));
+                Pig teammate = helper.spawnWithNoFreeWill(EntityTypes.PIG, new BlockPos(5, 1, z));
+                Wolf pet = helper.spawnWithNoFreeWill(EntityTypes.WOLF, new BlockPos(4, 1, z + 1));
+                scoreboard.addPlayerToTeam(teammate.getScoreboardName(), team);
+                pet.tame(player);
+                BlockPos wall = new BlockPos(4, 2, z - 1);
+                helper.setBlock(wall, Blocks.DIRT);
+                doomed.setHealth(0.1F);
+                player.snapTo(helper.absoluteVec(new Vec3(4.5, 1.0, z + 2.5)));
+                player.setItemInHand(InteractionHand.MAIN_HAND, enchanted(enchantments, Items.IRON_SWORD, key, 3));
+                float playerHealth = player.getHealth();
+                player.attack(doomed);
+
+                String name = key.identifier().getPath();
+                helper.assertTrue(doomed.isDeadOrDying(), "The %s victim must die from the hit".formatted(name));
+                helper.assertTrue(stranger.getHealth() < stranger.getMaxHealth(), "A %s kill must blast nearby strangers".formatted(name));
+                helper.assertTrue(teammate.getHealth() == teammate.getMaxHealth(), "A %s blast must spare the wielder's teammates".formatted(name));
+                helper.assertTrue(pet.getHealth() == pet.getMaxHealth(), "A %s blast must spare the wielder's pets".formatted(name));
+                helper.assertTrue(player.getHealth() == playerHealth, "A %s blast must spare its wielder".formatted(name));
+                boolean wallStands = helper.getBlockState(wall).is(Blocks.DIRT);
+                helper.assertTrue(wallStands == (key == DungeonEnchantments.VOLATILE),
+                        "Only Cataclysm may break blocks; %s left the wall %s".formatted(name, wallStands ? "standing" : "broken"));
+            }
+        } finally {
+            scoreboard.removePlayerTeam(team);
+        }
+        helper.succeed();
+    }
+
+    /**
+     * Siphon, Warding, and Bloodlust reward the killer; the novas hit enemies around the victim, but not the killer's
+     * pets or anything out of range; Warden's Wrath darkens every victim; Insight multiplies experience.
+     */
+    public static void killEnchantmentsRewardTheKillerAndBurstOnEnemies(GameTestHelper helper) {
+        ServerLevel level = helper.getLevel();
+        HolderLookup.RegistryLookup<Enchantment> enchantments = level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
+        Player player = helper.makeMockPlayer(GameType.SURVIVAL);
+
+        // Instant effects land on the killer's next tick, which a mock player never takes.
+        killWith(helper, player, enchanted(enchantments, Items.IRON_SWORD, DungeonEnchantments.SIPHON, 2), new BlockPos(0, 1, 1));
+        helper.assertTrue(effectAmplifier(player, MobEffects.INSTANT_HEALTH) == 1, "Siphon II must give the killer Instant Health II");
+        killWith(helper, player, enchanted(enchantments, Items.IRON_SWORD, DungeonEnchantments.WARDING, 3), new BlockPos(0, 1, 3));
+        helper.assertTrue(effectAmplifier(player, MobEffects.ABSORPTION) == 2, "Warding III must give Absorption III");
+        killWith(helper, player, enchanted(enchantments, Items.IRON_SWORD, DungeonEnchantments.BLOODLUST, 2), new BlockPos(0, 1, 5));
+        helper.assertTrue(effectAmplifier(player, MobEffects.SPEED) == 1 && effectAmplifier(player, MobEffects.STRENGTH) == 1,
+                "Bloodlust II must give Speed II and Strength II");
+
+        for (DungeonEnchantments.Nova nova : DungeonEnchantments.NOVAS) {
+            int z = 1 + 2 * DungeonEnchantments.NOVAS.indexOf(nova);
+            // Pillagers are neither undead nor fire-immune, so every nova can take hold on them.
+            Pillager near = helper.spawnWithNoFreeWill(EntityTypes.PILLAGER, new BlockPos(3, 1, z));
+            Pillager far = helper.spawnWithNoFreeWill(EntityTypes.PILLAGER, new BlockPos(7, 1, z));
+            Wolf pet = helper.spawnWithNoFreeWill(EntityTypes.WOLF, new BlockPos(1, 1, z + 1));
+            pet.tame(player);
+            killWith(helper, player, enchanted(enchantments, Items.IRON_SWORD, nova.key(), 3), new BlockPos(0, 1, z));
+            String name = nova.name();
+            helper.assertTrue(struck(near, nova), name + " III must hit an enemy 3 blocks away");
+            helper.assertTrue(!struck(far, nova), name + " III (radius 6) must not reach an enemy 7 blocks away");
+            helper.assertTrue(!struck(pet, nova), name + " must spare the killer's pets");
+        }
+
+        Pillager target = helper.spawnWithNoFreeWill(EntityTypes.PILLAGER, new BlockPos(5, 1, 7));
+        player.setItemInHand(InteractionHand.MAIN_HAND, enchanted(enchantments, Items.IRON_SWORD, DungeonEnchantments.WARDENS_WRATH, 1));
+        player.attack(target);
+        helper.assertTrue(target.hasEffect(MobEffects.DARKNESS), "Warden's Wrath must darken its victim");
+
+        Pig pig = helper.spawnWithNoFreeWill(EntityTypes.PIG, new BlockPos(7, 1, 7));
+        player.setItemInHand(InteractionHand.MAIN_HAND, enchanted(enchantments, Items.IRON_SWORD, DungeonEnchantments.INSIGHT, 3));
+        helper.assertTrue(EnchantmentHelper.processMobExperience(level, player, pig, 10) == 25, "Insight III must multiply experience by 2.5");
+        helper.succeed();
+    }
+
+    /**
+     * Soulbound items, held or worn, come back with the respawned player; everything else drops.
+     */
+    public static void soulboundItemsSurviveDeath(GameTestHelper helper) {
+        ServerLevel level = helper.getLevel();
+        HolderLookup.RegistryLookup<Enchantment> enchantments = level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
+        ServerPlayer player = helper.makeMockServerPlayerInLevel();
+        player.snapTo(helper.absoluteVec(new Vec3(2.5, 1.0, 2.5)));
+        player.getInventory().setItem(3, enchanted(enchantments, Items.IRON_SWORD, DungeonEnchantments.SOULBOUND, 1));
+        player.getInventory().setItem(4, new ItemStack(Items.DIRT, 16));
+        player.setItemSlot(EquipmentSlot.HEAD, enchanted(enchantments, Items.IRON_HELMET, DungeonEnchantments.SOULBOUND, 1));
+        Vec3 deathPos = player.position();
+
+        // A mock player's client never finishes loading, which makes it invulnerable, so it dies directly.
+        player.setHealth(0.0F);
+        player.die(level.damageSources().genericKill());
+        ServerPlayer respawned = level.getServer().getPlayerList().respawn(player, false, Entity.RemovalReason.KILLED);
+        try {
+            helper.assertTrue(respawned.getInventory().getItem(3).is(Items.IRON_SWORD), "A soulbound sword must stay in its slot");
+            helper.assertTrue(respawned.getItemBySlot(EquipmentSlot.HEAD).is(Items.IRON_HELMET), "A soulbound helmet must stay worn");
+            helper.assertTrue(respawned.getInventory().getItem(4).isEmpty(), "Ordinary items must not come back");
+            helper.assertTrue(!level.getEntitiesOfClass(ItemEntity.class, new AABB(deathPos, deathPos).inflate(4.0),
+                    item -> item.getItem().is(Items.DIRT)).isEmpty(), "Ordinary items must drop where the player died");
+        } finally {
+            level.getServer().getPlayerList().remove(respawned);
+        }
+        helper.succeed();
+    }
+
+    /**
+     * A grindstone moves an item's enchantments onto a book for experience and grinds a relic's bonuses into an
+     * essence, leaving the items otherwise intact; an anvil puts the essence onto another armour piece.
+     */
+    public static void grindstonesSalvageBooksAndEssenceThatAnvilsReapply(GameTestHelper helper) {
+        HolderLookup.RegistryLookup<Enchantment> enchantments = helper.getLevel().registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
+        Holder<Enchantment> sharpness = enchantments.getOrThrow(Enchantments.SHARPNESS);
+        Holder<Enchantment> vanishing = enchantments.getOrThrow(Enchantments.VANISHING_CURSE);
+        Player player = helper.makeMockPlayer(GameType.SURVIVAL);
+
+        ItemStack sword = enchanted(enchantments, Items.IRON_SWORD, Enchantments.SHARPNESS, 6);
+        sword.enchant(vanishing, 1);
+        GrindstoneMenu grindstone = new GrindstoneMenu(0, player.getInventory(), ContainerLevelAccess.NULL);
+        grindstone.getSlot(0).set(sword);
+        grindstone.getSlot(1).set(new ItemStack(Items.BOOK, 3));
+        helper.assertTrue(grindstone.getSlot(1).mayPlace(new ItemStack(Items.BOOK)), "A grindstone must accept a plain book");
+        ItemStack book = grindstone.getSlot(2).getItem();
+        ItemEnchantments stored = book.getOrDefault(DataComponents.STORED_ENCHANTMENTS, ItemEnchantments.EMPTY);
+        helper.assertTrue(book.is(Items.ENCHANTED_BOOK) && stored.getLevel(sharpness) == 6 && stored.getLevel(vanishing) == 0,
+                "An item and a book must make a book of the item's non-curse enchantments, got " + book);
+        player.experienceLevel = 5;
+        helper.assertTrue(!grindstone.getSlot(2).mayPickup(player), "Extracting Sharpness VI must cost 6 levels");
+        player.experienceLevel = 10;
+        grindstone.clicked(2, 0, ContainerInput.PICKUP, player);
+        helper.assertTrue(grindstone.getCarried().is(Items.ENCHANTED_BOOK), "Taking the result must give the book");
+        ItemStack stripped = grindstone.getSlot(0).getItem();
+        helper.assertTrue(stripped.is(Items.IRON_SWORD) && stripped.getEnchantments().getLevel(sharpness) == 0
+                        && stripped.getEnchantments().getLevel(vanishing) == 1,
+                "The item must stay, keeping only its curses: " + stripped);
+        helper.assertTrue(grindstone.getSlot(1).getItem().getCount() == 2 && player.experienceLevel == 4,
+                "Extraction must use one book and 6 levels");
+
+        ItemStack relic = new ItemStack(Items.IRON_CHESTPLATE);
+        relic.set(DataComponents.ATTRIBUTE_MODIFIERS, relic.getOrDefault(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.EMPTY)
+                .withModifierAdded(Attributes.MAX_HEALTH,
+                        new AttributeModifier(ProceduralDungeon.of("relic/test/max_health"), 4.0, AttributeModifier.Operation.ADD_VALUE),
+                        EquipmentSlotGroup.CHEST));
+        double baseArmor = armorOf(new ItemStack(Items.IRON_CHESTPLATE), EquipmentSlot.CHEST);
+        GrindstoneMenu essenceGrindstone = new GrindstoneMenu(0, player.getInventory(), ContainerLevelAccess.NULL);
+        essenceGrindstone.getSlot(0).set(relic);
+        essenceGrindstone.clicked(2, 0, ContainerInput.PICKUP, player);
+        ItemStack essence = essenceGrindstone.getCarried();
+        ItemStack ground = essenceGrindstone.getSlot(0).getItem();
+        helper.assertTrue(RelicEssence.isEssence(essence), "Grinding a relic alone must give a Relic Essence, got " + essence);
+        helper.assertTrue(!RelicEssence.hasBonuses(ground) && armorOf(ground, EquipmentSlot.CHEST) == baseArmor,
+                "The relic must lose its bonuses but keep its base armour");
+
+        helper.assertTrue(RelicEssence.applyTo(new ItemStack(Items.IRON_SWORD), essence).isEmpty(), "Armour essence must not fit a sword");
+        ItemStack helmet = anvil(player, new ItemStack(Items.IRON_HELMET), essence);
+        double health = helmet.getOrDefault(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.EMPTY)
+                .compute(Attributes.MAX_HEALTH, 20.0, EquipmentSlot.HEAD);
+        helper.assertTrue(health == 24.0, "Armour essence must move its bonus onto a helmet's head slot, got " + health);
+        helper.assertTrue(RelicEssence.applyTo(helmet, essence).isEmpty(), "An item carries one set of dungeon bonuses at a time");
+        helper.succeed();
+    }
+
+    private static void killWith(GameTestHelper helper, Player player, ItemStack weapon, BlockPos pos) {
+        Pig victim = helper.spawnWithNoFreeWill(EntityTypes.PIG, pos);
+        victim.setHealth(0.1F);
+        player.snapTo(helper.absoluteVec(Vec3.atBottomCenterOf(pos)));
+        player.setItemInHand(InteractionHand.MAIN_HAND, weapon);
+        player.attack(victim);
+        helper.assertTrue(victim.isDeadOrDying(), "The victim must die from the hit");
+    }
+
+    private static int effectAmplifier(LivingEntity entity, Holder<MobEffect> effect) {
+        MobEffectInstance instance = entity.getEffect(effect);
+        return instance == null ? -1 : instance.getAmplifier();
+    }
+
+    private static boolean struck(LivingEntity entity, DungeonEnchantments.Nova nova) {
+        return nova.ignites() ? entity.getRemainingFireTicks() > 0 : nova.effects().stream().allMatch(entity::hasEffect);
+    }
+
+    private static double armorOf(ItemStack stack, EquipmentSlot slot) {
+        return stack.getOrDefault(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.EMPTY).compute(Attributes.ARMOR, 0.0, slot);
     }
 
     private static ItemStack anvil(Player player, ItemStack input, ItemStack addition) {

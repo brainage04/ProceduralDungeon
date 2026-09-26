@@ -1,0 +1,7 @@
+{
+  "environment": "minecraft:default",
+  "structure": "minecraft:empty",
+  "max_ticks": 20,
+  "type": "minecraft:function",
+  "function": "procedural_dungeon:grindstones_salvage_books_and_essence_that_anvils_reapply"
+}

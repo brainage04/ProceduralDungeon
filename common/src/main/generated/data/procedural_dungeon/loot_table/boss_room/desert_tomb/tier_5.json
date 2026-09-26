@@ -373,12 +373,230 @@
                   "id": "procedural_dungeon:relic/wardens_cleaver/attack_damage",
                   "operation": "add_value",
                   "slot": "mainhand"
+                },
+                {
+                  "amount": 0.5,
+                  "attribute": "minecraft:attack_speed",
+                  "id": "procedural_dungeon:relic/wardens_cleaver/affix/attack_speed",
+                  "operation": "add_value",
+                  "slot": "mainhand"
                 }
               ],
               "replace": false
             }
           ],
-          "name": "minecraft:netherite_axe"
+          "name": "minecraft:netherite_axe",
+          "weight": 21
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "minecraft:item_name": "Warden's Cleaver"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:rarity": "epic"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:lore": [
+                  {
+                    "color": "gray",
+                    "italic": false,
+                    "text": "Pried from the grip of a dungeon's warden."
+                  },
+                  {
+                    "color": "dark_purple",
+                    "italic": false,
+                    "text": "Relic of a tier 5 dungeon"
+                  }
+                ]
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:enchantments": {
+                  "minecraft:sharpness": 8
+                }
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:unbreakable": {}
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "function": "minecraft:set_attributes",
+              "modifiers": [
+                {
+                  "amount": 5.0,
+                  "attribute": "minecraft:attack_damage",
+                  "id": "procedural_dungeon:relic/wardens_cleaver/attack_damage",
+                  "operation": "add_value",
+                  "slot": "mainhand"
+                },
+                {
+                  "amount": 1.0,
+                  "attribute": "minecraft:attack_knockback",
+                  "id": "procedural_dungeon:relic/wardens_cleaver/affix/attack_knockback",
+                  "operation": "add_value",
+                  "slot": "mainhand"
+                }
+              ],
+              "replace": false
+            }
+          ],
+          "name": "minecraft:netherite_axe",
+          "weight": 21
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "minecraft:item_name": "Warden's Cleaver"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:rarity": "epic"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:lore": [
+                  {
+                    "color": "gray",
+                    "italic": false,
+                    "text": "Pried from the grip of a dungeon's warden."
+                  },
+                  {
+                    "color": "dark_purple",
+                    "italic": false,
+                    "text": "Relic of a tier 5 dungeon"
+                  }
+                ]
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:enchantments": {
+                  "minecraft:sharpness": 8
+                }
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:unbreakable": {}
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "function": "minecraft:set_attributes",
+              "modifiers": [
+                {
+                  "amount": 5.0,
+                  "attribute": "minecraft:attack_damage",
+                  "id": "procedural_dungeon:relic/wardens_cleaver/attack_damage",
+                  "operation": "add_value",
+                  "slot": "mainhand"
+                },
+                {
+                  "amount": 0.5,
+                  "attribute": "minecraft:sweeping_damage_ratio",
+                  "id": "procedural_dungeon:relic/wardens_cleaver/affix/sweeping_damage_ratio",
+                  "operation": "add_value",
+                  "slot": "mainhand"
+                }
+              ],
+              "replace": false
+            }
+          ],
+          "name": "minecraft:netherite_axe",
+          "weight": 21
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "minecraft:item_name": "Warden's Cleaver"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:rarity": "epic"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:lore": [
+                  {
+                    "color": "gray",
+                    "italic": false,
+                    "text": "Pried from the grip of a dungeon's warden."
+                  },
+                  {
+                    "color": "dark_purple",
+                    "italic": false,
+                    "text": "Relic of a tier 5 dungeon"
+                  }
+                ]
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:enchantments": {
+                  "minecraft:sharpness": 8
+                }
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:unbreakable": {}
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "function": "minecraft:set_attributes",
+              "modifiers": [
+                {
+                  "amount": 5.0,
+                  "attribute": "minecraft:attack_damage",
+                  "id": "procedural_dungeon:relic/wardens_cleaver/attack_damage",
+                  "operation": "add_value",
+                  "slot": "mainhand"
+                },
+                {
+                  "amount": 1.25,
+                  "attribute": "minecraft:entity_interaction_range",
+                  "id": "procedural_dungeon:relic/wardens_cleaver/affix/entity_interaction_range",
+                  "operation": "add_value",
+                  "slot": "mainhand"
+                }
+              ],
+              "replace": false
+            }
+          ],
+          "name": "minecraft:netherite_axe",
+          "weight": 21
         },
         {
           "type": "minecraft:item",
@@ -442,12 +660,1021 @@
                   "id": "procedural_dungeon:relic/aegis_of_the_depths/knockback_resistance",
                   "operation": "add_value",
                   "slot": "chest"
+                },
+                {
+                  "amount": 5.0,
+                  "attribute": "minecraft:max_absorption",
+                  "id": "procedural_dungeon:relic/aegis_of_the_depths/affix/max_absorption",
+                  "operation": "add_value",
+                  "slot": "chest"
                 }
               ],
               "replace": false
             }
           ],
-          "name": "minecraft:netherite_chestplate"
+          "name": "minecraft:netherite_chestplate",
+          "weight": 6
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "minecraft:item_name": "Aegis of the Depths"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:rarity": "epic"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:lore": [
+                  {
+                    "color": "gray",
+                    "italic": false,
+                    "text": "It has turned aside worse than you."
+                  },
+                  {
+                    "color": "dark_purple",
+                    "italic": false,
+                    "text": "Relic of a tier 5 dungeon"
+                  }
+                ]
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:enchantments": {
+                  "minecraft:protection": 7
+                }
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:unbreakable": {}
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "function": "minecraft:set_attributes",
+              "modifiers": [
+                {
+                  "amount": 10.0,
+                  "attribute": "minecraft:max_health",
+                  "id": "procedural_dungeon:relic/aegis_of_the_depths/max_health",
+                  "operation": "add_value",
+                  "slot": "chest"
+                },
+                {
+                  "amount": 0.25,
+                  "attribute": "minecraft:knockback_resistance",
+                  "id": "procedural_dungeon:relic/aegis_of_the_depths/knockback_resistance",
+                  "operation": "add_value",
+                  "slot": "chest"
+                },
+                {
+                  "amount": 2.5,
+                  "attribute": "minecraft:armor",
+                  "id": "procedural_dungeon:relic/aegis_of_the_depths/affix/armor",
+                  "operation": "add_value",
+                  "slot": "chest"
+                }
+              ],
+              "replace": false
+            }
+          ],
+          "name": "minecraft:netherite_chestplate",
+          "weight": 6
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "minecraft:item_name": "Aegis of the Depths"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:rarity": "epic"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:lore": [
+                  {
+                    "color": "gray",
+                    "italic": false,
+                    "text": "It has turned aside worse than you."
+                  },
+                  {
+                    "color": "dark_purple",
+                    "italic": false,
+                    "text": "Relic of a tier 5 dungeon"
+                  }
+                ]
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:enchantments": {
+                  "minecraft:protection": 7
+                }
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:unbreakable": {}
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "function": "minecraft:set_attributes",
+              "modifiers": [
+                {
+                  "amount": 10.0,
+                  "attribute": "minecraft:max_health",
+                  "id": "procedural_dungeon:relic/aegis_of_the_depths/max_health",
+                  "operation": "add_value",
+                  "slot": "chest"
+                },
+                {
+                  "amount": 0.25,
+                  "attribute": "minecraft:knockback_resistance",
+                  "id": "procedural_dungeon:relic/aegis_of_the_depths/knockback_resistance",
+                  "operation": "add_value",
+                  "slot": "chest"
+                },
+                {
+                  "amount": 2.5,
+                  "attribute": "minecraft:armor_toughness",
+                  "id": "procedural_dungeon:relic/aegis_of_the_depths/affix/armor_toughness",
+                  "operation": "add_value",
+                  "slot": "chest"
+                }
+              ],
+              "replace": false
+            }
+          ],
+          "name": "minecraft:netherite_chestplate",
+          "weight": 6
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "minecraft:item_name": "Aegis of the Depths"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:rarity": "epic"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:lore": [
+                  {
+                    "color": "gray",
+                    "italic": false,
+                    "text": "It has turned aside worse than you."
+                  },
+                  {
+                    "color": "dark_purple",
+                    "italic": false,
+                    "text": "Relic of a tier 5 dungeon"
+                  }
+                ]
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:enchantments": {
+                  "minecraft:protection": 7
+                }
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:unbreakable": {}
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "function": "minecraft:set_attributes",
+              "modifiers": [
+                {
+                  "amount": 10.0,
+                  "attribute": "minecraft:max_health",
+                  "id": "procedural_dungeon:relic/aegis_of_the_depths/max_health",
+                  "operation": "add_value",
+                  "slot": "chest"
+                },
+                {
+                  "amount": 0.25,
+                  "attribute": "minecraft:knockback_resistance",
+                  "id": "procedural_dungeon:relic/aegis_of_the_depths/knockback_resistance",
+                  "operation": "add_value",
+                  "slot": "chest"
+                },
+                {
+                  "amount": 0.5,
+                  "attribute": "minecraft:explosion_knockback_resistance",
+                  "id": "procedural_dungeon:relic/aegis_of_the_depths/affix/explosion_knockback_resistance",
+                  "operation": "add_value",
+                  "slot": "chest"
+                }
+              ],
+              "replace": false
+            }
+          ],
+          "name": "minecraft:netherite_chestplate",
+          "weight": 6
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "minecraft:item_name": "Aegis of the Depths"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:rarity": "epic"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:lore": [
+                  {
+                    "color": "gray",
+                    "italic": false,
+                    "text": "It has turned aside worse than you."
+                  },
+                  {
+                    "color": "dark_purple",
+                    "italic": false,
+                    "text": "Relic of a tier 5 dungeon"
+                  }
+                ]
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:enchantments": {
+                  "minecraft:protection": 7
+                }
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:unbreakable": {}
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "function": "minecraft:set_attributes",
+              "modifiers": [
+                {
+                  "amount": 10.0,
+                  "attribute": "minecraft:max_health",
+                  "id": "procedural_dungeon:relic/aegis_of_the_depths/max_health",
+                  "operation": "add_value",
+                  "slot": "chest"
+                },
+                {
+                  "amount": 0.25,
+                  "attribute": "minecraft:knockback_resistance",
+                  "id": "procedural_dungeon:relic/aegis_of_the_depths/knockback_resistance",
+                  "operation": "add_value",
+                  "slot": "chest"
+                },
+                {
+                  "amount": 0.1,
+                  "attribute": "minecraft:movement_speed",
+                  "id": "procedural_dungeon:relic/aegis_of_the_depths/affix/movement_speed",
+                  "operation": "add_multiplied_base",
+                  "slot": "chest"
+                }
+              ],
+              "replace": false
+            }
+          ],
+          "name": "minecraft:netherite_chestplate",
+          "weight": 6
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "minecraft:item_name": "Aegis of the Depths"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:rarity": "epic"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:lore": [
+                  {
+                    "color": "gray",
+                    "italic": false,
+                    "text": "It has turned aside worse than you."
+                  },
+                  {
+                    "color": "dark_purple",
+                    "italic": false,
+                    "text": "Relic of a tier 5 dungeon"
+                  }
+                ]
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:enchantments": {
+                  "minecraft:protection": 7
+                }
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:unbreakable": {}
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "function": "minecraft:set_attributes",
+              "modifiers": [
+                {
+                  "amount": 10.0,
+                  "attribute": "minecraft:max_health",
+                  "id": "procedural_dungeon:relic/aegis_of_the_depths/max_health",
+                  "operation": "add_value",
+                  "slot": "chest"
+                },
+                {
+                  "amount": 0.25,
+                  "attribute": "minecraft:knockback_resistance",
+                  "id": "procedural_dungeon:relic/aegis_of_the_depths/knockback_resistance",
+                  "operation": "add_value",
+                  "slot": "chest"
+                },
+                {
+                  "amount": 0.5,
+                  "attribute": "minecraft:sneaking_speed",
+                  "id": "procedural_dungeon:relic/aegis_of_the_depths/affix/sneaking_speed",
+                  "operation": "add_multiplied_base",
+                  "slot": "chest"
+                }
+              ],
+              "replace": false
+            }
+          ],
+          "name": "minecraft:netherite_chestplate",
+          "weight": 6
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "minecraft:item_name": "Aegis of the Depths"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:rarity": "epic"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:lore": [
+                  {
+                    "color": "gray",
+                    "italic": false,
+                    "text": "It has turned aside worse than you."
+                  },
+                  {
+                    "color": "dark_purple",
+                    "italic": false,
+                    "text": "Relic of a tier 5 dungeon"
+                  }
+                ]
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:enchantments": {
+                  "minecraft:protection": 7
+                }
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:unbreakable": {}
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "function": "minecraft:set_attributes",
+              "modifiers": [
+                {
+                  "amount": 10.0,
+                  "attribute": "minecraft:max_health",
+                  "id": "procedural_dungeon:relic/aegis_of_the_depths/max_health",
+                  "operation": "add_value",
+                  "slot": "chest"
+                },
+                {
+                  "amount": 0.25,
+                  "attribute": "minecraft:knockback_resistance",
+                  "id": "procedural_dungeon:relic/aegis_of_the_depths/knockback_resistance",
+                  "operation": "add_value",
+                  "slot": "chest"
+                },
+                {
+                  "amount": 0.15,
+                  "attribute": "minecraft:jump_strength",
+                  "id": "procedural_dungeon:relic/aegis_of_the_depths/affix/jump_strength",
+                  "operation": "add_multiplied_base",
+                  "slot": "chest"
+                }
+              ],
+              "replace": false
+            }
+          ],
+          "name": "minecraft:netherite_chestplate",
+          "weight": 6
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "minecraft:item_name": "Aegis of the Depths"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:rarity": "epic"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:lore": [
+                  {
+                    "color": "gray",
+                    "italic": false,
+                    "text": "It has turned aside worse than you."
+                  },
+                  {
+                    "color": "dark_purple",
+                    "italic": false,
+                    "text": "Relic of a tier 5 dungeon"
+                  }
+                ]
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:enchantments": {
+                  "minecraft:protection": 7
+                }
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:unbreakable": {}
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "function": "minecraft:set_attributes",
+              "modifiers": [
+                {
+                  "amount": 10.0,
+                  "attribute": "minecraft:max_health",
+                  "id": "procedural_dungeon:relic/aegis_of_the_depths/max_health",
+                  "operation": "add_value",
+                  "slot": "chest"
+                },
+                {
+                  "amount": 0.25,
+                  "attribute": "minecraft:knockback_resistance",
+                  "id": "procedural_dungeon:relic/aegis_of_the_depths/knockback_resistance",
+                  "operation": "add_value",
+                  "slot": "chest"
+                },
+                {
+                  "amount": 0.5,
+                  "attribute": "minecraft:step_height",
+                  "id": "procedural_dungeon:relic/aegis_of_the_depths/affix/step_height",
+                  "operation": "add_value",
+                  "slot": "chest"
+                }
+              ],
+              "replace": false
+            }
+          ],
+          "name": "minecraft:netherite_chestplate",
+          "weight": 6
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "minecraft:item_name": "Aegis of the Depths"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:rarity": "epic"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:lore": [
+                  {
+                    "color": "gray",
+                    "italic": false,
+                    "text": "It has turned aside worse than you."
+                  },
+                  {
+                    "color": "dark_purple",
+                    "italic": false,
+                    "text": "Relic of a tier 5 dungeon"
+                  }
+                ]
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:enchantments": {
+                  "minecraft:protection": 7
+                }
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:unbreakable": {}
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "function": "minecraft:set_attributes",
+              "modifiers": [
+                {
+                  "amount": 10.0,
+                  "attribute": "minecraft:max_health",
+                  "id": "procedural_dungeon:relic/aegis_of_the_depths/max_health",
+                  "operation": "add_value",
+                  "slot": "chest"
+                },
+                {
+                  "amount": 0.25,
+                  "attribute": "minecraft:knockback_resistance",
+                  "id": "procedural_dungeon:relic/aegis_of_the_depths/knockback_resistance",
+                  "operation": "add_value",
+                  "slot": "chest"
+                },
+                {
+                  "amount": 5.0,
+                  "attribute": "minecraft:safe_fall_distance",
+                  "id": "procedural_dungeon:relic/aegis_of_the_depths/affix/safe_fall_distance",
+                  "operation": "add_value",
+                  "slot": "chest"
+                }
+              ],
+              "replace": false
+            }
+          ],
+          "name": "minecraft:netherite_chestplate",
+          "weight": 6
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "minecraft:item_name": "Aegis of the Depths"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:rarity": "epic"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:lore": [
+                  {
+                    "color": "gray",
+                    "italic": false,
+                    "text": "It has turned aside worse than you."
+                  },
+                  {
+                    "color": "dark_purple",
+                    "italic": false,
+                    "text": "Relic of a tier 5 dungeon"
+                  }
+                ]
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:enchantments": {
+                  "minecraft:protection": 7
+                }
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:unbreakable": {}
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "function": "minecraft:set_attributes",
+              "modifiers": [
+                {
+                  "amount": 10.0,
+                  "attribute": "minecraft:max_health",
+                  "id": "procedural_dungeon:relic/aegis_of_the_depths/max_health",
+                  "operation": "add_value",
+                  "slot": "chest"
+                },
+                {
+                  "amount": 0.25,
+                  "attribute": "minecraft:knockback_resistance",
+                  "id": "procedural_dungeon:relic/aegis_of_the_depths/knockback_resistance",
+                  "operation": "add_value",
+                  "slot": "chest"
+                },
+                {
+                  "amount": -0.4,
+                  "attribute": "minecraft:fall_damage_multiplier",
+                  "id": "procedural_dungeon:relic/aegis_of_the_depths/affix/fall_damage_multiplier",
+                  "operation": "add_multiplied_base",
+                  "slot": "chest"
+                }
+              ],
+              "replace": false
+            }
+          ],
+          "name": "minecraft:netherite_chestplate",
+          "weight": 6
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "minecraft:item_name": "Aegis of the Depths"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:rarity": "epic"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:lore": [
+                  {
+                    "color": "gray",
+                    "italic": false,
+                    "text": "It has turned aside worse than you."
+                  },
+                  {
+                    "color": "dark_purple",
+                    "italic": false,
+                    "text": "Relic of a tier 5 dungeon"
+                  }
+                ]
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:enchantments": {
+                  "minecraft:protection": 7
+                }
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:unbreakable": {}
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "function": "minecraft:set_attributes",
+              "modifiers": [
+                {
+                  "amount": 10.0,
+                  "attribute": "minecraft:max_health",
+                  "id": "procedural_dungeon:relic/aegis_of_the_depths/max_health",
+                  "operation": "add_value",
+                  "slot": "chest"
+                },
+                {
+                  "amount": 0.25,
+                  "attribute": "minecraft:knockback_resistance",
+                  "id": "procedural_dungeon:relic/aegis_of_the_depths/knockback_resistance",
+                  "operation": "add_value",
+                  "slot": "chest"
+                },
+                {
+                  "amount": 0.5,
+                  "attribute": "minecraft:water_movement_efficiency",
+                  "id": "procedural_dungeon:relic/aegis_of_the_depths/affix/water_movement_efficiency",
+                  "operation": "add_value",
+                  "slot": "chest"
+                }
+              ],
+              "replace": false
+            }
+          ],
+          "name": "minecraft:netherite_chestplate",
+          "weight": 6
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "minecraft:item_name": "Aegis of the Depths"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:rarity": "epic"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:lore": [
+                  {
+                    "color": "gray",
+                    "italic": false,
+                    "text": "It has turned aside worse than you."
+                  },
+                  {
+                    "color": "dark_purple",
+                    "italic": false,
+                    "text": "Relic of a tier 5 dungeon"
+                  }
+                ]
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:enchantments": {
+                  "minecraft:protection": 7
+                }
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:unbreakable": {}
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "function": "minecraft:set_attributes",
+              "modifiers": [
+                {
+                  "amount": 10.0,
+                  "attribute": "minecraft:max_health",
+                  "id": "procedural_dungeon:relic/aegis_of_the_depths/max_health",
+                  "operation": "add_value",
+                  "slot": "chest"
+                },
+                {
+                  "amount": 0.25,
+                  "attribute": "minecraft:knockback_resistance",
+                  "id": "procedural_dungeon:relic/aegis_of_the_depths/knockback_resistance",
+                  "operation": "add_value",
+                  "slot": "chest"
+                },
+                {
+                  "amount": 5.0,
+                  "attribute": "minecraft:oxygen_bonus",
+                  "id": "procedural_dungeon:relic/aegis_of_the_depths/affix/oxygen_bonus",
+                  "operation": "add_value",
+                  "slot": "chest"
+                }
+              ],
+              "replace": false
+            }
+          ],
+          "name": "minecraft:netherite_chestplate",
+          "weight": 6
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "minecraft:item_name": "Aegis of the Depths"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:rarity": "epic"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:lore": [
+                  {
+                    "color": "gray",
+                    "italic": false,
+                    "text": "It has turned aside worse than you."
+                  },
+                  {
+                    "color": "dark_purple",
+                    "italic": false,
+                    "text": "Relic of a tier 5 dungeon"
+                  }
+                ]
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:enchantments": {
+                  "minecraft:protection": 7
+                }
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:unbreakable": {}
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "function": "minecraft:set_attributes",
+              "modifiers": [
+                {
+                  "amount": 10.0,
+                  "attribute": "minecraft:max_health",
+                  "id": "procedural_dungeon:relic/aegis_of_the_depths/max_health",
+                  "operation": "add_value",
+                  "slot": "chest"
+                },
+                {
+                  "amount": 0.25,
+                  "attribute": "minecraft:knockback_resistance",
+                  "id": "procedural_dungeon:relic/aegis_of_the_depths/knockback_resistance",
+                  "operation": "add_value",
+                  "slot": "chest"
+                },
+                {
+                  "amount": -0.5,
+                  "attribute": "minecraft:burning_time",
+                  "id": "procedural_dungeon:relic/aegis_of_the_depths/affix/burning_time",
+                  "operation": "add_multiplied_base",
+                  "slot": "chest"
+                }
+              ],
+              "replace": false
+            }
+          ],
+          "name": "minecraft:netherite_chestplate",
+          "weight": 6
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "minecraft:item_name": "Aegis of the Depths"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:rarity": "epic"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:lore": [
+                  {
+                    "color": "gray",
+                    "italic": false,
+                    "text": "It has turned aside worse than you."
+                  },
+                  {
+                    "color": "dark_purple",
+                    "italic": false,
+                    "text": "Relic of a tier 5 dungeon"
+                  }
+                ]
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:enchantments": {
+                  "minecraft:protection": 7
+                }
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:unbreakable": {}
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "function": "minecraft:set_attributes",
+              "modifiers": [
+                {
+                  "amount": 10.0,
+                  "attribute": "minecraft:max_health",
+                  "id": "procedural_dungeon:relic/aegis_of_the_depths/max_health",
+                  "operation": "add_value",
+                  "slot": "chest"
+                },
+                {
+                  "amount": 0.25,
+                  "attribute": "minecraft:knockback_resistance",
+                  "id": "procedural_dungeon:relic/aegis_of_the_depths/knockback_resistance",
+                  "operation": "add_value",
+                  "slot": "chest"
+                },
+                {
+                  "amount": 2.5,
+                  "attribute": "minecraft:luck",
+                  "id": "procedural_dungeon:relic/aegis_of_the_depths/affix/luck",
+                  "operation": "add_value",
+                  "slot": "chest"
+                }
+              ],
+              "replace": false
+            }
+          ],
+          "name": "minecraft:netherite_chestplate",
+          "weight": 6
         },
         {
           "type": "minecraft:item",
@@ -511,12 +1738,1021 @@
                   "id": "procedural_dungeon:relic/stridewalkers/step_height",
                   "operation": "add_value",
                   "slot": "feet"
+                },
+                {
+                  "amount": 5.0,
+                  "attribute": "minecraft:max_health",
+                  "id": "procedural_dungeon:relic/stridewalkers/affix/max_health",
+                  "operation": "add_value",
+                  "slot": "feet"
                 }
               ],
               "replace": false
             }
           ],
-          "name": "minecraft:netherite_boots"
+          "name": "minecraft:netherite_boots",
+          "weight": 6
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "minecraft:item_name": "Stridewalkers"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:rarity": "epic"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:lore": [
+                  {
+                    "color": "gray",
+                    "italic": false,
+                    "text": "Every stair is a single step."
+                  },
+                  {
+                    "color": "dark_purple",
+                    "italic": false,
+                    "text": "Relic of a tier 5 dungeon"
+                  }
+                ]
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:enchantments": {
+                  "minecraft:feather_falling": 8
+                }
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:unbreakable": {}
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "function": "minecraft:set_attributes",
+              "modifiers": [
+                {
+                  "amount": 0.2,
+                  "attribute": "minecraft:movement_speed",
+                  "id": "procedural_dungeon:relic/stridewalkers/movement_speed",
+                  "operation": "add_multiplied_base",
+                  "slot": "feet"
+                },
+                {
+                  "amount": 0.6,
+                  "attribute": "minecraft:step_height",
+                  "id": "procedural_dungeon:relic/stridewalkers/step_height",
+                  "operation": "add_value",
+                  "slot": "feet"
+                },
+                {
+                  "amount": 5.0,
+                  "attribute": "minecraft:max_absorption",
+                  "id": "procedural_dungeon:relic/stridewalkers/affix/max_absorption",
+                  "operation": "add_value",
+                  "slot": "feet"
+                }
+              ],
+              "replace": false
+            }
+          ],
+          "name": "minecraft:netherite_boots",
+          "weight": 6
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "minecraft:item_name": "Stridewalkers"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:rarity": "epic"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:lore": [
+                  {
+                    "color": "gray",
+                    "italic": false,
+                    "text": "Every stair is a single step."
+                  },
+                  {
+                    "color": "dark_purple",
+                    "italic": false,
+                    "text": "Relic of a tier 5 dungeon"
+                  }
+                ]
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:enchantments": {
+                  "minecraft:feather_falling": 8
+                }
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:unbreakable": {}
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "function": "minecraft:set_attributes",
+              "modifiers": [
+                {
+                  "amount": 0.2,
+                  "attribute": "minecraft:movement_speed",
+                  "id": "procedural_dungeon:relic/stridewalkers/movement_speed",
+                  "operation": "add_multiplied_base",
+                  "slot": "feet"
+                },
+                {
+                  "amount": 0.6,
+                  "attribute": "minecraft:step_height",
+                  "id": "procedural_dungeon:relic/stridewalkers/step_height",
+                  "operation": "add_value",
+                  "slot": "feet"
+                },
+                {
+                  "amount": 2.5,
+                  "attribute": "minecraft:armor",
+                  "id": "procedural_dungeon:relic/stridewalkers/affix/armor",
+                  "operation": "add_value",
+                  "slot": "feet"
+                }
+              ],
+              "replace": false
+            }
+          ],
+          "name": "minecraft:netherite_boots",
+          "weight": 6
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "minecraft:item_name": "Stridewalkers"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:rarity": "epic"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:lore": [
+                  {
+                    "color": "gray",
+                    "italic": false,
+                    "text": "Every stair is a single step."
+                  },
+                  {
+                    "color": "dark_purple",
+                    "italic": false,
+                    "text": "Relic of a tier 5 dungeon"
+                  }
+                ]
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:enchantments": {
+                  "minecraft:feather_falling": 8
+                }
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:unbreakable": {}
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "function": "minecraft:set_attributes",
+              "modifiers": [
+                {
+                  "amount": 0.2,
+                  "attribute": "minecraft:movement_speed",
+                  "id": "procedural_dungeon:relic/stridewalkers/movement_speed",
+                  "operation": "add_multiplied_base",
+                  "slot": "feet"
+                },
+                {
+                  "amount": 0.6,
+                  "attribute": "minecraft:step_height",
+                  "id": "procedural_dungeon:relic/stridewalkers/step_height",
+                  "operation": "add_value",
+                  "slot": "feet"
+                },
+                {
+                  "amount": 2.5,
+                  "attribute": "minecraft:armor_toughness",
+                  "id": "procedural_dungeon:relic/stridewalkers/affix/armor_toughness",
+                  "operation": "add_value",
+                  "slot": "feet"
+                }
+              ],
+              "replace": false
+            }
+          ],
+          "name": "minecraft:netherite_boots",
+          "weight": 6
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "minecraft:item_name": "Stridewalkers"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:rarity": "epic"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:lore": [
+                  {
+                    "color": "gray",
+                    "italic": false,
+                    "text": "Every stair is a single step."
+                  },
+                  {
+                    "color": "dark_purple",
+                    "italic": false,
+                    "text": "Relic of a tier 5 dungeon"
+                  }
+                ]
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:enchantments": {
+                  "minecraft:feather_falling": 8
+                }
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:unbreakable": {}
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "function": "minecraft:set_attributes",
+              "modifiers": [
+                {
+                  "amount": 0.2,
+                  "attribute": "minecraft:movement_speed",
+                  "id": "procedural_dungeon:relic/stridewalkers/movement_speed",
+                  "operation": "add_multiplied_base",
+                  "slot": "feet"
+                },
+                {
+                  "amount": 0.6,
+                  "attribute": "minecraft:step_height",
+                  "id": "procedural_dungeon:relic/stridewalkers/step_height",
+                  "operation": "add_value",
+                  "slot": "feet"
+                },
+                {
+                  "amount": 0.2,
+                  "attribute": "minecraft:knockback_resistance",
+                  "id": "procedural_dungeon:relic/stridewalkers/affix/knockback_resistance",
+                  "operation": "add_value",
+                  "slot": "feet"
+                }
+              ],
+              "replace": false
+            }
+          ],
+          "name": "minecraft:netherite_boots",
+          "weight": 6
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "minecraft:item_name": "Stridewalkers"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:rarity": "epic"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:lore": [
+                  {
+                    "color": "gray",
+                    "italic": false,
+                    "text": "Every stair is a single step."
+                  },
+                  {
+                    "color": "dark_purple",
+                    "italic": false,
+                    "text": "Relic of a tier 5 dungeon"
+                  }
+                ]
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:enchantments": {
+                  "minecraft:feather_falling": 8
+                }
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:unbreakable": {}
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "function": "minecraft:set_attributes",
+              "modifiers": [
+                {
+                  "amount": 0.2,
+                  "attribute": "minecraft:movement_speed",
+                  "id": "procedural_dungeon:relic/stridewalkers/movement_speed",
+                  "operation": "add_multiplied_base",
+                  "slot": "feet"
+                },
+                {
+                  "amount": 0.6,
+                  "attribute": "minecraft:step_height",
+                  "id": "procedural_dungeon:relic/stridewalkers/step_height",
+                  "operation": "add_value",
+                  "slot": "feet"
+                },
+                {
+                  "amount": 0.5,
+                  "attribute": "minecraft:explosion_knockback_resistance",
+                  "id": "procedural_dungeon:relic/stridewalkers/affix/explosion_knockback_resistance",
+                  "operation": "add_value",
+                  "slot": "feet"
+                }
+              ],
+              "replace": false
+            }
+          ],
+          "name": "minecraft:netherite_boots",
+          "weight": 6
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "minecraft:item_name": "Stridewalkers"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:rarity": "epic"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:lore": [
+                  {
+                    "color": "gray",
+                    "italic": false,
+                    "text": "Every stair is a single step."
+                  },
+                  {
+                    "color": "dark_purple",
+                    "italic": false,
+                    "text": "Relic of a tier 5 dungeon"
+                  }
+                ]
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:enchantments": {
+                  "minecraft:feather_falling": 8
+                }
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:unbreakable": {}
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "function": "minecraft:set_attributes",
+              "modifiers": [
+                {
+                  "amount": 0.2,
+                  "attribute": "minecraft:movement_speed",
+                  "id": "procedural_dungeon:relic/stridewalkers/movement_speed",
+                  "operation": "add_multiplied_base",
+                  "slot": "feet"
+                },
+                {
+                  "amount": 0.6,
+                  "attribute": "minecraft:step_height",
+                  "id": "procedural_dungeon:relic/stridewalkers/step_height",
+                  "operation": "add_value",
+                  "slot": "feet"
+                },
+                {
+                  "amount": 0.5,
+                  "attribute": "minecraft:sneaking_speed",
+                  "id": "procedural_dungeon:relic/stridewalkers/affix/sneaking_speed",
+                  "operation": "add_multiplied_base",
+                  "slot": "feet"
+                }
+              ],
+              "replace": false
+            }
+          ],
+          "name": "minecraft:netherite_boots",
+          "weight": 6
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "minecraft:item_name": "Stridewalkers"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:rarity": "epic"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:lore": [
+                  {
+                    "color": "gray",
+                    "italic": false,
+                    "text": "Every stair is a single step."
+                  },
+                  {
+                    "color": "dark_purple",
+                    "italic": false,
+                    "text": "Relic of a tier 5 dungeon"
+                  }
+                ]
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:enchantments": {
+                  "minecraft:feather_falling": 8
+                }
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:unbreakable": {}
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "function": "minecraft:set_attributes",
+              "modifiers": [
+                {
+                  "amount": 0.2,
+                  "attribute": "minecraft:movement_speed",
+                  "id": "procedural_dungeon:relic/stridewalkers/movement_speed",
+                  "operation": "add_multiplied_base",
+                  "slot": "feet"
+                },
+                {
+                  "amount": 0.6,
+                  "attribute": "minecraft:step_height",
+                  "id": "procedural_dungeon:relic/stridewalkers/step_height",
+                  "operation": "add_value",
+                  "slot": "feet"
+                },
+                {
+                  "amount": 0.15,
+                  "attribute": "minecraft:jump_strength",
+                  "id": "procedural_dungeon:relic/stridewalkers/affix/jump_strength",
+                  "operation": "add_multiplied_base",
+                  "slot": "feet"
+                }
+              ],
+              "replace": false
+            }
+          ],
+          "name": "minecraft:netherite_boots",
+          "weight": 6
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "minecraft:item_name": "Stridewalkers"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:rarity": "epic"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:lore": [
+                  {
+                    "color": "gray",
+                    "italic": false,
+                    "text": "Every stair is a single step."
+                  },
+                  {
+                    "color": "dark_purple",
+                    "italic": false,
+                    "text": "Relic of a tier 5 dungeon"
+                  }
+                ]
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:enchantments": {
+                  "minecraft:feather_falling": 8
+                }
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:unbreakable": {}
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "function": "minecraft:set_attributes",
+              "modifiers": [
+                {
+                  "amount": 0.2,
+                  "attribute": "minecraft:movement_speed",
+                  "id": "procedural_dungeon:relic/stridewalkers/movement_speed",
+                  "operation": "add_multiplied_base",
+                  "slot": "feet"
+                },
+                {
+                  "amount": 0.6,
+                  "attribute": "minecraft:step_height",
+                  "id": "procedural_dungeon:relic/stridewalkers/step_height",
+                  "operation": "add_value",
+                  "slot": "feet"
+                },
+                {
+                  "amount": 5.0,
+                  "attribute": "minecraft:safe_fall_distance",
+                  "id": "procedural_dungeon:relic/stridewalkers/affix/safe_fall_distance",
+                  "operation": "add_value",
+                  "slot": "feet"
+                }
+              ],
+              "replace": false
+            }
+          ],
+          "name": "minecraft:netherite_boots",
+          "weight": 6
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "minecraft:item_name": "Stridewalkers"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:rarity": "epic"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:lore": [
+                  {
+                    "color": "gray",
+                    "italic": false,
+                    "text": "Every stair is a single step."
+                  },
+                  {
+                    "color": "dark_purple",
+                    "italic": false,
+                    "text": "Relic of a tier 5 dungeon"
+                  }
+                ]
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:enchantments": {
+                  "minecraft:feather_falling": 8
+                }
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:unbreakable": {}
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "function": "minecraft:set_attributes",
+              "modifiers": [
+                {
+                  "amount": 0.2,
+                  "attribute": "minecraft:movement_speed",
+                  "id": "procedural_dungeon:relic/stridewalkers/movement_speed",
+                  "operation": "add_multiplied_base",
+                  "slot": "feet"
+                },
+                {
+                  "amount": 0.6,
+                  "attribute": "minecraft:step_height",
+                  "id": "procedural_dungeon:relic/stridewalkers/step_height",
+                  "operation": "add_value",
+                  "slot": "feet"
+                },
+                {
+                  "amount": -0.4,
+                  "attribute": "minecraft:fall_damage_multiplier",
+                  "id": "procedural_dungeon:relic/stridewalkers/affix/fall_damage_multiplier",
+                  "operation": "add_multiplied_base",
+                  "slot": "feet"
+                }
+              ],
+              "replace": false
+            }
+          ],
+          "name": "minecraft:netherite_boots",
+          "weight": 6
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "minecraft:item_name": "Stridewalkers"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:rarity": "epic"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:lore": [
+                  {
+                    "color": "gray",
+                    "italic": false,
+                    "text": "Every stair is a single step."
+                  },
+                  {
+                    "color": "dark_purple",
+                    "italic": false,
+                    "text": "Relic of a tier 5 dungeon"
+                  }
+                ]
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:enchantments": {
+                  "minecraft:feather_falling": 8
+                }
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:unbreakable": {}
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "function": "minecraft:set_attributes",
+              "modifiers": [
+                {
+                  "amount": 0.2,
+                  "attribute": "minecraft:movement_speed",
+                  "id": "procedural_dungeon:relic/stridewalkers/movement_speed",
+                  "operation": "add_multiplied_base",
+                  "slot": "feet"
+                },
+                {
+                  "amount": 0.6,
+                  "attribute": "minecraft:step_height",
+                  "id": "procedural_dungeon:relic/stridewalkers/step_height",
+                  "operation": "add_value",
+                  "slot": "feet"
+                },
+                {
+                  "amount": 0.5,
+                  "attribute": "minecraft:water_movement_efficiency",
+                  "id": "procedural_dungeon:relic/stridewalkers/affix/water_movement_efficiency",
+                  "operation": "add_value",
+                  "slot": "feet"
+                }
+              ],
+              "replace": false
+            }
+          ],
+          "name": "minecraft:netherite_boots",
+          "weight": 6
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "minecraft:item_name": "Stridewalkers"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:rarity": "epic"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:lore": [
+                  {
+                    "color": "gray",
+                    "italic": false,
+                    "text": "Every stair is a single step."
+                  },
+                  {
+                    "color": "dark_purple",
+                    "italic": false,
+                    "text": "Relic of a tier 5 dungeon"
+                  }
+                ]
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:enchantments": {
+                  "minecraft:feather_falling": 8
+                }
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:unbreakable": {}
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "function": "minecraft:set_attributes",
+              "modifiers": [
+                {
+                  "amount": 0.2,
+                  "attribute": "minecraft:movement_speed",
+                  "id": "procedural_dungeon:relic/stridewalkers/movement_speed",
+                  "operation": "add_multiplied_base",
+                  "slot": "feet"
+                },
+                {
+                  "amount": 0.6,
+                  "attribute": "minecraft:step_height",
+                  "id": "procedural_dungeon:relic/stridewalkers/step_height",
+                  "operation": "add_value",
+                  "slot": "feet"
+                },
+                {
+                  "amount": 5.0,
+                  "attribute": "minecraft:oxygen_bonus",
+                  "id": "procedural_dungeon:relic/stridewalkers/affix/oxygen_bonus",
+                  "operation": "add_value",
+                  "slot": "feet"
+                }
+              ],
+              "replace": false
+            }
+          ],
+          "name": "minecraft:netherite_boots",
+          "weight": 6
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "minecraft:item_name": "Stridewalkers"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:rarity": "epic"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:lore": [
+                  {
+                    "color": "gray",
+                    "italic": false,
+                    "text": "Every stair is a single step."
+                  },
+                  {
+                    "color": "dark_purple",
+                    "italic": false,
+                    "text": "Relic of a tier 5 dungeon"
+                  }
+                ]
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:enchantments": {
+                  "minecraft:feather_falling": 8
+                }
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:unbreakable": {}
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "function": "minecraft:set_attributes",
+              "modifiers": [
+                {
+                  "amount": 0.2,
+                  "attribute": "minecraft:movement_speed",
+                  "id": "procedural_dungeon:relic/stridewalkers/movement_speed",
+                  "operation": "add_multiplied_base",
+                  "slot": "feet"
+                },
+                {
+                  "amount": 0.6,
+                  "attribute": "minecraft:step_height",
+                  "id": "procedural_dungeon:relic/stridewalkers/step_height",
+                  "operation": "add_value",
+                  "slot": "feet"
+                },
+                {
+                  "amount": -0.5,
+                  "attribute": "minecraft:burning_time",
+                  "id": "procedural_dungeon:relic/stridewalkers/affix/burning_time",
+                  "operation": "add_multiplied_base",
+                  "slot": "feet"
+                }
+              ],
+              "replace": false
+            }
+          ],
+          "name": "minecraft:netherite_boots",
+          "weight": 6
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "minecraft:item_name": "Stridewalkers"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:rarity": "epic"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:lore": [
+                  {
+                    "color": "gray",
+                    "italic": false,
+                    "text": "Every stair is a single step."
+                  },
+                  {
+                    "color": "dark_purple",
+                    "italic": false,
+                    "text": "Relic of a tier 5 dungeon"
+                  }
+                ]
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:enchantments": {
+                  "minecraft:feather_falling": 8
+                }
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:unbreakable": {}
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "function": "minecraft:set_attributes",
+              "modifiers": [
+                {
+                  "amount": 0.2,
+                  "attribute": "minecraft:movement_speed",
+                  "id": "procedural_dungeon:relic/stridewalkers/movement_speed",
+                  "operation": "add_multiplied_base",
+                  "slot": "feet"
+                },
+                {
+                  "amount": 0.6,
+                  "attribute": "minecraft:step_height",
+                  "id": "procedural_dungeon:relic/stridewalkers/step_height",
+                  "operation": "add_value",
+                  "slot": "feet"
+                },
+                {
+                  "amount": 2.5,
+                  "attribute": "minecraft:luck",
+                  "id": "procedural_dungeon:relic/stridewalkers/affix/luck",
+                  "operation": "add_value",
+                  "slot": "feet"
+                }
+              ],
+              "replace": false
+            }
+          ],
+          "name": "minecraft:netherite_boots",
+          "weight": 6
         },
         {
           "type": "minecraft:item",
@@ -581,12 +2817,1247 @@
                   "id": "procedural_dungeon:relic/crown_of_the_fallen/luck",
                   "operation": "add_value",
                   "slot": "head"
+                },
+                {
+                  "amount": 5.0,
+                  "attribute": "minecraft:max_absorption",
+                  "id": "procedural_dungeon:relic/crown_of_the_fallen/affix/max_absorption",
+                  "operation": "add_value",
+                  "slot": "head"
                 }
               ],
               "replace": false
             }
           ],
-          "name": "minecraft:netherite_helmet"
+          "name": "minecraft:netherite_helmet",
+          "weight": 6
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "minecraft:item_name": "Crown of the Fallen"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:rarity": "epic"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:lore": [
+                  {
+                    "color": "gray",
+                    "italic": false,
+                    "text": "Fortune favours whoever wears it next."
+                  },
+                  {
+                    "color": "dark_purple",
+                    "italic": false,
+                    "text": "Relic of a tier 5 dungeon"
+                  }
+                ]
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:enchantments": {
+                  "minecraft:protection": 6,
+                  "minecraft:respiration": 3
+                }
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:unbreakable": {}
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "function": "minecraft:set_attributes",
+              "modifiers": [
+                {
+                  "amount": 5.0,
+                  "attribute": "minecraft:max_health",
+                  "id": "procedural_dungeon:relic/crown_of_the_fallen/max_health",
+                  "operation": "add_value",
+                  "slot": "head"
+                },
+                {
+                  "amount": 5.0,
+                  "attribute": "minecraft:luck",
+                  "id": "procedural_dungeon:relic/crown_of_the_fallen/luck",
+                  "operation": "add_value",
+                  "slot": "head"
+                },
+                {
+                  "amount": 2.5,
+                  "attribute": "minecraft:armor",
+                  "id": "procedural_dungeon:relic/crown_of_the_fallen/affix/armor",
+                  "operation": "add_value",
+                  "slot": "head"
+                }
+              ],
+              "replace": false
+            }
+          ],
+          "name": "minecraft:netherite_helmet",
+          "weight": 6
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "minecraft:item_name": "Crown of the Fallen"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:rarity": "epic"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:lore": [
+                  {
+                    "color": "gray",
+                    "italic": false,
+                    "text": "Fortune favours whoever wears it next."
+                  },
+                  {
+                    "color": "dark_purple",
+                    "italic": false,
+                    "text": "Relic of a tier 5 dungeon"
+                  }
+                ]
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:enchantments": {
+                  "minecraft:protection": 6,
+                  "minecraft:respiration": 3
+                }
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:unbreakable": {}
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "function": "minecraft:set_attributes",
+              "modifiers": [
+                {
+                  "amount": 5.0,
+                  "attribute": "minecraft:max_health",
+                  "id": "procedural_dungeon:relic/crown_of_the_fallen/max_health",
+                  "operation": "add_value",
+                  "slot": "head"
+                },
+                {
+                  "amount": 5.0,
+                  "attribute": "minecraft:luck",
+                  "id": "procedural_dungeon:relic/crown_of_the_fallen/luck",
+                  "operation": "add_value",
+                  "slot": "head"
+                },
+                {
+                  "amount": 2.5,
+                  "attribute": "minecraft:armor_toughness",
+                  "id": "procedural_dungeon:relic/crown_of_the_fallen/affix/armor_toughness",
+                  "operation": "add_value",
+                  "slot": "head"
+                }
+              ],
+              "replace": false
+            }
+          ],
+          "name": "minecraft:netherite_helmet",
+          "weight": 6
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "minecraft:item_name": "Crown of the Fallen"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:rarity": "epic"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:lore": [
+                  {
+                    "color": "gray",
+                    "italic": false,
+                    "text": "Fortune favours whoever wears it next."
+                  },
+                  {
+                    "color": "dark_purple",
+                    "italic": false,
+                    "text": "Relic of a tier 5 dungeon"
+                  }
+                ]
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:enchantments": {
+                  "minecraft:protection": 6,
+                  "minecraft:respiration": 3
+                }
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:unbreakable": {}
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "function": "minecraft:set_attributes",
+              "modifiers": [
+                {
+                  "amount": 5.0,
+                  "attribute": "minecraft:max_health",
+                  "id": "procedural_dungeon:relic/crown_of_the_fallen/max_health",
+                  "operation": "add_value",
+                  "slot": "head"
+                },
+                {
+                  "amount": 5.0,
+                  "attribute": "minecraft:luck",
+                  "id": "procedural_dungeon:relic/crown_of_the_fallen/luck",
+                  "operation": "add_value",
+                  "slot": "head"
+                },
+                {
+                  "amount": 0.2,
+                  "attribute": "minecraft:knockback_resistance",
+                  "id": "procedural_dungeon:relic/crown_of_the_fallen/affix/knockback_resistance",
+                  "operation": "add_value",
+                  "slot": "head"
+                }
+              ],
+              "replace": false
+            }
+          ],
+          "name": "minecraft:netherite_helmet",
+          "weight": 6
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "minecraft:item_name": "Crown of the Fallen"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:rarity": "epic"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:lore": [
+                  {
+                    "color": "gray",
+                    "italic": false,
+                    "text": "Fortune favours whoever wears it next."
+                  },
+                  {
+                    "color": "dark_purple",
+                    "italic": false,
+                    "text": "Relic of a tier 5 dungeon"
+                  }
+                ]
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:enchantments": {
+                  "minecraft:protection": 6,
+                  "minecraft:respiration": 3
+                }
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:unbreakable": {}
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "function": "minecraft:set_attributes",
+              "modifiers": [
+                {
+                  "amount": 5.0,
+                  "attribute": "minecraft:max_health",
+                  "id": "procedural_dungeon:relic/crown_of_the_fallen/max_health",
+                  "operation": "add_value",
+                  "slot": "head"
+                },
+                {
+                  "amount": 5.0,
+                  "attribute": "minecraft:luck",
+                  "id": "procedural_dungeon:relic/crown_of_the_fallen/luck",
+                  "operation": "add_value",
+                  "slot": "head"
+                },
+                {
+                  "amount": 0.5,
+                  "attribute": "minecraft:explosion_knockback_resistance",
+                  "id": "procedural_dungeon:relic/crown_of_the_fallen/affix/explosion_knockback_resistance",
+                  "operation": "add_value",
+                  "slot": "head"
+                }
+              ],
+              "replace": false
+            }
+          ],
+          "name": "minecraft:netherite_helmet",
+          "weight": 6
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "minecraft:item_name": "Crown of the Fallen"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:rarity": "epic"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:lore": [
+                  {
+                    "color": "gray",
+                    "italic": false,
+                    "text": "Fortune favours whoever wears it next."
+                  },
+                  {
+                    "color": "dark_purple",
+                    "italic": false,
+                    "text": "Relic of a tier 5 dungeon"
+                  }
+                ]
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:enchantments": {
+                  "minecraft:protection": 6,
+                  "minecraft:respiration": 3
+                }
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:unbreakable": {}
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "function": "minecraft:set_attributes",
+              "modifiers": [
+                {
+                  "amount": 5.0,
+                  "attribute": "minecraft:max_health",
+                  "id": "procedural_dungeon:relic/crown_of_the_fallen/max_health",
+                  "operation": "add_value",
+                  "slot": "head"
+                },
+                {
+                  "amount": 5.0,
+                  "attribute": "minecraft:luck",
+                  "id": "procedural_dungeon:relic/crown_of_the_fallen/luck",
+                  "operation": "add_value",
+                  "slot": "head"
+                },
+                {
+                  "amount": 0.1,
+                  "attribute": "minecraft:movement_speed",
+                  "id": "procedural_dungeon:relic/crown_of_the_fallen/affix/movement_speed",
+                  "operation": "add_multiplied_base",
+                  "slot": "head"
+                }
+              ],
+              "replace": false
+            }
+          ],
+          "name": "minecraft:netherite_helmet",
+          "weight": 6
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "minecraft:item_name": "Crown of the Fallen"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:rarity": "epic"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:lore": [
+                  {
+                    "color": "gray",
+                    "italic": false,
+                    "text": "Fortune favours whoever wears it next."
+                  },
+                  {
+                    "color": "dark_purple",
+                    "italic": false,
+                    "text": "Relic of a tier 5 dungeon"
+                  }
+                ]
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:enchantments": {
+                  "minecraft:protection": 6,
+                  "minecraft:respiration": 3
+                }
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:unbreakable": {}
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "function": "minecraft:set_attributes",
+              "modifiers": [
+                {
+                  "amount": 5.0,
+                  "attribute": "minecraft:max_health",
+                  "id": "procedural_dungeon:relic/crown_of_the_fallen/max_health",
+                  "operation": "add_value",
+                  "slot": "head"
+                },
+                {
+                  "amount": 5.0,
+                  "attribute": "minecraft:luck",
+                  "id": "procedural_dungeon:relic/crown_of_the_fallen/luck",
+                  "operation": "add_value",
+                  "slot": "head"
+                },
+                {
+                  "amount": 0.5,
+                  "attribute": "minecraft:sneaking_speed",
+                  "id": "procedural_dungeon:relic/crown_of_the_fallen/affix/sneaking_speed",
+                  "operation": "add_multiplied_base",
+                  "slot": "head"
+                }
+              ],
+              "replace": false
+            }
+          ],
+          "name": "minecraft:netherite_helmet",
+          "weight": 6
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "minecraft:item_name": "Crown of the Fallen"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:rarity": "epic"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:lore": [
+                  {
+                    "color": "gray",
+                    "italic": false,
+                    "text": "Fortune favours whoever wears it next."
+                  },
+                  {
+                    "color": "dark_purple",
+                    "italic": false,
+                    "text": "Relic of a tier 5 dungeon"
+                  }
+                ]
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:enchantments": {
+                  "minecraft:protection": 6,
+                  "minecraft:respiration": 3
+                }
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:unbreakable": {}
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "function": "minecraft:set_attributes",
+              "modifiers": [
+                {
+                  "amount": 5.0,
+                  "attribute": "minecraft:max_health",
+                  "id": "procedural_dungeon:relic/crown_of_the_fallen/max_health",
+                  "operation": "add_value",
+                  "slot": "head"
+                },
+                {
+                  "amount": 5.0,
+                  "attribute": "minecraft:luck",
+                  "id": "procedural_dungeon:relic/crown_of_the_fallen/luck",
+                  "operation": "add_value",
+                  "slot": "head"
+                },
+                {
+                  "amount": 0.15,
+                  "attribute": "minecraft:jump_strength",
+                  "id": "procedural_dungeon:relic/crown_of_the_fallen/affix/jump_strength",
+                  "operation": "add_multiplied_base",
+                  "slot": "head"
+                }
+              ],
+              "replace": false
+            }
+          ],
+          "name": "minecraft:netherite_helmet",
+          "weight": 6
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "minecraft:item_name": "Crown of the Fallen"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:rarity": "epic"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:lore": [
+                  {
+                    "color": "gray",
+                    "italic": false,
+                    "text": "Fortune favours whoever wears it next."
+                  },
+                  {
+                    "color": "dark_purple",
+                    "italic": false,
+                    "text": "Relic of a tier 5 dungeon"
+                  }
+                ]
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:enchantments": {
+                  "minecraft:protection": 6,
+                  "minecraft:respiration": 3
+                }
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:unbreakable": {}
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "function": "minecraft:set_attributes",
+              "modifiers": [
+                {
+                  "amount": 5.0,
+                  "attribute": "minecraft:max_health",
+                  "id": "procedural_dungeon:relic/crown_of_the_fallen/max_health",
+                  "operation": "add_value",
+                  "slot": "head"
+                },
+                {
+                  "amount": 5.0,
+                  "attribute": "minecraft:luck",
+                  "id": "procedural_dungeon:relic/crown_of_the_fallen/luck",
+                  "operation": "add_value",
+                  "slot": "head"
+                },
+                {
+                  "amount": 0.5,
+                  "attribute": "minecraft:step_height",
+                  "id": "procedural_dungeon:relic/crown_of_the_fallen/affix/step_height",
+                  "operation": "add_value",
+                  "slot": "head"
+                }
+              ],
+              "replace": false
+            }
+          ],
+          "name": "minecraft:netherite_helmet",
+          "weight": 6
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "minecraft:item_name": "Crown of the Fallen"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:rarity": "epic"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:lore": [
+                  {
+                    "color": "gray",
+                    "italic": false,
+                    "text": "Fortune favours whoever wears it next."
+                  },
+                  {
+                    "color": "dark_purple",
+                    "italic": false,
+                    "text": "Relic of a tier 5 dungeon"
+                  }
+                ]
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:enchantments": {
+                  "minecraft:protection": 6,
+                  "minecraft:respiration": 3
+                }
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:unbreakable": {}
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "function": "minecraft:set_attributes",
+              "modifiers": [
+                {
+                  "amount": 5.0,
+                  "attribute": "minecraft:max_health",
+                  "id": "procedural_dungeon:relic/crown_of_the_fallen/max_health",
+                  "operation": "add_value",
+                  "slot": "head"
+                },
+                {
+                  "amount": 5.0,
+                  "attribute": "minecraft:luck",
+                  "id": "procedural_dungeon:relic/crown_of_the_fallen/luck",
+                  "operation": "add_value",
+                  "slot": "head"
+                },
+                {
+                  "amount": 5.0,
+                  "attribute": "minecraft:safe_fall_distance",
+                  "id": "procedural_dungeon:relic/crown_of_the_fallen/affix/safe_fall_distance",
+                  "operation": "add_value",
+                  "slot": "head"
+                }
+              ],
+              "replace": false
+            }
+          ],
+          "name": "minecraft:netherite_helmet",
+          "weight": 6
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "minecraft:item_name": "Crown of the Fallen"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:rarity": "epic"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:lore": [
+                  {
+                    "color": "gray",
+                    "italic": false,
+                    "text": "Fortune favours whoever wears it next."
+                  },
+                  {
+                    "color": "dark_purple",
+                    "italic": false,
+                    "text": "Relic of a tier 5 dungeon"
+                  }
+                ]
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:enchantments": {
+                  "minecraft:protection": 6,
+                  "minecraft:respiration": 3
+                }
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:unbreakable": {}
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "function": "minecraft:set_attributes",
+              "modifiers": [
+                {
+                  "amount": 5.0,
+                  "attribute": "minecraft:max_health",
+                  "id": "procedural_dungeon:relic/crown_of_the_fallen/max_health",
+                  "operation": "add_value",
+                  "slot": "head"
+                },
+                {
+                  "amount": 5.0,
+                  "attribute": "minecraft:luck",
+                  "id": "procedural_dungeon:relic/crown_of_the_fallen/luck",
+                  "operation": "add_value",
+                  "slot": "head"
+                },
+                {
+                  "amount": -0.4,
+                  "attribute": "minecraft:fall_damage_multiplier",
+                  "id": "procedural_dungeon:relic/crown_of_the_fallen/affix/fall_damage_multiplier",
+                  "operation": "add_multiplied_base",
+                  "slot": "head"
+                }
+              ],
+              "replace": false
+            }
+          ],
+          "name": "minecraft:netherite_helmet",
+          "weight": 6
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "minecraft:item_name": "Crown of the Fallen"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:rarity": "epic"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:lore": [
+                  {
+                    "color": "gray",
+                    "italic": false,
+                    "text": "Fortune favours whoever wears it next."
+                  },
+                  {
+                    "color": "dark_purple",
+                    "italic": false,
+                    "text": "Relic of a tier 5 dungeon"
+                  }
+                ]
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:enchantments": {
+                  "minecraft:protection": 6,
+                  "minecraft:respiration": 3
+                }
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:unbreakable": {}
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "function": "minecraft:set_attributes",
+              "modifiers": [
+                {
+                  "amount": 5.0,
+                  "attribute": "minecraft:max_health",
+                  "id": "procedural_dungeon:relic/crown_of_the_fallen/max_health",
+                  "operation": "add_value",
+                  "slot": "head"
+                },
+                {
+                  "amount": 5.0,
+                  "attribute": "minecraft:luck",
+                  "id": "procedural_dungeon:relic/crown_of_the_fallen/luck",
+                  "operation": "add_value",
+                  "slot": "head"
+                },
+                {
+                  "amount": 0.5,
+                  "attribute": "minecraft:water_movement_efficiency",
+                  "id": "procedural_dungeon:relic/crown_of_the_fallen/affix/water_movement_efficiency",
+                  "operation": "add_value",
+                  "slot": "head"
+                }
+              ],
+              "replace": false
+            }
+          ],
+          "name": "minecraft:netherite_helmet",
+          "weight": 6
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "minecraft:item_name": "Crown of the Fallen"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:rarity": "epic"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:lore": [
+                  {
+                    "color": "gray",
+                    "italic": false,
+                    "text": "Fortune favours whoever wears it next."
+                  },
+                  {
+                    "color": "dark_purple",
+                    "italic": false,
+                    "text": "Relic of a tier 5 dungeon"
+                  }
+                ]
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:enchantments": {
+                  "minecraft:protection": 6,
+                  "minecraft:respiration": 3
+                }
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:unbreakable": {}
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "function": "minecraft:set_attributes",
+              "modifiers": [
+                {
+                  "amount": 5.0,
+                  "attribute": "minecraft:max_health",
+                  "id": "procedural_dungeon:relic/crown_of_the_fallen/max_health",
+                  "operation": "add_value",
+                  "slot": "head"
+                },
+                {
+                  "amount": 5.0,
+                  "attribute": "minecraft:luck",
+                  "id": "procedural_dungeon:relic/crown_of_the_fallen/luck",
+                  "operation": "add_value",
+                  "slot": "head"
+                },
+                {
+                  "amount": 5.0,
+                  "attribute": "minecraft:oxygen_bonus",
+                  "id": "procedural_dungeon:relic/crown_of_the_fallen/affix/oxygen_bonus",
+                  "operation": "add_value",
+                  "slot": "head"
+                }
+              ],
+              "replace": false
+            }
+          ],
+          "name": "minecraft:netherite_helmet",
+          "weight": 6
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "minecraft:item_name": "Crown of the Fallen"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:rarity": "epic"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:lore": [
+                  {
+                    "color": "gray",
+                    "italic": false,
+                    "text": "Fortune favours whoever wears it next."
+                  },
+                  {
+                    "color": "dark_purple",
+                    "italic": false,
+                    "text": "Relic of a tier 5 dungeon"
+                  }
+                ]
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:enchantments": {
+                  "minecraft:protection": 6,
+                  "minecraft:respiration": 3
+                }
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:unbreakable": {}
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "function": "minecraft:set_attributes",
+              "modifiers": [
+                {
+                  "amount": 5.0,
+                  "attribute": "minecraft:max_health",
+                  "id": "procedural_dungeon:relic/crown_of_the_fallen/max_health",
+                  "operation": "add_value",
+                  "slot": "head"
+                },
+                {
+                  "amount": 5.0,
+                  "attribute": "minecraft:luck",
+                  "id": "procedural_dungeon:relic/crown_of_the_fallen/luck",
+                  "operation": "add_value",
+                  "slot": "head"
+                },
+                {
+                  "amount": -0.5,
+                  "attribute": "minecraft:burning_time",
+                  "id": "procedural_dungeon:relic/crown_of_the_fallen/affix/burning_time",
+                  "operation": "add_multiplied_base",
+                  "slot": "head"
+                }
+              ],
+              "replace": false
+            }
+          ],
+          "name": "minecraft:netherite_helmet",
+          "weight": 6
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "minecraft:item_name": "Delver's Pick"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:rarity": "epic"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:lore": [
+                  {
+                    "color": "gray",
+                    "italic": false,
+                    "text": "It remembers every seam it ever opened."
+                  },
+                  {
+                    "color": "dark_purple",
+                    "italic": false,
+                    "text": "Relic of a tier 5 dungeon"
+                  }
+                ]
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:enchantments": {
+                  "minecraft:efficiency": 9,
+                  "minecraft:fortune": 3
+                }
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:unbreakable": {}
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "function": "minecraft:set_attributes",
+              "modifiers": [
+                {
+                  "amount": 0.5,
+                  "attribute": "minecraft:block_break_speed",
+                  "id": "procedural_dungeon:relic/delvers_pick/block_break_speed",
+                  "operation": "add_multiplied_base",
+                  "slot": "mainhand"
+                },
+                {
+                  "amount": 2.5,
+                  "attribute": "minecraft:block_interaction_range",
+                  "id": "procedural_dungeon:relic/delvers_pick/affix/block_interaction_range",
+                  "operation": "add_value",
+                  "slot": "mainhand"
+                }
+              ],
+              "replace": false
+            }
+          ],
+          "name": "minecraft:netherite_pickaxe",
+          "weight": 28
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "minecraft:item_name": "Delver's Pick"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:rarity": "epic"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:lore": [
+                  {
+                    "color": "gray",
+                    "italic": false,
+                    "text": "It remembers every seam it ever opened."
+                  },
+                  {
+                    "color": "dark_purple",
+                    "italic": false,
+                    "text": "Relic of a tier 5 dungeon"
+                  }
+                ]
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:enchantments": {
+                  "minecraft:efficiency": 9,
+                  "minecraft:fortune": 3
+                }
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:unbreakable": {}
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "function": "minecraft:set_attributes",
+              "modifiers": [
+                {
+                  "amount": 0.5,
+                  "attribute": "minecraft:block_break_speed",
+                  "id": "procedural_dungeon:relic/delvers_pick/block_break_speed",
+                  "operation": "add_multiplied_base",
+                  "slot": "mainhand"
+                },
+                {
+                  "amount": 10.0,
+                  "attribute": "minecraft:mining_efficiency",
+                  "id": "procedural_dungeon:relic/delvers_pick/affix/mining_efficiency",
+                  "operation": "add_value",
+                  "slot": "mainhand"
+                }
+              ],
+              "replace": false
+            }
+          ],
+          "name": "minecraft:netherite_pickaxe",
+          "weight": 28
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "minecraft:item_name": "Delver's Pick"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:rarity": "epic"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:lore": [
+                  {
+                    "color": "gray",
+                    "italic": false,
+                    "text": "It remembers every seam it ever opened."
+                  },
+                  {
+                    "color": "dark_purple",
+                    "italic": false,
+                    "text": "Relic of a tier 5 dungeon"
+                  }
+                ]
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:enchantments": {
+                  "minecraft:efficiency": 9,
+                  "minecraft:fortune": 3
+                }
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:unbreakable": {}
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "function": "minecraft:set_attributes",
+              "modifiers": [
+                {
+                  "amount": 0.5,
+                  "attribute": "minecraft:block_break_speed",
+                  "id": "procedural_dungeon:relic/delvers_pick/block_break_speed",
+                  "operation": "add_multiplied_base",
+                  "slot": "mainhand"
+                },
+                {
+                  "amount": 0.8,
+                  "attribute": "minecraft:submerged_mining_speed",
+                  "id": "procedural_dungeon:relic/delvers_pick/affix/submerged_mining_speed",
+                  "operation": "add_value",
+                  "slot": "mainhand"
+                }
+              ],
+              "replace": false
+            }
+          ],
+          "name": "minecraft:netherite_pickaxe",
+          "weight": 28
         },
         {
           "type": "minecraft:item",
@@ -634,9 +4105,215 @@
                 "minecraft:unbreakable": {}
               },
               "function": "minecraft:set_components"
+            },
+            {
+              "function": "minecraft:set_attributes",
+              "modifiers": [
+                {
+                  "amount": 0.1,
+                  "attribute": "minecraft:movement_speed",
+                  "id": "procedural_dungeon:relic/stormstring/affix/movement_speed",
+                  "operation": "add_multiplied_base",
+                  "slot": "mainhand"
+                }
+              ],
+              "replace": false
             }
           ],
-          "name": "minecraft:bow"
+          "name": "minecraft:bow",
+          "weight": 21
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "minecraft:item_name": "Stormstring"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:rarity": "epic"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:lore": [
+                  {
+                    "color": "gray",
+                    "italic": false,
+                    "text": "Every arrow carries the storm."
+                  },
+                  {
+                    "color": "dark_purple",
+                    "italic": false,
+                    "text": "Relic of a tier 5 dungeon"
+                  }
+                ]
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:enchantments": {
+                  "minecraft:power": 8,
+                  "procedural_dungeon:stormcaller": 3
+                }
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:unbreakable": {}
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "function": "minecraft:set_attributes",
+              "modifiers": [
+                {
+                  "amount": 0.5,
+                  "attribute": "minecraft:sneaking_speed",
+                  "id": "procedural_dungeon:relic/stormstring/affix/sneaking_speed",
+                  "operation": "add_multiplied_base",
+                  "slot": "mainhand"
+                }
+              ],
+              "replace": false
+            }
+          ],
+          "name": "minecraft:bow",
+          "weight": 21
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "minecraft:item_name": "Stormstring"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:rarity": "epic"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:lore": [
+                  {
+                    "color": "gray",
+                    "italic": false,
+                    "text": "Every arrow carries the storm."
+                  },
+                  {
+                    "color": "dark_purple",
+                    "italic": false,
+                    "text": "Relic of a tier 5 dungeon"
+                  }
+                ]
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:enchantments": {
+                  "minecraft:power": 8,
+                  "procedural_dungeon:stormcaller": 3
+                }
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:unbreakable": {}
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "function": "minecraft:set_attributes",
+              "modifiers": [
+                {
+                  "amount": 0.15,
+                  "attribute": "minecraft:jump_strength",
+                  "id": "procedural_dungeon:relic/stormstring/affix/jump_strength",
+                  "operation": "add_multiplied_base",
+                  "slot": "mainhand"
+                }
+              ],
+              "replace": false
+            }
+          ],
+          "name": "minecraft:bow",
+          "weight": 21
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "minecraft:item_name": "Stormstring"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:rarity": "epic"
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:lore": [
+                  {
+                    "color": "gray",
+                    "italic": false,
+                    "text": "Every arrow carries the storm."
+                  },
+                  {
+                    "color": "dark_purple",
+                    "italic": false,
+                    "text": "Relic of a tier 5 dungeon"
+                  }
+                ]
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:enchantments": {
+                  "minecraft:power": 8,
+                  "procedural_dungeon:stormcaller": 3
+                }
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "components": {
+                "minecraft:unbreakable": {}
+              },
+              "function": "minecraft:set_components"
+            },
+            {
+              "function": "minecraft:set_attributes",
+              "modifiers": [
+                {
+                  "amount": 5.0,
+                  "attribute": "minecraft:safe_fall_distance",
+                  "id": "procedural_dungeon:relic/stormstring/affix/safe_fall_distance",
+                  "operation": "add_value",
+                  "slot": "mainhand"
+                }
+              ],
+              "replace": false
+            }
+          ],
+          "name": "minecraft:bow",
+          "weight": 21
         },
         {
           "type": "minecraft:item",
@@ -706,7 +4383,8 @@
               "function": "minecraft:set_components"
             }
           ],
-          "name": "minecraft:heart_of_the_sea"
+          "name": "minecraft:heart_of_the_sea",
+          "weight": 84
         }
       ],
       "rolls": 1.0
@@ -1052,6 +4730,45 @@
             {
               "enchantments": {
                 "procedural_dungeon:volatile": 3.0
+              },
+              "function": "minecraft:set_enchantments"
+            }
+          ],
+          "name": "minecraft:book",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "enchantments": {
+                "procedural_dungeon:cataclysm": 3.0
+              },
+              "function": "minecraft:set_enchantments"
+            }
+          ],
+          "name": "minecraft:book",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "enchantments": {
+                "procedural_dungeon:wardens_wrath": 3.0
+              },
+              "function": "minecraft:set_enchantments"
+            }
+          ],
+          "name": "minecraft:book",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "enchantments": {
+                "procedural_dungeon:soulbound": 1.0
               },
               "function": "minecraft:set_enchantments"
             }

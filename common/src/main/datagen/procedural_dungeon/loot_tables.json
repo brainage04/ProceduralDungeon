@@ -209,7 +209,10 @@
         "exclusiveBooks": [
           { "enchantment": "procedural_dungeon:annihilation", "weight": 1 },
           { "enchantment": "procedural_dungeon:stormcaller", "weight": 2 },
-          { "enchantment": "procedural_dungeon:volatile", "weight": 2 }
+          { "enchantment": "procedural_dungeon:volatile", "weight": 2 },
+          { "enchantment": "procedural_dungeon:cataclysm", "weight": 2 },
+          { "enchantment": "procedural_dungeon:wardens_wrath", "weight": 2 },
+          { "enchantment": "procedural_dungeon:soulbound", "weight": 2 }
         ],
         "rolls": [0, 1]
       },
@@ -249,6 +252,14 @@
           { "enchantment": "procedural_dungeon:sapping", "weight": 3 },
           { "enchantment": "procedural_dungeon:vertigo", "weight": 3 },
           { "enchantment": "procedural_dungeon:oozing", "weight": 3 },
+          { "enchantment": "procedural_dungeon:enfeebling", "weight": 3 },
+          { "enchantment": "procedural_dungeon:siphon", "weight": 2 },
+          { "enchantment": "procedural_dungeon:warding", "weight": 2 },
+          { "enchantment": "procedural_dungeon:bloodlust", "weight": 2 },
+          { "enchantment": "procedural_dungeon:insight", "weight": 2 },
+          { "enchantment": "procedural_dungeon:pyre", "weight": 2 },
+          { "enchantment": "procedural_dungeon:plague", "weight": 2 },
+          { "enchantment": "procedural_dungeon:dread", "weight": 2 },
           { "enchantment": "procedural_dungeon:bane_of_the_deep", "weight": 2 },
           { "enchantment": "procedural_dungeon:bane_of_the_nether", "weight": 2 },
           { "enchantment": "procedural_dungeon:bane_of_the_end", "weight": 2 },

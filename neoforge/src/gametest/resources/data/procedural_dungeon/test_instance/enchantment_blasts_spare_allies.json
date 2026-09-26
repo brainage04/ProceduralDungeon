@@ -1,0 +1,7 @@
+{
+  "environment": "minecraft:default",
+  "structure": "minecraft:empty",
+  "max_ticks": 20,
+  "type": "minecraft:function",
+  "function": "procedural_dungeon:enchantment_blasts_spare_allies"
+}

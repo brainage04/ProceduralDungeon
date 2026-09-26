@@ -22,7 +22,7 @@ public class DungeonEnchantmentProvider extends FabricDynamicRegistryProvider {
     protected void configure(HolderLookup.Provider registries, Entries entries) {
         HolderLookup.RegistryLookup<Enchantment> enchantments = registries.lookupOrThrow(Registries.ENCHANTMENT);
         DungeonEnchantments.all().forEach(key -> entries.add(enchantments.getOrThrow(key)));
-        entries.add(registries.lookupOrThrow(Registries.DAMAGE_TYPE).getOrThrow(DungeonDamageTypes.VOLATILE_BLAST));
+        entries.add(registries.lookupOrThrow(Registries.DAMAGE_TYPE).getOrThrow(DungeonDamageTypes.DUNGEON_BLAST));
     }
 
     @Override

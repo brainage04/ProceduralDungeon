@@ -2,33 +2,13 @@
   "anvil_cost": 8,
   "description": "Volatile",
   "effects": {
-    "minecraft:damage_immunity": [
-      {
-        "effect": {},
-        "requirements": {
-          "condition": "minecraft:damage_source_properties",
-          "predicate": {
-            "tags": [
-              {
-                "expected": true,
-                "id": "procedural_dungeon:volatile_immune"
-              },
-              {
-                "expected": false,
-                "id": "minecraft:bypasses_invulnerability"
-              }
-            ]
-          }
-        }
-      }
-    ],
     "minecraft:post_attack": [
       {
         "affected": "victim",
         "effect": {
           "type": "minecraft:explode",
           "block_interaction": "none",
-          "damage_type": "procedural_dungeon:volatile_blast",
+          "damage_type": "procedural_dungeon:dungeon_blast",
           "large_particle": {
             "type": "minecraft:explosion_emitter"
           },
@@ -58,6 +38,7 @@
       }
     ]
   },
+  "exclusive_set": "#procedural_dungeon:exclusive_set/detonation",
   "max_cost": {
     "base": 45,
     "per_level_above_first": 10
