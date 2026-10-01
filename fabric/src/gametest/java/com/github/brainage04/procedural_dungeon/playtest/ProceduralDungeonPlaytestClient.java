@@ -16,7 +16,7 @@ import net.minecraft.world.level.storage.LevelStorageSource;
 
 /**
  * On the first title screen, replaces the playtest world with a fresh one and opens it, so launching the playtest client
- * goes straight into the game.
+ * goes straight into the game. Inactive outside the {@code runPlaytest} launch, like {@link ProceduralDungeonPlaytest}.
  */
 public class ProceduralDungeonPlaytestClient implements ClientModInitializer {
     private static final String WORLD_ID = "procedural_dungeon_playtest";
@@ -24,6 +24,9 @@ public class ProceduralDungeonPlaytestClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
+        if (!ProceduralDungeonPlaytest.enabled()) {
+            return;
+        }
         ScreenEvents.AFTER_INIT.register((client, screen, width, height) -> {
             if (!opened && screen instanceof TitleScreen) {
                 opened = true;

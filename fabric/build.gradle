@@ -5,41 +5,28 @@ fabricApi {
 	}
 }
 
-// Playtest mode: `./gradlew runClientPlayTest` launches a client that creates a fresh world and drops you into a random
-// dungeon with gear for its tier. Pass -PplaytestTheme=<theme> and/or -PplaytestTier=<1-5> to pick one.
-sourceSets {
-	playtest {
-		compileClasspath += sourceSets.main.compileClasspath + sourceSets.main.output
-		runtimeClasspath += sourceSets.main.runtimeClasspath + sourceSets.main.output
-	}
-}
-
+// Playtest mode: `./gradlew :fabric:runPlaytest` launches a client that creates a fresh world and drops you into a random
+// dungeon with gear for its tier. Pass -PplaytestTheme=<theme> and/or -PplaytestTier=<1-5> to pick one. The playtest code
+// lives in the GameTest mod and only activates under this run's procedural_dungeon.playtest system property.
 loom {
-	mods {
-		maybeCreate('procedural_dungeon_playtest').sourceSet(sourceSets.playtest)
-	}
 	runs {
 		register('playtest') {
 			client()
 			configName = 'Playtest Client'
-			source sourceSets.playtest
+			source sourceSets.gametest
 			runDir 'run/playtest'
 			ideConfigGenerated false
+			vmArg '-Dprocedural_dungeon.playtest=true'
 			vmArg "-Dprocedural_dungeon.playtest.theme=${findProperty('playtestTheme') ?: ''}"
 			vmArg "-Dprocedural_dungeon.playtest.tier=${findProperty('playtestTier') ?: ''}"
 		}
 	}
 }
 
-processPlaytestResources {
-	inputs.property 'version', project.mod_version
-	filesMatching('fabric.mod.json') {
-		expand mod_id: project.mod_id, mod_version: project.mod_version, mod_name: project.mod_name
-	}
-}
-
 // Skips the first-launch accessibility screen, so the playtest client reaches the title screen and opens its world.
 tasks.named('runPlaytest') {
+	group = 'application'
+	description = 'Launches a Fabric client that creates a fresh world and drops you into a random dungeon (-PplaytestTheme, -PplaytestTier).'
 	doFirst {
 		File options = file('run/playtest/options.txt')
 		if (!options.exists()) {

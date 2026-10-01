@@ -23,12 +23,22 @@ import static net.minecraft.commands.Commands.literal;
  * tier (or those given by the {@code procedural_dungeon.playtest.theme} and {@code procedural_dungeon.playtest.tier}
  * system properties), puts the player in its start room, and hands out gear for the tier. {@code /playtest [theme]
  * [tier]} builds another one.
+ *
+ * <p>It ships in the GameTest mod and stays inactive unless the {@code procedural_dungeon.playtest} system property is
+ * {@code true}, which only the {@code runPlaytest} launch sets.
  */
 public class ProceduralDungeonPlaytest implements ModInitializer {
     private static final String STARTED_TAG = "procedural_dungeon_playtest";
 
+    static boolean enabled() {
+        return Boolean.getBoolean("procedural_dungeon.playtest");
+    }
+
     @Override
     public void onInitialize() {
+        if (!enabled()) {
+            return;
+        }
         ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
             ServerPlayer player = handler.getPlayer();
             if (player.addTag(STARTED_TAG)) {
