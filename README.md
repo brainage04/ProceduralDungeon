@@ -4,7 +4,7 @@ ProceduralDungeon adds procedurally generated dungeons to Minecraft. Every dunge
 
 ## Loaders and builds
 
-ProceduralDungeon supports both Fabric and NeoForge on Minecraft 26.2. `./gradlew build` creates one production JAR per loader under `build/libs`; Fabric data generation and production GameTests remain available, and NeoForge GameTests run with `./gradlew runNeoForgeGameTests`.
+ProceduralDungeon supports both Fabric and NeoForge on Minecraft 26.2. `./gradlew build` creates one production JAR per loader under `build/libs`; Fabric data generation and production GameTests remain available, and NeoForge GameTests run with `./gradlew :neoforge:runGameTest`.
 
 `./gradlew :fabric:runPlaytest` starts a Fabric development client for playtesting. It replaces the world `procedural_dungeon_playtest` with a fresh one, builds a dungeon of a random theme and tier, puts you in its start room in survival, and gives you gear for the tier: enchanted armour, sword, bow, pickaxe and axe, a shield, food, golden apples, torches, blocks, and a grindstone, anvil, books, and 30 levels for trying the salvage. `-PplaytestTheme=<theme>` and `-PplaytestTier=<1-5>` pick them instead, and `/playtest [theme] [tier]` builds another dungeon in the same world.
 
