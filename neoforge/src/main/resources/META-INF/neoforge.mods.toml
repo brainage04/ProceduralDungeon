@@ -26,6 +26,6 @@ side="BOTH"
 [[dependencies.procedural_dungeon]]
 modId="minecraft"
 type="required"
-versionRange="[${minecraft_version},${minecraft_version}]"
+versionRange="${minecraft_version_range}"
 ordering="NONE"
 side="BOTH"
