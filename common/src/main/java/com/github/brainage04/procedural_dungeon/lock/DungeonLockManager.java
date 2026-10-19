@@ -135,6 +135,10 @@ public final class DungeonLockManager {
         return data(level).isPuzzleLocked(pos.asLong());
     }
 
+    public static boolean isDoorLocked(ServerLevel level, BlockPos pos) {
+        return data(level).isLockedDoor(pos.asLong());
+    }
+
     public static boolean isExplosionProtected(ServerLevel level, BlockPos pos) {
         return data(level).isExplosionProtected(pos.asLong());
     }

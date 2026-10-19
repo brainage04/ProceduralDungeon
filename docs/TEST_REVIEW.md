@@ -57,3 +57,16 @@ Remaining gaps:
 - Diagnostic benchmark, variant-grid and structure-gallery commands, which change disposable development worlds or source files.
 
 There are no gamerules, user configuration screen or mod-owned client rendering. The vanilla appearance of item lore, puzzle clues and reveal markers still needs a human visual check.
+
+## Code review
+
+Reviewed loader registration and shutdown hooks, staged generation and persistence, lock planning and interaction, guardian placement, puzzle state, combat effects, death preservation, and grindstone/anvil transfers.
+
+Fixed a progression bypass: vanilla iron-door neighbour updates accepted redstone power even while the dungeon lock still required a key. The shared `DoorBlockMixin` now holds both locked door halves shut; after key consumption, normal redstone behaviour resumes. `lockedDoorsIgnoreRedstoneUntilUnlocked` covers power beside both halves, key opening, and normal closing after power removal on both loaders.
+
+Judgement calls left unchanged:
+
+- A theme argument currently accepts a known path even with another namespace. The command has always accepted shorthand names; deciding whether to reject foreign namespaces is an interface decision.
+- Relic essences described as fitting weapons and tools also accept non-armour damageable items such as shields and fishing rods. Decide whether that broader salvage rule is intended.
+- Reveal-marker unload/reload persistence and overlapping generation jobs' use of vanilla forced-chunk tickets need dedicated lifecycle reproductions. Possible stale markers or shared-ticket interference are inferences from the implementation, not observed failures.
+- Placeholder guardian tuning, more room templates and the overall loot balance remain content decisions, not code-review fixes.

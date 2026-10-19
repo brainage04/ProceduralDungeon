@@ -15,6 +15,8 @@ Higher tiers are rarer, larger, and more dangerous.
 
 Keys are trial keys (the Boss Key is an ominous trial key) with their own name and a hidden tag, so renaming an ordinary trial key does not make a dungeon key, and dungeon keys do not open trial chamber vaults. Keys are used up when they open a lock. Locked chests and doors cannot be broken or blown up until they are unlocked, and the chests holding keys are also protected from explosions.
 
+Redstone cannot open a locked boss or miniboss door. Once unlocked, the door responds to redstone normally.
+
 The boss and miniboss are placeholders for now:
 
 | Guardian | Mob | Health | Gear |

@@ -151,6 +151,7 @@ public final class DungeonGameTestSuite {
                 new TestCase("lock_records_survive_save_and_reload", DungeonGameTestSuite::lockRecordsSurviveSaveAndReload),
                 new TestCase("commands_reject_invalid_arguments_and_non_operators", DungeonGameTestSuite::commandsRejectInvalidArgumentsAndNonOperators),
                 new TestCase("generation_command_finishes_its_queued_dungeon", DungeonGameTestSuite::generationCommandFinishesItsQueuedDungeon),
+                new TestCase("locked_doors_ignore_redstone_until_unlocked", DungeonGameTestSuite::lockedDoorsIgnoreRedstoneUntilUnlocked),
                 new TestCase("crafter_puzzle_opens_when_the_disc_plays", DungeonGameTestSuite::crafterPuzzleOpensWhenTheDiscPlays)
         );
     }
@@ -330,8 +331,7 @@ public final class DungeonGameTestSuite {
     public static void commandsRejectInvalidArgumentsAndNonOperators(GameTestHelper helper) {
         var server = helper.getLevel().getServer();
         var dispatcher = server.getCommands().getDispatcher();
-        Player player = helper.makeMockPlayer(GameType.SURVIVAL);
-        var unprivileged = player.createCommandSourceStack();
+        var unprivileged = server.createCommandSourceStack().withPermission(net.minecraft.server.permissions.PermissionSet.NO_PERMISSIONS);
         for (String command : List.of("generatedungeon", "generatedungeonstatus", "dungeonlocks",
                 "testdungeonvariants", "benchmarkdungeons", "structuregallery")) {
             helper.assertTrue(!dispatcher.getRoot().getChild(command).canUse(unprivileged),
@@ -392,6 +392,43 @@ public final class DungeonGameTestSuite {
                 }
             }
         });
+    }
+
+    public static void lockedDoorsIgnoreRedstoneUntilUnlocked(GameTestHelper helper) {
+        ServerLevel level = helper.getLevel();
+        BlockPos lower = helper.absolutePos(new BlockPos(3, 1, 3));
+        BlockPos upper = lower.above();
+        level.setBlock(lower.below(), Blocks.STONE.defaultBlockState(), 3);
+        level.setBlock(lower, Blocks.IRON_DOOR.defaultBlockState().setValue(DoorBlock.HALF, DoubleBlockHalf.LOWER), 2);
+        level.setBlock(upper, Blocks.IRON_DOOR.defaultBlockState().setValue(DoorBlock.HALF, DoubleBlockHalf.UPPER), 2);
+        DungeonLockManager.applyPlanForPiece(level,
+                new DungeonLockPlan(List.of(), List.of(), List.of(new DungeonLockPlan.Door(lower.asLong(), Optional.of(DungeonKeyType.BOSS)))),
+                new BoundingBox(lower));
+        for (BlockPos poweredHalf : List.of(lower, upper)) {
+            BlockPos power = poweredHalf.west();
+            level.setBlock(power, Blocks.REDSTONE_BLOCK.defaultBlockState(), 3);
+            level.neighborChanged(lower, Blocks.REDSTONE_BLOCK, null);
+            level.neighborChanged(upper, Blocks.REDSTONE_BLOCK, null);
+            helper.assertTrue(!level.getBlockState(lower).getValue(DoorBlock.OPEN)
+                            && !level.getBlockState(upper).getValue(DoorBlock.OPEN),
+                    "Redstone beside either locked door half must not bypass its key");
+            level.removeBlock(power, false);
+        }
+        Player player = helper.makeMockPlayer(GameType.SURVIVAL);
+        player.getInventory().add(DungeonKeyType.BOSS.createStack());
+        helper.assertTrue(DungeonLockManager.useBlock(player, level, upper) == InteractionResult.SUCCESS,
+                "The matching key must still open a door after blocked redstone updates");
+        BlockPos power = lower.west();
+        level.setBlock(power, Blocks.REDSTONE_BLOCK.defaultBlockState(), 3);
+        level.neighborChanged(lower, Blocks.REDSTONE_BLOCK, null);
+        helper.assertTrue(level.getBlockState(lower).getValue(DoorBlock.POWERED),
+                "Unlocked doors must resume normal redstone behaviour");
+        level.removeBlock(power, false);
+        level.neighborChanged(lower, Blocks.REDSTONE_BLOCK, null);
+        helper.assertTrue(!level.getBlockState(lower).getValue(DoorBlock.OPEN)
+                        && !level.getBlockState(upper).getValue(DoorBlock.OPEN),
+                "Removing power must close both halves of an unlocked door");
+        helper.succeed();
     }
 
     public static void placedBossRoomIsGuardedLockedAndStocked(GameTestHelper helper) {

@@ -20,7 +20,7 @@
 - [x] Disable the unused client GameTest suite; dungeon behaviour is tested on both loaders' servers.
 - [x] Align the conventions plugin and reusable workflows with the template's 2.4.26 release.
 - [ ] Playtest and tune traps, structure density, loot, difficulty, and progression.
-- [ ] Run a focused code review and cleanup after the functional work.
+- [x] Run a focused code review and cleanup after the functional work; fixed the redstone bypass of locked progression doors.
 
 ## Release
 

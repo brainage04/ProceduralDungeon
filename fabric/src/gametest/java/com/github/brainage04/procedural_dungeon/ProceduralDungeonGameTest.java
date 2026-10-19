@@ -46,6 +46,11 @@ public final class ProceduralDungeonGameTest {
     }
 
     @GameTest
+    public void lockedDoorsIgnoreRedstoneUntilUnlocked(GameTestHelper helper) {
+        DungeonGameTestSuite.lockedDoorsIgnoreRedstoneUntilUnlocked(helper);
+    }
+
+    @GameTest
     public void placedBossRoomIsGuardedLockedAndStocked(GameTestHelper helper) {
         DungeonGameTestSuite.placedBossRoomIsGuardedLockedAndStocked(helper);
     }
