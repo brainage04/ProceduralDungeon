@@ -63,4 +63,3 @@ Dungeon items are made of vanilla items and components, so they work for unmodde
 - [docs/DUNGEON_DESIGN_IDEAS.md](docs/DUNGEON_DESIGN_IDEAS.md) - dungeon design notes.
 - [docs/RELEASE.md](docs/RELEASE.md) - release workflow.
 - [docs/MODRINTH.md](docs/MODRINTH.md) - Modrinth publishing setup.
-- [docs/TEST_REVIEW.md](docs/TEST_REVIEW.md) - frozen test classification and coverage notes.
