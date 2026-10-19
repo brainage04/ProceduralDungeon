@@ -5,12 +5,6 @@ on:
   pull_request:
   push:
   workflow_dispatch:
-    inputs:
-      run_client_gametests:
-        description: Run headless client GameTests
-        required: false
-        type: boolean
-        default: true
 
 permissions:
   contents: read
@@ -18,12 +12,6 @@ permissions:
 jobs:
   build:
     uses: brainage04/FabricModdingConventions/.github/workflows/reusable-mod-build.yml@v2.4.19
-
-  client-gametests:
-    if: ${{ vars.RUN_CLIENT_GAMETESTS != 'false' && (github.event_name != 'workflow_dispatch' || inputs.run_client_gametests) }}
-    uses: brainage04/FabricModdingConventions/.github/workflows/reusable-client-gametests.yml@v2.4.19
-    with:
-      run_client_gametests: ${{ github.event_name != 'workflow_dispatch' || inputs.run_client_gametests }}
 
   production-gametests:
     uses: brainage04/FabricModdingConventions/.github/workflows/reusable-production-gametests.yml@v2.4.19

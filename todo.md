@@ -17,6 +17,7 @@
 
 - [x] Test natural generation in default Overworld, Nether, and End world types rather than only superflat or command-driven fixtures.
 - [x] Make `/locate structure` fast enough not to trip the server watchdog.
+- [x] Disable the unused client GameTest suite; dungeon behaviour is tested on both loaders' servers.
 - [ ] Playtest and tune traps, structure density, loot, difficulty, and progression.
 - [ ] Run a focused code review and cleanup after the functional work.
 
