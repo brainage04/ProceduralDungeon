@@ -369,6 +369,14 @@ public final class DungeonGameTestSuite {
         BlockPos origin = helper.absolutePos(new BlockPos(8192, 32, -8192));
         StagedDungeonLayout expected = GenerateDungeonCommand.compileLayout(level, DungeonTheme.COBBLESTONE,
                 DungeonTier.TIER_1, 1, origin).orElseThrow();
+        // GameTest servers advance ticks without waiting for real time. Keep disk/worldgen I/O out of this
+        // tick-hook test, or its tick deadline can expire before asynchronous chunk loading gets CPU time.
+        BoundingBox bounds = expected.boundingBox();
+        for (int x = bounds.minX() >> 4; x <= bounds.maxX() >> 4; x++) {
+            for (int z = bounds.minZ() >> 4; z <= bounds.maxZ() >> 4; z++) {
+                level.getChunk(x, z);
+            }
+        }
         var source = level.getServer().createCommandSourceStack().withLevel(level)
                 .withPosition(Vec3.atLowerCornerOf(origin)).withSuppressedOutput();
         try {
