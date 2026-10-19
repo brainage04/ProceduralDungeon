@@ -8,6 +8,7 @@ import com.github.brainage04.procedural_dungeon.guardian.DungeonGuardian;
 import com.github.brainage04.procedural_dungeon.lock.DungeonKeyType;
 import com.github.brainage04.procedural_dungeon.lock.DungeonLockManager;
 import com.github.brainage04.procedural_dungeon.lock.DungeonLockPlan;
+import com.github.brainage04.procedural_dungeon.lock.DungeonLockSaveData;
 import com.github.brainage04.procedural_dungeon.reward.RelicEssence;
 import com.github.brainage04.procedural_dungeon.test.DungeonVariantSmokeTester;
 import com.github.brainage04.procedural_dungeon.util.RegistryKeyUtils;
@@ -18,6 +19,7 @@ import com.github.brainage04.procedural_dungeon.worldgen.structure.StagedDungeon
 import com.github.brainage04.procedural_dungeon.worldgen.structure.StagedDungeonLayoutCompiler;
 import com.github.brainage04.procedural_dungeon.worldgen.structure.StagedDungeonPieceSpec;
 import com.github.brainage04.procedural_dungeon.worldgen.structure.VariantSinglePoolElement;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.JsonOps;
 import java.util.ArrayList;
 import java.util.List;
@@ -78,6 +80,7 @@ import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.CopperBulbBlock;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.Rotation;
@@ -87,6 +90,7 @@ import net.minecraft.world.level.block.entity.ChiseledBookShelfBlockEntity;
 import net.minecraft.world.level.block.entity.CrafterBlockEntity;
 import net.minecraft.world.level.block.entity.JukeboxBlockEntity;
 import net.minecraft.world.level.block.entity.TrialSpawnerBlockEntity;
+import net.minecraft.world.level.block.state.properties.ChestType;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.Structure;
@@ -143,6 +147,10 @@ public final class DungeonGameTestSuite {
                 new TestCase("target_puzzle_opens_when_every_bulb_is_lit", DungeonGameTestSuite::targetPuzzleOpensWhenEveryBulbIsLit),
                 new TestCase("chord_puzzle_opens_only_for_its_chord", DungeonGameTestSuite::chordPuzzleOpensOnlyForItsChord),
                 new TestCase("sluice_puzzle_opens_when_the_stream_reaches_the_torch", DungeonGameTestSuite::sluicePuzzleOpensWhenTheStreamReachesTheTorch),
+                new TestCase("double_chest_unlocks_both_halves_with_one_key", DungeonGameTestSuite::doubleChestUnlocksBothHalvesWithOneKey),
+                new TestCase("lock_records_survive_save_and_reload", DungeonGameTestSuite::lockRecordsSurviveSaveAndReload),
+                new TestCase("commands_reject_invalid_arguments_and_non_operators", DungeonGameTestSuite::commandsRejectInvalidArgumentsAndNonOperators),
+                new TestCase("generation_command_finishes_its_queued_dungeon", DungeonGameTestSuite::generationCommandFinishesItsQueuedDungeon),
                 new TestCase("crafter_puzzle_opens_when_the_disc_plays", DungeonGameTestSuite::crafterPuzzleOpensWhenTheDiscPlays)
         );
     }
@@ -253,6 +261,137 @@ public final class DungeonGameTestSuite {
         helper.assertTrue(DungeonLockManager.canBreak(player, level, lower) && DungeonLockManager.canBreak(player, level, upper),
                 "An unlocked door is no longer protected");
         helper.succeed();
+    }
+
+    public static void doubleChestUnlocksBothHalvesWithOneKey(GameTestHelper helper) {
+        ServerLevel level = helper.getLevel();
+        BlockPos left = helper.absolutePos(new BlockPos(1, 1, 1));
+        BlockPos right = left.east();
+        level.setBlock(left, Blocks.CHEST.defaultBlockState()
+                .setValue(ChestBlock.FACING, Direction.NORTH).setValue(ChestBlock.TYPE, ChestType.LEFT), 2);
+        level.setBlock(right, Blocks.CHEST.defaultBlockState()
+                .setValue(ChestBlock.FACING, Direction.NORTH).setValue(ChestBlock.TYPE, ChestType.RIGHT), 2);
+        DungeonLockManager.applyPlanForPiece(level,
+                new DungeonLockPlan(List.of(left.asLong()), List.of(), List.of()), new BoundingBox(left));
+        Player player = helper.makeMockPlayer(GameType.SURVIVAL);
+        ItemStack keys = DungeonKeyType.RUSTED.createStack();
+        keys.setCount(2);
+        player.getInventory().setItem(0, keys);
+        helper.assertTrue(!DungeonLockManager.canBreak(player, level, left) && !DungeonLockManager.canBreak(player, level, right),
+                "Both halves of a locked double chest must resist breaking");
+        helper.assertTrue(DungeonLockManager.isExplosionProtected(level, left) && DungeonLockManager.isExplosionProtected(level, right),
+                "Both halves of a locked double chest must resist explosions");
+        helper.assertTrue(DungeonLockManager.useBlock(player, level, right) == InteractionResult.PASS,
+                "Opening either half with its key must allow the vanilla chest interaction");
+        helper.assertTrue(keyCount(player, DungeonKeyType.RUSTED) == 1, "One double chest must consume exactly one key");
+        helper.assertTrue(DungeonLockManager.canBreak(player, level, left) && DungeonLockManager.canBreak(player, level, right),
+                "Unlocking either half must release both halves");
+        helper.assertTrue(!DungeonLockManager.isExplosionProtected(level, left) && !DungeonLockManager.isExplosionProtected(level, right),
+                "Unlocked double chests must no longer resist explosions");
+        DungeonLockManager.useBlock(player, level, left);
+        helper.assertTrue(keyCount(player, DungeonKeyType.RUSTED) == 1, "Reopening an unlocked chest must not consume another key");
+        helper.succeed();
+    }
+
+    public static void lockRecordsSurviveSaveAndReload(GameTestHelper helper) {
+        long chest = new BlockPos(1, 2, 3).asLong();
+        long bossDoor = new BlockPos(4, 5, 6).asLong();
+        long minibossDoor = new BlockPos(7, 8, 9).asLong();
+        long keyChest = new BlockPos(-10, 11, -12).asLong();
+        long puzzleChest = new BlockPos(-13, 14, -15).asLong();
+        DungeonLockSaveData original = new DungeonLockSaveData();
+        original.addLockedChest(chest);
+        original.addLockedDoor(bossDoor, DungeonKeyType.BOSS);
+        original.addLockedDoor(minibossDoor, DungeonKeyType.MINIBOSS);
+        original.addKeySourceChest(keyChest);
+        original.addPuzzleChest(puzzleChest);
+        var codec = DungeonLockSaveData.TYPE.codec();
+        DungeonLockSaveData restored = codec.parse(JsonOps.INSTANCE, codec.encodeStart(JsonOps.INSTANCE, original).getOrThrow()).getOrThrow();
+        helper.assertTrue(restored.requiredKey(chest).orElseThrow() == DungeonKeyType.RUSTED
+                        && restored.requiredKey(bossDoor).orElseThrow() == DungeonKeyType.BOSS
+                        && restored.requiredKey(minibossDoor).orElseThrow() == DungeonKeyType.MINIBOSS,
+                "Saving and loading must retain each lock's required key");
+        helper.assertTrue(restored.isPuzzleLocked(puzzleChest) && restored.getKeySourceChests().contains(keyChest),
+                "Saving and loading must retain puzzle locks and key sources");
+        helper.assertTrue(restored.isExplosionProtected(keyChest), "Key-source explosion protection must survive loading");
+        restored.unlock(chest);
+        restored.unlock(bossDoor);
+        restored.unlock(puzzleChest);
+        DungeonLockSaveData savedAgain = codec.parse(JsonOps.INSTANCE, codec.encodeStart(JsonOps.INSTANCE, restored).getOrThrow()).getOrThrow();
+        helper.assertTrue(savedAgain.requiredKey(chest).isEmpty() && savedAgain.requiredKey(bossDoor).isEmpty()
+                        && !savedAgain.isPuzzleLocked(puzzleChest),
+                "A second save must not resurrect unlocked blocks");
+        helper.assertTrue(savedAgain.requiredKey(minibossDoor).orElseThrow() == DungeonKeyType.MINIBOSS
+                        && savedAgain.isExplosionProtected(keyChest),
+                "Unlocking unrelated blocks must not clear other locks or key-source protection");
+        helper.succeed();
+    }
+
+    public static void commandsRejectInvalidArgumentsAndNonOperators(GameTestHelper helper) {
+        var server = helper.getLevel().getServer();
+        var dispatcher = server.getCommands().getDispatcher();
+        Player player = helper.makeMockPlayer(GameType.SURVIVAL);
+        var unprivileged = player.createCommandSourceStack();
+        for (String command : List.of("generatedungeon", "generatedungeonstatus", "dungeonlocks",
+                "testdungeonvariants", "benchmarkdungeons", "structuregallery")) {
+            helper.assertTrue(!dispatcher.getRoot().getChild(command).canUse(unprivileged),
+                    command + " must reject non-operators");
+        }
+        var source = server.createCommandSourceStack().withLevel(helper.getLevel()).withSuppressedOutput();
+        var before = StagedDungeonGenerationManager.status(helper.getLevel());
+        try {
+            helper.assertTrue(dispatcher.execute("generatedungeon procedural_dungeon:missing 1 1", source) == 0,
+                    "An unknown theme must be rejected without scheduling");
+            for (String command : List.of(
+                    "generatedungeon procedural_dungeon:cobblestone 0 1",
+                    "generatedungeon procedural_dungeon:cobblestone 6 1",
+                    "generatedungeon procedural_dungeon:cobblestone 1 0",
+                    "generatedungeon procedural_dungeon:cobblestone 1 21",
+                    "dungeonlocks list 0", "dungeonlocks reveal 513")) {
+                boolean rejected = false;
+                try {
+                    dispatcher.execute(command, source);
+                } catch (CommandSyntaxException expected) {
+                    rejected = true;
+                }
+                helper.assertTrue(rejected, "Out-of-range arguments must be rejected: " + command);
+            }
+        } catch (CommandSyntaxException exception) {
+            throw new AssertionError("The registered generation command must accept its documented argument shape", exception);
+        }
+        helper.assertTrue(StagedDungeonGenerationManager.status(helper.getLevel()).equals(before),
+                "Rejected generation commands must not enqueue work");
+        helper.succeed();
+    }
+
+    public static void generationCommandFinishesItsQueuedDungeon(GameTestHelper helper) {
+        ServerLevel level = helper.getLevel();
+        BlockPos origin = helper.absolutePos(new BlockPos(8192, 32, -8192));
+        StagedDungeonLayout expected = GenerateDungeonCommand.compileLayout(level, DungeonTheme.COBBLESTONE,
+                DungeonTier.TIER_1, 1, origin).orElseThrow();
+        var source = level.getServer().createCommandSourceStack().withLevel(level)
+                .withPosition(Vec3.atLowerCornerOf(origin)).withSuppressedOutput();
+        try {
+            helper.assertTrue(level.getServer().getCommands().getDispatcher()
+                    .execute("generatedungeon procedural_dungeon:cobblestone 1 1", source) == 1,
+                    "The generation command must schedule its requested depth");
+        } catch (CommandSyntaxException exception) {
+            throw new AssertionError("The documented generation command must execute", exception);
+        }
+        helper.assertTrue(StagedDungeonGenerationManager.status(level).pendingPieces() >= expected.pieces().size(),
+                "Generation must queue the compiled dungeon before returning");
+        helper.succeedWhen(() -> {
+            helper.assertTrue(StagedDungeonGenerationManager.status(level).jobs() == 0,
+                    "The loader's tick hook must drain queued generation");
+            for (DungeonLockPlan.Door door : expected.lockPlan().doors()) {
+                if (door.lock().isPresent()) {
+                    BlockPos pos = BlockPos.of(door.pos());
+                    helper.assertTrue(level.getBlockState(pos).is(Blocks.IRON_DOOR)
+                                    && DungeonLockManager.isExplosionProtected(level, pos),
+                            "Queued generation must place and protect progression doors");
+                }
+            }
+        });
     }
 
     public static void placedBossRoomIsGuardedLockedAndStocked(GameTestHelper helper) {

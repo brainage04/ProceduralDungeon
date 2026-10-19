@@ -26,6 +26,26 @@ public final class ProceduralDungeonGameTest {
     }
 
     @GameTest
+    public void doubleChestUnlocksBothHalvesWithOneKey(GameTestHelper helper) {
+        DungeonGameTestSuite.doubleChestUnlocksBothHalvesWithOneKey(helper);
+    }
+
+    @GameTest
+    public void lockRecordsSurviveSaveAndReload(GameTestHelper helper) {
+        DungeonGameTestSuite.lockRecordsSurviveSaveAndReload(helper);
+    }
+
+    @GameTest
+    public void commandsRejectInvalidArgumentsAndNonOperators(GameTestHelper helper) {
+        DungeonGameTestSuite.commandsRejectInvalidArgumentsAndNonOperators(helper);
+    }
+
+    @GameTest(maxTicks = 400)
+    public void generationCommandFinishesItsQueuedDungeon(GameTestHelper helper) {
+        DungeonGameTestSuite.generationCommandFinishesItsQueuedDungeon(helper);
+    }
+
+    @GameTest
     public void placedBossRoomIsGuardedLockedAndStocked(GameTestHelper helper) {
         DungeonGameTestSuite.placedBossRoomIsGuardedLockedAndStocked(helper);
     }

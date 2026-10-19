@@ -1,0 +1,7 @@
+{
+  "environment": "minecraft:default",
+  "structure": "fabricmoddingconventions:empty",
+  "max_ticks": 400,
+  "type": "minecraft:function",
+  "function": "procedural_dungeon:generation_command_finishes_its_queued_dungeon"
+}
