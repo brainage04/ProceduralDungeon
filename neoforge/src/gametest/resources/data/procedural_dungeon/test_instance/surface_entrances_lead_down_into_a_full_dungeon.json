@@ -1,6 +1,6 @@
 {
   "environment": "minecraft:default",
-  "structure":"fabricmoddingconventions:empty",
+  "structure":"minecraftmodconventions:empty",
   "max_ticks": 20,
   "type": "minecraft:function",
   "function": "procedural_dungeon:surface_entrances_lead_down_into_a_full_dungeon"

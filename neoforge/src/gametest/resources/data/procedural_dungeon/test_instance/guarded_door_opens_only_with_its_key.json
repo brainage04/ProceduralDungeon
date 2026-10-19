@@ -1,6 +1,6 @@
 {
   "environment": "minecraft:default",
-  "structure":"fabricmoddingconventions:empty",
+  "structure":"minecraftmodconventions:empty",
   "max_ticks": 20,
   "type": "minecraft:function",
   "function": "procedural_dungeon:guarded_door_opens_only_with_its_key"

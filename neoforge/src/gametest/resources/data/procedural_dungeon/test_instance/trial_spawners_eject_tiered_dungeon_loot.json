@@ -1,6 +1,6 @@
 {
   "environment": "minecraft:default",
-  "structure":"fabricmoddingconventions:empty",
+  "structure":"minecraftmodconventions:empty",
   "max_ticks": 20,
   "type": "minecraft:function",
   "function": "procedural_dungeon:trial_spawners_eject_tiered_dungeon_loot"
