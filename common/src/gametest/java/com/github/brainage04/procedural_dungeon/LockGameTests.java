@@ -502,8 +502,17 @@ public final class LockGameTests {
         ServerLevel level = cleared.level();
         ServerPlayer survivor = survivalPlayer(helper);
         survivor.getInventory().setItem(0, cleared.takeKey());
-        level.getServer().getCommands().performPrefixedCommand(
-                level.getServer().createCommandSourceStack().withSuppressedOutput(), "clear " + survivor.getStringUUID());
+        // Every mock player has the same name, and /clear refuses a UUID selector; a tag picks this one.
+        String target = "procedural_dungeon.clear_target_" + survivor.getId();
+        survivor.addTag(target);
+        int removed;
+        try {
+            removed = level.getServer().getCommands().getDispatcher().execute(
+                    "clear @a[tag=" + target + "]", level.getServer().createCommandSourceStack().withSuppressedOutput());
+        } catch (com.mojang.brigadier.exceptions.CommandSyntaxException exception) {
+            throw helper.assertionException(Component.literal("/clear must accept the player: " + exception.getMessage()));
+        }
+        helper.assertTrue(removed > 0 && survivor.getInventory().isEmpty(), "/clear must remove the key, removed " + removed);
         helper.assertTrue(cleared.vaultKeys().size() == 1, "A key removed by /clear must be reissued");
 
         ServerPlayer creative = helper.makeMockServerPlayerInLevel();
