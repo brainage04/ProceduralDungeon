@@ -850,15 +850,25 @@ public final class StagedJobGameTests {
                 });
     }
 
-    /** P08: a level that never had a job gets no staged data. */
+    /**
+     * P08: a level that never had a job gets no staged data. The GameTest datapack adds an empty
+     * dimension for this, since other tests build natural dungeons in all three vanilla ones.
+     */
     public static void levelsWithoutJobsKeepNoStagedData(GameTestHelper helper) {
-        ServerLevel end = helper.getLevel().getServer().getLevel(Level.END);
+        ServerLevel empty =
+                helper.getLevel()
+                        .getServer()
+                        .getLevel(
+                                ResourceKey.create(
+                                        Registries.DIMENSION, ProceduralDungeon.of("no_jobs")));
+        helper.assertTrue(
+                empty != null, "The GameTest datapack must add procedural_dungeon:no_jobs");
         helper.runAfterDelay(
                 20,
                 () -> {
                     helper.assertTrue(
-                            end.getDataStorage().get(StagedDungeonSaveData.TYPE) == null,
-                            "The End must not get staged job data");
+                            empty.getDataStorage().get(StagedDungeonSaveData.TYPE) == null,
+                            "A level without jobs must not get staged job data");
                     helper.succeed();
                 });
     }
