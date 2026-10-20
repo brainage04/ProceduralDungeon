@@ -1,0 +1,7 @@
+{
+  "environment": "procedural_dungeon:api_plans_compile_off_thread_from_the_request_alone",
+  "structure":"minecraftmodconventions:empty",
+  "max_ticks": 100,
+  "type": "minecraft:function",
+  "function": "procedural_dungeon:api_plans_compile_off_thread_from_the_request_alone"
+}

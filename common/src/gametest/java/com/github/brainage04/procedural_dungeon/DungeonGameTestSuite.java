@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
-import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
@@ -127,7 +126,7 @@ public final class DungeonGameTestSuite {
     private DungeonGameTestSuite() {}
 
     public static List<TestCase> tests() {
-        return List.of(
+        List<TestCase> tests = new ArrayList<>(List.of(
                 new TestCase("variant_catalog_is_stable_and_complete", DungeonGameTestSuite::variantCatalogIsStableAndComplete),
                 new TestCase("seeded_loot_selection_is_repeatable_and_tier_bounded", DungeonGameTestSuite::seededLootSelectionIsRepeatableAndTierBounded),
                 new TestCase("every_layout_has_a_boss_room_and_a_boss_key_vault", DungeonGameTestSuite::everyLayoutHasABossRoomAndABossKeyVault),
@@ -154,7 +153,10 @@ public final class DungeonGameTestSuite {
                 new TestCase("generation_command_finishes_its_queued_dungeon", DungeonGameTestSuite::generationCommandFinishesItsQueuedDungeon),
                 new TestCase("locked_doors_ignore_redstone_until_unlocked", DungeonGameTestSuite::lockedDoorsIgnoreRedstoneUntilUnlocked),
                 new TestCase("crafter_puzzle_opens_when_the_disc_plays", DungeonGameTestSuite::crafterPuzzleOpensWhenTheDiscPlays)
-        );
+        ));
+        tests.addAll(MechanicsGameTests.tests());
+        tests.addAll(ApiGameTests.tests());
+        return List.copyOf(tests);
     }
 
     public static void variantCatalogIsStableAndComplete(GameTestHelper helper) {
@@ -380,6 +382,7 @@ public final class DungeonGameTestSuite {
         }
         var source = level.getServer().createCommandSourceStack().withLevel(level)
                 .withPosition(Vec3.atLowerCornerOf(origin)).withSuppressedOutput();
+        int pendingBefore = StagedDungeonGenerationManager.status(level).pendingPieces();
         try {
             helper.assertTrue(level.getServer().getCommands().getDispatcher()
                     .execute("generatedungeon procedural_dungeon:cobblestone 1 1", source) == 1,
@@ -387,16 +390,15 @@ public final class DungeonGameTestSuite {
         } catch (CommandSyntaxException exception) {
             throw new AssertionError("The documented generation command must execute", exception);
         }
-        helper.assertTrue(StagedDungeonGenerationManager.status(level).pendingPieces() >= expected.pieces().size(),
-                "Generation must queue the compiled dungeon before returning");
-        // Other tests' jobs may share the level, so follow this command's own job.
-        UUID job = StagedDungeonGenerationManager.jobs(level).stream()
-                .filter(view -> view.bounds().equals(bounds))
-                .map(StagedDungeonGenerationManager.JobView::id)
-                .findFirst()
-                .orElseThrow(() -> new AssertionError("The command's job must be listed"));
+        // The layout compiles on a worldgen worker and is queued on a later tick, so the command does not stall its
+        // tick; api_plans_compile_off_thread_from_the_request_alone times that shared compile path.
+        helper.assertTrue(StagedDungeonGenerationManager.status(level).pendingPieces() == pendingBefore,
+                "Generation must not compile and queue the dungeon inside the command's tick");
+        // Other tests' jobs may share the level, so follow only this command's job: it is done once its doors stand
+        // and no job with its bounds is left (the job is queued, and may finish, between two checks).
         helper.succeedWhen(() -> {
-            helper.assertTrue(StagedDungeonGenerationManager.job(level, job).isEmpty(),
+            helper.assertTrue(StagedDungeonGenerationManager.jobs(level).stream()
+                            .noneMatch(view -> view.bounds().equals(bounds)),
                     "The loader's tick hook must drain queued generation");
             for (DungeonLockPlan.Door door : expected.lockPlan().doors()) {
                 if (door.lock().isPresent()) {

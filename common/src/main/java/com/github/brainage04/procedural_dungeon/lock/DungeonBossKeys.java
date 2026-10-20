@@ -1,5 +1,7 @@
 package com.github.brainage04.procedural_dungeon.lock;
 
+import com.github.brainage04.procedural_dungeon.api.impl.DungeonEvents;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -195,7 +197,15 @@ public final class DungeonBossKeys {
         DungeonLockSaveData data = DungeonLockManager.existingData(level);
         Optional<DungeonLockSaveData.BossKey> record =
                 data == null ? Optional.empty() : data.bossKeyById(id);
-        record.ifPresent(current -> reissue(level, data, current));
+        record.ifPresent(
+                current -> {
+                    reissue(level, data, current);
+                    // The door lies inside the dungeon's bounds, which is how the API finds it.
+                    DungeonEvents.keyDestroyed(
+                            level,
+                            BlockPos.of(current.door()),
+                            DungeonKeyType.BOSS.getSerializedName());
+                });
         return record.isPresent();
     }
 

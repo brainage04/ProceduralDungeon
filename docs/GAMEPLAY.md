@@ -1,6 +1,6 @@
 # Finding dungeons
 
-Dungeons generate naturally in the Overworld, the Nether, and the End, and are built in the background over a few seconds so world generation stays smooth.
+Dungeons generate naturally in the Overworld, the Nether, and the End, and are built in the background, a few pieces per tick within a small time budget, so world generation stays smooth. Building survives restarts and crashes: a dungeon that was interrupted carries on where it stopped and never places a room twice.
 
 - **Overworld and End:** a ruined surface entrance (ruined archway, sunken courtyard, or ritual descent) marks the spot. A scaffolding column runs down its shaft into the dungeon's start room. In the End, dungeons only generate on solid ground on the outer islands (the End highlands and midlands, like End cities), never on the central dragon island.
 - **Nether:** dungeons are buried in the most solid terrain between y=24 and y=104 and have no surface entrance.
@@ -106,6 +106,8 @@ Affix pools (an affix never repeats one of the relic's signature bonuses):
 - **Grindstone + book:** an enchanted item and a plain book make an enchanted book holding all of the item's enchantments except curses. The item stays in the grindstone with only its curses; one book is used, and it costs one experience level per enchantment level (at most 30).
 - **Grindstone, relic alone:** grinding an item that carries relic bonuses gives a **Relic Essence** holding those bonuses. The item keeps its enchantments and base stats.
 - **Anvil + Relic Essence:** combining an item with an essence moves the bonuses onto it for 10 levels. Armour bonuses fit any armour piece (and move to that piece's slot); weapon and tool bonuses fit any weapon or tool. Essences stack: an item can take any number of them.
+
+The grindstone salvage needs the `procedural_dungeon:grindstone_salvage` game rule (on by default). A mod that embeds Procedural Dungeon can also turn salvage, the anvil's over-max levels and essences, and Soulbound off in its own worlds ([API](API.md#switches)).
 
 ## Dungeon enchantments
 

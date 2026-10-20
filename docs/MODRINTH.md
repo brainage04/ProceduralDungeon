@@ -1,8 +1,8 @@
 # Modrinth publishing
 
-This repository includes optional Modrinth publishing as part of `.github/workflows/release.yml`.
+This repository includes optional Modrinth publishing as part of `.github/workflows/release.yml`, which calls MinecraftModConventions' shared `reusable-multiloader-release.yml` (v3.0.1); the publishing steps described here live in that shared workflow, not in this repository.
 
-After the GitHub release is created, a second job in the same workflow does two things:
+After the GitHub release is created, the shared workflow does two things:
 
 1. Creates the Modrinth project if a project with slug `mod_id` does not already exist.
 2. Uploads the built Fabric and NeoForge release jars as Modrinth versions if that `mod_version` has not already been uploaded.
@@ -151,4 +151,3 @@ The release workflow fetches the remote tag object before reading notes so annot
 - If the Modrinth project already exists, it is reused instead of recreated. When a project is newly created, the separate icon sync step is skipped for that release because the create request already uploads the icon.
 - If an existing Modrinth project icon must change and Modrinth rejects the icon replacement, the workflow still publishes the Modrinth version, then fails the job at the end so the stale icon remains visible.
 - If the Modrinth version already exists for the current `mod_version`, publishing is skipped.
-- The Modrinth scripts can also be run locally for validation. When they run outside GitHub Actions, `GITHUB_ENV` is optional and no step output file is written.

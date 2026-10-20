@@ -1,5 +1,6 @@
 package com.github.brainage04.procedural_dungeon.lock;
 
+import com.github.brainage04.procedural_dungeon.api.impl.DungeonEvents;
 import com.github.brainage04.procedural_dungeon.guardian.DungeonGuardian;
 import com.github.brainage04.procedural_dungeon.worldgen.structure.DungeonChunkLedger;
 import com.github.brainage04.procedural_dungeon.worldgen.structure.DungeonPuzzleRooms;
@@ -69,6 +70,7 @@ public final class DungeonLockManager {
             unlock(level, data, lockPos);
             flushToLedger(level, data);
             displayMessage(player, "The mechanism releases the chest.");
+            DungeonEvents.puzzleSolved(level, pos);
             return InteractionResult.PASS;
         }
         if (data.isEncounterLocked(lockPos.asLong())) {
@@ -94,6 +96,7 @@ public final class DungeonLockManager {
         unlock(level, data, lockPos);
         flushToLedger(level, data);
         displayMessage(player, "Unlocked with a %s.".formatted(key.displayName()));
+        DungeonEvents.unlocked(level, player, key.getSerializedName(), pos);
         if (door) {
             openDoor(level, lockPos);
             return InteractionResult.SUCCESS;

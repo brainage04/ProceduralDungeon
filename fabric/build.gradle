@@ -5,6 +5,29 @@ fabricApi {
 	}
 }
 
+// Other mods compile against the public API (com.github.brainage04.procedural_dungeon.api) in the Fabric JAR.
+// `./gradlew :fabric:publishAllPublicationsToLocalRepository` writes it to build/local-repo, where the
+// workspace-dependencies plugin of a sibling checkout finds it. The POM lists no dependencies: consumers declare the
+// JAR compile-only and load Procedural Dungeon as an optional mod.
+apply plugin: 'maven-publish'
+publishing {
+	publications {
+		register('fabric', MavenPublication) {
+			groupId = project.maven_group
+			artifactId = "${project.archives_base_name}-fabric"
+			version = project.mod_version
+			artifact(tasks.named('jar'))
+			artifact(tasks.named('sourcesJar'))
+		}
+	}
+	repositories {
+		maven {
+			name = 'local'
+			url = rootProject.layout.projectDirectory.dir('build/local-repo')
+		}
+	}
+}
+
 // Playtest mode: `./gradlew :fabric:runPlaytest` launches a client that creates a fresh world and drops you into a random
 // dungeon with gear for its tier. Pass -PplaytestTheme=<theme> and/or -PplaytestTier=<1-5> to pick one. The playtest code
 // lives in the GameTest mod and only activates under this run's procedural_dungeon.playtest system property.

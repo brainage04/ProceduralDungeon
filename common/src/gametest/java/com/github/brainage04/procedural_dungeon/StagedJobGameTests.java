@@ -1425,7 +1425,7 @@ public final class StagedJobGameTests {
      * chunk loading must not wait for asynchronous loads against its tick deadline. The ticket is
      * neither forced nor PD's, so the ticket assertions still see only PD's own.
      */
-    private static void holdChunks(ServerLevel level, BoundingBox box) {
+    static void holdChunks(ServerLevel level, BoundingBox box) {
         for (long chunk : chunks(box)) {
             level.getChunkSource()
                     .addTicketWithRadius(TicketType.PLAYER_LOADING, ChunkPos.unpack(chunk), 1);
@@ -1443,7 +1443,7 @@ public final class StagedJobGameTests {
         LockSupport.parkNanos(50_000_000L);
     }
 
-    private static void releaseChunks(ServerLevel level, BoundingBox box) {
+    static void releaseChunks(ServerLevel level, BoundingBox box) {
         for (long chunk : chunks(box)) {
             level.getChunkSource()
                     .removeTicketWithRadius(TicketType.PLAYER_LOADING, ChunkPos.unpack(chunk), 1);

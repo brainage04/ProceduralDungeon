@@ -9,7 +9,9 @@
 		"fabric-gametest": [
 			"com.github.brainage04.procedural_dungeon.ProceduralDungeonGameTest",
 			"com.github.brainage04.procedural_dungeon.LockGameTest",
-			"com.github.brainage04.procedural_dungeon.StagedJobFabricGameTest"
+			"com.github.brainage04.procedural_dungeon.StagedJobFabricGameTest",
+			"com.github.brainage04.procedural_dungeon.MechanicsGameTest",
+			"com.github.brainage04.procedural_dungeon.ApiGameTest"
 		],
 		"main": [
 			"com.github.brainage04.procedural_dungeon.playtest.ProceduralDungeonPlaytest"

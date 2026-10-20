@@ -5,6 +5,7 @@
 	"mixins": [
 		"AnvilMenuMixin",
 		"BossKeyInventoryMixin",
+		"ChunkGeneratorMixin",
 		"DoorBlockMixin",
 		"EntityMixin",
 		"ExplodeEffectMixin",
@@ -12,11 +13,13 @@
 		"GrindstoneMenuMixin",
 		"HopperBlockEntityMixin",
 		"InventoryMixin",
+		"ItemCombinerMenuAccessor",
 		"LivingEntityMixin",
 		"PistonStructureResolverMixin",
 		"ServerExplosionMixin",
 		"ServerGamePacketListenerImplMixin",
-		"ServerPlayerMixin"
+		"ServerPlayerMixin",
+		"StructureCheckMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
