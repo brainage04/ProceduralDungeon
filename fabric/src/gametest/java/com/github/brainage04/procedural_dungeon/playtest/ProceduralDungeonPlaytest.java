@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.Optional;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -39,6 +40,7 @@ public class ProceduralDungeonPlaytest implements ModInitializer {
         if (!enabled()) {
             return;
         }
+        ServerTickEvents.END_SERVER_TICK.register(server -> PlaytestDungeon.tick());
         ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
             ServerPlayer player = handler.getPlayer();
             if (player.addTag(STARTED_TAG)) {

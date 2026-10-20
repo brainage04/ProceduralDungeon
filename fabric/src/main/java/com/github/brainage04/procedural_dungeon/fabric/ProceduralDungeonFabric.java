@@ -7,10 +7,15 @@ import com.github.brainage04.procedural_dungeon.command.core.ModCommands;
 import com.github.brainage04.procedural_dungeon.lock.DungeonBossKeys;
 import com.github.brainage04.procedural_dungeon.lock.DungeonLockManager;
 import com.github.brainage04.procedural_dungeon.worldgen.processor.ModStructureProcessorTypes;
+import com.github.brainage04.procedural_dungeon.worldgen.structure.DungeonChunkLedger;
+import com.github.brainage04.procedural_dungeon.worldgen.structure.DungeonChunkTickets;
 import com.github.brainage04.procedural_dungeon.worldgen.structure.ModStructurePoolElementTypes;
 import com.github.brainage04.procedural_dungeon.worldgen.structure.ModStructureTypes;
 import com.github.brainage04.procedural_dungeon.worldgen.structure.StagedDungeonGenerationManager;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
+import net.fabricmc.fabric.api.attachment.v1.AttachmentTarget;
+import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
@@ -19,6 +24,7 @@ import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.chunk.LevelChunk;
 
 public final class ProceduralDungeonFabric implements ModInitializer {
     @Override
@@ -29,6 +35,20 @@ public final class ProceduralDungeonFabric implements ModInitializer {
         ModStructureTypes.registerAll(
                 (name, type) -> ModStructureTypes.setStagedDungeon(Registry.register(BuiltInRegistries.STRUCTURE_TYPE, ProceduralDungeon.of(name), type)),
                 (name, type) -> ModStructureTypes.setStagedDungeonMarker(Registry.register(BuiltInRegistries.STRUCTURE_PIECE, ProceduralDungeon.of(name), type)));
+        Registry.register(BuiltInRegistries.TICKET_TYPE, ProceduralDungeon.of(DungeonChunkTickets.TICKET_NAME), DungeonChunkTickets.TICKET_TYPE);
+        AttachmentType<DungeonChunkLedger.Data> placed = AttachmentRegistry.create(
+                ProceduralDungeon.of(DungeonChunkLedger.ATTACHMENT_NAME), builder -> builder.persistent(DungeonChunkLedger.CODEC));
+        DungeonChunkLedger.setBackend(new DungeonChunkLedger.Backend() {
+            @Override
+            public DungeonChunkLedger.Data get(LevelChunk chunk) {
+                return ((AttachmentTarget) chunk).getAttached(placed);
+            }
+
+            @Override
+            public void set(LevelChunk chunk, DungeonChunkLedger.Data data) {
+                ((AttachmentTarget) chunk).setAttached(placed, data);
+            }
+        });
         ProceduralDungeon.initialize();
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> ModCommands.register(dispatcher));
         UseBlockCallback.EVENT.register((player, world, hand, hitResult) -> world instanceof ServerLevel level
@@ -42,6 +62,8 @@ public final class ProceduralDungeonFabric implements ModInitializer {
         ServerTickEvents.END_SERVER_TICK.register(DungeonBossKeys::tick);
         ServerLifecycleEvents.SERVER_STOPPING.register(server -> DungeonLocksCommand.clearRevealMarkers());
         ServerLifecycleEvents.SERVER_STOPPING.register(server -> DungeonBossKeys.clear());
+        ServerLifecycleEvents.SERVER_STOPPING.register(StagedDungeonGenerationManager::serverStopping);
+        ServerLifecycleEvents.SERVER_STARTED.register(server -> StagedDungeonGenerationManager.resetSession());
         ServerLifecycleEvents.SERVER_STARTED.register(StructureGalleryCommand::initializeAutobuild);
     }
 }

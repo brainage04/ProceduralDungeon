@@ -1,0 +1,7 @@
+{
+  "environment": "minecraft:default",
+  "structure": "minecraftmodconventions:empty",
+  "max_ticks": 600,
+  "type": "minecraft:function",
+  "function": "procedural_dungeon:job_records_encode_each_piece_once_per_save"
+}

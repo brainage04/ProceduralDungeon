@@ -1,0 +1,7 @@
+{
+  "environment": "procedural_dungeon:staged_budget",
+  "structure": "minecraftmodconventions:empty",
+  "max_ticks": 200,
+  "type": "minecraft:function",
+  "function": "procedural_dungeon:round_robin_serves_every_level_under_a_tight_budget"
+}

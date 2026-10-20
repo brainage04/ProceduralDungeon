@@ -1,0 +1,7 @@
+{
+  "environment": "minecraft:default",
+  "structure": "minecraftmodconventions:empty",
+  "max_ticks": 300,
+  "type": "minecraft:function",
+  "function": "procedural_dungeon:a_failed_piece_fails_the_job_and_skips_its_locks"
+}

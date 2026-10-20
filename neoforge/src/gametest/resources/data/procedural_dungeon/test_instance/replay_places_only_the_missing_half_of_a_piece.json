@@ -1,0 +1,7 @@
+{
+  "environment": "minecraft:default",
+  "structure": "minecraftmodconventions:empty",
+  "max_ticks": 600,
+  "type": "minecraft:function",
+  "function": "procedural_dungeon:replay_places_only_the_missing_half_of_a_piece"
+}

@@ -1,0 +1,7 @@
+{
+  "environment": "minecraft:default",
+  "structure": "minecraftmodconventions:empty",
+  "max_ticks": 600,
+  "type": "minecraft:function",
+  "function": "procedural_dungeon:shared_chunks_keep_their_ticket_until_the_last_job"
+}

@@ -1,0 +1,7 @@
+{
+  "environment": "minecraft:default",
+  "structure": "minecraftmodconventions:empty",
+  "max_ticks": 900,
+  "type": "minecraft:function",
+  "function": "procedural_dungeon:replay_with_a_tagged_guardian_spawns_no_second"
+}

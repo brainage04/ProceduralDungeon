@@ -1,12 +1,9 @@
 package com.github.brainage04.procedural_dungeon.worldgen.structure;
 
 import com.mojang.serialization.Codec;
-
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import java.util.Optional;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtOps;
-import net.minecraft.nbt.Tag;
-import net.minecraft.resources.RegistryOps;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pools.StructurePoolElement;
@@ -23,6 +20,30 @@ public record StagedDungeonPieceSpec(
             Codec.STRING.xmap(Rotation::valueOf, Rotation::name)
     );
 
+    /**
+     * Encodes pool elements, so it needs registry ops (SavedData and structure pieces provide them).
+     */
+    public static final Codec<StagedDungeonPieceSpec> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+            StructurePoolElement.CODEC.fieldOf("element").forGetter(piece -> {
+                DungeonGenerationProfiler.recordPieceEncode();
+                return piece.element();
+            }),
+            Codec.INT.optionalFieldOf("x", 0).forGetter(piece -> piece.position().getX()),
+            Codec.INT.optionalFieldOf("y", 0).forGetter(piece -> piece.position().getY()),
+            Codec.INT.optionalFieldOf("z", 0).forGetter(piece -> piece.position().getZ()),
+            ROTATION_CODEC.optionalFieldOf("rotation", Rotation.NONE).forGetter(StagedDungeonPieceSpec::rotation),
+            BoundingBox.CODEC.fieldOf("bounding_box").forGetter(StagedDungeonPieceSpec::boundingBox),
+            Codec.INT.optionalFieldOf("ground_level_delta").forGetter(piece -> Optional.of(piece.groundLevelDelta())),
+            Codec.BOOL.optionalFieldOf("start_piece", false).forGetter(StagedDungeonPieceSpec::startPiece)
+    ).apply(instance, (element, x, y, z, rotation, box, groundLevelDelta, startPiece) -> new StagedDungeonPieceSpec(
+            element,
+            new BlockPos(x, y, z),
+            rotation,
+            box,
+            groundLevelDelta.orElseGet(element::getGroundLevelDelta),
+            startPiece
+    )));
+
     public StagedDungeonPieceSpec(
             StructurePoolElement element,
             BlockPos position,
@@ -31,36 +52,5 @@ public record StagedDungeonPieceSpec(
             int groundLevelDelta
     ) {
         this(element, position, rotation, boundingBox, groundLevelDelta, false);
-    }
-
-    public CompoundTag save(RegistryOps<Tag> ops) {
-        CompoundTag tag = new CompoundTag();
-        tag.store("element", StructurePoolElement.CODEC, ops, element);
-        tag.putInt("x", position.getX());
-        tag.putInt("y", position.getY());
-        tag.putInt("z", position.getZ());
-        tag.store("rotation", ROTATION_CODEC, rotation);
-        tag.store("bounding_box", BoundingBox.CODEC, boundingBox);
-        tag.putInt("ground_level_delta", groundLevelDelta);
-        tag.putBoolean("start_piece", startPiece);
-        return tag;
-    }
-
-    public static StagedDungeonPieceSpec load(RegistryOps<Tag> ops, CompoundTag tag) {
-        StructurePoolElement element = tag.read("element", StructurePoolElement.CODEC, ops).orElseThrow();
-        BlockPos position = new BlockPos(
-                tag.getIntOr("x", 0),
-                tag.getIntOr("y", 0),
-                tag.getIntOr("z", 0)
-        );
-        Rotation rotation = tag.read("rotation", ROTATION_CODEC).orElse(Rotation.NONE);
-        BoundingBox boundingBox = tag.read("bounding_box", BoundingBox.CODEC).orElseThrow();
-        int groundLevelDelta = tag.getIntOr("ground_level_delta", element.getGroundLevelDelta());
-        boolean startPiece = tag.getBooleanOr("start_piece", false);
-        return new StagedDungeonPieceSpec(element, position, rotation, boundingBox, groundLevelDelta, startPiece);
-    }
-
-    public static RegistryOps<Tag> ops(net.minecraft.core.RegistryAccess registryAccess) {
-        return registryAccess.createSerializationContext(NbtOps.INSTANCE);
     }
 }

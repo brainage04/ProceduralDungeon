@@ -74,6 +74,8 @@ public enum DungeonGuardian {
 
     /**
      * Spawns the guardian standing on {@code pos}, facing the room entrance (template north).
+     *
+     * @return the spawned guardian, or empty if its entity type could not be created
      */
     public Optional<Mob> spawn(ServerLevelAccessor level, BlockPos pos, Rotation rotation, int tierNumber) {
         Mob mob = type.create(level.getLevel(), EntitySpawnReason.STRUCTURE);

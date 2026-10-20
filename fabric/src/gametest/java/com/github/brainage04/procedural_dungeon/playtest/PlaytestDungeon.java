@@ -4,11 +4,13 @@ import com.github.brainage04.procedural_dungeon.ProceduralDungeon;
 import com.github.brainage04.procedural_dungeon.command.GenerateDungeonCommand;
 import com.github.brainage04.procedural_dungeon.dungeon.DungeonTheme;
 import com.github.brainage04.procedural_dungeon.dungeon.DungeonTier;
-import com.github.brainage04.procedural_dungeon.lock.DungeonLockManager;
 import com.github.brainage04.procedural_dungeon.worldgen.structure.StagedDungeonGenerationManager;
 import com.github.brainage04.procedural_dungeon.worldgen.structure.StagedDungeonLayout;
-import com.github.brainage04.procedural_dungeon.worldgen.structure.StagedDungeonPieceSpec;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -32,7 +34,8 @@ import net.minecraft.world.level.portal.TeleportTransition;
 import net.minecraft.world.phys.Vec3;
 
 /**
- * Builds a whole dungeon at once and drops a player into its start room with gear for its tier.
+ * Builds a dungeon through the staged generator, as players get it, and drops a player into its start room with gear
+ * for its tier once the job completes.
  */
 final class PlaytestDungeon {
     /**
@@ -41,6 +44,7 @@ final class PlaytestDungeon {
     private static final AtomicInteger BUILDS = new AtomicInteger();
     private static final int SPACING = 1024;
     private static final int ATTEMPTS = 8;
+    private static final List<PendingBuild> PENDING = new ArrayList<>();
 
     private PlaytestDungeon() {}
 
@@ -55,7 +59,7 @@ final class PlaytestDungeon {
         }
 
         String label = "Tier %d %s".formatted(tier.tier, theme.getName().getString());
-        player.sendSystemMessage(Component.literal("Playtest: building a %s dungeon...".formatted(label)));
+        player.sendSystemMessage(Component.literal("Playtest: building a %s dungeon in the background...".formatted(label)));
         for (int attempt = 0; attempt < ATTEMPTS; attempt++) {
             int build = BUILDS.incrementAndGet();
             BlockPos origin = new BlockPos(build * SPACING, startHeight(level), SPACING * (attempt % 2 == 0 ? 1 : -1));
@@ -63,30 +67,70 @@ final class PlaytestDungeon {
             if (layout.isEmpty()) {
                 continue;
             }
-
-            long start = System.nanoTime();
-            StagedDungeonGenerationManager.placeSynchronously(level, layout.get().pieces(), LiquidSettings.IGNORE_WATERLOGGING);
-            for (StagedDungeonPieceSpec piece : layout.get().pieces()) {
-                DungeonLockManager.applyPlanForPiece(level, layout.get().lockPlan(), piece.boundingBox());
+            StagedDungeonGenerationManager.EnqueueResult result = StagedDungeonGenerationManager.enqueue(
+                    level, layout.get(), LiquidSettings.IGNORE_WATERLOGGING, StagedDungeonGenerationManager.JobOptions.DEFAULT);
+            if (!result.accepted()) {
+                player.sendSystemMessage(Component.literal("Playtest: the dungeon was not scheduled: " + result.rejection()));
+                return false;
             }
-            ProceduralDungeon.LOGGER.info("Playtest: placed {} ({} pieces) at {} in {} ms",
-                    label, layout.get().pieces().size(), origin.toShortString(), (System.nanoTime() - start) / 1_000_000);
-
-            BlockPos spawn = standingSpot(level, layout.get().pieces().getFirst().boundingBox());
-            player.teleport(new TeleportTransition(level, Vec3.atBottomCenterOf(spawn), Vec3.ZERO, player.getYRot(), 0.0F, TeleportTransition.DO_NOTHING));
-            equip(player, tier, random);
-            ProceduralDungeon.LOGGER.info("Playtest: {} is in {} at {} (standing on {}, head in {}), wearing {} and holding {}",
-                    player.getScoreboardName(), level.dimension().identifier(), player.blockPosition().toShortString(),
-                    level.getBlockState(spawn.below()), level.getBlockState(spawn.above()),
-                    player.getItemBySlot(EquipmentSlot.CHEST), player.getInventory().getItem(0));
-            player.sendSystemMessage(Component.literal(
-                    "Playtest: %s, %d rooms. The boss key vault and boss room are somewhere in here. /playtest [theme] [tier] builds another."
-                            .formatted(label, layout.get().pieces().size())));
+            PENDING.add(new PendingBuild(player, level, result.id(), label, tier, layout.get(), System.nanoTime()));
             return true;
         }
         player.sendSystemMessage(Component.literal("Playtest: no %s layout fit after %d tries.".formatted(label, ATTEMPTS)));
         return false;
     }
+
+    /**
+     * Server tick: teleports each player whose dungeon finished building.
+     */
+    static void tick() {
+        for (Iterator<PendingBuild> iterator = PENDING.iterator(); iterator.hasNext(); ) {
+            PendingBuild build = iterator.next();
+            Optional<StagedDungeonGenerationManager.JobView> job = StagedDungeonGenerationManager.job(build.level(), build.job());
+            StagedDungeonGenerationManager.JobState state = job.map(StagedDungeonGenerationManager.JobView::state)
+                    .orElse(StagedDungeonGenerationManager.JobState.CANCELLED);
+            if (state == StagedDungeonGenerationManager.JobState.RUNNING) {
+                continue;
+            }
+            iterator.remove();
+            StagedDungeonGenerationManager.forget(build.level(), build.layout().boundingBox());
+            if (state != StagedDungeonGenerationManager.JobState.COMPLETE || build.player().isRemoved()) {
+                build.player().sendSystemMessage(Component.literal("Playtest: building %s ended %s%s.".formatted(
+                        build.label(), state, job.map(view -> view.failure() == null ? "" : ": " + view.failure()).orElse(""))));
+                continue;
+            }
+            arrive(build);
+        }
+    }
+
+    private static void arrive(PendingBuild build) {
+        ServerPlayer player = build.player();
+        ServerLevel level = build.level();
+        StagedDungeonLayout layout = build.layout();
+        ProceduralDungeon.LOGGER.info("Playtest: built {} ({} pieces) in {} ms",
+                build.label(), layout.pieces().size(), (System.nanoTime() - build.startNanos()) / 1_000_000);
+
+        BlockPos spawn = standingSpot(level, layout.pieces().getFirst().boundingBox());
+        player.teleport(new TeleportTransition(level, Vec3.atBottomCenterOf(spawn), Vec3.ZERO, player.getYRot(), 0.0F, TeleportTransition.DO_NOTHING));
+        equip(player, build.tier(), RandomSource.create());
+        ProceduralDungeon.LOGGER.info("Playtest: {} is in {} at {} (standing on {}, head in {}), wearing {} and holding {}",
+                player.getScoreboardName(), level.dimension().identifier(), player.blockPosition().toShortString(),
+                level.getBlockState(spawn.below()), level.getBlockState(spawn.above()),
+                player.getItemBySlot(EquipmentSlot.CHEST), player.getInventory().getItem(0));
+        player.sendSystemMessage(Component.literal(
+                "Playtest: %s, %d rooms. The boss key vault and boss room are somewhere in here. /playtest [theme] [tier] builds another."
+                        .formatted(build.label(), layout.pieces().size())));
+    }
+
+    private record PendingBuild(
+            ServerPlayer player,
+            ServerLevel level,
+            UUID job,
+            String label,
+            DungeonTier tier,
+            StagedDungeonLayout layout,
+            long startNanos
+    ) {}
 
     /**
      * Deep enough that dungeons, which build downwards from their start room, stay above the bottom of the world.

@@ -2,6 +2,7 @@ package com.github.brainage04.procedural_dungeon.command.core;
 
 import com.github.brainage04.procedural_dungeon.command.BenchmarkDungeonCommand;
 import com.github.brainage04.procedural_dungeon.command.DungeonCommand;
+import com.github.brainage04.procedural_dungeon.command.DungeonDebugCommand;
 import com.github.brainage04.procedural_dungeon.command.DungeonLocksCommand;
 import com.github.brainage04.procedural_dungeon.command.GenerateDungeonCommand;
 import com.github.brainage04.procedural_dungeon.command.StructureGalleryCommand;
@@ -17,5 +18,6 @@ public class ModCommands {
         StructureGalleryCommand.initialize(dispatcher);
         DungeonLocksCommand.initialize(dispatcher);
         DungeonCommand.initialize(dispatcher);
+        DungeonDebugCommand.initialize(dispatcher);
     }
 }

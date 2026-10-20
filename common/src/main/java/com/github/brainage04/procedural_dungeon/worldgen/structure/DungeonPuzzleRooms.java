@@ -91,14 +91,17 @@ public final class DungeonPuzzleRooms {
 
     /**
      * Hangs the arrow frame of a {@link #FRAME_MARKER} marker at {@code pos} in a piece placed with {@code rotation}.
+     *
+     * @return the frame, already added to the level
      */
-    public static void hangFrame(ServerLevel level, BlockPos pos, Rotation rotation, String metadata) {
+    public static ItemFrame hangFrame(ServerLevel level, BlockPos pos, Rotation rotation, String metadata) {
         int itemRotation = Integer.parseInt(metadata.substring(FRAME_MARKER.length()));
         level.setBlock(pos, Blocks.CAVE_AIR.defaultBlockState(), Block.UPDATE_CLIENTS);
         ItemFrame frame = new ItemFrame(level, pos, rotation.rotate(Direction.NORTH));
         frame.setItem(new ItemStack(Items.ARROW), false);
         frame.setRotation(itemRotation);
         level.addFreshEntity(frame);
+        return frame;
     }
 
     /**
