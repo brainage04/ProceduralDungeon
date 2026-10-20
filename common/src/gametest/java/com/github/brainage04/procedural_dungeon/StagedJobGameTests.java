@@ -344,6 +344,9 @@ public final class StagedJobGameTests {
         UUID id = enqueue(helper, level, List.of(first, broken, third), plan);
         helper.succeedWhen(
                 () -> {
+                    // The missing template is not one of PD's elements, so its part waits for the
+                    // chunk's entities (see pace).
+                    pace();
                     JobView view =
                             StagedDungeonGenerationManager.job(level, id)
                                     .orElseThrow(
@@ -1418,9 +1421,9 @@ public final class StagedJobGameTests {
 
     /**
      * Gives asynchronous entity loading wall-clock time. GameTest servers do not wait between
-     * ticks, and the boss room's parts wait for their chunks' entities (to find tagged guardians),
-     * which are read on an I/O thread; without pacing, a busy machine can spend a test's whole tick
-     * budget in well under a second.
+     * ticks, and parts that spawn entities (or come from elements other than PD's) wait for their
+     * chunks' entities, which are read on an I/O thread; without pacing, a busy machine can spend a
+     * test's whole tick budget in well under a second.
      */
     private static void pace() {
         LockSupport.parkNanos(5_000_000L);
