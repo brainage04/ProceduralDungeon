@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import java.util.List;
 import java.util.Optional;
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.Identifier;
 
 /**
@@ -48,6 +49,22 @@ public record DungeonLockPlan(
 
     public long lockedDoorCount(DungeonKeyType type) {
         return doors.stream().filter(door -> door.lock().equals(Optional.of(type))).count();
+    }
+
+    /**
+     * The same plan for a layout moved by the given offset, as the public API builds a plan compiled at a canonical
+     * origin. Every position the plan holds must move here.
+     */
+    public DungeonLockPlan moved(int dx, int dy, int dz) {
+        return new DungeonLockPlan(
+                lockedChests.stream().map(pos -> move(pos, dx, dy, dz)).toList(),
+                keySources.stream().map(source -> new KeySource(move(source.pos(), dx, dy, dz), source.lootTable())).toList(),
+                doors.stream().map(door -> new Door(move(door.pos(), dx, dy, dz), door.lock())).toList()
+        );
+    }
+
+    private static long move(long pos, int dx, int dy, int dz) {
+        return BlockPos.offset(pos, dx, dy, dz);
     }
 
     public record KeySource(long pos, Identifier lootTable) {}

@@ -8,6 +8,7 @@ import com.google.gson.JsonObject;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -137,6 +138,21 @@ public enum DungeonTheme implements StringRepresentable {
 
     public Component getName() {
         return Component.literal(StringUtils.snakeCaseToHumanReadable(this.getSerializedName()));
+    }
+
+    /**
+     * The theme {@code name} names, as {@code /generatedungeon} accepts it: its id ({@code procedural_dungeon:sculk}),
+     * its serialized name ({@code sculk}) or its constant name, in any case.
+     */
+    public static Optional<DungeonTheme> find(String name) {
+        Identifier id = Identifier.tryParse(name);
+        String path = id == null ? name : id.getPath();
+        for (DungeonTheme theme : values()) {
+            if (theme.getId().equals(id) || theme.getSerializedName().equals(path) || theme.name().equalsIgnoreCase(path)) {
+                return Optional.of(theme);
+            }
+        }
+        return Optional.empty();
     }
 
     private static List<ProcessorRuleSpec> rules(JsonArray specs) {

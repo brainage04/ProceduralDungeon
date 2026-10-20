@@ -16,4 +16,19 @@ public record StagedDungeonLayout(
     public StagedDungeonLayout(ChunkPos startChunk, BlockPos locator, BoundingBox boundingBox, List<StagedDungeonPieceSpec> pieces) {
         this(startChunk, locator, boundingBox, pieces, DungeonLockPlan.EMPTY);
     }
+
+    /**
+     * The same layout moved by the given offset, as the public API builds a plan compiled at a canonical origin. The
+     * start chunk follows the locator.
+     */
+    public StagedDungeonLayout moved(int dx, int dy, int dz) {
+        BlockPos movedLocator = locator.offset(dx, dy, dz);
+        return new StagedDungeonLayout(
+                ChunkPos.containing(movedLocator),
+                movedLocator,
+                boundingBox.moved(dx, dy, dz),
+                pieces.stream().map(piece -> piece.moved(dx, dy, dz)).toList(),
+                lockPlan.moved(dx, dy, dz)
+        );
+    }
 }

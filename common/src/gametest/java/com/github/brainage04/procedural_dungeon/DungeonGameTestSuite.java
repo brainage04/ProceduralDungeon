@@ -156,6 +156,7 @@ public final class DungeonGameTestSuite {
                 new TestCase("crafter_puzzle_opens_when_the_disc_plays", DungeonGameTestSuite::crafterPuzzleOpensWhenTheDiscPlays)
         ));
         tests.addAll(MechanicsGameTests.tests());
+        tests.addAll(ApiGameTests.tests());
         return List.copyOf(tests);
     }
 

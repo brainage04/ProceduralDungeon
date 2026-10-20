@@ -1,0 +1,7 @@
+{
+  "environment": "minecraft:default",
+  "structure":"minecraftmodconventions:empty",
+  "max_ticks": 400,
+  "type": "minecraft:function",
+  "function": "procedural_dungeon:api_reset_and_forget_rebuild_and_drop_a_dungeon"
+}

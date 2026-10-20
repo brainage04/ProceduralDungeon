@@ -53,4 +53,10 @@ public record StagedDungeonPieceSpec(
     ) {
         this(element, position, rotation, boundingBox, groundLevelDelta, false);
     }
+
+    /** The same piece moved by the given offset. */
+    public StagedDungeonPieceSpec moved(int dx, int dy, int dz) {
+        return new StagedDungeonPieceSpec(element, position.offset(dx, dy, dz), rotation, boundingBox.moved(dx, dy, dz),
+                groundLevelDelta, startPiece);
+    }
 }

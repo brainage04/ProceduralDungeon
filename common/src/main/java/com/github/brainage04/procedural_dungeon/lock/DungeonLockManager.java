@@ -1,5 +1,6 @@
 package com.github.brainage04.procedural_dungeon.lock;
 
+import com.github.brainage04.procedural_dungeon.api.impl.DungeonEvents;
 import com.github.brainage04.procedural_dungeon.worldgen.structure.DungeonPuzzleRooms;
 import java.util.Optional;
 import net.minecraft.core.BlockPos;
@@ -43,6 +44,7 @@ public final class DungeonLockManager {
             }
             unlock(level, data, pos);
             displayMessage(player, "The mechanism releases the chest.");
+            DungeonEvents.puzzleSolved(level, pos);
             return InteractionResult.PASS;
         }
         Optional<DungeonKeyType> requiredKey = data.requiredKey(pos.asLong());
@@ -59,6 +61,7 @@ public final class DungeonLockManager {
         boolean door = data.isLockedDoor(pos.asLong());
         unlock(level, data, pos);
         displayMessage(player, "Unlocked with a %s.".formatted(key.displayName()));
+        DungeonEvents.unlocked(level, player, key.getSerializedName(), pos);
         if (door) {
             openDoor(level, pos);
             return InteractionResult.SUCCESS;

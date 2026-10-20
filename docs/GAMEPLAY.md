@@ -103,6 +103,8 @@ Affix pools (an affix never repeats one of the relic's signature bonuses):
 - **Grindstone, relic alone:** grinding an item that carries relic bonuses gives a **Relic Essence** holding those bonuses. The item keeps its enchantments and base stats.
 - **Anvil + Relic Essence:** combining an item with an essence moves the bonuses onto it for 10 levels. Armour bonuses fit any armour piece (and move to that piece's slot); weapon and tool bonuses fit any weapon or tool. Essences stack: an item can take any number of them.
 
+The grindstone salvage needs the `procedural_dungeon:grindstone_salvage` game rule (on by default). A mod that embeds Procedural Dungeon can also turn salvage, the anvil's over-max levels and essences, and Soulbound off in its own worlds ([API](API.md#switches)).
+
 ## Dungeon enchantments
 
 These enchantments exist only in dungeon reward chests; enchanting tables, villagers, and other loot never roll them.

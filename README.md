@@ -50,7 +50,14 @@ Diagnostic and development commands are listed in [docs/DEVELOPMENT.md](docs/DEV
 
 ## Configuration
 
-No configuration file or gamerules yet.
+Two game rules, both `true` by default:
+
+- `/gamerule procedural_dungeon:natural_generation false` stops dungeons from generating in new chunks; `/locate` stops finding them. Dungeons already generated stay.
+- `/gamerule procedural_dungeon:grindstone_salvage false` gives grindstones their vanilla behaviour back.
+
+## Using it from another mod
+
+Other server-side mods can plan seeded dungeons, build them where they want with their own tick budget, follow the build and its keys, guardians and puzzles through events, and reset or forget them, for example for a minigame arena. They can also keep natural generation, grindstone salvage, the anvil changes and Soulbound out of their own worlds. See [docs/API.md](docs/API.md).
 
 ## Compatibility
 
@@ -59,6 +66,7 @@ Dungeon items are made of vanilla items and components, so they work for unmodde
 ## Documentation
 
 - [docs/GAMEPLAY.md](docs/GAMEPLAY.md) - structures, puzzle answers, rewards, enchantments, tiers and themes.
+- [docs/API.md](docs/API.md) - the public API for other mods, and the switches.
 - [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md) - builds, server GameTests, playtesting and diagnostic commands.
 - [docs/DUNGEON_DESIGN_IDEAS.md](docs/DUNGEON_DESIGN_IDEAS.md) - dungeon design notes.
 - [docs/RELEASE.md](docs/RELEASE.md) - release workflow.

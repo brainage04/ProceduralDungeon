@@ -1,6 +1,7 @@
 package com.github.brainage04.procedural_dungeon.guardian;
 
 import com.github.brainage04.procedural_dungeon.ProceduralDungeon;
+import com.github.brainage04.procedural_dungeon.api.impl.DungeonEvents;
 import com.github.brainage04.procedural_dungeon.dungeon.DungeonTier;
 import java.util.Optional;
 import net.minecraft.core.BlockPos;
@@ -64,6 +65,23 @@ public enum DungeonGuardian {
         return Optional.empty();
     }
 
+    /** The guardian {@code mob} is, judged by its tag and type. */
+    public static Optional<DungeonGuardian> of(Mob mob) {
+        if (!mob.entityTags().contains(TAG)) {
+            return Optional.empty();
+        }
+        for (DungeonGuardian guardian : values()) {
+            if (guardian.type == mob.getType()) {
+                return Optional.of(guardian);
+            }
+        }
+        return Optional.empty();
+    }
+
+    public boolean boss() {
+        return this == BOSS;
+    }
+
     public double maxHealth(int tier) {
         return baseHealth + healthPerTier * tier;
     }
@@ -102,6 +120,7 @@ public enum DungeonGuardian {
         mob.setPersistenceRequired();
         mob.addTag(TAG);
         level.addFreshEntityWithPassengers(mob);
+        DungeonEvents.guardianSpawned(level.getLevel(), mob, boss());
         return Optional.of(mob);
     }
 
