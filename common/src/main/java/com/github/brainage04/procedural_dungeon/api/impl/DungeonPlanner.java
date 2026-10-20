@@ -130,7 +130,11 @@ public final class DungeonPlanner {
                                         maxDistance,
                                         LiquidSettings.IGNORE_WATERLOGGING),
                         Util.backgroundExecutor())
-                .thenApplyAsync(layout -> layout, server);
+                // Queued, never run inline: MinecraftServer.execute runs a task at once on the
+                // server thread, which would complete the future inside the caller's tick when the
+                // worker finishes before this stage is attached.
+                .thenApplyAsync(
+                        layout -> layout, task -> server.schedule(server.wrapRunnable(task)));
     }
 
     private static DungeonTier tier(int number) {
