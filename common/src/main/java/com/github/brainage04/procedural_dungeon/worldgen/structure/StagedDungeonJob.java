@@ -50,6 +50,9 @@ final class StagedDungeonJob {
      */
     static final int WINDOW_CHUNKS = 16;
 
+    /** Pieces the window looks ahead at most, for layouts whose pieces share few chunks. */
+    static final int WINDOW_PIECES = 64;
+
     /**
      * A part whose chunk saw this many ticks of player presence since it entered the window is left
      * alone: players may have built there while the job waited (restart, stall or a starved
@@ -614,7 +617,8 @@ final class StagedDungeonJob {
         windowCursor = cursor;
         LongLinkedOpenHashSet wanted = new LongLinkedOpenHashSet();
         for (int index = cursor; index < pieces.size(); index++) {
-            if (index > cursor && wanted.size() >= WINDOW_CHUNKS) {
+            if (index > cursor
+                    && (wanted.size() >= WINDOW_CHUNKS || index - cursor >= WINDOW_PIECES)) {
                 break;
             }
             addChunks(wanted, pieces.get(index).boundingBox());

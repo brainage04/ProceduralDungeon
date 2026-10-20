@@ -171,42 +171,83 @@ public final class StagedJobGameTests {
                 });
     }
 
-    /** P02 (a): a chunk two jobs need keeps PD's ticket until the second one is done. */
+    /**
+     * P02 (a): a chunk two jobs need keeps PD's ticket until the second one is done. The long job
+     * starts first and holds the chunk; the short one then shares it and finishes.
+     */
     public static void sharedChunksKeepTheirTicketUntilTheLastJob(GameTestHelper helper) {
         ServerLevel level = helper.getLevel();
         BlockPos origin = region(level, 64);
         StagedDungeonPieceSpec piece = smallPiece(level, origin);
         long chunk = ChunkPos.containing(piece.position()).pack();
         loadChunks(level, piece.boundingBox());
-        UUID first = enqueue(helper, level, List.of(piece), DungeonLockPlan.EMPTY);
         List<StagedDungeonPieceSpec> many = new ArrayList<>();
         for (int i = 0; i < 60; i++) {
             many.add(piece);
         }
-        UUID second = enqueue(helper, level, many, DungeonLockPlan.EMPTY);
+        JobOptions callerDriven = new JobOptions(true, true, 0L, 1.0);
+        UUID second =
+                StagedDungeonGenerationManager.enqueue(
+                                level,
+                                layout(many, DungeonLockPlan.EMPTY),
+                                LiquidSettings.IGNORE_WATERLOGGING,
+                                callerDriven)
+                        .id();
+        stepOnce(level, second);
+        helper.assertTrue(
+                state(level, second) == JobState.RUNNING && hasStagedTicket(level, chunk),
+                "The long job must be running and hold the chunk");
+        UUID first =
+                StagedDungeonGenerationManager.enqueue(
+                                level,
+                                layout(List.of(piece), DungeonLockPlan.EMPTY),
+                                LiquidSettings.IGNORE_WATERLOGGING,
+                                callerDriven)
+                        .id();
+        // succeedWhen retries a failed assertion, so a one-time check keeps its failure.
         AtomicBoolean checkedOverlap = new AtomicBoolean();
+        AtomicReference<String> overlapFailure = new AtomicReference<>();
         helper.succeedWhen(
                 () -> {
-                    if (state(level, first) == JobState.COMPLETE
-                            && state(level, second) == JobState.RUNNING
-                            && !checkedOverlap.get()) {
-                        checkedOverlap.set(true);
+                    if (!checkedOverlap.get()) {
+                        StagedDungeonGenerationManager.advance(level, first, 50_000_000L);
                         helper.assertTrue(
-                                hasStagedTicket(level, chunk),
-                                "The second job's chunk must keep its ticket after the first job"
-                                        + " finishes");
+                                state(level, first) == JobState.COMPLETE,
+                                "The short job must finish");
+                        checkedOverlap.set(true);
+                        if (state(level, second) != JobState.RUNNING
+                                || !hasStagedTicket(level, chunk)) {
+                            overlapFailure.set(
+                                    "The second job's chunk must keep its ticket after the first"
+                                            + " job finishes");
+                        }
                     }
+                    helper.assertTrue(
+                            overlapFailure.get() == null, String.valueOf(overlapFailure.get()));
+                    StagedDungeonGenerationManager.advance(level, second, 50_000_000L);
                     helper.assertTrue(
                             state(level, second) == JobState.COMPLETE,
                             "The second job must finish");
-                    helper.assertTrue(
-                            checkedOverlap.get(),
-                            "The first job must finish while the second still runs");
                     helper.assertTrue(
                             !hasStagedTicket(level, chunk),
                             "No ticket may remain once both jobs are done");
                     StagedDungeonGenerationManager.forget(level, piece.boundingBox());
                 });
+    }
+
+    /**
+     * Places exactly one part of a caller-driven job: a fake clock gives {@link
+     * StagedDungeonGenerationManager#advance} room for one step. The test body runs synchronously
+     * on the server thread, so no other job sees the fake clock.
+     */
+    private static void stepOnce(ServerLevel level, UUID id) {
+        AtomicLong clock = new AtomicLong();
+        StagedDungeonGenerationManager.setNanoClock(() -> clock.addAndGet(1_000_000L));
+        try {
+            StagedDungeonGenerationManager.advance(level, id, 1_500_000L);
+        } finally {
+            StagedDungeonGenerationManager.setNanoClock(null);
+        }
     }
 
     /**
@@ -313,10 +354,13 @@ public final class StagedJobGameTests {
                 });
     }
 
-    /** P03: a record that cannot be read stays in the file and counts as a failed job. */
+    /**
+     * P03: a record that cannot be read stays in the level's file and counts as a failed job, also
+     * after another job in the same level runs and the records are written again.
+     */
     public static void unreadableJobRecordsAreKeptAsFailed(GameTestHelper helper) {
-        RegistryOps<Tag> ops =
-                helper.getLevel().registryAccess().createSerializationContext(NbtOps.INSTANCE);
+        ServerLevel nether = helper.getLevel().getServer().getLevel(Level.NETHER);
+        RegistryOps<Tag> ops = nether.registryAccess().createSerializationContext(NbtOps.INSTANCE);
         CompoundTag broken = new CompoundTag();
         broken.putString("id", "not-a-uuid");
         broken.putString("note", "kept verbatim");
@@ -325,17 +369,39 @@ public final class StagedJobGameTests {
         ListTag jobs = new ListTag();
         jobs.add(broken);
         data.put("jobs", jobs);
-        StagedDungeonSaveData decoded =
-                StagedDungeonSaveData.TYPE.codec().parse(ops, data).getOrThrow();
-        CompoundTag encoded =
-                (CompoundTag)
-                        StagedDungeonSaveData.TYPE.codec().encodeStart(ops, decoded).getOrThrow();
-        ListTag unreadable = encoded.getListOrEmpty("unreadable_jobs");
-        helper.assertTrue(unreadable.size() == 1, "The unreadable record must be kept: " + encoded);
-        helper.assertTrue(
-                unreadable.getCompoundOrEmpty(0).getCompoundOrEmpty("record").equals(broken),
-                "The record must be kept verbatim: " + unreadable);
-        helper.succeed();
+        nether.getDataStorage()
+                .set(
+                        StagedDungeonSaveData.TYPE,
+                        StagedDungeonSaveData.TYPE.codec().parse(ops, data).getOrThrow());
+        StagedDungeonPieceSpec piece = smallPiece(helper.getLevel(), region(nether, 100));
+        loadChunks(nether, piece.boundingBox());
+        UUID id = enqueue(helper, nether, List.of(piece), DungeonLockPlan.EMPTY);
+        helper.succeedWhen(
+                () -> {
+                    helper.assertTrue(
+                            state(nether, id) != JobState.RUNNING, "The other job must finish");
+                    CompoundTag encoded =
+                            (CompoundTag)
+                                    StagedDungeonSaveData.TYPE
+                                            .codec()
+                                            .encodeStart(
+                                                    ops,
+                                                    nether.getDataStorage()
+                                                            .get(StagedDungeonSaveData.TYPE))
+                                            .getOrThrow();
+                    ListTag unreadable = encoded.getListOrEmpty("unreadable_jobs");
+                    helper.assertTrue(
+                            unreadable.size() == 1
+                                    && unreadable
+                                            .getCompoundOrEmpty(0)
+                                            .getCompoundOrEmpty("record")
+                                            .equals(broken),
+                            "The unreadable record must be kept verbatim: " + encoded);
+                    helper.assertTrue(
+                            StagedDungeonGenerationManager.status(nether).failedJobs() >= 1,
+                            "The unreadable record must count as a failed job");
+                    StagedDungeonGenerationManager.forget(nether, piece.boundingBox());
+                });
     }
 
     /** P12: jobs are keyed by id, so a second dungeon scheduled in the same chunk is built too. */
@@ -371,7 +437,8 @@ public final class StagedJobGameTests {
 
     /**
      * P14: with a tight budget, levels and jobs take turns instead of the first level using every
-     * tick.
+     * tick. The overworld always has more ready work than the budget covers (eight jobs), so a loop
+     * that starts from the first level each tick never reaches the Nether.
      */
     public static void roundRobinServesEveryLevelUnderATightBudget(GameTestHelper helper) {
         ServerLevel overworld = helper.getLevel();
@@ -390,7 +457,15 @@ public final class StagedJobGameTests {
         AtomicLong clock = new AtomicLong(System.nanoTime());
         StagedDungeonGenerationManager.setNanoClock(() -> clock.addAndGet(500_000L));
         StagedDungeonGenerationManager.setBudgetOverride(2_000_000L);
-        UUID overworldJob = enqueue(helper, overworld, overworldPieces, DungeonLockPlan.EMPTY);
+        List<UUID> overworldJobs = new ArrayList<>();
+        for (int i = 0; i < 8; i++) {
+            overworldJobs.add(
+                    enqueue(
+                            helper,
+                            overworld,
+                            overworldPieces.subList(0, 50),
+                            DungeonLockPlan.EMPTY));
+        }
         UUID netherJob = enqueue(helper, nether, netherPieces, DungeonLockPlan.EMPTY);
         helper.runAfterDelay(
                 10,
@@ -398,9 +473,14 @@ public final class StagedJobGameTests {
                     StagedDungeonGenerationManager.setNanoClock(null);
                     StagedDungeonGenerationManager.setBudgetOverride(-1L);
                     int overworldPlaced =
-                            StagedDungeonGenerationManager.job(overworld, overworldJob)
-                                    .map(JobView::placedPieces)
-                                    .orElse(0);
+                            overworldJobs.stream()
+                                    .mapToInt(
+                                            id ->
+                                                    StagedDungeonGenerationManager.job(
+                                                                    overworld, id)
+                                                            .map(JobView::placedPieces)
+                                                            .orElse(0))
+                                    .sum();
                     int netherPlaced =
                             StagedDungeonGenerationManager.job(nether, netherJob)
                                     .map(JobView::placedPieces)
@@ -417,7 +497,8 @@ public final class StagedJobGameTests {
 
     /**
      * P15: a piece over four chunks places its part in a loaded chunk without waiting for the other
-     * three.
+     * three. When the loaded part first shows up, the job is still running and no other part is
+     * placed yet: the other chunks only got their tickets in the tick that placed it.
      */
     public static void aPiecePlacesTheChunksThatAreLoaded(GameTestHelper helper) {
         ServerLevel level = helper.getLevel();
@@ -437,26 +518,40 @@ public final class StagedJobGameTests {
         ChunkPos loaded = ChunkPos.containing(new BlockPos(cornerX, 0, cornerZ));
         level.getChunk(loaded.x(), loaded.z());
         UUID id = enqueue(helper, level, List.of(piece), DungeonLockPlan.EMPTY);
+        // succeedWhen retries a failed assertion, so the one-time check keeps its failure.
+        AtomicBoolean checked = new AtomicBoolean();
+        AtomicReference<String> failure = new AtomicReference<>();
         helper.succeedWhen(
                 () -> {
-                    LevelChunk chunk = level.getChunkSource().getChunkNow(loaded.x(), loaded.z());
-                    helper.assertTrue(
-                            chunk != null && DungeonChunkLedger.isPlaced(chunk, id, 0),
-                            "The loaded chunk's part must be placed");
-                    int unloaded = 0;
-                    for (long other : chunks(piece.boundingBox())) {
-                        if (other != loaded.pack()
-                                && level.getChunkSource()
-                                                .getChunkNow(
-                                                        ChunkPos.getX(other), ChunkPos.getZ(other))
-                                        == null) {
-                            unloaded++;
+                    if (!checked.get()) {
+                        LevelChunk chunk =
+                                level.getChunkSource().getChunkNow(loaded.x(), loaded.z());
+                        helper.assertTrue(
+                                chunk != null && DungeonChunkLedger.isPlaced(chunk, id, 0),
+                                "The loaded chunk's part must be placed");
+                        checked.set(true);
+                        int otherParts = 0;
+                        for (long other : chunks(piece.boundingBox())) {
+                            LevelChunk otherChunk =
+                                    level.getChunkSource()
+                                            .getChunkNow(
+                                                    ChunkPos.getX(other), ChunkPos.getZ(other));
+                            if (other != loaded.pack()
+                                    && otherChunk != null
+                                    && DungeonChunkLedger.isPlaced(otherChunk, id, 0)) {
+                                otherParts++;
+                            }
+                        }
+                        if (state(level, id) != JobState.RUNNING || otherParts > 0) {
+                            failure.set(
+                                    "The loaded part must be placed while the job still waits for"
+                                            + " the other chunks: %s, %d other part(s) placed"
+                                                    .formatted(state(level, id), otherParts));
                         }
                     }
+                    helper.assertTrue(failure.get() == null, String.valueOf(failure.get()));
                     helper.assertTrue(
-                            unloaded > 0,
-                            "The loaded part must be placed before the other chunks finish"
-                                    + " loading");
+                            state(level, id) == JobState.COMPLETE, "The whole piece must finish");
                     StagedDungeonGenerationManager.forget(level, piece.boundingBox());
                 });
     }
@@ -663,13 +758,18 @@ public final class StagedJobGameTests {
                 });
     }
 
-    /** P06: a part whose chunk saw players for a long time while the job waited is left alone. */
+    /**
+     * P06: a part whose chunk saw players for a long time while the job waited is left alone. The
+     * first piece sits in a chunk that still has to generate, so the job waits there while the
+     * second piece's (loaded) chunk is already in its window.
+     */
     public static void delayedJobsLeavePlayerBuildsAlone(GameTestHelper helper) {
         ServerLevel level = helper.getLevel();
         BlockPos origin = region(level, 64);
         StagedDungeonPieceSpec first = smallPiece(level, origin);
         StagedDungeonPieceSpec second = moved(first, 48, 0, 0);
-        loadChunks(level, bounds(List.of(first, second)));
+        loadChunks(level, second.boundingBox());
+        BlockPos build = writtenPos(level, second);
         JobOptions callerDriven = new JobOptions(true, true, 0L, 1.0);
         EnqueueResult result =
                 StagedDungeonGenerationManager.enqueue(
@@ -678,24 +778,16 @@ public final class StagedJobGameTests {
                         LiquidSettings.IGNORE_WATERLOGGING,
                         callerDriven);
         UUID id = result.id();
-        BlockPos build = writtenPos(level, second);
-        AtomicInteger phase = new AtomicInteger();
+        // The job takes its window (both chunks) and waits for the first piece's chunk.
+        StagedDungeonGenerationManager.advance(level, id, 50_000_000L);
+        helper.assertTrue(
+                StagedDungeonGenerationManager.job(level, id).orElseThrow().placedPieces() == 0,
+                "The first piece must still wait for its chunk");
+        // A player builds in the next piece's chunk while the job waits.
+        level.setBlock(build, Blocks.GOLD_BLOCK.defaultBlockState(), UPDATE_SILENTLY);
+        level.getChunkAt(build).incrementInhabitedTime(20L * 60L * 5L);
         helper.succeedWhen(
                 () -> {
-                    if (phase.get() == 0) {
-                        StagedDungeonGenerationManager.advance(level, id, 50_000_000L);
-                        helper.assertTrue(
-                                StagedDungeonGenerationManager.job(level, id)
-                                                .orElseThrow()
-                                                .placedPieces()
-                                        >= 1,
-                                "The first piece must be placed");
-                        // A player builds in the next piece's chunk while the job waits.
-                        level.setBlock(
-                                build, Blocks.GOLD_BLOCK.defaultBlockState(), UPDATE_SILENTLY);
-                        level.getChunkAt(build).incrementInhabitedTime(20L * 60L * 5L);
-                        phase.set(1);
-                    }
                     StagedDungeonGenerationManager.advance(level, id, 50_000_000L);
                     helper.assertTrue(state(level, id) == JobState.COMPLETE, "The job must finish");
                     helper.assertTrue(
@@ -880,7 +972,14 @@ public final class StagedJobGameTests {
                     pieces(compiled, DungeonProgressionRooms.BOSS_KEY_VAULT).getFirst();
             StagedDungeonPieceSpec puzzle = framePuzzle(level, origin.offset(-200, 0, 0));
             List<StagedDungeonPieceSpec> pieces = List.of(vault, bossRoom, puzzle);
-            loadChunks(level, bounds(pieces));
+            // The pieces lie far apart, so load only their own chunks, and hold them for the test:
+            // the guardian and frames must stay loaded after the job releases its tickets.
+            for (StagedDungeonPieceSpec piece : pieces) {
+                for (long chunk : chunks(piece.boundingBox())) {
+                    level.setChunkForced(ChunkPos.getX(chunk), ChunkPos.getZ(chunk), true);
+                }
+                loadChunks(level, piece.boundingBox());
+            }
             BlockPos door =
                     BlockPos.of(
                             compiled.lockPlan().doors().stream()
@@ -1034,6 +1133,11 @@ public final class StagedJobGameTests {
         void clear(ServerLevel level) {
             guardians(level).forEach(Entity::discard);
             StagedDungeonGenerationManager.forget(level, layout.boundingBox());
+            for (StagedDungeonPieceSpec piece : List.of(vault, bossRoom, puzzle)) {
+                for (long chunk : chunks(piece.boundingBox())) {
+                    level.setChunkForced(ChunkPos.getX(chunk), ChunkPos.getZ(chunk), false);
+                }
+            }
         }
 
         private ChestBlockEntity bossChest(ServerLevel level) {
