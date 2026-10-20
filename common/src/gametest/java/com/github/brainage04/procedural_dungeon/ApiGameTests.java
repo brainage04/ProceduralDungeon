@@ -8,6 +8,7 @@ import com.github.brainage04.procedural_dungeon.api.DungeonRequest;
 import com.github.brainage04.procedural_dungeon.api.DungeonState;
 import com.github.brainage04.procedural_dungeon.api.ProceduralDungeonApi;
 import com.github.brainage04.procedural_dungeon.api.impl.CompiledPlan;
+import com.github.brainage04.procedural_dungeon.api.impl.DungeonPlanner;
 import com.github.brainage04.procedural_dungeon.dungeon.DungeonTheme;
 import com.github.brainage04.procedural_dungeon.guardian.DungeonGuardian;
 import com.github.brainage04.procedural_dungeon.lock.DungeonKeyType;
@@ -65,10 +66,14 @@ public final class ApiGameTests {
 
     /**
      * {@code plan} returns before compiling and costs the calling tick under 5 ms; the same request
-     * gives the same layout, another seed another one.
+     * gives the same layout, another seed another one, and {@code planNow} (which the build tests
+     * use) the same layout as {@code plan}.
      */
     public static void apiPlansCompileOffThreadFromTheRequestAlone(GameTestHelper helper) {
         ServerLevel level = helper.getLevel();
+        // Compiling once on this thread also loads the compiler and templates, so the timed plan
+        // below and the worker's compile measure a warm compiler, not the server's first compile.
+        DungeonPlan now = DungeonPlanner.planNow(level.getServer(), TIER_1).orElseThrow();
         long start = System.nanoTime();
         CompletableFuture<Optional<DungeonPlan>> first =
                 ProceduralDungeonApi.plan(level.getServer(), TIER_1);
@@ -104,6 +109,9 @@ public final class ApiGameTests {
                     helper.assertTrue(
                             !describe(plan).equals(describe(other.join().orElseThrow())),
                             "Another seed must give another layout");
+                    helper.assertTrue(
+                            describe(plan).equals(describe(now)),
+                            "planNow must give the layout plan gives");
                 });
     }
 
@@ -116,16 +124,13 @@ public final class ApiGameTests {
             GameTestHelper helper) {
         ServerLevel level = helper.getLevel();
         RECORDER.listen();
-        CompletableFuture<Optional<DungeonPlan>> planned =
-                ProceduralDungeonApi.plan(level.getServer(), TIER_1);
+        DungeonPlan plan = DungeonPlanner.planNow(level.getServer(), TIER_1).orElseThrow();
         BlockPos origin = helper.absolutePos(new BlockPos(12288, 32, 12288));
         BlockPos cancelledOrigin = helper.absolutePos(new BlockPos(-12288, 32, 12288));
         DungeonHandle[] built = new DungeonHandle[2];
         helper.startSequence()
-                .thenWaitUntil(() -> helper.assertTrue(planned.isDone(), "The plan must complete"))
                 .thenExecute(
                         () -> {
-                            DungeonPlan plan = planned.join().orElseThrow();
                             StagedJobGameTests.holdChunks(
                                     level,
                                     plan.bounds()
@@ -208,7 +213,7 @@ public final class ApiGameTests {
                             built[1] =
                                     ProceduralDungeonApi.build(
                                             level,
-                                            planned.join().orElseThrow(),
+                                            plan,
                                             cancelledOrigin,
                                             new BuildOptions(true, 1.0, false));
                             built[1].advance(ADVANCE_BUDGET_NANOS);
@@ -254,17 +259,14 @@ public final class ApiGameTests {
     public static void apiResetAndForgetRebuildAndDropADungeon(GameTestHelper helper) {
         ServerLevel level = helper.getLevel();
         RECORDER.listen();
-        CompletableFuture<Optional<DungeonPlan>> planned =
-                ProceduralDungeonApi.plan(level.getServer(), TIER_1);
+        DungeonPlan plan = DungeonPlanner.planNow(level.getServer(), TIER_1).orElseThrow();
         BlockPos origin = helper.absolutePos(new BlockPos(12288, 32, -12288));
         DungeonHandle[] handles = new DungeonHandle[2];
         BlockPos[] broken = new BlockPos[1];
         BoundingBox[] oldBounds = new BoundingBox[1];
         helper.startSequence()
-                .thenWaitUntil(() -> helper.assertTrue(planned.isDone(), "The plan must complete"))
                 .thenExecute(
                         () -> {
-                            DungeonPlan plan = planned.join().orElseThrow();
                             StagedJobGameTests.holdChunks(
                                     level,
                                     plan.bounds()

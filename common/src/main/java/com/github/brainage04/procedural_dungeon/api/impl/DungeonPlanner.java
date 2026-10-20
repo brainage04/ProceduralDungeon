@@ -26,6 +26,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.LiquidSetting
 
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Supplier;
 
 /**
  * Compiles {@link DungeonRequest}s off the server thread. A plan is compiled at {@link
@@ -47,6 +48,25 @@ public final class DungeonPlanner {
      * @throws IllegalArgumentException for an unknown theme or an out-of-range tier or depth
      */
     public static CompletableFuture<Optional<DungeonPlan>> plan(
+            MinecraftServer server, DungeonRequest request) {
+        return onServer(
+                server,
+                CompletableFuture.supplyAsync(prepare(server, request), Util.backgroundExecutor()));
+    }
+
+    /**
+     * The plan {@link #plan} would complete with, compiled on the calling server thread. For
+     * GameTests and benchmarks that build a plan and must not race a worker against a tick
+     * deadline; it stalls the tick for the whole compile.
+     */
+    public static Optional<DungeonPlan> planNow(MinecraftServer server, DungeonRequest request) {
+        return prepare(server, request).get();
+    }
+
+    /**
+     * Checks the request and resolves its pool on the server thread; the result compiles anywhere.
+     */
+    private static Supplier<Optional<DungeonPlan>> prepare(
             MinecraftServer server, DungeonRequest request) {
         if (!server.isSameThread()) {
             throw new IllegalStateException(
@@ -95,14 +115,11 @@ public final class DungeonPlanner {
                         ChunkPos.containing(CANONICAL_ORIGIN),
                         CANONICAL_HEIGHT,
                         biome -> true);
-        return compileOffThread(
-                        server,
-                        context,
-                        pool,
-                        request.depth(),
-                        CANONICAL_ORIGIN,
-                        new JigsawStructure.MaxDistance(tier.maxDistanceFromCenter))
-                .thenApply(layout -> layout.map(compiled -> new CompiledPlan(request, compiled)));
+        JigsawStructure.MaxDistance maxDistance =
+                new JigsawStructure.MaxDistance(tier.maxDistanceFromCenter);
+        return () ->
+                compile(context, pool, request.depth(), CANONICAL_ORIGIN, maxDistance)
+                        .map(compiled -> new CompiledPlan(request, compiled));
     }
 
     /**
@@ -118,23 +135,39 @@ public final class DungeonPlanner {
             int depth,
             BlockPos start,
             JigsawStructure.MaxDistance maxDistance) {
-        return CompletableFuture.supplyAsync(
-                        () ->
-                                StagedDungeonLayoutCompiler.compile(
-                                        context,
-                                        pool,
-                                        Optional.of(START_JIGSAW),
-                                        depth,
-                                        start,
-                                        Optional.empty(),
-                                        maxDistance,
-                                        LiquidSettings.IGNORE_WATERLOGGING),
-                        Util.backgroundExecutor())
-                // Queued, never run inline: MinecraftServer.execute runs a task at once on the
-                // server thread, which would complete the future inside the caller's tick when the
-                // worker finishes before this stage is attached.
-                .thenApplyAsync(
-                        layout -> layout, task -> server.schedule(server.wrapRunnable(task)));
+        return onServer(
+                server,
+                CompletableFuture.supplyAsync(
+                        () -> compile(context, pool, depth, start, maxDistance),
+                        Util.backgroundExecutor()));
+    }
+
+    private static Optional<StagedDungeonLayout> compile(
+            Structure.GenerationContext context,
+            Holder<StructureTemplatePool> pool,
+            int depth,
+            BlockPos start,
+            JigsawStructure.MaxDistance maxDistance) {
+        return StagedDungeonLayoutCompiler.compile(
+                context,
+                pool,
+                Optional.of(START_JIGSAW),
+                depth,
+                start,
+                Optional.empty(),
+                maxDistance,
+                LiquidSettings.IGNORE_WATERLOGGING);
+    }
+
+    /**
+     * Completes on the server thread, always queued and never run inline: MinecraftServer.execute
+     * runs a task at once on the server thread, which would complete the future inside the caller's
+     * tick when the worker finishes before this stage is attached.
+     */
+    private static <T> CompletableFuture<T> onServer(
+            MinecraftServer server, CompletableFuture<T> worker) {
+        return worker.thenApplyAsync(
+                result -> result, task -> server.schedule(server.wrapRunnable(task)));
     }
 
     private static DungeonTier tier(int number) {
