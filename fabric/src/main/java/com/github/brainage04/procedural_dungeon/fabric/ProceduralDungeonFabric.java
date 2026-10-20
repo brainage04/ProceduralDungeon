@@ -27,7 +27,7 @@ public final class ProceduralDungeonFabric implements ModInitializer {
                 Registry.register(BuiltInRegistries.STRUCTURE_POOL_ELEMENT, ProceduralDungeon.of(name), type)));
         ModStructureTypes.registerAll(
                 (name, type) -> ModStructureTypes.setStagedDungeon(Registry.register(BuiltInRegistries.STRUCTURE_TYPE, ProceduralDungeon.of(name), type)),
-                (name, type) -> ModStructureTypes.setStagedDungeonMarker(Registry.register(BuiltInRegistries.STRUCTURE_PIECE, ProceduralDungeon.of(name), type)));
+                (name, type) -> Registry.register(BuiltInRegistries.STRUCTURE_PIECE, ProceduralDungeon.of(name), type));
         ProceduralDungeon.initialize();
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> ModCommands.register(dispatcher));
         UseBlockCallback.EVENT.register((player, world, hand, hitResult) -> world instanceof ServerLevel level

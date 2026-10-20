@@ -3,6 +3,7 @@ package com.github.brainage04.procedural_dungeon.worldgen.structure;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import java.util.List;
 import java.util.Optional;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -140,13 +141,26 @@ public class StagedDungeonStructure extends Structure {
                 projectStartToHeightmap,
                 maxDistanceFromCenter,
                 liquidSettings
-        ).ifPresent(layout -> builder.addPiece(new StagedDungeonMarkerPiece(
+        ).ifPresent(layout -> addPieces(builder, chunkPos, layout));
+    }
+
+    /**
+     * Adds the marker that queues the staged build, sized to the first piece, and a bounds piece for every other piece.
+     * Terrain adaptation works on piece boxes, and burying adds density only near a box's floor; one box around the
+     * whole layout would only bury its lowest level, as a flat slab across the layout's footprint.
+     */
+    private void addPieces(StructurePiecesBuilder builder, ChunkPos chunkPos, StagedDungeonLayout layout) {
+        List<StagedDungeonPieceSpec> pieces = layout.pieces();
+        builder.addPiece(new StagedDungeonMarkerPiece(
                 chunkPos,
-                layout.boundingBox(),
-                layout.pieces(),
+                pieces.getFirst().boundingBox(),
+                pieces,
                 liquidSettings,
                 layout.lockPlan()
-        )));
+        ));
+        for (int i = 1; i < pieces.size(); i++) {
+            builder.addPiece(new StagedDungeonBoundsPiece(pieces.get(i).boundingBox()));
+        }
     }
 
     /**
