@@ -25,6 +25,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.RandomizableContainer;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -319,8 +320,11 @@ public class VariantSinglePoolElement extends StructurePoolElement {
                 DungeonPuzzleRooms.hangFrame(level, markerPos, rotation, metadata);
                 continue;
             }
-            DungeonGuardian.fromMarker(metadata)
-                    .ifPresent(guardian -> guardian.spawn(world, markerPos, rotation, spawnerTier));
+            // The marker's structure block is never placed, so a room buried in solid ground keeps the terrain there.
+            DungeonGuardian.fromMarker(metadata).ifPresent(guardian -> {
+                world.setBlock(markerPos, Blocks.CAVE_AIR.defaultBlockState(), Block.UPDATE_CLIENTS);
+                guardian.spawn(world, markerPos, rotation, spawnerTier);
+            });
         }
     }
 

@@ -53,8 +53,9 @@ private static final BlockState[] NON_MOSSY_SLAB_REPLACEMENTS = new BlockState[]
 };
 /**
  * Blocks that never rot: guarded-room door frames, and the mechanisms, fluids, and air of puzzle rooms, whose
- * redstone, water channels, and lava pits only work complete. Puzzle rooms use cave air so the air rules and decay of
- * ordinary rooms leave their interiors alone.
+ * redstone, water channels, and lava pits only work complete. Puzzle, boss, vault, and miniboss rooms use cave air so
+ * the air rules and decay of ordinary rooms leave their interiors alone; ordinary air rots on purpose and leaves some
+ * of the surrounding terrain standing in ordinary rooms and hallways.
  */
 private static final Set<Block> PUZZLE_MECHANISM = Set.of(
         Blocks.REINFORCED_DEEPSLATE,
