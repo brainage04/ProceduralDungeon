@@ -36,6 +36,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.locks.LockSupport;
 
 /**
  * The public API: off-thread seeded plans, caller-driven builds with owned tickets, handles,
@@ -45,12 +46,20 @@ public final class ApiGameTests {
     private static final long SEED = 0xD06E_0061L;
     private static final DungeonRequest TIER_1 =
             new DungeonRequest("cobblestone", 1, 1, SEED, false);
-    // A caller that builds in a dimension of its own before players arrive (BM's case) can spend
-    // most
-    // of a tick. A tick deadline counts ticks while placement costs wall time, so a small budget on
-    // a
-    // loaded host left the reset test's two builds short of its 400 ticks.
+
+    /**
+     * What a caller building in a dimension of its own before players arrive (BM's case) gives each
+     * tick.
+     */
     private static final long ADVANCE_BUDGET_NANOS = 40_000_000L;
+
+    /**
+     * A real server tick. GameTest servers sprint, so while a build waits for chunk and entity
+     * loads the test pads each of its ticks to this length; otherwise a 400-tick deadline would
+     * pass in a second of wall time on a loaded host before any asynchronous load returns.
+     */
+    private static final long TICK_NANOS = 50_000_000L;
+
     private static final long PLAN_CALL_LIMIT_NANOS = 5_000_000L;
     private static final Recorder RECORDER = new Recorder();
 
@@ -348,12 +357,20 @@ public final class ApiGameTests {
     }
 
     /**
-     * One tick of a caller-driven build: advances it and fails (so the wait goes on) until it is
-     * complete, saying how far it got and whether it used its budget or waited for chunks.
+     * One tick of a caller-driven build, paced like a real server tick: advances it and fails (so
+     * the wait goes on) until it is complete, saying how far it got and whether it used its budget
+     * or waited for chunks.
      */
     private static void advanceUntilComplete(
             GameTestHelper helper, ServerLevel level, DungeonHandle handle, String message) {
+        long start = System.nanoTime();
         long spent = handle.advance(ADVANCE_BUDGET_NANOS);
+        if (!handle.complete()) {
+            long rest = TICK_NANOS - (System.nanoTime() - start);
+            if (rest > 0) {
+                LockSupport.parkNanos(rest);
+            }
+        }
         helper.assertTrue(
                 handle.complete(),
                 "%s: %s, %d/%d pieces, %.1f ms of %.1f ms spent this tick, %d chunks held%s"
