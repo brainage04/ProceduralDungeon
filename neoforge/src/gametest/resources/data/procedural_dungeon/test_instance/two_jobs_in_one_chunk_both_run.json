@@ -1,5 +1,5 @@
 {
-  "environment": "minecraft:default",
+  "environment": "procedural_dungeon:staged_two_jobs_in_one_chunk_both_run",
   "structure": "minecraftmodconventions:empty",
   "max_ticks": 300,
   "type": "minecraft:function",

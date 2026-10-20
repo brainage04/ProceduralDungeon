@@ -1,5 +1,5 @@
 {
-  "environment": "minecraft:default",
+  "environment": "procedural_dungeon:staged_replay_with_a_tagged_guardian_spawns_no_second",
   "structure": "minecraftmodconventions:empty",
   "max_ticks": 900,
   "type": "minecraft:function",

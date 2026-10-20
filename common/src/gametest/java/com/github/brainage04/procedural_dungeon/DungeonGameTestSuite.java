@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
@@ -388,8 +389,14 @@ public final class DungeonGameTestSuite {
         }
         helper.assertTrue(StagedDungeonGenerationManager.status(level).pendingPieces() >= expected.pieces().size(),
                 "Generation must queue the compiled dungeon before returning");
+        // Other tests' jobs may share the level, so follow this command's own job.
+        UUID job = StagedDungeonGenerationManager.jobs(level).stream()
+                .filter(view -> view.bounds().equals(bounds))
+                .map(StagedDungeonGenerationManager.JobView::id)
+                .findFirst()
+                .orElseThrow(() -> new AssertionError("The command's job must be listed"));
         helper.succeedWhen(() -> {
-            helper.assertTrue(StagedDungeonGenerationManager.status(level).jobs() == 0,
+            helper.assertTrue(StagedDungeonGenerationManager.job(level, job).isEmpty(),
                     "The loader's tick hook must drain queued generation");
             for (DungeonLockPlan.Door door : expected.lockPlan().doors()) {
                 if (door.lock().isPresent()) {

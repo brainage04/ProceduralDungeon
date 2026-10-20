@@ -1,5 +1,5 @@
 {
-  "environment": "minecraft:default",
+  "environment": "procedural_dungeon:staged_a_piece_places_the_chunks_that_are_loaded",
   "structure": "minecraftmodconventions:empty",
   "max_ticks": 300,
   "type": "minecraft:function",

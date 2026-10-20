@@ -1,5 +1,5 @@
 {
-  "environment": "minecraft:default",
+  "environment": "procedural_dungeon:staged_legacy_job_records_migrate_and_release_their_tickets",
   "structure": "minecraftmodconventions:empty",
   "max_ticks": 100,
   "type": "minecraft:function",

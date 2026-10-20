@@ -1,5 +1,5 @@
 {
-  "environment": "minecraft:default",
+  "environment": "procedural_dungeon:staged_only_a_clean_stop_resumes_from_the_cursor",
   "structure": "minecraftmodconventions:empty",
   "max_ticks": 100,
   "type": "minecraft:function",
