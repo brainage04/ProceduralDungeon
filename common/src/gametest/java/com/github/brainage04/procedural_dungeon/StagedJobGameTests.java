@@ -71,6 +71,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.locks.LockSupport;
 
 /**
  * Staged generation and persistence: job records, tickets, failures, budget, chunk-wise placement
@@ -154,7 +155,7 @@ public final class StagedJobGameTests {
         for (int i = 0; i < 200; i++) {
             pieces.add(piece);
         }
-        loadChunks(level, piece.boundingBox());
+        holdChunks(level, piece.boundingBox());
         DungeonGenerationProfiler.begin();
         UUID id = enqueue(helper, level, pieces, DungeonLockPlan.EMPTY);
         helper.succeedWhen(
@@ -168,6 +169,7 @@ public final class StagedJobGameTests {
                                     + encodes
                                     + " pieces");
                     StagedDungeonGenerationManager.forget(level, piece.boundingBox());
+                    releaseChunks(level, piece.boundingBox());
                 });
     }
 
@@ -180,7 +182,7 @@ public final class StagedJobGameTests {
         BlockPos origin = region(level, 64);
         StagedDungeonPieceSpec piece = smallPiece(level, origin);
         long chunk = ChunkPos.containing(piece.position()).pack();
-        loadChunks(level, piece.boundingBox());
+        holdChunks(level, piece.boundingBox());
         List<StagedDungeonPieceSpec> many = new ArrayList<>();
         for (int i = 0; i < 60; i++) {
             many.add(piece);
@@ -213,7 +215,7 @@ public final class StagedJobGameTests {
                         StagedDungeonGenerationManager.advance(level, first, 50_000_000L);
                         helper.assertTrue(
                                 state(level, first) == JobState.COMPLETE,
-                                "The short job must finish");
+                                "The short job must finish" + describeJobs(level));
                         checkedOverlap.set(true);
                         if (state(level, second) != JobState.RUNNING
                                 || !hasStagedTicket(level, chunk)) {
@@ -227,11 +229,12 @@ public final class StagedJobGameTests {
                     StagedDungeonGenerationManager.advance(level, second, 50_000_000L);
                     helper.assertTrue(
                             state(level, second) == JobState.COMPLETE,
-                            "The second job must finish");
+                            "The second job must finish" + describeJobs(level));
                     helper.assertTrue(
                             !hasStagedTicket(level, chunk),
                             "No ticket may remain once both jobs are done");
                     StagedDungeonGenerationManager.forget(level, piece.boundingBox());
+                    releaseChunks(level, piece.boundingBox());
                 });
     }
 
@@ -252,7 +255,8 @@ public final class StagedJobGameTests {
 
     /**
      * P02 (b): jobs load chunks with PD's own non-persistent ticket, never a forced one, and leave
-     * none behind.
+     * none behind. The test holds the pieces' chunks itself (see {@link #holdChunks}); PD still
+     * takes its own tickets on them.
      */
     public static void stagedJobsNeverForceLoadChunks(GameTestHelper helper) {
         ServerLevel level = helper.getLevel();
@@ -262,24 +266,37 @@ public final class StagedJobGameTests {
         for (int i = 0; i < 6; i++) {
             pieces.add(moved(piece, 40 * i, 0, 0));
         }
+        for (StagedDungeonPieceSpec each : pieces) {
+            holdChunks(level, each.boundingBox());
+        }
         BoundingBox bounds = bounds(pieces);
         UUID id = enqueue(helper, level, pieces, DungeonLockPlan.EMPTY);
+        // succeedWhen retries a failed assertion, so a forced chunk seen once stays a failure.
+        AtomicReference<String> forced = new AtomicReference<>();
         helper.succeedWhen(
                 () -> {
                     for (long chunk : chunks(bounds)) {
-                        helper.assertTrue(
-                                !level.getForceLoadedChunks().contains(chunk)
-                                        && !hasLegacyForcedTicket(level, chunk),
-                                "A staged job must never force-load chunk "
-                                        + ChunkPos.unpack(chunk));
+                        if (level.getForceLoadedChunks().contains(chunk)
+                                || hasLegacyForcedTicket(level, chunk)) {
+                            forced.compareAndSet(
+                                    null,
+                                    "A staged job must never force-load chunk "
+                                            + ChunkPos.unpack(chunk));
+                        }
                     }
-                    helper.assertTrue(state(level, id) == JobState.COMPLETE, "The job must finish");
+                    helper.assertTrue(forced.get() == null, String.valueOf(forced.get()));
+                    helper.assertTrue(
+                            state(level, id) == JobState.COMPLETE,
+                            "The job must finish" + describeJobs(level));
                     for (long chunk : chunks(bounds)) {
                         helper.assertTrue(
                                 !hasStagedTicket(level, chunk),
                                 "A finished job must leave no ticket at " + ChunkPos.unpack(chunk));
                     }
                     StagedDungeonGenerationManager.forget(level, bounds);
+                    for (StagedDungeonPieceSpec each : pieces) {
+                        releaseChunks(level, each.boundingBox());
+                    }
                 });
     }
 
@@ -304,7 +321,7 @@ public final class StagedJobGameTests {
         StagedDungeonPieceSpec broken =
                 new StagedDungeonPieceSpec(missing, missingAt, Rotation.NONE, missingBox, 0);
         BlockPos door = missingAt.offset(1, 1, 1);
-        loadChunks(level, bounds(List.of(first, broken, third)));
+        holdChunks(level, bounds(List.of(first, broken, third)));
         level.setBlock(
                 door,
                 Blocks.IRON_DOOR
@@ -328,6 +345,9 @@ public final class StagedJobGameTests {
         UUID id = enqueue(helper, level, List.of(first, broken, third), plan);
         helper.succeedWhen(
                 () -> {
+                    // The missing template is not one of PD's elements, so its part waits for the
+                    // chunk's entities (see pace).
+                    pace();
                     JobView view =
                             StagedDungeonGenerationManager.job(level, id)
                                     .orElseThrow(
@@ -351,6 +371,7 @@ public final class StagedJobGameTests {
                             "A failed job must release its tickets");
                     StagedDungeonGenerationManager.forget(
                             level, bounds(List.of(first, broken, third)));
+                    releaseChunks(level, bounds(List.of(first, broken, third)));
                 });
     }
 
@@ -374,12 +395,13 @@ public final class StagedJobGameTests {
                         StagedDungeonSaveData.TYPE,
                         StagedDungeonSaveData.TYPE.codec().parse(ops, data).getOrThrow());
         StagedDungeonPieceSpec piece = smallPiece(helper.getLevel(), region(nether, 100));
-        loadChunks(nether, piece.boundingBox());
+        holdChunks(nether, piece.boundingBox());
         UUID id = enqueue(helper, nether, List.of(piece), DungeonLockPlan.EMPTY);
         helper.succeedWhen(
                 () -> {
                     helper.assertTrue(
-                            state(nether, id) != JobState.RUNNING, "The other job must finish");
+                            state(nether, id) != JobState.RUNNING,
+                            "The other job must finish" + describeJobs(nether));
                     CompoundTag encoded =
                             (CompoundTag)
                                     StagedDungeonSaveData.TYPE
@@ -401,6 +423,7 @@ public final class StagedJobGameTests {
                             StagedDungeonGenerationManager.status(nether).failedJobs() >= 1,
                             "The unreadable record must count as a failed job");
                     StagedDungeonGenerationManager.forget(nether, piece.boundingBox());
+                    releaseChunks(nether, piece.boundingBox());
                 });
     }
 
@@ -410,7 +433,8 @@ public final class StagedJobGameTests {
         BlockPos origin = region(level, 64);
         StagedDungeonPieceSpec first = smallPiece(level, origin);
         StagedDungeonPieceSpec second = moved(first, 0, 24, 0);
-        loadChunks(level, bounds(List.of(first, second)));
+        BoundingBox both = bounds(List.of(first, second));
+        holdChunks(level, both);
         ChunkPos chunk = ChunkPos.containing(origin);
         EnqueueResult a =
                 StagedDungeonGenerationManager.enqueue(
@@ -426,12 +450,13 @@ public final class StagedJobGameTests {
                     helper.assertTrue(
                             StagedDungeonGenerationManager.job(level, a.id()).isEmpty()
                                     && StagedDungeonGenerationManager.job(level, b.id()).isEmpty(),
-                            "Both jobs must finish");
+                            "Both jobs must finish" + describeJobs(level));
                     LevelChunk placed = level.getChunk(chunk.x(), chunk.z());
                     helper.assertTrue(
                             DungeonChunkLedger.isPlaced(placed, a.id(), 0)
                                     && DungeonChunkLedger.isPlaced(placed, b.id(), 0),
                             "Both dungeons must be built");
+                    releaseChunks(level, both);
                 });
     }
 
@@ -452,8 +477,8 @@ public final class StagedJobGameTests {
             overworldPieces.add(piece);
             netherPieces.add(netherPiece);
         }
-        loadChunks(overworld, piece.boundingBox());
-        loadChunks(nether, netherPiece.boundingBox());
+        holdChunks(overworld, piece.boundingBox());
+        holdChunks(nether, netherPiece.boundingBox());
         AtomicLong clock = new AtomicLong(System.nanoTime());
         StagedDungeonGenerationManager.setNanoClock(() -> clock.addAndGet(500_000L));
         StagedDungeonGenerationManager.setBudgetOverride(2_000_000L);
@@ -487,6 +512,8 @@ public final class StagedJobGameTests {
                                     .orElse(0);
                     StagedDungeonGenerationManager.forget(overworld, piece.boundingBox());
                     StagedDungeonGenerationManager.forget(nether, netherPiece.boundingBox());
+                    releaseChunks(overworld, piece.boundingBox());
+                    releaseChunks(nether, netherPiece.boundingBox());
                     helper.assertTrue(
                             overworldPlaced > 0 && netherPlaced > 0,
                             "Both levels must place pieces within 10 ticks: overworld %d, nether %d"
@@ -497,8 +524,8 @@ public final class StagedJobGameTests {
 
     /**
      * P15: a piece over four chunks places its part in a loaded chunk without waiting for the other
-     * three. When the loaded part first shows up, the job is still running and no other part is
-     * placed yet: the other chunks only got their tickets in the tick that placed it.
+     * three. The job is caller-driven, so the check runs right after the one step that took the
+     * other chunks' tickets: they cannot have loaded yet, and only the loaded part may be in.
      */
     public static void aPiecePlacesTheChunksThatAreLoaded(GameTestHelper helper) {
         ServerLevel level = helper.getLevel();
@@ -516,20 +543,24 @@ public final class StagedJobGameTests {
         StagedDungeonPieceSpec piece =
                 moved(template, cornerX - box.minX(), 0, cornerZ - box.minZ());
         ChunkPos loaded = ChunkPos.containing(new BlockPos(cornerX, 0, cornerZ));
+        // Hold the loaded chunk alone (radius 0: its neighbours stay below full status).
+        level.getChunkSource().addTicketWithRadius(TicketType.PLAYER_LOADING, loaded, 0);
         level.getChunk(loaded.x(), loaded.z());
-        UUID id = enqueue(helper, level, List.of(piece), DungeonLockPlan.EMPTY);
+        UUID id =
+                StagedDungeonGenerationManager.enqueue(
+                                level,
+                                layout(List.of(piece), DungeonLockPlan.EMPTY),
+                                LiquidSettings.IGNORE_WATERLOGGING,
+                                new JobOptions(true, true, 0L, 1.0))
+                        .id();
         // succeedWhen retries a failed assertion, so the one-time check keeps its failure.
         AtomicBoolean checked = new AtomicBoolean();
         AtomicReference<String> failure = new AtomicReference<>();
         helper.succeedWhen(
                 () -> {
                     if (!checked.get()) {
-                        LevelChunk chunk =
-                                level.getChunkSource().getChunkNow(loaded.x(), loaded.z());
-                        helper.assertTrue(
-                                chunk != null && DungeonChunkLedger.isPlaced(chunk, id, 0),
-                                "The loaded chunk's part must be placed");
                         checked.set(true);
+                        StagedDungeonGenerationManager.advance(level, id, 50_000_000L);
                         int otherParts = 0;
                         for (long other : chunks(piece.boundingBox())) {
                             LevelChunk otherChunk =
@@ -542,17 +573,28 @@ public final class StagedJobGameTests {
                                 otherParts++;
                             }
                         }
-                        if (state(level, id) != JobState.RUNNING || otherParts > 0) {
+                        if (!DungeonChunkLedger.isPlaced(
+                                        level.getChunk(loaded.x(), loaded.z()), id, 0)
+                                || state(level, id) != JobState.RUNNING
+                                || otherParts > 0) {
                             failure.set(
-                                    "The loaded part must be placed while the job still waits for"
+                                    "The loaded part alone must be placed while the job waits for"
                                             + " the other chunks: %s, %d other part(s) placed"
                                                     .formatted(state(level, id), otherParts));
                         }
+                        // The check is done; load the rest now so the job need not wait for
+                        // asynchronous worldgen against the sprinting tick deadline.
+                        holdChunks(level, piece.boundingBox());
                     }
                     helper.assertTrue(failure.get() == null, String.valueOf(failure.get()));
+                    StagedDungeonGenerationManager.advance(level, id, 50_000_000L);
                     helper.assertTrue(
-                            state(level, id) == JobState.COMPLETE, "The whole piece must finish");
+                            state(level, id) == JobState.COMPLETE,
+                            "The whole piece must finish" + describeJobs(level));
                     StagedDungeonGenerationManager.forget(level, piece.boundingBox());
+                    releaseChunks(level, piece.boundingBox());
+                    level.getChunkSource()
+                            .removeTicketWithRadius(TicketType.PLAYER_LOADING, loaded, 0);
                 });
     }
 
@@ -570,10 +612,11 @@ public final class StagedJobGameTests {
         AtomicReference<BlockPos> wall = new AtomicReference<>();
         helper.succeedWhen(
                 () -> {
+                    pace();
                     if (phase.get() == 0) {
                         helper.assertTrue(
                                 state(level, fixture.id) == JobState.COMPLETE,
-                                "The fixture must finish");
+                                "The fixture must finish" + describeJobs(level));
                         frames.set(fixture.taggedFrames(level));
                         helper.assertTrue(
                                 frames.get() > 0 && fixture.guardians(level).size() == 1,
@@ -587,7 +630,7 @@ public final class StagedJobGameTests {
                     }
                     helper.assertTrue(
                             state(level, fixture.id) == JobState.COMPLETE,
-                            "The replayed job must finish");
+                            "The replayed job must finish" + describeJobs(level));
                     fixture.assertLooted(helper, level);
                     fixture.assertDoorOpen(helper, level);
                     helper.assertTrue(
@@ -627,10 +670,11 @@ public final class StagedJobGameTests {
         AtomicInteger phase = new AtomicInteger();
         helper.succeedWhen(
                 () -> {
+                    pace();
                     if (phase.get() == 0) {
                         helper.assertTrue(
                                 state(level, fixture.id) == JobState.COMPLETE,
-                                "The fixture must finish");
+                                "The fixture must finish" + describeJobs(level));
                         Tag finished = StagedDungeonGenerationManager.snapshot(level, fixture.id);
                         fixture.revertBossRoom(level);
                         if (guardianLost) {
@@ -641,7 +685,7 @@ public final class StagedJobGameTests {
                     }
                     helper.assertTrue(
                             state(level, fixture.id) == JobState.COMPLETE,
-                            "The replayed job must finish");
+                            "The replayed job must finish" + describeJobs(level));
                     fixture.assertBossRoomPlaced(helper, level);
                     helper.assertTrue(
                             fixture.guardians(level).size() == 1,
@@ -671,7 +715,7 @@ public final class StagedJobGameTests {
                 "The test piece must span two chunks along x only");
         ChunkPos present = ChunkPos.containing(new BlockPos(box.minX(), 0, box.minZ()));
         ChunkPos lost = ChunkPos.containing(new BlockPos(box.maxX(), 0, box.minZ()));
-        loadChunks(level, box);
+        holdChunks(level, box);
         BoundingBox lostPart =
                 new BoundingBox(
                         lost.getMinBlockX(),
@@ -689,7 +733,8 @@ public final class StagedJobGameTests {
                 () -> {
                     if (phase.get() == 0) {
                         helper.assertTrue(
-                                state(level, id) == JobState.COMPLETE, "The piece must be placed");
+                                state(level, id) == JobState.COMPLETE,
+                                "The piece must be placed" + describeJobs(level));
                         Tag finished = StagedDungeonGenerationManager.snapshot(level, id);
                         placed.set(states(level, lostPart));
                         level.setBlock(
@@ -701,7 +746,7 @@ public final class StagedJobGameTests {
                     }
                     helper.assertTrue(
                             state(level, id) == JobState.COMPLETE,
-                            "The replayed piece must finish");
+                            "The replayed piece must finish" + describeJobs(level));
                     helper.assertTrue(
                             DungeonChunkLedger.isPlaced(level.getChunk(lost.x(), lost.z()), id, 0),
                             "The lost half must be marked again");
@@ -716,6 +761,7 @@ public final class StagedJobGameTests {
                                     level.getChunk(present.x(), present.z()), id, 0),
                             "The present half keeps its marker");
                     StagedDungeonGenerationManager.forget(level, box);
+                    releaseChunks(level, box);
                 });
     }
 
@@ -731,10 +777,11 @@ public final class StagedJobGameTests {
         AtomicReference<BlockState> wallState = new AtomicReference<>();
         helper.succeedWhen(
                 () -> {
+                    pace();
                     if (phase.get() == 0) {
                         helper.assertTrue(
                                 state(level, fixture.id) == JobState.COMPLETE,
-                                "The fixture must finish");
+                                "The fixture must finish" + describeJobs(level));
                         Tag finished = StagedDungeonGenerationManager.snapshot(level, fixture.id);
                         BlockPos broken = fixture.wallPos(level);
                         wall.set(broken);
@@ -746,7 +793,7 @@ public final class StagedJobGameTests {
                     }
                     helper.assertTrue(
                             state(level, fixture.id) == JobState.COMPLETE,
-                            "The replayed job must finish");
+                            "The replayed job must finish" + describeJobs(level));
                     helper.assertTrue(
                             level.getBlockState(wall.get()).equals(wallState.get()),
                             "The unmarked room must be placed again");
@@ -786,14 +833,20 @@ public final class StagedJobGameTests {
         // A player builds in the next piece's chunk while the job waits.
         level.setBlock(build, Blocks.GOLD_BLOCK.defaultBlockState(), UPDATE_SILENTLY);
         level.getChunkAt(build).incrementInhabitedTime(20L * 60L * 5L);
+        // Then the waited-for chunk arrives (loaded here: GameTest servers sprint, so asynchronous
+        // worldgen would race the tick deadline).
+        holdChunks(level, first.boundingBox());
         helper.succeedWhen(
                 () -> {
                     StagedDungeonGenerationManager.advance(level, id, 50_000_000L);
-                    helper.assertTrue(state(level, id) == JobState.COMPLETE, "The job must finish");
+                    helper.assertTrue(
+                            state(level, id) == JobState.COMPLETE,
+                            "The job must finish" + describeJobs(level));
                     helper.assertTrue(
                             level.getBlockState(build).is(Blocks.GOLD_BLOCK),
                             "The player's block must survive the delayed piece");
                     StagedDungeonGenerationManager.forget(level, bounds(List.of(first, second)));
+                    releaseChunks(level, first.boundingBox());
                 });
     }
 
@@ -972,13 +1025,10 @@ public final class StagedJobGameTests {
                     pieces(compiled, DungeonProgressionRooms.BOSS_KEY_VAULT).getFirst();
             StagedDungeonPieceSpec puzzle = framePuzzle(level, origin.offset(-200, 0, 0));
             List<StagedDungeonPieceSpec> pieces = List.of(vault, bossRoom, puzzle);
-            // The pieces lie far apart, so load only their own chunks, and hold them for the test:
-            // the guardian and frames must stay loaded after the job releases its tickets.
+            // The pieces lie far apart, so hold only their own chunks: the guardian and frames must
+            // stay loaded after the job releases its tickets.
             for (StagedDungeonPieceSpec piece : pieces) {
-                for (long chunk : chunks(piece.boundingBox())) {
-                    level.setChunkForced(ChunkPos.getX(chunk), ChunkPos.getZ(chunk), true);
-                }
-                loadChunks(level, piece.boundingBox());
+                holdChunks(level, piece.boundingBox());
             }
             BlockPos door =
                     BlockPos.of(
@@ -1134,9 +1184,7 @@ public final class StagedJobGameTests {
             guardians(level).forEach(Entity::discard);
             StagedDungeonGenerationManager.forget(level, layout.boundingBox());
             for (StagedDungeonPieceSpec piece : List.of(vault, bossRoom, puzzle)) {
-                for (long chunk : chunks(piece.boundingBox())) {
-                    level.setChunkForced(ChunkPos.getX(chunk), ChunkPos.getZ(chunk), false);
-                }
+                releaseChunks(level, piece.boundingBox());
             }
         }
 
@@ -1228,6 +1276,31 @@ public final class StagedJobGameTests {
                 bounds,
                 pieces,
                 plan);
+    }
+
+    /** The level's unfinished jobs, for failure messages: which job holds up which. */
+    private static String describeJobs(ServerLevel level) {
+        StringBuilder text = new StringBuilder(" [jobs:");
+        for (JobView job : StagedDungeonGenerationManager.jobs(level)) {
+            if (job.state() == JobState.COMPLETE) {
+                continue;
+            }
+            text.append(' ')
+                    .append(job.id().toString(), 0, 8)
+                    .append(' ')
+                    .append(job.state())
+                    .append(' ')
+                    .append(job.placedPieces())
+                    .append('/')
+                    .append(job.totalPieces())
+                    .append(job.options().callerDrivesBudget() ? " caller" : "")
+                    .append(" held=")
+                    .append(StagedDungeonGenerationManager.heldChunks(level, job.id()))
+                    .append(" at ")
+                    .append(job.bounds().getCenter().toShortString())
+                    .append(';');
+        }
+        return text.append(']').toString();
     }
 
     private static JobState state(ServerLevel level, UUID id) {
@@ -1343,6 +1416,37 @@ public final class StagedJobGameTests {
     private static void loadChunks(ServerLevel level, BoundingBox box) {
         for (long chunk : chunks(box)) {
             level.getChunk(ChunkPos.getX(chunk), ChunkPos.getZ(chunk));
+        }
+    }
+
+    /**
+     * Loads the chunks now and holds them (and their neighbours) with a vanilla player-loading
+     * ticket until {@link #releaseChunks}. GameTest servers sprint, so a test whose subject is not
+     * chunk loading must not wait for asynchronous loads against its tick deadline. The ticket is
+     * neither forced nor PD's, so the ticket assertions still see only PD's own.
+     */
+    private static void holdChunks(ServerLevel level, BoundingBox box) {
+        for (long chunk : chunks(box)) {
+            level.getChunkSource()
+                    .addTicketWithRadius(TicketType.PLAYER_LOADING, ChunkPos.unpack(chunk), 1);
+        }
+        loadChunks(level, box);
+    }
+
+    /**
+     * Gives asynchronous entity loading wall-clock time by padding the tick to a real server's 50
+     * ms. GameTest servers do not wait between ticks, and parts that spawn entities (or come from
+     * elements other than PD's) wait for their chunks' entities, which are read on an I/O thread;
+     * without pacing, a busy machine can spend a test's whole tick budget in about a second.
+     */
+    private static void pace() {
+        LockSupport.parkNanos(50_000_000L);
+    }
+
+    private static void releaseChunks(ServerLevel level, BoundingBox box) {
+        for (long chunk : chunks(box)) {
+            level.getChunkSource()
+                    .removeTicketWithRadius(TicketType.PLAYER_LOADING, ChunkPos.unpack(chunk), 1);
         }
     }
 

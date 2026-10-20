@@ -382,7 +382,7 @@ final class StagedDungeonJob {
                     continue;
                 }
                 LevelChunk chunk = level.getChunkSource().getChunkNow(chunkX, chunkZ);
-                if (chunk == null || !level.areEntitiesLoaded(packed)) {
+                if (chunk == null) {
                     waiting = true;
                     continue;
                 }
@@ -394,7 +394,14 @@ final class StagedDungeonJob {
                     skipPart(packed);
                     continue;
                 }
-                return placePart(level, piece, chunk, clip(box, chunkX, chunkZ), List.of(chunk));
+                BoundingBox part = clip(box, chunkX, chunkZ);
+                // A part that spawns entities waits for the chunk's entities, so a replay finds the
+                // tagged spawns it already made instead of spawning twice.
+                if (!level.areEntitiesLoaded(packed) && spawnsEntities(level, piece, part)) {
+                    waiting = true;
+                    continue;
+                }
+                return placePart(level, piece, chunk, part, List.of(chunk));
             }
         }
 
@@ -403,6 +410,17 @@ final class StagedDungeonJob {
         }
         advance(level);
         return StepResult.PLACED;
+    }
+
+    private static boolean spawnsEntities(
+            ServerLevel level, StagedDungeonPieceSpec piece, BoundingBox part) {
+        // Elements other than PD's own may place template entities PD cannot recognise: wait.
+        return !(piece.element() instanceof VariantSinglePoolElement variant)
+                || variant.spawnsEntitiesIn(
+                        level.getServer().getStructureManager(),
+                        piece.position(),
+                        piece.rotation(),
+                        part);
     }
 
     /**

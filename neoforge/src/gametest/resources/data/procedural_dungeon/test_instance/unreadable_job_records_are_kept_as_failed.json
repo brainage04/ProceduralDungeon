@@ -1,5 +1,5 @@
 {
-  "environment": "minecraft:default",
+  "environment": "procedural_dungeon:staged_unreadable_job_records_are_kept_as_failed",
   "structure": "minecraftmodconventions:empty",
   "max_ticks": 100,
   "type": "minecraft:function",

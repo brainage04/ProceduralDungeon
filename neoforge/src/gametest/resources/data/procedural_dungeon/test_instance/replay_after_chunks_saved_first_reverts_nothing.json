@@ -1,5 +1,5 @@
 {
-  "environment": "minecraft:default",
+  "environment": "procedural_dungeon:staged_replay_after_chunks_saved_first_reverts_nothing",
   "structure": "minecraftmodconventions:empty",
   "max_ticks": 900,
   "type": "minecraft:function",

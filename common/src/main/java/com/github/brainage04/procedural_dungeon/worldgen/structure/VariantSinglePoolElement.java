@@ -335,6 +335,35 @@ public class VariantSinglePoolElement extends StructurePoolElement {
         }
     }
 
+    /**
+     * Whether placing this piece clipped to {@code box} can add entities: a guardian or frame marker inside the box, or
+     * any entity stored in the template. Only such parts need the chunk's entities loaded first, so a replay can find
+     * the tagged spawns it already made.
+     */
+    public boolean spawnsEntitiesIn(
+            StructureTemplateManager structureTemplateManager,
+            BlockPos pos,
+            Rotation rotation,
+            BoundingBox box
+    ) {
+        StructureTemplate template = structureTemplateManager.getOrCreate(delegate.getTemplateLocation());
+        if (!template.entityInfoList.isEmpty()) {
+            return true;
+        }
+        StructurePlaceSettings settings = new StructurePlaceSettings().setRotation(rotation);
+        for (StructureTemplate.StructureBlockInfo marker : getDataMarkerBlocks(structureTemplateManager, template, pos, rotation)) {
+            BlockPos markerPos = StructureTemplate.calculateRelativePosition(settings, marker.pos()).offset(pos);
+            if (marker.nbt() == null || !box.isInside(markerPos)) {
+                continue;
+            }
+            String metadata = marker.nbt().getStringOr("metadata", "");
+            if (metadata.startsWith(DungeonPuzzleRooms.FRAME_MARKER) || DungeonGuardian.fromMarker(metadata).isPresent()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private boolean placeFast(
             StructureTemplateManager structureTemplateManager,
             WorldGenLevel world,

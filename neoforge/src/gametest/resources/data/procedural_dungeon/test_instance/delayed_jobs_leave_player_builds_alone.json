@@ -1,5 +1,5 @@
 {
-  "environment": "minecraft:default",
+  "environment": "procedural_dungeon:staged_delayed_jobs_leave_player_builds_alone",
   "structure": "minecraftmodconventions:empty",
   "max_ticks": 300,
   "type": "minecraft:function",
