@@ -1,6 +1,7 @@
 package com.github.brainage04.procedural_dungeon.mixin;
 
 import com.github.brainage04.procedural_dungeon.enchantment.DungeonSoulbound;
+import com.github.brainage04.procedural_dungeon.rule.DungeonSwitches;
 import java.util.Map;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -14,7 +15,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 /**
- * Holds soulbound items back from the death drop; they stay in the dead player's inventory until respawn.
+ * Holds soulbound items back from the death drop; they stay in the dead player's inventory until respawn. Only where
+ * {@link DungeonSwitches#globalMechanics} allows it in the level the player died in.
  */
 @Mixin(Inventory.class)
 public class InventoryMixin {
@@ -27,7 +29,7 @@ public class InventoryMixin {
 
     @Inject(method = "dropAll", at = @At("HEAD"))
     private void proceduralDungeon$holdBackSoulbound(CallbackInfo ci) {
-        if (this.player.isDeadOrDying()) {
+        if (this.player.isDeadOrDying() && DungeonSwitches.globalMechanics(this.player.level())) {
             this.proceduralDungeon$soulbound = DungeonSoulbound.holdBack((Inventory) (Object) this);
         }
     }

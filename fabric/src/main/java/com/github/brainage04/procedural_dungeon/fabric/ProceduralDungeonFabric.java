@@ -5,6 +5,8 @@ import com.github.brainage04.procedural_dungeon.command.DungeonLocksCommand;
 import com.github.brainage04.procedural_dungeon.command.StructureGalleryCommand;
 import com.github.brainage04.procedural_dungeon.command.core.ModCommands;
 import com.github.brainage04.procedural_dungeon.lock.DungeonLockManager;
+import com.github.brainage04.procedural_dungeon.rule.DungeonGameRules;
+import com.github.brainage04.procedural_dungeon.rule.DungeonSwitches;
 import com.github.brainage04.procedural_dungeon.worldgen.processor.ModStructureProcessorTypes;
 import com.github.brainage04.procedural_dungeon.worldgen.structure.DungeonChunkLedger;
 import com.github.brainage04.procedural_dungeon.worldgen.structure.DungeonChunkTickets;
@@ -48,6 +50,7 @@ public final class ProceduralDungeonFabric implements ModInitializer {
                 ((AttachmentTarget) chunk).setAttached(placed, data);
             }
         });
+        DungeonGameRules.register((id, rule) -> Registry.register(BuiltInRegistries.GAME_RULE, id, rule));
         ProceduralDungeon.initialize();
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> ModCommands.register(dispatcher));
         UseBlockCallback.EVENT.register((player, world, hand, hitResult) -> world instanceof ServerLevel level
@@ -62,5 +65,7 @@ public final class ProceduralDungeonFabric implements ModInitializer {
         ServerLifecycleEvents.SERVER_STOPPING.register(StagedDungeonGenerationManager::serverStopping);
         ServerLifecycleEvents.SERVER_STARTED.register(server -> StagedDungeonGenerationManager.resetSession());
         ServerLifecycleEvents.SERVER_STARTED.register(StructureGalleryCommand::initializeAutobuild);
+        ServerLifecycleEvents.SERVER_STARTING.register(DungeonSwitches::serverStarting);
+        ServerLifecycleEvents.SERVER_STOPPED.register(DungeonSwitches::serverStopped);
     }
 }

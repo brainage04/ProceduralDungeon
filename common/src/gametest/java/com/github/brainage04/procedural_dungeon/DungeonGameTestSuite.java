@@ -127,7 +127,7 @@ public final class DungeonGameTestSuite {
     private DungeonGameTestSuite() {}
 
     public static List<TestCase> tests() {
-        return List.of(
+        List<TestCase> tests = new ArrayList<>(List.of(
                 new TestCase("variant_catalog_is_stable_and_complete", DungeonGameTestSuite::variantCatalogIsStableAndComplete),
                 new TestCase("seeded_loot_selection_is_repeatable_and_tier_bounded", DungeonGameTestSuite::seededLootSelectionIsRepeatableAndTierBounded),
                 new TestCase("every_layout_has_a_boss_room_and_a_boss_key_vault", DungeonGameTestSuite::everyLayoutHasABossRoomAndABossKeyVault),
@@ -154,7 +154,9 @@ public final class DungeonGameTestSuite {
                 new TestCase("generation_command_finishes_its_queued_dungeon", DungeonGameTestSuite::generationCommandFinishesItsQueuedDungeon),
                 new TestCase("locked_doors_ignore_redstone_until_unlocked", DungeonGameTestSuite::lockedDoorsIgnoreRedstoneUntilUnlocked),
                 new TestCase("crafter_puzzle_opens_when_the_disc_plays", DungeonGameTestSuite::crafterPuzzleOpensWhenTheDiscPlays)
-        );
+        ));
+        tests.addAll(MechanicsGameTests.tests());
+        return List.copyOf(tests);
     }
 
     public static void variantCatalogIsStableAndComplete(GameTestHelper helper) {

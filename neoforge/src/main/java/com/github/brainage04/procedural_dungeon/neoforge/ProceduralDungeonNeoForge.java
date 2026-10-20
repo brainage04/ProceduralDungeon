@@ -5,6 +5,8 @@ import com.github.brainage04.procedural_dungeon.command.DungeonLocksCommand;
 import com.github.brainage04.procedural_dungeon.command.StructureGalleryCommand;
 import com.github.brainage04.procedural_dungeon.command.core.ModCommands;
 import com.github.brainage04.procedural_dungeon.lock.DungeonLockManager;
+import com.github.brainage04.procedural_dungeon.rule.DungeonGameRules;
+import com.github.brainage04.procedural_dungeon.rule.DungeonSwitches;
 import com.github.brainage04.procedural_dungeon.worldgen.processor.ModStructureProcessorTypes;
 import com.github.brainage04.procedural_dungeon.worldgen.structure.ModStructurePoolElementTypes;
 import com.github.brainage04.procedural_dungeon.worldgen.structure.ModStructureTypes;
@@ -25,13 +27,16 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
+import net.neoforged.neoforge.event.server.ServerAboutToStartEvent;
 import net.neoforged.neoforge.event.server.ServerStartedEvent;
 import net.neoforged.neoforge.event.server.ServerStoppingEvent;
+import net.neoforged.neoforge.event.server.ServerStoppedEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.level.block.BreakBlockEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import net.minecraft.world.level.gamerules.GameRule;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.pools.StructurePoolElementType;
@@ -45,6 +50,7 @@ public final class ProceduralDungeonNeoForge {
     private static final DeferredRegister<StructurePoolElementType<?>> POOL_ELEMENTS = DeferredRegister.create(Registries.STRUCTURE_POOL_ELEMENT, ProceduralDungeon.MOD_ID);
     private static final DeferredRegister<StructureType<?>> STRUCTURES = DeferredRegister.create(Registries.STRUCTURE_TYPE, ProceduralDungeon.MOD_ID);
     private static final DeferredRegister<StructurePieceType> PIECES = DeferredRegister.create(Registries.STRUCTURE_PIECE, ProceduralDungeon.MOD_ID);
+    private static final DeferredRegister<GameRule<?>> GAME_RULES = DeferredRegister.create(Registries.GAME_RULE, ProceduralDungeon.MOD_ID);
     private static final DeferredHolder<StructurePoolElementType<?>, StructurePoolElementType<VariantSinglePoolElement>> VARIANT_SINGLE_POOL_ELEMENT =
             POOL_ELEMENTS.<StructurePoolElementType<VariantSinglePoolElement>>register(
                     "variant_single_pool_element",
@@ -87,6 +93,8 @@ public final class ProceduralDungeonNeoForge {
                 }
             }
         });
+        GAME_RULES.register(modBus);
+        DungeonGameRules.register((id, rule) -> GAME_RULES.register(id.getPath(), () -> rule));
         ModStructureProcessorTypes.registerAll((name, codec) -> PROCESSORS.register(name, () -> codec));
         modBus.addListener((FMLCommonSetupEvent event) -> event.enqueueWork(() -> {
             ModStructurePoolElementTypes.setVariantSinglePoolElement(VARIANT_SINGLE_POOL_ELEMENT.get());
@@ -99,6 +107,16 @@ public final class ProceduralDungeonNeoForge {
     @SubscribeEvent
     public static void registerCommands(RegisterCommandsEvent event) {
         ModCommands.register(event.getDispatcher());
+    }
+
+    @SubscribeEvent
+    public static void serverAboutToStart(ServerAboutToStartEvent event) {
+        DungeonSwitches.serverStarting(event.getServer());
+    }
+
+    @SubscribeEvent
+    public static void serverStopped(ServerStoppedEvent event) {
+        DungeonSwitches.serverStopped(event.getServer());
     }
 
     @SubscribeEvent

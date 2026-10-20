@@ -1,6 +1,7 @@
 package com.github.brainage04.procedural_dungeon.mixin;
 
 import com.github.brainage04.procedural_dungeon.enchantment.DungeonSoulbound;
+import com.github.brainage04.procedural_dungeon.rule.DungeonSwitches;
 import net.minecraft.server.level.ServerPlayer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -14,7 +15,7 @@ public class ServerPlayerMixin {
      */
     @Inject(method = "restoreFrom", at = @At("TAIL"))
     private void proceduralDungeon$restoreSoulbound(ServerPlayer oldPlayer, boolean restoreAll, CallbackInfo ci) {
-        if (!restoreAll) {
+        if (!restoreAll && DungeonSwitches.globalMechanics(oldPlayer.level())) {
             DungeonSoulbound.transfer(oldPlayer.getInventory(), ((ServerPlayer) (Object) this).getInventory());
         }
     }
