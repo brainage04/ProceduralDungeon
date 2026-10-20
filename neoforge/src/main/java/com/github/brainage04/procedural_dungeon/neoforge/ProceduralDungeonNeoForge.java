@@ -13,6 +13,7 @@ import com.github.brainage04.procedural_dungeon.worldgen.structure.VariantSingle
 import com.github.brainage04.procedural_dungeon.worldgen.structure.StagedDungeonGenerationManager;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionResult;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -75,7 +76,8 @@ public final class ProceduralDungeonNeoForge {
     public static void useBlock(PlayerInteractEvent.RightClickBlock event) {
         if (event.getLevel() instanceof ServerLevel level) {
             var result = DungeonLockManager.useBlock(event.getEntity(), level, event.getPos());
-            if (result.consumesAction()) {
+            // A refusal is FAIL, which does not consume the action; any non-PASS result must stop vanilla's interaction.
+            if (result != InteractionResult.PASS) {
                 event.setCancellationResult(result);
                 event.setCanceled(true);
             }
