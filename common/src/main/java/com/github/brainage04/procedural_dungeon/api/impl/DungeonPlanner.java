@@ -5,6 +5,7 @@ import com.github.brainage04.procedural_dungeon.api.DungeonRequest;
 import com.github.brainage04.procedural_dungeon.dungeon.DungeonTheme;
 import com.github.brainage04.procedural_dungeon.dungeon.DungeonTier;
 import com.github.brainage04.procedural_dungeon.util.RegistryKeyUtils;
+import com.github.brainage04.procedural_dungeon.worldgen.structure.StagedDungeonLayout;
 import com.github.brainage04.procedural_dungeon.worldgen.structure.StagedDungeonLayoutCompiler;
 
 import net.minecraft.core.BlockPos;
@@ -91,23 +92,42 @@ public final class DungeonPlanner {
                         ChunkPos.containing(CANONICAL_ORIGIN),
                         CANONICAL_HEIGHT,
                         biome -> true);
-        JigsawStructure.MaxDistance maxDistance =
-                new JigsawStructure.MaxDistance(tier.maxDistanceFromCenter);
+        return compileOffThread(
+                        server,
+                        context,
+                        pool,
+                        request.depth(),
+                        CANONICAL_ORIGIN,
+                        new JigsawStructure.MaxDistance(tier.maxDistanceFromCenter))
+                .thenApply(layout -> layout.map(compiled -> new CompiledPlan(request, compiled)));
+    }
+
+    /**
+     * Compiles a layout from {@code start} on a worldgen worker, as natural generation does, and
+     * completes on the server thread. {@code context} must be built on the server thread and not
+     * used again: its random belongs to this compile. {@code /generatedungeon} and {@link #plan}
+     * both compile here.
+     */
+    public static CompletableFuture<Optional<StagedDungeonLayout>> compileOffThread(
+            MinecraftServer server,
+            Structure.GenerationContext context,
+            Holder<StructureTemplatePool> pool,
+            int depth,
+            BlockPos start,
+            JigsawStructure.MaxDistance maxDistance) {
         return CompletableFuture.supplyAsync(
                         () ->
                                 StagedDungeonLayoutCompiler.compile(
                                         context,
                                         pool,
                                         Optional.of(START_JIGSAW),
-                                        request.depth(),
-                                        CANONICAL_ORIGIN,
+                                        depth,
+                                        start,
                                         Optional.empty(),
                                         maxDistance,
                                         LiquidSettings.IGNORE_WATERLOGGING),
                         Util.backgroundExecutor())
-                .thenApplyAsync(
-                        layout -> layout.map(compiled -> new CompiledPlan(request, compiled)),
-                        server);
+                .thenApplyAsync(layout -> layout, server);
     }
 
     private static DungeonTier tier(int number) {
