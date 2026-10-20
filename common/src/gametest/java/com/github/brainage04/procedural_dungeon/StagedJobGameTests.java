@@ -662,13 +662,18 @@ public final class StagedJobGameTests {
                 });
     }
 
-    /** P06: a part whose chunk saw players for a long time while the job waited is left alone. */
+    /**
+     * P06: a part whose chunk saw players for a long time while the job waited is left alone. The
+     * first piece sits in a chunk that still has to generate, so the job waits there while the
+     * second piece's (loaded) chunk is already in its window.
+     */
     public static void delayedJobsLeavePlayerBuildsAlone(GameTestHelper helper) {
         ServerLevel level = helper.getLevel();
         BlockPos origin = region(level, 64);
         StagedDungeonPieceSpec first = smallPiece(level, origin);
         StagedDungeonPieceSpec second = moved(first, 48, 0, 0);
-        loadChunks(level, bounds(List.of(first, second)));
+        loadChunks(level, second.boundingBox());
+        BlockPos build = writtenPos(level, second);
         JobOptions callerDriven = new JobOptions(true, true, 0L, 1.0);
         EnqueueResult result =
                 StagedDungeonGenerationManager.enqueue(
@@ -677,24 +682,16 @@ public final class StagedJobGameTests {
                         LiquidSettings.IGNORE_WATERLOGGING,
                         callerDriven);
         UUID id = result.id();
-        BlockPos build = writtenPos(level, second);
-        AtomicInteger phase = new AtomicInteger();
+        // The job takes its window (both chunks) and waits for the first piece's chunk.
+        StagedDungeonGenerationManager.advance(level, id, 50_000_000L);
+        helper.assertTrue(
+                StagedDungeonGenerationManager.job(level, id).orElseThrow().placedPieces() == 0,
+                "The first piece must still wait for its chunk");
+        // A player builds in the next piece's chunk while the job waits.
+        level.setBlock(build, Blocks.GOLD_BLOCK.defaultBlockState(), UPDATE_SILENTLY);
+        level.getChunkAt(build).incrementInhabitedTime(20L * 60L * 5L);
         helper.succeedWhen(
                 () -> {
-                    if (phase.get() == 0) {
-                        StagedDungeonGenerationManager.advance(level, id, 50_000_000L);
-                        helper.assertTrue(
-                                StagedDungeonGenerationManager.job(level, id)
-                                                .orElseThrow()
-                                                .placedPieces()
-                                        >= 1,
-                                "The first piece must be placed");
-                        // A player builds in the next piece's chunk while the job waits.
-                        level.setBlock(
-                                build, Blocks.GOLD_BLOCK.defaultBlockState(), UPDATE_SILENTLY);
-                        level.getChunkAt(build).incrementInhabitedTime(20L * 60L * 5L);
-                        phase.set(1);
-                    }
                     StagedDungeonGenerationManager.advance(level, id, 50_000_000L);
                     helper.assertTrue(state(level, id) == JobState.COMPLETE, "The job must finish");
                     helper.assertTrue(
