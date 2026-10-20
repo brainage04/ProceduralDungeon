@@ -45,7 +45,12 @@ public final class ApiGameTests {
     private static final long SEED = 0xD06E_0061L;
     private static final DungeonRequest TIER_1 =
             new DungeonRequest("cobblestone", 1, 1, SEED, false);
-    private static final long ADVANCE_BUDGET_NANOS = 20_000_000L;
+    // A caller that builds in a dimension of its own before players arrive (BM's case) can spend
+    // most
+    // of a tick. A tick deadline counts ticks while placement costs wall time, so a small budget on
+    // a
+    // loaded host left the reset test's two builds short of its 400 ticks.
+    private static final long ADVANCE_BUDGET_NANOS = 40_000_000L;
     private static final long PLAN_CALL_LIMIT_NANOS = 5_000_000L;
     private static final Recorder RECORDER = new Recorder();
 
