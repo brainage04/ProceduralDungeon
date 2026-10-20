@@ -9,11 +9,15 @@ Higher tiers are rarer, larger, and more dangerous.
 
 # Progression
 
-- **Boss room (guaranteed):** every dungeon has one boss room at the far end of its deepest route, sealed by an iron door in a reinforced deepslate frame. The door only opens with a **Boss Key**, which waits in a chest in the **boss key vault**, a small side room placed on a different branch. Inside the boss room are the boss and two boss loot chests.
-- **Miniboss rooms (optional):** miniboss rooms appear randomly in place of ordinary rooms. Each one is guarded by a miniboss, holds one miniboss loot chest, and sits behind an iron door that opens with a **Miniboss Key**. The key for each miniboss room is hidden in one of the dungeon's ordinary loot chests.
+- **Boss room (guaranteed):** every dungeon has one boss room at the far end of its deepest route, behind an iron door in a reinforced deepslate frame. The door only opens with the dungeon's **Boss Key**, which waits in a chest in the **boss key vault**, a small side room on another socket of the layout. Inside the boss room are the boss and two boss loot chests, which stay locked until the boss is dead.
+- **Miniboss rooms (optional):** miniboss rooms appear randomly in place of ordinary rooms. Each one is guarded by a miniboss, holds one miniboss loot chest that stays locked until the miniboss is dead, and sits behind an iron door that opens with a **Miniboss Key**. The key for each miniboss room is hidden in one of the dungeon's ordinary loot chests.
 - **Rusted Keys:** a few end-room chests are locked and need a **Rusted Key**, which is hidden in another loot chest of the same dungeon.
 
-Keys are trial keys (the Boss Key is an ominous trial key) with their own name and a hidden tag, so renaming an ordinary trial key does not make a dungeon key, and dungeon keys do not open trial chamber vaults. Keys are used up when they open a lock. Locked chests and doors cannot be broken or blown up until they are unlocked, and the chests holding keys are also protected from explosions.
+Keys are trial keys (the Boss Key is an ominous trial key) with their own name and a hidden tag, so renaming an ordinary trial key does not make a dungeon key, and dungeon keys do not open trial chamber vaults. Keys are used up when they open a lock. Locked chests and doors cannot be broken or blown up until they are unlocked, hoppers cannot empty them, a chest placed beside a locked chest does not open it, and the chests holding keys are also protected from explosions.
+
+Boss and miniboss rooms are protected whole while their door is locked or their guardian lives: players cannot mine any block of the room, explosions and outside pistons cannot break or move it, and outside fluids cannot flow in. A locked door stays standing even if the block under it goes. Puzzle rooms with a locked chest are protected the same way until the solved chest is opened. Everywhere else, survival play is unchanged.
+
+Each dungeon has exactly one valid Boss Key. If it is destroyed (burnt, blown up, dropped into the void, left to despawn, cleared with `/clear` or deleted in creative), a new Boss Key appears in the vault chest and the old one stops working, even if a copy of it turns up later. A key in a chest or an offline player's inventory is never replaced. The details are in the [README](../README.md#the-boss-key).
 
 Redstone cannot open a locked boss or miniboss door. Once unlocked, the door responds to redstone normally.
 

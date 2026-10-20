@@ -1,0 +1,7 @@
+{
+  "environment": "minecraft:default",
+  "structure":"minecraftmodconventions:empty",
+  "max_ticks": 100,
+  "type": "minecraft:function",
+  "function": "procedural_dungeon:lock_data_is_versioned_and_old_records_load"
+}

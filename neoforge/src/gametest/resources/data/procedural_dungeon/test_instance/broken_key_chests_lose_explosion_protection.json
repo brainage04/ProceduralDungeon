@@ -1,0 +1,7 @@
+{
+  "environment": "minecraft:default",
+  "structure":"minecraftmodconventions:empty",
+  "max_ticks": 100,
+  "type": "minecraft:function",
+  "function": "procedural_dungeon:broken_key_chests_lose_explosion_protection"
+}

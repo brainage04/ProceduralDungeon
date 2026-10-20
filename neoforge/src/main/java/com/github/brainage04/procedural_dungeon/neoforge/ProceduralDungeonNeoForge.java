@@ -4,6 +4,7 @@ import com.github.brainage04.procedural_dungeon.ProceduralDungeon;
 import com.github.brainage04.procedural_dungeon.command.DungeonLocksCommand;
 import com.github.brainage04.procedural_dungeon.command.StructureGalleryCommand;
 import com.github.brainage04.procedural_dungeon.command.core.ModCommands;
+import com.github.brainage04.procedural_dungeon.lock.DungeonBossKeys;
 import com.github.brainage04.procedural_dungeon.lock.DungeonLockManager;
 import com.github.brainage04.procedural_dungeon.worldgen.processor.ModStructureProcessorTypes;
 import com.github.brainage04.procedural_dungeon.worldgen.structure.ModStructurePoolElementTypes;
@@ -102,6 +103,7 @@ public final class ProceduralDungeonNeoForge {
     public static void serverTick(ServerTickEvent.Post event) {
         StagedDungeonGenerationManager.runServerTick(event.getServer());
         DungeonLocksCommand.tickRevealMarkers();
+        DungeonBossKeys.tick(event.getServer());
     }
 
     @SubscribeEvent
@@ -112,5 +114,6 @@ public final class ProceduralDungeonNeoForge {
     @SubscribeEvent
     public static void serverStopping(ServerStoppingEvent event) {
         DungeonLocksCommand.clearRevealMarkers();
+        DungeonBossKeys.clear();
     }
 }

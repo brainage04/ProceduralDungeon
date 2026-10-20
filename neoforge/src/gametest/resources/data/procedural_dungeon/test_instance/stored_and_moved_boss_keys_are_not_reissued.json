@@ -1,0 +1,7 @@
+{
+  "environment": "minecraft:default",
+  "structure":"minecraftmodconventions:empty",
+  "max_ticks": 100,
+  "type": "minecraft:function",
+  "function": "procedural_dungeon:stored_and_moved_boss_keys_are_not_reissued"
+}

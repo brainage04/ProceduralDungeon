@@ -27,6 +27,10 @@ public enum DungeonGuardian {
     MINIBOSS("miniboss", EntityTypes.VINDICATOR, "Dungeon Sentinel", 30.0, 15.0, false);
 
     public static final String TAG = ProceduralDungeon.MOD_ID + ".guardian";
+    /**
+     * Prefix of the tag holding the guardian's spawn point (a packed block position), which ties it to its room.
+     */
+    public static final String HOME_TAG_PREFIX = ProceduralDungeon.MOD_ID + ".guardian_home=";
 
     private final String name;
     private final EntityType<? extends Mob> type;
@@ -71,10 +75,10 @@ public enum DungeonGuardian {
     /**
      * Spawns the guardian standing on {@code pos}, facing the room entrance (template north).
      */
-    public void spawn(ServerLevelAccessor level, BlockPos pos, Rotation rotation, int tierNumber) {
+    public Optional<Mob> spawn(ServerLevelAccessor level, BlockPos pos, Rotation rotation, int tierNumber) {
         Mob mob = type.create(level.getLevel(), EntitySpawnReason.STRUCTURE);
         if (mob == null) {
-            return;
+            return Optional.empty();
         }
 
         DungeonTier tier = DungeonTier.values()[Math.clamp(tierNumber, 1, DungeonTier.values().length) - 1];
@@ -99,7 +103,28 @@ public enum DungeonGuardian {
         mob.setCustomNameVisible(true);
         mob.setPersistenceRequired();
         mob.addTag(TAG);
+        mob.addTag(HOME_TAG_PREFIX + pos.asLong());
         level.addFreshEntityWithPassengers(mob);
+        return Optional.of(mob);
+    }
+
+    /**
+     * The spawn point of a guardian, or empty for any other mob and for guardians spawned before homes were tagged.
+     */
+    public static Optional<BlockPos> home(Mob mob) {
+        if (!mob.entityTags().contains(TAG)) {
+            return Optional.empty();
+        }
+        for (String tag : mob.entityTags()) {
+            if (tag.startsWith(HOME_TAG_PREFIX)) {
+                try {
+                    return Optional.of(BlockPos.of(Long.parseLong(tag.substring(HOME_TAG_PREFIX.length()))));
+                } catch (NumberFormatException ignored) {
+                    return Optional.empty();
+                }
+            }
+        }
+        return Optional.empty();
     }
 
     private static void equip(Mob mob, EquipmentSlot slot, Item item) {

@@ -198,7 +198,10 @@ public final class DungeonLocksCommand {
     }
 
     private static List<BlockPos> positions(ServerLevel level, Target target) {
-        DungeonLockSaveData data = level.getDataStorage().computeIfAbsent(DungeonLockSaveData.TYPE);
+        DungeonLockSaveData data = level.getDataStorage().get(DungeonLockSaveData.TYPE);
+        if (data == null) {
+            return List.of();
+        }
         List<Long> positions = switch (target) {
             case LOCKED_CHEST -> data.getLockedChests();
             case LOCKED_DOOR -> lockedDoorLowerHalves(data);

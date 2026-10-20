@@ -102,7 +102,8 @@ public final class DungeonPuzzleRooms {
     }
 
     /**
-     * Settles the redstone of a freshly placed puzzle room inside {@code box} and locks its reward chest.
+     * Settles the redstone of a freshly placed puzzle room inside {@code box}, locks its reward chest and protects the
+     * room until the puzzle is solved.
      */
     public static void finishPlacement(ServerLevel level, BoundingBox box) {
         List<BlockPos> components = new ArrayList<>();
@@ -136,6 +137,8 @@ public final class DungeonPuzzleRooms {
         for (BlockPos chest : chests) {
             if (isPuzzleChest(level, chest) && mechanismRepeater(level, chest).isPresent()) {
                 DungeonLockManager.lockPuzzleChest(level, chest);
+                // The mechanism and its walls must not be mined while the chest is shut.
+                DungeonLockManager.protectPuzzleRoom(level, box, chest);
             }
         }
     }

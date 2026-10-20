@@ -4,6 +4,7 @@ import com.github.brainage04.procedural_dungeon.ProceduralDungeon;
 import com.github.brainage04.procedural_dungeon.command.DungeonLocksCommand;
 import com.github.brainage04.procedural_dungeon.command.StructureGalleryCommand;
 import com.github.brainage04.procedural_dungeon.command.core.ModCommands;
+import com.github.brainage04.procedural_dungeon.lock.DungeonBossKeys;
 import com.github.brainage04.procedural_dungeon.lock.DungeonLockManager;
 import com.github.brainage04.procedural_dungeon.worldgen.processor.ModStructureProcessorTypes;
 import com.github.brainage04.procedural_dungeon.worldgen.structure.ModStructurePoolElementTypes;
@@ -38,7 +39,9 @@ public final class ProceduralDungeonFabric implements ModInitializer {
         ServerTickEvents.START_SERVER_TICK.register(server -> StagedDungeonGenerationManager.beginServerTick());
         ServerTickEvents.END_SERVER_TICK.register(StagedDungeonGenerationManager::runServerTick);
         ServerTickEvents.END_SERVER_TICK.register(server -> DungeonLocksCommand.tickRevealMarkers());
+        ServerTickEvents.END_SERVER_TICK.register(DungeonBossKeys::tick);
         ServerLifecycleEvents.SERVER_STOPPING.register(server -> DungeonLocksCommand.clearRevealMarkers());
+        ServerLifecycleEvents.SERVER_STOPPING.register(server -> DungeonBossKeys.clear());
         ServerLifecycleEvents.SERVER_STARTED.register(StructureGalleryCommand::initializeAutobuild);
     }
 }

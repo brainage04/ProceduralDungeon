@@ -1,0 +1,7 @@
+{
+  "environment": "minecraft:default",
+  "structure":"minecraftmodconventions:empty",
+  "max_ticks": 100,
+  "type": "minecraft:function",
+  "function": "procedural_dungeon:hoppers_and_joined_chests_cannot_drain_locked_chests"
+}

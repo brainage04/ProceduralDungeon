@@ -1,0 +1,7 @@
+{
+  "environment": "minecraft:default",
+  "structure":"minecraftmodconventions:empty",
+  "max_ticks": 100,
+  "type": "minecraft:function",
+  "function": "procedural_dungeon:sealed_boss_rooms_resist_digging_and_keep_their_door"
+}

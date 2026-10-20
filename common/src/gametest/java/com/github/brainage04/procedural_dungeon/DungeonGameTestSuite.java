@@ -229,7 +229,7 @@ public final class DungeonGameTestSuite {
         level.setBlock(upper, Blocks.IRON_DOOR.defaultBlockState().setValue(DoorBlock.HALF, DoubleBlockHalf.UPPER), 3);
         DungeonLockManager.applyPlanForPiece(
                 level,
-                new DungeonLockPlan(List.of(), List.of(), List.of(new DungeonLockPlan.Door(lower.asLong(), Optional.of(DungeonKeyType.BOSS)))),
+                new DungeonLockPlan(List.of(), List.of(), List.of(new DungeonLockPlan.Door(lower.asLong(), Optional.of(DungeonKeyType.BOSS))), List.of()),
                 new BoundingBox(lower)
         );
 
@@ -273,7 +273,7 @@ public final class DungeonGameTestSuite {
         level.setBlock(right, Blocks.CHEST.defaultBlockState()
                 .setValue(ChestBlock.FACING, Direction.NORTH).setValue(ChestBlock.TYPE, ChestType.RIGHT), 2);
         DungeonLockManager.applyPlanForPiece(level,
-                new DungeonLockPlan(List.of(left.asLong()), List.of(), List.of()), new BoundingBox(left));
+                new DungeonLockPlan(List.of(left.asLong()), List.of(), List.of(), List.of()), new BoundingBox(left));
         Player player = helper.makeMockPlayer(GameType.SURVIVAL);
         ItemStack keys = DungeonKeyType.RUSTED.createStack();
         keys.setCount(2);
@@ -410,7 +410,7 @@ public final class DungeonGameTestSuite {
         level.setBlock(lower, Blocks.IRON_DOOR.defaultBlockState().setValue(DoorBlock.HALF, DoubleBlockHalf.LOWER), 2);
         level.setBlock(upper, Blocks.IRON_DOOR.defaultBlockState().setValue(DoorBlock.HALF, DoubleBlockHalf.UPPER), 2);
         DungeonLockManager.applyPlanForPiece(level,
-                new DungeonLockPlan(List.of(), List.of(), List.of(new DungeonLockPlan.Door(lower.asLong(), Optional.of(DungeonKeyType.BOSS)))),
+                new DungeonLockPlan(List.of(), List.of(), List.of(new DungeonLockPlan.Door(lower.asLong(), Optional.of(DungeonKeyType.BOSS))), List.of()),
                 new BoundingBox(lower));
         for (BlockPos poweredHalf : List.of(lower, upper)) {
             BlockPos power = poweredHalf.west();
@@ -468,9 +468,25 @@ public final class DungeonGameTestSuite {
         List<ResourceKey<LootTable>> bossLoot = chestLoot(level, bossBox);
         helper.assertTrue(bossLoot.size() == 2 && bossLoot.stream().allMatch(loot -> loot.identifier().getPath().startsWith("boss_room/")),
                 "The boss room must hold two boss loot chests: " + bossLoot);
-        helper.assertTrue(chestLoot(level, vault.boundingBox()).equals(List.of(ResourceKey.create(
-                        Registries.LOOT_TABLE, ProceduralDungeon.of("boss_key_vault/tier_%d".formatted(tier.tier))))),
-                "The vault chest must hold the tiered boss key loot");
+        // The vault is rolled from its tiered loot when placed, so its Boss Key can carry the door's key id.
+        BlockPos vaultChest = BlockPos.of(layout.lockPlan().keySources().stream()
+                .filter(source -> source.lootTable().equals(ProceduralDungeon.of("boss_key_vault/tier_%d".formatted(tier.tier))))
+                .findFirst().orElseThrow(() -> new AssertionError("The plan must fill the vault from the tiered boss key loot")).pos());
+        ChestBlockEntity vaultEntity = (ChestBlockEntity) level.getBlockEntity(vaultChest);
+        List<ItemStack> vaultKeys = new ArrayList<>();
+        int otherLoot = 0;
+        for (int slot = 0; slot < vaultEntity.getContainerSize(); slot++) {
+            ItemStack stack = vaultEntity.getItem(slot);
+            if (DungeonKeyType.BOSS.matches(stack)) {
+                vaultKeys.add(stack);
+            } else if (!stack.isEmpty()) {
+                otherLoot++;
+            }
+        }
+        helper.assertTrue(vault.boundingBox().isInside(vaultChest) && vaultEntity.getLootTable() == null && otherLoot > 0,
+                "The vault chest must be rolled from its tiered loot");
+        helper.assertTrue(vaultKeys.size() == 1 && DungeonKeyType.keyId(vaultKeys.getFirst()).isPresent(),
+                "The vault must hold exactly one Boss Key bound to the door, found " + vaultKeys.size());
 
         boss.discard();
         helper.succeed();

@@ -18,6 +18,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
@@ -53,7 +54,8 @@ public final class DungeonLockPlanner {
         List<ChestTarget> lootChests = chests.stream()
                 .filter(chest -> HALLWAY_LOOT.equals(chest.lootTable()) || HALLWAY_END.equals(chest.lootTable()))
                 .toList();
-        for (GuardedDoor door : findGuardedDoors(layout, templateManager)) {
+        List<GuardedDoor> guardedDoors = findGuardedDoors(layout, templateManager);
+        for (GuardedDoor door : guardedDoors) {
             if (door.key() == DungeonKeyType.BOSS) {
                 doors.add(new DungeonLockPlan.Door(door.pos().asLong(), Optional.of(DungeonKeyType.BOSS)));
                 continue;
@@ -78,7 +80,10 @@ public final class DungeonLockPlanner {
         }
 
         List<Long> lockedChests = planRustedLocks(lootChests, usedPositions, keySources, random);
-        return new DungeonLockPlan(lockedChests, keySources, doors);
+        List<DungeonLockPlan.GuardedRoom> rooms = guardedDoors.stream()
+                .map(door -> new DungeonLockPlan.GuardedRoom(door.room(), door.pos().asLong(), door.rewardChests()))
+                .toList();
+        return new DungeonLockPlan(lockedChests, keySources, doors, rooms);
     }
 
     private static List<Long> planRustedLocks(
@@ -187,9 +192,16 @@ public final class DungeonLockPlanner {
             }
 
             StructureTemplate template = templateManager.getOrCreate(variantElement.templateLocation());
-            for (StructureTemplate.StructureBlockInfo info : template.filterBlocks(piece.position(), placeSettings(piece), Blocks.IRON_DOOR)) {
+            StructurePlaceSettings settings = placeSettings(piece);
+            List<Long> rewardChests = new ArrayList<>();
+            for (Block block : CONTAINER_BLOCKS) {
+                for (StructureTemplate.StructureBlockInfo info : template.filterBlocks(piece.position(), settings, block)) {
+                    rewardChests.add(info.pos().asLong());
+                }
+            }
+            for (StructureTemplate.StructureBlockInfo info : template.filterBlocks(piece.position(), settings, Blocks.IRON_DOOR)) {
                 if (info.state().getValue(DoorBlock.HALF) == DoubleBlockHalf.LOWER) {
-                    doors.add(new GuardedDoor(info.pos(), key.get()));
+                    doors.add(new GuardedDoor(info.pos(), key.get(), piece.boundingBox(), rewardChests));
                 }
             }
         }
@@ -235,5 +247,5 @@ public final class DungeonLockPlanner {
 
     private record ChestTarget(BlockPos pos, Identifier lootTable, String theme, int tier) {}
 
-    private record GuardedDoor(BlockPos pos, DungeonKeyType key) {}
+    private record GuardedDoor(BlockPos pos, DungeonKeyType key, BoundingBox room, List<Long> rewardChests) {}
 }

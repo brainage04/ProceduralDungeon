@@ -1,0 +1,7 @@
+{
+  "environment": "minecraft:default",
+  "structure":"minecraftmodconventions:empty",
+  "max_ticks": 800,
+  "type": "minecraft:function",
+  "function": "procedural_dungeon:cleared_and_creative_deleted_boss_keys_are_reissued"
+}
