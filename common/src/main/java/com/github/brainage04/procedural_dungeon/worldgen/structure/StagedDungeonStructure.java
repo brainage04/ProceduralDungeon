@@ -7,6 +7,7 @@ import java.util.Optional;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.Identifier;
+import net.minecraft.world.level.LevelHeightAccessor;
 import net.minecraft.world.level.NoiseColumn;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.ChunkPos;
@@ -115,7 +116,13 @@ public class StagedDungeonStructure extends Structure {
         int y = sampledY;
         if (placementHeightMode == PlacementHeightMode.SOLID_DENSITY) {
             long solidDensityStart = DungeonGenerationProfiler.start();
-            y = selectSolidDensityY(context, chunkPos, y);
+            y = selectSolidDensityY(
+                    context.heightAccessor(),
+                    (x, z) -> context.chunkGenerator().getBaseColumn(x, z, context.heightAccessor(), context.randomState()),
+                    chunkPos.getMiddleBlockX(),
+                    chunkPos.getMiddleBlockZ(),
+                    y
+            );
             if (solidDensityStart != 0L) {
                 DungeonGenerationProfiler.recordSolidDensity(System.nanoTime() - solidDensityStart);
             }
@@ -156,23 +163,52 @@ public class StagedDungeonStructure extends Structure {
         return ModStructureTypes.STAGED_DUNGEON;
     }
 
-    private int selectSolidDensityY(GenerationContext context, ChunkPos chunkPos, int fallbackY) {
-        int minY = Math.max(context.heightAccessor().getMinY() + 8, solidDensityMinY);
-        int maxY = Math.min(context.heightAccessor().getMaxY() - solidDensityWindow - 8, solidDensityMaxY);
+    /**
+     * The candidate start Y whose window of {@code solid_density_window} blocks holds the most solid, dry blocks across
+     * the sampled columns around {@code (centerX, centerZ)}; the lowest such Y on ties. Each column is sampled once and
+     * every window is scored from prefix sums over the rows the windows cover.
+     */
+    public int selectSolidDensityY(
+            LevelHeightAccessor heightAccessor,
+            ColumnSampler sampler,
+            int centerX,
+            int centerZ,
+            int fallbackY
+    ) {
+        int minY = Math.max(heightAccessor.getMinY() + 8, solidDensityMinY);
+        int maxY = Math.min(heightAccessor.getMaxY() - solidDensityWindow - 8, solidDensityMaxY);
         if (minY > maxY) {
             return fallbackY;
         }
 
-        int centerX = chunkPos.getMiddleBlockX();
-        int centerZ = chunkPos.getMiddleBlockZ();
         int radius = Math.max(0, solidDensityHorizontalRadius);
         int columnStep = Math.max(4, radius / 2);
         int yStep = Math.max(1, solidDensityStep);
+        int window = Math.max(0, solidDensityWindow);
+
+        // solidBelow[i] is the number of solid samples in rows minY .. minY + i - 1 across all columns.
+        int rows = maxY - minY + window;
+        int[] solidBelow = new int[rows + 1];
+        for (int x = centerX - radius; x <= centerX + radius; x += columnStep) {
+            for (int z = centerZ - radius; z <= centerZ + radius; z += columnStep) {
+                NoiseColumn column = sampler.column(x, z);
+                for (int row = 0; row < rows; row++) {
+                    BlockState state = column.getBlock(minY + row);
+                    if (!state.isAir() && state.getFluidState().isEmpty()) {
+                        solidBelow[row + 1]++;
+                    }
+                }
+            }
+        }
+        for (int row = 0; row < rows; row++) {
+            solidBelow[row + 1] += solidBelow[row];
+        }
 
         int bestY = fallbackY;
         int bestScore = Integer.MIN_VALUE;
         for (int candidateY = minY; candidateY <= maxY; candidateY += yStep) {
-            int score = solidDensityScore(context, centerX, centerZ, radius, columnStep, candidateY, solidDensityWindow);
+            int row = candidateY - minY;
+            int score = solidBelow[row + window] - solidBelow[row];
             if (score > bestScore) {
                 bestScore = score;
                 bestY = candidateY;
@@ -182,29 +218,12 @@ public class StagedDungeonStructure extends Structure {
         return bestY;
     }
 
-    private static int solidDensityScore(
-            GenerationContext context,
-            int centerX,
-            int centerZ,
-            int radius,
-            int columnStep,
-            int minY,
-            int height
-    ) {
-        int score = 0;
-        for (int x = centerX - radius; x <= centerX + radius; x += columnStep) {
-            for (int z = centerZ - radius; z <= centerZ + radius; z += columnStep) {
-                NoiseColumn column = context.chunkGenerator().getBaseColumn(x, z, context.heightAccessor(), context.randomState());
-                for (int y = minY; y < minY + height; y++) {
-                    BlockState state = column.getBlock(y);
-                    if (!state.isAir() && state.getFluidState().isEmpty()) {
-                        score++;
-                    }
-                }
-            }
-        }
-
-        return score;
+    /**
+     * The terrain column at a block position, before structures and features.
+     */
+    @FunctionalInterface
+    public interface ColumnSampler {
+        NoiseColumn column(int x, int z);
     }
 
     public enum PlacementHeightMode {
