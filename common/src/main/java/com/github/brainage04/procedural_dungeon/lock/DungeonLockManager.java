@@ -138,6 +138,11 @@ public final class DungeonLockManager {
         return connected != null && data.isLockedBlock(connected.asLong());
     }
 
+    /**
+     * Applies the plan's entries inside {@code pieceBox}. Placement calls this right after writing the piece (or its
+     * part in one chunk), so the positions are loaded; entries in unloaded chunks are left for their own placement
+     * rather than loading those chunks here.
+     */
     public static void applyPlanForPiece(ServerLevel level, DungeonLockPlan plan, BoundingBox pieceBox) {
         if (plan.isEmpty()) {
             return;
@@ -149,7 +154,7 @@ public final class DungeonLockManager {
             switch (entry) {
                 case DungeonLockPlan.LockedChest chest -> {
                     BlockPos pos = BlockPos.of(chest.pos());
-                    if (pieceBox.isInside(pos)) {
+                    if (pieceBox.isInside(pos) && level.isLoaded(pos)) {
                         addLockedChest(level, data, pos);
                     }
                 }
@@ -163,7 +168,7 @@ public final class DungeonLockManager {
     private static void applyKeySource(ServerLevel level, DungeonLockSaveData data, DungeonLockPlan plan,
                                        DungeonLockPlan.KeySource keySource, BoundingBox pieceBox) {
         BlockPos pos = BlockPos.of(keySource.pos());
-        if (!pieceBox.isInside(pos) || !(level.getBlockEntity(pos) instanceof RandomizableContainer container)) {
+        if (!pieceBox.isInside(pos) || !level.isLoaded(pos) || !(level.getBlockEntity(pos) instanceof RandomizableContainer container)) {
             return;
         }
         data.addKeySourceChest(keySource.pos());
@@ -197,7 +202,7 @@ public final class DungeonLockManager {
     private static void applyDoor(ServerLevel level, DungeonLockSaveData data, DungeonLockPlan plan,
                                   DungeonLockPlan.Door door, BoundingBox pieceBox) {
         BlockPos lower = BlockPos.of(door.pos());
-        if (!pieceBox.isInside(lower) || !(level.getBlockState(lower).getBlock() instanceof DoorBlock)) {
+        if (!pieceBox.isInside(lower) || !level.isLoaded(lower) || !(level.getBlockState(lower).getBlock() instanceof DoorBlock)) {
             return;
         }
         if (door.lock().isEmpty()) {
@@ -222,7 +227,7 @@ public final class DungeonLockManager {
         data.addGuardedRoom(room.box(), room.door(), room.rewardChests());
         for (long chest : room.rewardChests()) {
             BlockPos pos = BlockPos.of(chest);
-            if (pieceBox.isInside(pos)) {
+            if (pieceBox.isInside(pos) && level.isLoaded(pos)) {
                 data.addEncounterChest(chest);
                 BlockPos connected = connectedPos(level, pos);
                 if (connected != null) {

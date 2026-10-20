@@ -28,6 +28,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.gametest.framework.GameTestHelper;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ServerboundSetCreativeModeSlotPacket;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
@@ -228,7 +229,7 @@ public final class LockGameTests {
                 .filter(candidate -> candidate instanceof VariantSinglePoolElement variant
                         && variant.templateLocation().equals(DungeonPuzzleRooms.Puzzle.TARGETS.template()))
                 .findFirst()
-                .orElseThrow(() -> new AssertionError("The sculk room pool must offer the targets puzzle"));
+                .orElseThrow(() -> helper.assertionException(Component.literal("The sculk room pool must offer the targets puzzle")));
         BlockPos origin = nextOrigin(100);
         BoundingBox box = element.getBoundingBox(level.getStructureManager(), origin, Rotation.NONE);
         forceChunks(level, box, true);
@@ -356,7 +357,7 @@ public final class LockGameTests {
         ServerLevel level = helper.getLevel();
         BlockPos origin = nextOrigin(0);
         StagedDungeonLayout layout = GenerateDungeonCommand.compileLayout(level, DungeonTheme.COBBLESTONE, DungeonTier.TIER_5,
-                DungeonTier.TIER_5.size, origin).orElseThrow(() -> new AssertionError("A tier 5 layout must compile"));
+                DungeonTier.TIER_5.size, origin).orElseThrow(() -> helper.assertionException(Component.literal("A tier 5 layout must compile")));
         DungeonLockPlan plan = layout.lockPlan();
 
         // The test's own count of entries per chunk; a room counts in every chunk its box touches.
@@ -395,28 +396,31 @@ public final class LockGameTests {
         PlacedBoss boss = placeBoss(helper);
         ServerLevel level = boss.level();
         ServerPlayer player = survivalPlayer(helper);
-        player.getInventory().setItem(0, boss.takeKey());
-        rightClick(player, level, boss.door());
-        helper.assertTrue(level.getBlockState(boss.door()).getValue(DoorBlock.OPEN), "The vault's key must open the boss door");
-        // A chest under a solid block cannot open at all; use one that can.
-        BlockPos reward = boss.rewardChests().stream().filter(pos -> !ChestBlock.isChestBlockedAt(level, pos)).findFirst()
-                .orElseThrow(() -> new AssertionError("The boss room must hold an openable chest"));
-        rightClick(player, level, reward);
-        helper.assertTrue(player.containerMenu == player.inventoryMenu, "A boss chest must stay shut while the boss lives");
+        // A freshly placed far chunk loads its entities a few ticks after the chunk itself.
+        helper.runAfterDelay(20, () -> {
+            player.getInventory().setItem(0, boss.takeKey());
+            rightClick(player, level, boss.door());
+            helper.assertTrue(level.getBlockState(boss.door()).getValue(DoorBlock.OPEN), "The vault's key must open the boss door");
+            // A chest under a solid block cannot open at all; use one that can.
+            BlockPos reward = boss.rewardChests().stream().filter(pos -> !ChestBlock.isChestBlockedAt(level, pos)).findFirst()
+                    .orElseThrow(() -> helper.assertionException(Component.literal("The boss room must hold an openable chest")));
+            rightClick(player, level, reward);
+            helper.assertTrue(player.containerMenu == player.inventoryMenu, "A boss chest must stay shut while the boss lives");
 
-        Mob guardian = boss.guardian();
-        guardian.kill(level);
-        // A dead mob leaves the world when its death animation ends.
-        helper.runAfterDelay(30, () -> {
-            try {
-                helper.assertTrue(guardian.isRemoved(), "The boss must be gone");
-                rightClick(player, level, reward);
-                helper.assertTrue(player.containerMenu instanceof ChestMenu, "A boss chest must open once the boss is dead");
-            } finally {
-                remove(player);
-                boss.release();
-            }
-            helper.succeed();
+            Mob guardian = boss.guardian();
+            guardian.kill(level);
+            // A dead mob leaves the world when its death animation ends.
+            helper.runAfterDelay(30, () -> {
+                try {
+                    helper.assertTrue(guardian.isRemoved(), "The boss must be gone");
+                    rightClick(player, level, reward);
+                    helper.assertTrue(player.containerMenu instanceof ChestMenu, "A boss chest must open once the boss is dead");
+                } finally {
+                    remove(player);
+                    boss.release();
+                }
+                helper.succeed();
+            });
         });
     }
 
@@ -499,7 +503,7 @@ public final class LockGameTests {
         ServerPlayer survivor = survivalPlayer(helper);
         survivor.getInventory().setItem(0, cleared.takeKey());
         level.getServer().getCommands().performPrefixedCommand(
-                level.getServer().createCommandSourceStack().withSuppressedOutput(), "clear " + survivor.getScoreboardName());
+                level.getServer().createCommandSourceStack().withSuppressedOutput(), "clear " + survivor.getStringUUID());
         helper.assertTrue(cleared.vaultKeys().size() == 1, "A key removed by /clear must be reissued");
 
         ServerPlayer creative = helper.makeMockServerPlayerInLevel();
@@ -547,7 +551,7 @@ public final class LockGameTests {
             try {
                 result = dispatcher.execute(command, operator);
             } catch (com.mojang.brigadier.exceptions.CommandSyntaxException exception) {
-                throw new AssertionError("The reissue command must accept a position: " + exception.getMessage(), exception);
+                throw helper.assertionException(Component.literal("The reissue command must accept a position: " + exception.getMessage()));
             }
             helper.assertTrue(result == 1 && boss.vaultKeys().size() == 1, "Reissuing must put one new Boss Key in the vault");
             player.getInventory().setItem(0, lost);
@@ -572,9 +576,9 @@ public final class LockGameTests {
         ServerLevel level = helper.getLevel();
         BlockPos origin = nextOrigin(0);
         StagedDungeonLayout layout = GenerateDungeonCommand.compileLayout(level, DungeonTheme.COBBLESTONE, DungeonTier.TIER_1,
-                DungeonTier.TIER_1.size, origin).orElseThrow(() -> new AssertionError("Layout must compile"));
-        StagedDungeonPieceSpec room = piece(layout, DungeonProgressionRooms.BOSS_ROOM);
-        StagedDungeonPieceSpec vault = piece(layout, DungeonProgressionRooms.BOSS_KEY_VAULT);
+                DungeonTier.TIER_1.size, origin).orElseThrow(() -> helper.assertionException(Component.literal("Layout must compile")));
+        StagedDungeonPieceSpec room = piece(helper, layout, DungeonProgressionRooms.BOSS_ROOM);
+        StagedDungeonPieceSpec vault = piece(helper, layout, DungeonProgressionRooms.BOSS_KEY_VAULT);
         forceChunks(level, room.boundingBox(), true);
         forceChunks(level, vault.boundingBox(), true);
         for (StagedDungeonPieceSpec piece : List.of(room, vault)) {
@@ -587,10 +591,10 @@ public final class LockGameTests {
         BlockPos vaultChest = BlockPos.of(layout.lockPlan().keySources().stream()
                 .filter(source -> source.lootTable().getPath().startsWith("boss_key_vault/"))
                 .findFirst().orElseThrow().pos());
-        return new PlacedBoss(level, room.boundingBox(), vault.boundingBox(), door, vaultChest);
+        return new PlacedBoss(helper, level, room.boundingBox(), vault.boundingBox(), door, vaultChest);
     }
 
-    private record PlacedBoss(ServerLevel level, BoundingBox room, BoundingBox vault, BlockPos door, BlockPos vaultChest) {
+    private record PlacedBoss(GameTestHelper helper, ServerLevel level, BoundingBox room, BoundingBox vault, BlockPos door, BlockPos vaultChest) {
         ChestBlockEntity vaultEntity() {
             ChestBlockEntity chest = (ChestBlockEntity) level.getBlockEntity(vaultChest);
             if (chest.getLootTable() != null) {
@@ -620,7 +624,7 @@ public final class LockGameTests {
                     return chest.removeItemNoUpdate(slot);
                 }
             }
-            throw new AssertionError("The vault must hold a Boss Key");
+            throw helper.assertionException(Component.literal("The vault must hold a Boss Key"));
         }
 
         List<BlockPos> rewardChests() {
@@ -636,7 +640,7 @@ public final class LockGameTests {
         Mob guardian() {
             List<Mob> guardians = level.getEntitiesOfClass(Mob.class, AABB.of(room), mob -> mob.entityTags().contains(DungeonGuardian.TAG));
             if (guardians.size() != 1) {
-                throw new AssertionError("The boss room must hold one guardian, found " + guardians.size());
+                throw helper.assertionException(Component.literal("The boss room must hold one guardian, found " + guardians.size()));
             }
             return guardians.getFirst();
         }
@@ -669,7 +673,7 @@ public final class LockGameTests {
                 }
             }
             if (walls.size() < 3) {
-                throw new AssertionError("The boss room must have plain wall blocks, found " + walls.size());
+                throw helper.assertionException(Component.literal("The boss room must have plain wall blocks, found " + walls.size()));
             }
             return walls;
         }
@@ -685,11 +689,11 @@ public final class LockGameTests {
         }
     }
 
-    private static StagedDungeonPieceSpec piece(StagedDungeonLayout layout, net.minecraft.resources.Identifier template) {
+    private static StagedDungeonPieceSpec piece(GameTestHelper helper, StagedDungeonLayout layout, net.minecraft.resources.Identifier template) {
         return layout.pieces().stream()
                 .filter(piece -> piece.element() instanceof VariantSinglePoolElement variant && variant.templateLocation().equals(template))
                 .findFirst()
-                .orElseThrow(() -> new AssertionError("The layout must hold " + template));
+                .orElseThrow(() -> helper.assertionException(Component.literal("The layout must hold " + template)));
     }
 
     private static BlockPos nextOrigin(int y) {
