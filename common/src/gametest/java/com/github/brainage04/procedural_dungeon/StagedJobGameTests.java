@@ -213,7 +213,7 @@ public final class StagedJobGameTests {
                         StagedDungeonGenerationManager.advance(level, first, 50_000_000L);
                         helper.assertTrue(
                                 state(level, first) == JobState.COMPLETE,
-                                "The short job must finish");
+                                "The short job must finish" + describeJobs(level));
                         checkedOverlap.set(true);
                         if (state(level, second) != JobState.RUNNING
                                 || !hasStagedTicket(level, chunk)) {
@@ -227,7 +227,7 @@ public final class StagedJobGameTests {
                     StagedDungeonGenerationManager.advance(level, second, 50_000_000L);
                     helper.assertTrue(
                             state(level, second) == JobState.COMPLETE,
-                            "The second job must finish");
+                            "The second job must finish" + describeJobs(level));
                     helper.assertTrue(
                             !hasStagedTicket(level, chunk),
                             "No ticket may remain once both jobs are done");
@@ -282,7 +282,9 @@ public final class StagedJobGameTests {
                         }
                     }
                     helper.assertTrue(forced.get() == null, String.valueOf(forced.get()));
-                    helper.assertTrue(state(level, id) == JobState.COMPLETE, "The job must finish");
+                    helper.assertTrue(
+                            state(level, id) == JobState.COMPLETE,
+                            "The job must finish" + describeJobs(level));
                     for (long chunk : chunks(bounds)) {
                         helper.assertTrue(
                                 !hasStagedTicket(level, chunk),
@@ -390,7 +392,8 @@ public final class StagedJobGameTests {
         helper.succeedWhen(
                 () -> {
                     helper.assertTrue(
-                            state(nether, id) != JobState.RUNNING, "The other job must finish");
+                            state(nether, id) != JobState.RUNNING,
+                            "The other job must finish" + describeJobs(nether));
                     CompoundTag encoded =
                             (CompoundTag)
                                     StagedDungeonSaveData.TYPE
@@ -438,7 +441,7 @@ public final class StagedJobGameTests {
                     helper.assertTrue(
                             StagedDungeonGenerationManager.job(level, a.id()).isEmpty()
                                     && StagedDungeonGenerationManager.job(level, b.id()).isEmpty(),
-                            "Both jobs must finish");
+                            "Both jobs must finish" + describeJobs(level));
                     LevelChunk placed = level.getChunk(chunk.x(), chunk.z());
                     helper.assertTrue(
                             DungeonChunkLedger.isPlaced(placed, a.id(), 0)
@@ -569,7 +572,8 @@ public final class StagedJobGameTests {
                     }
                     helper.assertTrue(failure.get() == null, String.valueOf(failure.get()));
                     helper.assertTrue(
-                            state(level, id) == JobState.COMPLETE, "The whole piece must finish");
+                            state(level, id) == JobState.COMPLETE,
+                            "The whole piece must finish" + describeJobs(level));
                     StagedDungeonGenerationManager.forget(level, piece.boundingBox());
                     releaseChunks(level, piece.boundingBox());
                     level.getChunkSource()
@@ -594,7 +598,7 @@ public final class StagedJobGameTests {
                     if (phase.get() == 0) {
                         helper.assertTrue(
                                 state(level, fixture.id) == JobState.COMPLETE,
-                                "The fixture must finish");
+                                "The fixture must finish" + describeJobs(level));
                         frames.set(fixture.taggedFrames(level));
                         helper.assertTrue(
                                 frames.get() > 0 && fixture.guardians(level).size() == 1,
@@ -608,7 +612,7 @@ public final class StagedJobGameTests {
                     }
                     helper.assertTrue(
                             state(level, fixture.id) == JobState.COMPLETE,
-                            "The replayed job must finish");
+                            "The replayed job must finish" + describeJobs(level));
                     fixture.assertLooted(helper, level);
                     fixture.assertDoorOpen(helper, level);
                     helper.assertTrue(
@@ -651,7 +655,7 @@ public final class StagedJobGameTests {
                     if (phase.get() == 0) {
                         helper.assertTrue(
                                 state(level, fixture.id) == JobState.COMPLETE,
-                                "The fixture must finish");
+                                "The fixture must finish" + describeJobs(level));
                         Tag finished = StagedDungeonGenerationManager.snapshot(level, fixture.id);
                         fixture.revertBossRoom(level);
                         if (guardianLost) {
@@ -662,7 +666,7 @@ public final class StagedJobGameTests {
                     }
                     helper.assertTrue(
                             state(level, fixture.id) == JobState.COMPLETE,
-                            "The replayed job must finish");
+                            "The replayed job must finish" + describeJobs(level));
                     fixture.assertBossRoomPlaced(helper, level);
                     helper.assertTrue(
                             fixture.guardians(level).size() == 1,
@@ -710,7 +714,8 @@ public final class StagedJobGameTests {
                 () -> {
                     if (phase.get() == 0) {
                         helper.assertTrue(
-                                state(level, id) == JobState.COMPLETE, "The piece must be placed");
+                                state(level, id) == JobState.COMPLETE,
+                                "The piece must be placed" + describeJobs(level));
                         Tag finished = StagedDungeonGenerationManager.snapshot(level, id);
                         placed.set(states(level, lostPart));
                         level.setBlock(
@@ -722,7 +727,7 @@ public final class StagedJobGameTests {
                     }
                     helper.assertTrue(
                             state(level, id) == JobState.COMPLETE,
-                            "The replayed piece must finish");
+                            "The replayed piece must finish" + describeJobs(level));
                     helper.assertTrue(
                             DungeonChunkLedger.isPlaced(level.getChunk(lost.x(), lost.z()), id, 0),
                             "The lost half must be marked again");
@@ -756,7 +761,7 @@ public final class StagedJobGameTests {
                     if (phase.get() == 0) {
                         helper.assertTrue(
                                 state(level, fixture.id) == JobState.COMPLETE,
-                                "The fixture must finish");
+                                "The fixture must finish" + describeJobs(level));
                         Tag finished = StagedDungeonGenerationManager.snapshot(level, fixture.id);
                         BlockPos broken = fixture.wallPos(level);
                         wall.set(broken);
@@ -768,7 +773,7 @@ public final class StagedJobGameTests {
                     }
                     helper.assertTrue(
                             state(level, fixture.id) == JobState.COMPLETE,
-                            "The replayed job must finish");
+                            "The replayed job must finish" + describeJobs(level));
                     helper.assertTrue(
                             level.getBlockState(wall.get()).equals(wallState.get()),
                             "The unmarked room must be placed again");
@@ -811,7 +816,9 @@ public final class StagedJobGameTests {
         helper.succeedWhen(
                 () -> {
                     StagedDungeonGenerationManager.advance(level, id, 50_000_000L);
-                    helper.assertTrue(state(level, id) == JobState.COMPLETE, "The job must finish");
+                    helper.assertTrue(
+                            state(level, id) == JobState.COMPLETE,
+                            "The job must finish" + describeJobs(level));
                     helper.assertTrue(
                             level.getBlockState(build).is(Blocks.GOLD_BLOCK),
                             "The player's block must survive the delayed piece");
@@ -1232,6 +1239,31 @@ public final class StagedJobGameTests {
                 bounds,
                 pieces,
                 plan);
+    }
+
+    /** The level's unfinished jobs, for failure messages: which job holds up which. */
+    private static String describeJobs(ServerLevel level) {
+        StringBuilder text = new StringBuilder(" [jobs:");
+        for (JobView job : StagedDungeonGenerationManager.jobs(level)) {
+            if (job.state() == JobState.COMPLETE) {
+                continue;
+            }
+            text.append(' ')
+                    .append(job.id().toString(), 0, 8)
+                    .append(' ')
+                    .append(job.state())
+                    .append(' ')
+                    .append(job.placedPieces())
+                    .append('/')
+                    .append(job.totalPieces())
+                    .append(job.options().callerDrivesBudget() ? " caller" : "")
+                    .append(" held=")
+                    .append(StagedDungeonGenerationManager.heldChunks(level, job.id()))
+                    .append(" at ")
+                    .append(job.bounds().getCenter().toShortString())
+                    .append(';');
+        }
+        return text.append(']').toString();
     }
 
     private static JobState state(ServerLevel level, UUID id) {
