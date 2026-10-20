@@ -15,8 +15,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 /**
- * A piston outside a protected dungeon room cannot push, pull or break blocks inside it; the room's own pistons (the
- * sluice puzzle's gates) still work.
+ * A piston outside a protected dungeon room cannot push, pull or break blocks inside it; the room's
+ * own pistons (the sluice puzzle's gates) still work.
  */
 @Mixin(PistonStructureResolver.class)
 public class PistonStructureResolverMixin {
@@ -33,7 +33,8 @@ public class PistonStructureResolverMixin {
         }
         for (BlockPos pos : this.toPush) {
             if (DungeonLockManager.isProtectedFrom(serverLevel, pos, this.pistonPos)
-                    || DungeonLockManager.isProtectedFrom(serverLevel, pos.relative(this.pushDirection), this.pistonPos)) {
+                    || DungeonLockManager.isProtectedFrom(
+                            serverLevel, pos.relative(this.pushDirection), this.pistonPos)) {
                 cir.setReturnValue(false);
                 return;
             }

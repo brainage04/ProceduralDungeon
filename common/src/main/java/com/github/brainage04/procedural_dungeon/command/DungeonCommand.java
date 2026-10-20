@@ -12,9 +12,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 
 /**
- * Operator tools for a dungeon's running state. {@code /dungeon bosskey reissue <pos>} replaces the Boss Key of the
- * dungeon whose boss door is nearest to {@code pos}: the remedy for a key lost where no hook could see it, such as a
- * crash rollback or a corrupted player file.
+ * Operator tools for a dungeon's running state. {@code /dungeon bosskey reissue <pos>} replaces the
+ * Boss Key of the dungeon whose boss door is nearest to {@code pos}: the remedy for a key lost
+ * where no hook could see it, such as a crash rollback or a corrupted player file.
  */
 public final class DungeonCommand {
     private DungeonCommand() {}
@@ -28,14 +28,19 @@ public final class DungeonCommand {
                                         .then(
                                                 literal("reissue")
                                                         .then(
-                                                                argument("dungeon", BlockPosArgument.blockPos())
+                                                                argument(
+                                                                                "dungeon",
+                                                                                BlockPosArgument
+                                                                                        .blockPos())
                                                                         .executes(
                                                                                 context ->
                                                                                         reissue(
-                                                                                                context.getSource(),
-                                                                                                BlockPosArgument.getBlockPos(
-                                                                                                        context,
-                                                                                                        "dungeon")))))));
+                                                                                                context
+                                                                                                        .getSource(),
+                                                                                                BlockPosArgument
+                                                                                                        .getBlockPos(
+                                                                                                                context,
+                                                                                                                "dungeon")))))));
     }
 
     private static int reissue(CommandSourceStack source, BlockPos near) {

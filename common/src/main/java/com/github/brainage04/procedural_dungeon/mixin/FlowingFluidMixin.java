@@ -14,15 +14,22 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 /**
- * Fluids cannot flow from outside into a protected dungeon room; fluids inside a room (the sluice puzzle) flow freely.
+ * Fluids cannot flow from outside into a protected dungeon room; fluids inside a room (the sluice
+ * puzzle) flow freely.
  */
 @Mixin(FlowingFluid.class)
 public class FlowingFluidMixin {
     @Inject(method = "spreadTo", at = @At("HEAD"), cancellable = true)
-    private void proceduralDungeon$stayOutOfProtectedRooms(LevelAccessor level, BlockPos pos, BlockState state, Direction direction,
-                                                          FluidState fluid, CallbackInfo ci) {
+    private void proceduralDungeon$stayOutOfProtectedRooms(
+            LevelAccessor level,
+            BlockPos pos,
+            BlockState state,
+            Direction direction,
+            FluidState fluid,
+            CallbackInfo ci) {
         if (level instanceof ServerLevel serverLevel
-                && DungeonLockManager.isProtectedFrom(serverLevel, pos, pos.relative(direction.getOpposite()))) {
+                && DungeonLockManager.isProtectedFrom(
+                        serverLevel, pos, pos.relative(direction.getOpposite()))) {
             ci.cancel();
         }
     }
