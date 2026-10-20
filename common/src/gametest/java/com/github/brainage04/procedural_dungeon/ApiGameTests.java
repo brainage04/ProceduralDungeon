@@ -126,7 +126,7 @@ public final class ApiGameTests {
                 .thenExecute(
                         () -> {
                             DungeonPlan plan = planned.join().orElseThrow();
-                            preload(
+                            StagedJobGameTests.holdChunks(
                                     level,
                                     plan.bounds()
                                             .moved(origin.getX(), origin.getY(), origin.getZ()));
@@ -238,6 +238,7 @@ public final class ApiGameTests {
                         })
                 .thenExecute(
                         () -> {
+                            StagedJobGameTests.releaseChunks(level, built[0].bounds());
                             for (DungeonHandle handle : built) {
                                 ProceduralDungeonApi.forget(level, handle.bounds());
                             }
@@ -264,7 +265,7 @@ public final class ApiGameTests {
                 .thenExecute(
                         () -> {
                             DungeonPlan plan = planned.join().orElseThrow();
-                            preload(
+                            StagedJobGameTests.holdChunks(
                                     level,
                                     plan.bounds()
                                             .moved(origin.getX(), origin.getY(), origin.getZ()));
@@ -325,6 +326,7 @@ public final class ApiGameTests {
                                     "reset must lock the boss door again");
                             helper.assertTrue(
                                     boss(level, bounds) != null, "reset must spawn a boss again");
+                            StagedJobGameTests.releaseChunks(level, bounds);
                             ProceduralDungeonApi.forget(level, bounds);
                             helper.assertTrue(
                                     ProceduralDungeonApi.handle(level, handle.id()).isEmpty(),
@@ -350,16 +352,6 @@ public final class ApiGameTests {
                 .stream()
                 .findFirst()
                 .orElse(null);
-    }
-
-    private static void preload(ServerLevel level, BoundingBox bounds) {
-        // GameTest servers do not wait for real time, so asynchronous chunk loads would eat the
-        // tick deadline; load the build's chunks up front.
-        for (int x = bounds.minX() >> 4; x <= bounds.maxX() >> 4; x++) {
-            for (int z = bounds.minZ() >> 4; z <= bounds.maxZ() >> 4; z++) {
-                level.getChunk(x, z);
-            }
-        }
     }
 
     private static List<String> describe(DungeonPlan plan) {
