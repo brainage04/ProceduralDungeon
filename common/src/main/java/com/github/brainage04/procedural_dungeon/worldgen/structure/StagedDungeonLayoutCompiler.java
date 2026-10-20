@@ -237,7 +237,7 @@ public final class StagedDungeonLayoutCompiler {
                 Holder<StructureTemplatePool> pool,
                 UnaryOperator<List<RoomSocket>> socketOrder
         ) {
-            List<StructurePoolElement> rooms = pool.value().getShuffledTemplates(random);
+            List<StructurePoolElement> rooms = distinct(pool.value().getShuffledTemplates(random));
             for (int extensions = 0; ; extensions++) {
                 Optional<StagedDungeonPieceSpec> room = attachToFirstSocket(
                         socketOrder.apply(sockets(PROGRESSION_SOCKET_TARGETS)), socket -> rooms, false);
@@ -252,7 +252,7 @@ public final class StagedDungeonLayoutCompiler {
 
         private List<StructurePoolElement> socketPoolTemplates(RoomSocket socket) {
             return pools.get(PoolAliasLookup.EMPTY.lookup(socket.jigsaw().pool()))
-                    .map(pool -> pool.value().getShuffledTemplates(random))
+                    .map(pool -> distinct(pool.value().getShuffledTemplates(random)))
                     .orElse(List.of());
         }
 
@@ -394,6 +394,8 @@ public final class StagedDungeonLayoutCompiler {
                 candidates.addAll(poolHolder.get().value().getShuffledTemplates(random));
             }
             candidates.addAll(fallback.value().getShuffledTemplates(random));
+            // Pools list a template once per weight; trying it again after it failed changes nothing.
+            distinct(candidates);
             candidates.sort(StagedDungeonLayoutCompiler::compareVerticalPreference);
 
             int placementPriority = sourceJigsaw.placementPriority();
@@ -408,7 +410,7 @@ public final class StagedDungeonLayoutCompiler {
                 }
                 sawCandidate = true;
                 DungeonGenerationProfiler.recordGraphCandidateElement();
-                String candidateTemplate = candidateTemplate(candidate);
+                String candidateTemplate = DungeonGenerationProfiler.isActive() ? candidateTemplate(candidate) : null;
                 DungeonGenerationProfiler.recordGraphCandidateTemplate(candidateTemplate);
 
                 for (Rotation rotation : Rotation.getShuffled(random)) {
@@ -514,6 +516,29 @@ public final class StagedDungeonLayoutCompiler {
     private static boolean isTrapTemplate(Identifier template) {
         return template.getNamespace().equals(ProceduralDungeon.MOD_ID)
                 && template.getPath().startsWith(TRAP_TEMPLATE_PREFIX);
+    }
+
+    /**
+     * Removes every repeat of an element in place, keeping its first position: a weighted shuffle lists heavier
+     * templates earlier, so the first occurrences keep the pool's preference without retrying a template.
+     */
+    private static List<StructurePoolElement> distinct(List<StructurePoolElement> elements) {
+        int kept = 0;
+        for (int i = 0; i < elements.size(); i++) {
+            StructurePoolElement element = elements.get(i);
+            boolean seen = false;
+            for (int previous = 0; previous < kept; previous++) {
+                if (elements.get(previous) == element) {
+                    seen = true;
+                    break;
+                }
+            }
+            if (!seen) {
+                elements.set(kept++, element);
+            }
+        }
+        elements.subList(kept, elements.size()).clear();
+        return elements;
     }
 
     private static String candidateTemplate(StructurePoolElement element) {
