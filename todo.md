@@ -19,6 +19,7 @@
 - [x] Make `/locate structure` fast enough not to trip the server watchdog.
 - [ ] Playtest and tune traps, structure density, loot, difficulty, and progression.
 - [x] Run a focused code review and cleanup after the functional work.
+- [x] Expose a public API (plan, build, follow, reset and forget dungeons) and switches for natural generation and the global mechanics, for mods that embed Procedural Dungeon.
 
 ## Release
 

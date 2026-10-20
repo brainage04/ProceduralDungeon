@@ -8,6 +8,8 @@ Run both loaders' server GameTests with `./gradlew runAllGameTests`. Client Game
 
 `./gradlew :fabric:publishAllPublicationsToLocalRepository` publishes the Fabric JAR to `build/local-repo` for mods that compile against the [public API](API.md).
 
+Theme and tier specs (`themes.json`, `tiers.json`) are read from the jar. A development run started with `-Dprocedural_dungeon.source_specs=true` reads them from the nearest `common/src/main/resources/procedural_dungeon/` above its working directory instead, so spec edits apply without a rebuild.
+
 ## Diagnostic commands
 
 These commands need operator permission (level 2). Use a disposable world: they place structures, change force-loaded chunks, reload datapacks, or write structure files.

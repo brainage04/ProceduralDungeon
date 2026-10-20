@@ -10,7 +10,9 @@ import java.util.UUID;
 /**
  * One built dungeon. A handle is a view: every call reads the build's current state, so a handle
  * kept across ticks stays accurate. Use {@link ProceduralDungeonApi#handle} to find a persistent
- * build again after a restart. Server thread only.
+ * build again after a restart. Once {@link ProceduralDungeonApi#forget} or {@link
+ * ProceduralDungeonApi#reset} drops the build, every method except {@link #id()} and {@link
+ * #level()} throws {@link IllegalStateException}. Server thread only.
  */
 public interface DungeonHandle {
     UUID id();

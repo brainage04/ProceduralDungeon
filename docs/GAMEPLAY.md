@@ -9,7 +9,7 @@ Higher tiers are rarer, larger, and more dangerous.
 
 # Progression
 
-- **Boss room (guaranteed):** every dungeon has one boss room at the far end of its deepest route, sealed by an iron door in a reinforced deepslate frame. The door only opens with a **Boss Key**, which waits in a chest in the **boss key vault**, a small side room placed on a different branch. Inside the boss room are the boss and two boss loot chests.
+- **Boss room (guaranteed):** every dungeon has one boss room at the far end of its deepest route, sealed by an iron door in a reinforced deepslate frame. The door only opens with a **Boss Key**, which waits in a chest in the **boss key vault**, a small side room on a different branch of the dungeon from the boss room. Inside the boss room are the boss and two boss loot chests. Boss, vault and miniboss rooms are hollow even when buried, with no stray stone or cobwebs inside.
 - **Miniboss rooms (optional):** miniboss rooms appear randomly in place of ordinary rooms. Each one is guarded by a miniboss, holds one miniboss loot chest, and sits behind an iron door that opens with a **Miniboss Key**. The key for each miniboss room is hidden in one of the dungeon's ordinary loot chests.
 - **Rusted Keys:** a few end-room chests are locked and need a **Rusted Key**, which is hidden in another loot chest of the same dungeon.
 

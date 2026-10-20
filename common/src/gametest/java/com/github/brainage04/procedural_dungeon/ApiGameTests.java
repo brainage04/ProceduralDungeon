@@ -8,6 +8,7 @@ import com.github.brainage04.procedural_dungeon.api.DungeonRequest;
 import com.github.brainage04.procedural_dungeon.api.DungeonState;
 import com.github.brainage04.procedural_dungeon.api.ProceduralDungeonApi;
 import com.github.brainage04.procedural_dungeon.api.impl.CompiledPlan;
+import com.github.brainage04.procedural_dungeon.dungeon.DungeonTheme;
 import com.github.brainage04.procedural_dungeon.guardian.DungeonGuardian;
 import com.github.brainage04.procedural_dungeon.lock.DungeonKeyType;
 import com.github.brainage04.procedural_dungeon.lock.DungeonLockManager;
@@ -78,6 +79,10 @@ public final class ApiGameTests {
                 elapsed < PLAN_CALL_LIMIT_NANOS,
                 "plan must cost the calling tick under 5 ms, took %.2f ms"
                         .formatted(elapsed / 1_000_000.0));
+        helper.assertTrue(
+                ProceduralDungeonApi.themes().contains(TIER_1.theme())
+                        && ProceduralDungeonApi.themes().size() == DungeonTheme.values().length,
+                "themes() must list every theme plan accepts");
         CompletableFuture<Optional<DungeonPlan>> again =
                 ProceduralDungeonApi.plan(level.getServer(), TIER_1);
         CompletableFuture<Optional<DungeonPlan>> other =
@@ -148,7 +153,7 @@ public final class ApiGameTests {
                                         built[0].placedPieces() == 0
                                                 && built[0].state() == DungeonState.RUNNING,
                                         "Procedural Dungeon's tick must not place a caller-driven"
-                                            + " build"))
+                                                + " build"))
                 .thenWaitUntil(
                         () -> {
                             built[0].advance(ADVANCE_BUDGET_NANOS);
@@ -227,7 +232,7 @@ public final class ApiGameTests {
                                             !DungeonChunkTickets.hasTicket(
                                                     level, ChunkPos.pack(x, z)),
                                             "No Procedural Dungeon ticket may stay in a cancelled"
-                                                + " build's chunks");
+                                                    + " build's chunks");
                                 }
                             }
                         })
@@ -253,6 +258,7 @@ public final class ApiGameTests {
         BlockPos origin = helper.absolutePos(new BlockPos(12288, 32, -12288));
         DungeonHandle[] handles = new DungeonHandle[2];
         BlockPos[] broken = new BlockPos[1];
+        BoundingBox[] oldBounds = new BoundingBox[1];
         helper.startSequence()
                 .thenWaitUntil(() -> helper.assertTrue(planned.isDone(), "The plan must complete"))
                 .thenExecute(
@@ -287,6 +293,7 @@ public final class ApiGameTests {
                                     "Listeners must hear the boss spawn");
                             broken[0] = handles[0].bossDoor().orElseThrow().below();
                             level.setBlock(broken[0], Blocks.AIR.defaultBlockState(), 3);
+                            oldBounds[0] = handles[0].bounds();
                             handles[1] = ProceduralDungeonApi.reset(handles[0]);
                             helper.assertTrue(
                                     !handles[1].id().equals(handles[0].id())
@@ -305,20 +312,20 @@ public final class ApiGameTests {
                 .thenExecute(
                         () -> {
                             DungeonHandle handle = handles[1];
+                            BoundingBox bounds = handle.bounds();
                             helper.assertTrue(
                                     !level.getBlockState(broken[0]).isAir(),
                                     "reset must place the broken block again");
                             helper.assertTrue(
-                                    handle.bounds().equals(handles[0].bounds()),
+                                    bounds.equals(oldBounds[0]),
                                     "reset must build in the same place");
                             BlockPos door = handle.bossDoor().orElseThrow();
                             helper.assertTrue(
                                     DungeonLockManager.isDoorLocked(level, door),
                                     "reset must lock the boss door again");
                             helper.assertTrue(
-                                    boss(level, handle.bounds()) != null,
-                                    "reset must spawn a boss again");
-                            ProceduralDungeonApi.forget(level, handle.bounds());
+                                    boss(level, bounds) != null, "reset must spawn a boss again");
+                            ProceduralDungeonApi.forget(level, bounds);
                             helper.assertTrue(
                                     ProceduralDungeonApi.handle(level, handle.id()).isEmpty(),
                                     "forget must drop the build");
@@ -326,7 +333,7 @@ public final class ApiGameTests {
                                     !DungeonLockManager.isDoorLocked(level, door),
                                     "forget must drop the lock records");
                             helper.assertTrue(
-                                    boss(level, handle.bounds()) == null,
+                                    boss(level, bounds) == null,
                                     "forget must remove the guardians");
                         })
                 .thenSucceed();

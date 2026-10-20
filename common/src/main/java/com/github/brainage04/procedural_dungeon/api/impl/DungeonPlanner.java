@@ -2,6 +2,7 @@ package com.github.brainage04.procedural_dungeon.api.impl;
 
 import com.github.brainage04.procedural_dungeon.api.DungeonPlan;
 import com.github.brainage04.procedural_dungeon.api.DungeonRequest;
+import com.github.brainage04.procedural_dungeon.api.ProceduralDungeonApi;
 import com.github.brainage04.procedural_dungeon.dungeon.DungeonTheme;
 import com.github.brainage04.procedural_dungeon.dungeon.DungeonTier;
 import com.github.brainage04.procedural_dungeon.util.RegistryKeyUtils;
@@ -33,8 +34,6 @@ import java.util.concurrent.CompletableFuture;
  */
 public final class DungeonPlanner {
     public static final BlockPos CANONICAL_ORIGIN = BlockPos.ZERO;
-    public static final int MIN_DEPTH = 1;
-    public static final int MAX_DEPTH = 20;
     private static final LevelHeightAccessor CANONICAL_HEIGHT =
             LevelHeightAccessor.create(-2048, 4096);
     private static final Identifier START_JIGSAW = Identifier.withDefaultNamespace("start");
@@ -60,10 +59,14 @@ public final class DungeonPlanner {
                                         new IllegalArgumentException(
                                                 "Unknown dungeon theme: " + request.theme()));
         DungeonTier tier = tier(request.tier());
-        if (request.depth() < MIN_DEPTH || request.depth() > MAX_DEPTH) {
+        if (request.depth() < ProceduralDungeonApi.MIN_DEPTH
+                || request.depth() > ProceduralDungeonApi.MAX_DEPTH) {
             throw new IllegalArgumentException(
                     "Dungeon depth must be %d to %d: %d"
-                            .formatted(MIN_DEPTH, MAX_DEPTH, request.depth()));
+                            .formatted(
+                                    ProceduralDungeonApi.MIN_DEPTH,
+                                    ProceduralDungeonApi.MAX_DEPTH,
+                                    request.depth()));
         }
         String poolName =
                 RegistryKeyUtils.getKeyString(theme, tier)
@@ -136,6 +139,11 @@ public final class DungeonPlanner {
                 return tier;
             }
         }
-        throw new IllegalArgumentException("Dungeon tier must be 1 to 5: " + number);
+        throw new IllegalArgumentException(
+                "Dungeon tier must be %d to %d: %d"
+                        .formatted(
+                                ProceduralDungeonApi.MIN_TIER,
+                                ProceduralDungeonApi.MAX_TIER,
+                                number));
     }
 }

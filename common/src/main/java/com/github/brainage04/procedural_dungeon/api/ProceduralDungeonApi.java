@@ -2,6 +2,7 @@ package com.github.brainage04.procedural_dungeon.api;
 
 import com.github.brainage04.procedural_dungeon.api.impl.ApiDungeons;
 import com.github.brainage04.procedural_dungeon.api.impl.DungeonPlanner;
+import com.github.brainage04.procedural_dungeon.dungeon.DungeonTheme;
 import com.github.brainage04.procedural_dungeon.rule.DungeonSwitches;
 
 import net.minecraft.core.BlockPos;
@@ -11,6 +12,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -27,7 +30,29 @@ public final class ProceduralDungeonApi {
     /** The API version this jar implements. */
     public static final int VERSION = 1;
 
+    /** The tiers {@link DungeonRequest#tier()} accepts, inclusive. */
+    public static final int MIN_TIER = 1;
+
+    public static final int MAX_TIER = 5;
+
+    /** The jigsaw depths {@link DungeonRequest#depth()} accepts, inclusive. */
+    public static final int MIN_DEPTH = 1;
+
+    public static final int MAX_DEPTH = 20;
+
+    private static final List<String> THEMES =
+            Arrays.stream(DungeonTheme.values()).map(DungeonTheme::getSerializedName).toList();
+
     private ProceduralDungeonApi() {}
+
+    /**
+     * Every theme name {@link #plan} accepts in {@link DungeonRequest#theme()}, such as {@code
+     * "cobblestone"}, in a stable order. Each theme belongs to the Overworld, the Nether or the End
+     * and is styled for it, but any theme can be built in any level.
+     */
+    public static List<String> themes() {
+        return THEMES;
+    }
 
     /**
      * Compiles {@code request} off the server thread. The future completes on the server thread

@@ -35,7 +35,7 @@ ProceduralDungeonApi.plan(server, request).thenAccept(plan -> plan.ifPresent(com
 }));
 ```
 
-- `plan(server, request)` resolves the theme's pool on the server thread and compiles on a worldgen worker, as natural generation does; the future completes on the server thread. It is empty when no layout fits (try another seed) and throws `IllegalArgumentException` for an unknown theme, a tier outside 1-5 or a depth outside 1-20.
+- `plan(server, request)` resolves the theme's pool on the server thread and compiles on a worldgen worker, as natural generation does; the future completes on the server thread. It is empty when no layout fits (try another seed) and throws `IllegalArgumentException` for an unknown theme, a tier outside `MIN_TIER`-`MAX_TIER` (1-5) or a depth outside `MIN_DEPTH`-`MAX_DEPTH` (1-20). `ProceduralDungeonApi.themes()` lists every theme name it accepts, in a stable order.
 - A plan depends only on the request. The same request always gives the same layout, and one plan can be built any number of times: each build is the same dungeon moved to its origin. `plan.bounds()` is relative to the origin.
 - `origin` is the start room's entrance socket, or with `surfaceEntrance` the foot of the entrance shaft, which belongs at the surface. `build` throws when the moved dungeon does not fit the level's height.
 - A build has its own id, its own chunk tickets (non-persistent, released when it finishes or is cancelled) and its own lock records. Pieces are placed once their chunks are loaded.
@@ -52,7 +52,7 @@ ProceduralDungeonApi.plan(server, request).thenAccept(plan -> plan.ifPresent(com
 
 ## Following a build
 
-`DungeonHandle` is a live view: `state()` (`RUNNING`, `FAILED`, `CANCELLED`, `COMPLETE`), `placedPieces()`, `totalPieces()`, `failure()`, `bounds()`, `startSpawn()` (standing room in the start room once the build is complete) and `bossDoor()`. `ProceduralDungeonApi.handle(level, id)` finds a build again, also after a restart for persistent builds.
+`DungeonHandle` is a live view: `state()` (`RUNNING`, `FAILED`, `CANCELLED`, `COMPLETE`), `placedPieces()`, `totalPieces()`, `failure()`, `bounds()`, `startSpawn()` (standing room in the start room once the build is complete) and `bossDoor()`. `ProceduralDungeonApi.handle(level, id)` finds a build again, also after a restart for persistent builds. Once `forget` or `reset` drops a build, its old handle throws `IllegalStateException` from everything but `id()` and `level()`.
 
 `ProceduralDungeonApi.listen(listener)` adds a `DungeonListener`. Every method is a no-op by default and runs on the server thread right after the change:
 
