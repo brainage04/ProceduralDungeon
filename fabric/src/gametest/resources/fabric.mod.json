@@ -11,7 +11,8 @@
 			"com.github.brainage04.procedural_dungeon.LockGameTest",
 			"com.github.brainage04.procedural_dungeon.StagedJobFabricGameTest",
 			"com.github.brainage04.procedural_dungeon.MechanicsGameTest",
-			"com.github.brainage04.procedural_dungeon.ApiGameTest"
+			"com.github.brainage04.procedural_dungeon.ApiGameTest",
+			"com.github.brainage04.procedural_dungeon.LayoutGameTest"
 		],
 		"main": [
 			"com.github.brainage04.procedural_dungeon.playtest.ProceduralDungeonPlaytest"

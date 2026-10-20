@@ -65,7 +65,9 @@ public final class ProceduralDungeonNeoForge {
                     () -> () -> StagedDungeonStructure.CODEC
             );
     private static final DeferredHolder<StructurePieceType, StructurePieceType> STAGED_DUNGEON_MARKER =
-            PIECES.register("staged_dungeon_marker", () -> com.github.brainage04.procedural_dungeon.worldgen.structure.StagedDungeonMarkerPiece::new);
+            PIECES.register(ModStructureTypes.STAGED_DUNGEON_MARKER_NAME, () -> com.github.brainage04.procedural_dungeon.worldgen.structure.StagedDungeonMarkerPiece::new);
+    private static final DeferredHolder<StructurePieceType, StructurePieceType> STAGED_DUNGEON_BOUNDS =
+            PIECES.register(ModStructureTypes.STAGED_DUNGEON_BOUNDS_NAME, () -> com.github.brainage04.procedural_dungeon.worldgen.structure.StagedDungeonBoundsPiece::new);
     private static final DeferredRegister<TicketType> TICKET_TYPES = DeferredRegister.create(Registries.TICKET_TYPE, ProceduralDungeon.MOD_ID);
     private static final DeferredRegister<AttachmentType<?>> ATTACHMENT_TYPES = DeferredRegister.create(NeoForgeRegistries.Keys.ATTACHMENT_TYPES, ProceduralDungeon.MOD_ID);
     private static final DeferredHolder<AttachmentType<?>, AttachmentType<DungeonChunkLedger.Data>> PLACED =
@@ -103,6 +105,7 @@ public final class ProceduralDungeonNeoForge {
             ModStructurePoolElementTypes.setVariantSinglePoolElement(VARIANT_SINGLE_POOL_ELEMENT.get());
             ModStructureTypes.setStagedDungeon(STAGED_DUNGEON.get());
             ModStructureTypes.setStagedDungeonMarker(STAGED_DUNGEON_MARKER.get());
+            ModStructureTypes.setStagedDungeonBounds(STAGED_DUNGEON_BOUNDS.get());
             ProceduralDungeon.initialize();
         }));
     }

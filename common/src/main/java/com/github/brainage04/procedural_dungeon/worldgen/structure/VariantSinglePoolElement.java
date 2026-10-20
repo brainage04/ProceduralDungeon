@@ -27,6 +27,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.RandomizableContainer;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -63,9 +64,11 @@ public class VariantSinglePoolElement extends StructurePoolElement {
     private final int branchLimit;
     private final Map<ResourceKey<StructureTemplatePool>, ResourceKey<StructureTemplatePool>> poolReplacementCache =
             new ConcurrentHashMap<>();
-    private final Map<Rotation, List<StructureTemplate.JigsawBlockInfo>> jigsawCache = new ConcurrentHashMap<>();
-    private final Map<Rotation, BoundingBox> boundingBoxCache = new ConcurrentHashMap<>();
-    private final Map<Rotation, List<StructureTemplate.StructureBlockInfo>> dataMarkerCache = new ConcurrentHashMap<>();
+    // Geometry caches remember the template they were read from: a resource reload makes the template manager load a
+    // new template object, and the next lookup then reads the new geometry instead of the cached one.
+    private final Map<Rotation, TemplateCache<List<StructureTemplate.JigsawBlockInfo>>> jigsawCache = new ConcurrentHashMap<>();
+    private final Map<Rotation, TemplateCache<BoundingBox>> boundingBoxCache = new ConcurrentHashMap<>();
+    private final Map<Rotation, TemplateCache<List<StructureTemplate.StructureBlockInfo>>> dataMarkerCache = new ConcurrentHashMap<>();
 
     public VariantSinglePoolElement(SinglePoolElement delegate, Identifier variant, int spawnerTier, int branchLimit) {
         super(delegate.getProjection());
@@ -143,36 +146,40 @@ public class VariantSinglePoolElement extends StructurePoolElement {
     }
 
     private List<StructureTemplate.JigsawBlockInfo> cachedJigsaws(StructureTemplateManager structureTemplateManager, Rotation rotation) {
-        return jigsawCache.computeIfAbsent(rotation, ignored -> {
-            long jigsawStart = DungeonGenerationProfiler.start();
-            List<StructureTemplate.JigsawBlockInfo> delegateJigsaws = structureTemplateManager
-                    .getOrCreate(delegate.getTemplateLocation())
-                    .getJigsaws(BlockPos.ZERO, rotation);
-            if (jigsawStart != 0L) {
-                DungeonGenerationProfiler.recordJigsawBlockLookup(System.nanoTime() - jigsawStart);
-            }
+        StructureTemplate template = structureTemplateManager.getOrCreate(delegate.getTemplateLocation());
+        TemplateCache<List<StructureTemplate.JigsawBlockInfo>> cached = jigsawCache.get(rotation);
+        if (cached != null && cached.template() == template) {
+            return cached.value();
+        }
 
-            long replacementStart = DungeonGenerationProfiler.start();
-            ArrayList<StructureTemplate.JigsawBlockInfo> replacedJigsaws = null;
-            for (int i = 0; i < delegateJigsaws.size(); i++) {
-                StructureTemplate.JigsawBlockInfo original = delegateJigsaws.get(i);
-                StructureTemplate.JigsawBlockInfo replaced = replacePool(original);
-                if (replacedJigsaws != null) {
-                    replacedJigsaws.add(replaced);
-                } else if (replaced != original) {
-                    replacedJigsaws = new ArrayList<>(delegateJigsaws.size());
-                    for (int previous = 0; previous < i; previous++) {
-                        replacedJigsaws.add(delegateJigsaws.get(previous));
-                    }
-                    replacedJigsaws.add(replaced);
+        long jigsawStart = DungeonGenerationProfiler.start();
+        List<StructureTemplate.JigsawBlockInfo> delegateJigsaws = template.getJigsaws(BlockPos.ZERO, rotation);
+        if (jigsawStart != 0L) {
+            DungeonGenerationProfiler.recordJigsawBlockLookup(System.nanoTime() - jigsawStart);
+        }
+
+        long replacementStart = DungeonGenerationProfiler.start();
+        ArrayList<StructureTemplate.JigsawBlockInfo> replacedJigsaws = null;
+        for (int i = 0; i < delegateJigsaws.size(); i++) {
+            StructureTemplate.JigsawBlockInfo original = delegateJigsaws.get(i);
+            StructureTemplate.JigsawBlockInfo replaced = replacePool(original);
+            if (replacedJigsaws != null) {
+                replacedJigsaws.add(replaced);
+            } else if (replaced != original) {
+                replacedJigsaws = new ArrayList<>(delegateJigsaws.size());
+                for (int previous = 0; previous < i; previous++) {
+                    replacedJigsaws.add(delegateJigsaws.get(previous));
                 }
+                replacedJigsaws.add(replaced);
             }
-            if (replacementStart != 0L) {
-                DungeonGenerationProfiler.recordPoolReplacement(System.nanoTime() - replacementStart);
-            }
+        }
+        if (replacementStart != 0L) {
+            DungeonGenerationProfiler.recordPoolReplacement(System.nanoTime() - replacementStart);
+        }
 
-            return List.copyOf(replacedJigsaws == null ? delegateJigsaws : replacedJigsaws);
-        });
+        List<StructureTemplate.JigsawBlockInfo> jigsaws = List.copyOf(replacedJigsaws == null ? delegateJigsaws : replacedJigsaws);
+        jigsawCache.put(rotation, new TemplateCache<>(template, jigsaws));
+        return jigsaws;
     }
 
     private static ArrayList<StructureTemplate.JigsawBlockInfo> translateJigsaws(
@@ -234,15 +241,17 @@ public class VariantSinglePoolElement extends StructurePoolElement {
 
     @Override
     public BoundingBox getBoundingBox(StructureTemplateManager structureTemplateManager, BlockPos pos, Rotation rotation) {
-        BoundingBox base = boundingBoxCache.computeIfAbsent(rotation, ignored -> {
+        StructureTemplate template = structureTemplateManager.getOrCreate(delegate.getTemplateLocation());
+        TemplateCache<BoundingBox> cached = boundingBoxCache.get(rotation);
+        if (cached == null || cached.template() != template) {
             long start = DungeonGenerationProfiler.start();
-            BoundingBox box = delegate.getBoundingBox(structureTemplateManager, BlockPos.ZERO, rotation);
+            cached = new TemplateCache<>(template, delegate.getBoundingBox(structureTemplateManager, BlockPos.ZERO, rotation));
             if (start != 0L) {
                 DungeonGenerationProfiler.recordBoundingBoxLookup(System.nanoTime() - start);
             }
-            return box;
-        });
-        return base.moved(pos.getX(), pos.getY(), pos.getZ());
+            boundingBoxCache.put(rotation, cached);
+        }
+        return cached.value().moved(pos.getX(), pos.getY(), pos.getZ());
     }
 
     @Override
@@ -317,6 +326,11 @@ public class VariantSinglePoolElement extends StructurePoolElement {
             if (!frame && DungeonGuardian.fromMarker(metadata).isEmpty()) {
                 continue;
             }
+            if (!frame) {
+                // The marker's structure block is never placed, so a room buried in solid ground would keep the
+                // terrain there; clear it also when a replay finds the guardian already spawned.
+                world.setBlock(markerPos, Blocks.CAVE_AIR.defaultBlockState(), Block.UPDATE_CLIENTS);
+            }
             if (context != null && world.getLevel() instanceof ServerLevel level && context.spawned(level, index)) {
                 continue;
             }
@@ -360,6 +374,7 @@ public class VariantSinglePoolElement extends StructurePoolElement {
             if (metadata.startsWith(DungeonPuzzleRooms.FRAME_MARKER) || DungeonGuardian.fromMarker(metadata).isPresent()) {
                 return true;
             }
+
         }
         return false;
     }
@@ -410,10 +425,13 @@ public class VariantSinglePoolElement extends StructurePoolElement {
             Rotation rotation
     ) {
         if (template.palettes.size() == 1) {
-            return dataMarkerCache.computeIfAbsent(
-                    rotation,
-                    key -> List.copyOf(delegate.getDataMarkers(structureTemplateManager, BlockPos.ZERO, key, false))
-            );
+            TemplateCache<List<StructureTemplate.StructureBlockInfo>> cached = dataMarkerCache.get(rotation);
+            if (cached == null || cached.template() != template) {
+                cached = new TemplateCache<>(template,
+                        List.copyOf(delegate.getDataMarkers(structureTemplateManager, BlockPos.ZERO, rotation, false)));
+                dataMarkerCache.put(rotation, cached);
+            }
+            return cached.value();
         }
         return delegate.getDataMarkers(structureTemplateManager, pos, rotation, false);
     }
@@ -560,4 +578,6 @@ public class VariantSinglePoolElement extends StructurePoolElement {
     public String toString() {
         return "VariantSingle[" + delegate + " -> " + variant + ", branches <= " + branchLimit + "]";
     }
+
+    private record TemplateCache<T>(StructureTemplate template, T value) {}
 }

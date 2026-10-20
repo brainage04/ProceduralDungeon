@@ -17,10 +17,12 @@ import static com.github.brainage04.procedural_dungeon.datagen.structure.Structu
 /**
  * Generates the boss room, boss key vault, and miniboss room templates. Each room is a dead end entered through one
  * "minecraft:room" jigsaw on its north wall: miniboss rooms join the ordinary room pool, while the layout compiler
- * attaches the boss room and vault to free room sockets or hallway ends.
+ * attaches the boss room and vault to free room sockets or hallway ends. Their interiors and doorways are cave air,
+ * which the placement processor never rots, so a room buried in solid ground is carved out completely.
  */
 public class ProgressionRoomStructureProvider implements DataProvider {
     private static final String WALL = "minecraft:cobblestone";
+    private static final String AIR = "minecraft:cave_air";
 
     private final PackOutput.PathProvider structureResolver;
 
@@ -69,7 +71,7 @@ public class ProgressionRoomStructureProvider implements DataProvider {
 
     private static CompoundTag bossKeyVault() {
         StructureBuilder builder = shell(7, 7, 7);
-        builder.fill(2, 1, 0, 4, 3, 0, "minecraft:air");
+        builder.fill(2, 1, 0, 4, 3, 0, AIR);
         builder.block(3, 1, 4, "minecraft:chiseled_stone_bricks");
         chest(builder, 3, 2, 4, "boss_key_vault");
         builder.block(1, 1, 4, "minecraft:lantern", properties("hanging", "false", "waterlogged", "false"));
@@ -93,12 +95,12 @@ public class ProgressionRoomStructureProvider implements DataProvider {
     }
 
     /**
-     * A closed room: solid walls, floor, and ceiling around an air interior.
+     * A closed room: solid walls, floor, and ceiling around a cave air interior.
      */
     private static StructureBuilder shell(int xSize, int ySize, int zSize) {
         StructureBuilder builder = new StructureBuilder(xSize, ySize, zSize);
         builder.fill(0, 0, 0, xSize - 1, ySize - 1, zSize - 1, WALL);
-        builder.fill(1, 1, 1, xSize - 2, ySize - 2, zSize - 2, "minecraft:air");
+        builder.fill(1, 1, 1, xSize - 2, ySize - 2, zSize - 2, AIR);
         return builder;
     }
 

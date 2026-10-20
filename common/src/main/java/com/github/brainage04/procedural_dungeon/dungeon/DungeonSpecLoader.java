@@ -5,11 +5,18 @@ import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.charset.StandardCharsets;
 
-final class DungeonSpecLoader {
+/**
+ * Reads the theme and tier specs from the mod jar. A development checkout can set the {@value #SOURCE_SPECS_PROPERTY}
+ * system property to read them from the nearest {@code common/src/main/resources/procedural_dungeon/} folder above the
+ * working directory instead, so spec edits apply without rebuilding the jar.
+ */
+public final class DungeonSpecLoader {
+    public static final String SOURCE_SPECS_PROPERTY = "procedural_dungeon.source_specs";
+
     private static final Gson GSON = new Gson();
     private static final String RESOURCE_ROOT = "/procedural_dungeon/";
     private static final Path SOURCE_ROOT = Path.of("common/src/main/resources/procedural_dungeon");
@@ -18,7 +25,14 @@ final class DungeonSpecLoader {
     }
 
     static JsonObject load(String fileName) {
-        Path specPath = resolveSourcePath(fileName);
+        return load(fileName, Path.of("").toAbsolutePath());
+    }
+
+    /**
+     * Loads {@code fileName} as a server started in {@code workingDirectory} would.
+     */
+    public static JsonObject load(String fileName, Path workingDirectory) {
+        Path specPath = Boolean.getBoolean(SOURCE_SPECS_PROPERTY) ? resolveSourcePath(fileName, workingDirectory) : null;
         if (specPath != null) {
             try (Reader reader = Files.newBufferedReader(specPath)) {
                 return GSON.fromJson(reader, JsonObject.class);
@@ -40,8 +54,8 @@ final class DungeonSpecLoader {
         }
     }
 
-    private static Path resolveSourcePath(String fileName) {
-        Path currentDirectory = Path.of("").toAbsolutePath();
+    private static Path resolveSourcePath(String fileName, Path workingDirectory) {
+        Path currentDirectory = workingDirectory.toAbsolutePath();
         while (currentDirectory != null) {
             Path specPath = currentDirectory.resolve(SOURCE_ROOT).resolve(fileName);
             if (Files.exists(specPath)) {

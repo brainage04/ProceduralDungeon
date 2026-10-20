@@ -1275,7 +1275,8 @@ public final class StagedJobGameTests {
                 pieces.getFirst().position(),
                 bounds,
                 pieces,
-                plan);
+                plan,
+                List.of());
     }
 
     /** The level's unfinished jobs, for failure messages: which job holds up which. */

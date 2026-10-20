@@ -1,0 +1,7 @@
+{
+  "environment": "minecraft:default",
+  "structure":"minecraftmodconventions:empty",
+  "max_ticks": 1200,
+  "type": "minecraft:function",
+  "function": "procedural_dungeon:natural_starts_build_in_the_overworld"
+}

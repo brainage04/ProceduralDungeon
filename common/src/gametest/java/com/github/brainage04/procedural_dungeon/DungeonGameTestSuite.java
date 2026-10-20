@@ -156,6 +156,7 @@ public final class DungeonGameTestSuite {
         ));
         tests.addAll(MechanicsGameTests.tests());
         tests.addAll(ApiGameTests.tests());
+        tests.addAll(LayoutGameTests.tests());
         return List.copyOf(tests);
     }
 

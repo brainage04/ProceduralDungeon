@@ -6,17 +6,25 @@ import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 
 public final class ModStructureTypes {
+    public static final String STAGED_DUNGEON_MARKER_NAME = "staged_dungeon_marker";
+    public static final String STAGED_DUNGEON_BOUNDS_NAME = "staged_dungeon_bounds";
+
     public static StructureType<StagedDungeonStructure> STAGED_DUNGEON;
     public static StructurePieceType STAGED_DUNGEON_MARKER;
+    public static StructurePieceType STAGED_DUNGEON_BOUNDS;
 
     private ModStructureTypes() {}
 
+    /**
+     * Registers the structure type and both piece types; {@code pieceRegistrar} returns the registered piece type.
+     */
     public static void registerAll(
             BiConsumer<String, StructureType<StagedDungeonStructure>> structureRegistrar,
-            BiConsumer<String, StructurePieceType> pieceRegistrar
+            PieceRegistrar pieceRegistrar
     ) {
         structureRegistrar.accept("staged_dungeon", () -> StagedDungeonStructure.CODEC);
-        pieceRegistrar.accept("staged_dungeon_marker", StagedDungeonMarkerPiece::new);
+        setStagedDungeonMarker(pieceRegistrar.register(STAGED_DUNGEON_MARKER_NAME, StagedDungeonMarkerPiece::new));
+        setStagedDungeonBounds(pieceRegistrar.register(STAGED_DUNGEON_BOUNDS_NAME, StagedDungeonBoundsPiece::new));
     }
 
     public static void setStagedDungeon(StructureType<StagedDungeonStructure> type) {
@@ -25,5 +33,14 @@ public final class ModStructureTypes {
 
     public static void setStagedDungeonMarker(StructurePieceType type) {
         STAGED_DUNGEON_MARKER = Objects.requireNonNull(type);
+    }
+
+    public static void setStagedDungeonBounds(StructurePieceType type) {
+        STAGED_DUNGEON_BOUNDS = Objects.requireNonNull(type);
+    }
+
+    @FunctionalInterface
+    public interface PieceRegistrar {
+        StructurePieceType register(String name, StructurePieceType type);
     }
 }

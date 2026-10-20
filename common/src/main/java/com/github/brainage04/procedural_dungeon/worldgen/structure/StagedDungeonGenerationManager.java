@@ -251,6 +251,7 @@ public final class StagedDungeonGenerationManager {
 
     /**
      * The job's layout, while its record exists. The locator is the start piece's position (else the first piece's).
+     * The record keeps no compiler parents, so the layout's {@code parents} is empty.
      */
     public static Optional<StagedDungeonLayout> layout(ServerLevel level, UUID id) {
         StagedDungeonSaveData data = existingData(level);
@@ -260,7 +261,8 @@ public final class StagedDungeonGenerationManager {
         }
         BlockPos locator = job.pieces.stream().filter(StagedDungeonPieceSpec::startPiece).findFirst()
                 .orElse(job.pieces.getFirst()).position();
-        return Optional.of(new StagedDungeonLayout(job.startChunk, locator, job.bounds, job.pieces, job.lockPlan));
+        return Optional.of(
+                new StagedDungeonLayout(job.startChunk, locator, job.bounds, job.pieces, job.lockPlan, List.of()));
     }
 
     /**

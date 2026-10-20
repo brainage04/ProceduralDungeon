@@ -134,7 +134,7 @@ public final class StagedDungeonLayoutCompiler {
         AllowedBounds allowedBounds = AllowedBounds.create(locator, maxDistanceFromCenter, context.heightAccessor());
         BoxOccupancy occupancy = new BoxOccupancy();
         ArrayList<StagedDungeonPieceSpec> pieces = new ArrayList<>();
-        Map<StagedDungeonPieceSpec, Integer> depths = new IdentityHashMap<>();
+        Map<StagedDungeonPieceSpec, PieceNode> nodes = new IdentityHashMap<>();
         StagedDungeonPieceSpec startPiece = new StagedDungeonPieceSpec(
                 startElement,
                 piecePos,
@@ -144,19 +144,19 @@ public final class StagedDungeonLayoutCompiler {
                 true
         );
         pieces.add(startPiece);
-        depths.put(startPiece, 0);
+        nodes.put(startPiece, new PieceNode(null, 0));
         occupancy.add(startBox);
 
         SequencedPriorityIterator<PendingPiece> queue = new SequencedPriorityIterator<>();
-        expandChildren(context, pools, templateManager, random, pieces, depths, occupancy, queue, startPiece, 0,
+        expandChildren(context, pools, templateManager, random, pieces, nodes, occupancy, queue, startPiece, 0,
                 maxDepth, allowedBounds);
         while (queue.hasNext()) {
             PendingPiece pending = queue.next();
-            expandChildren(context, pools, templateManager, random, pieces, depths, occupancy, queue, pending.piece(), pending.depth(),
+            expandChildren(context, pools, templateManager, random, pieces, nodes, occupancy, queue, pending.piece(), pending.depth(),
                     maxDepth, allowedBounds);
         }
 
-        if (!attachProgressionRooms(context, pools, templateManager, random, pieces, depths, occupancy, allowedBounds)) {
+        if (!attachProgressionRooms(context, pools, templateManager, random, pieces, nodes, occupancy, allowedBounds)) {
             return Optional.empty();
         }
 
@@ -164,16 +164,32 @@ public final class StagedDungeonLayoutCompiler {
                 .map(StagedDungeonPieceSpec::boundingBox)
                 .reduce(BoundingBox::encapsulating)
                 .orElseThrow();
+        List<Integer> parents = parentIndices(pieces, nodes);
         StagedDungeonLayout baseLayout = new StagedDungeonLayout(context.chunkPos(), locator, boundingBox, List.copyOf(pieces));
         DungeonLockPlan lockPlan = DungeonLockPlanner.create(baseLayout, templateManager, random);
-        return Optional.of(new StagedDungeonLayout(context.chunkPos(), locator, boundingBox, baseLayout.pieces(), lockPlan));
+        return Optional.of(new StagedDungeonLayout(context.chunkPos(), locator, boundingBox, baseLayout.pieces(), lockPlan, parents));
+    }
+
+    private static List<Integer> parentIndices(List<StagedDungeonPieceSpec> pieces, Map<StagedDungeonPieceSpec, PieceNode> nodes) {
+        Map<StagedDungeonPieceSpec, Integer> indices = new IdentityHashMap<>(pieces.size());
+        for (int i = 0; i < pieces.size(); i++) {
+            indices.put(pieces.get(i), i);
+        }
+        ArrayList<Integer> parents = new ArrayList<>(pieces.size());
+        for (StagedDungeonPieceSpec piece : pieces) {
+            StagedDungeonPieceSpec parent = nodes.get(piece).parent();
+            parents.add(parent == null ? -1 : indices.get(parent));
+        }
+        return List.copyOf(parents);
     }
 
     /**
      * Attaches the boss room to the deepest free room or hallway-end socket and the boss key vault to the deepest free
-     * socket away from it. Both rooms are dead ends reached through ordinary hallways, so every compiled layout has a
-     * walkable route to the key and to the boss door. When a small layout has no free socket that fits, spare hallway
-     * sockets of the start room grow extra hallways first; a layout that still has no room is rejected.
+     * socket on a different branch, preferring sockets away from the boss room. A branch is a subtree hanging off the
+     * hub, the first piece where the layout splits (the start room, or the start room below a surface entrance). Both
+     * rooms are dead ends reached through ordinary hallways, so every compiled layout has a walkable route to the key
+     * and to the boss door. When a small layout has no free socket that fits, spare hallway sockets of the start room
+     * grow extra hallways first, each a new branch; a layout that still has no room is rejected.
      */
     private static boolean attachProgressionRooms(
             Structure.GenerationContext context,
@@ -181,7 +197,7 @@ public final class StagedDungeonLayoutCompiler {
             StructureTemplateManager templateManager,
             RandomSource random,
             List<StagedDungeonPieceSpec> pieces,
-            Map<StagedDungeonPieceSpec, Integer> depths,
+            Map<StagedDungeonPieceSpec, PieceNode> nodes,
             BoxOccupancy occupancy,
             AllowedBounds allowedBounds
     ) {
@@ -198,23 +214,74 @@ public final class StagedDungeonLayoutCompiler {
             return false;
         }
 
-        LayoutGrowth growth = new LayoutGrowth(context, pools, templateManager, random, pieces, depths, occupancy, allowedBounds);
+        LayoutGrowth growth = new LayoutGrowth(context, pools, templateManager, random, pieces, nodes, occupancy, allowedBounds);
         Optional<StagedDungeonPieceSpec> bossRoom = growth.attachProgressionRoom(bossPool.get(), sockets -> sockets);
         if (bossRoom.isEmpty()) {
             return false;
         }
 
-        BlockPos bossCenter = bossRoom.get().boundingBox().getCenter();
+        StagedDungeonPieceSpec boss = bossRoom.get();
+        BlockPos bossCenter = boss.boundingBox().getCenter();
         return growth.attachProgressionRoom(vaultPool.get(), sockets -> {
+            // Extension hallways can split a single-child piece above the hub, so the hub is found again each attempt.
+            StagedDungeonPieceSpec hub = hub(pieces, nodes);
+            StagedDungeonPieceSpec bossBranch = branch(boss, hub, nodes);
             ArrayList<RoomSocket> farFirst = new ArrayList<>(sockets.size());
-            sockets.stream()
-                    .filter(socket -> horizontalDistanceSqr(socket.attachmentPos(), bossCenter) >= MIN_KEY_VAULT_DISTANCE_SQR)
-                    .forEach(farFirst::add);
-            sockets.stream()
-                    .filter(socket -> horizontalDistanceSqr(socket.attachmentPos(), bossCenter) < MIN_KEY_VAULT_DISTANCE_SQR)
-                    .forEach(farFirst::add);
+            ArrayList<RoomSocket> near = new ArrayList<>();
+            for (RoomSocket socket : sockets) {
+                StagedDungeonPieceSpec socketBranch = branch(socket.parent(), hub, nodes);
+                if (socketBranch != null && socketBranch == bossBranch) {
+                    continue;
+                }
+                if (horizontalDistanceSqr(socket.attachmentPos(), bossCenter) >= MIN_KEY_VAULT_DISTANCE_SQR) {
+                    farFirst.add(socket);
+                } else {
+                    near.add(socket);
+                }
+            }
+            farFirst.addAll(near);
             return farFirst;
         }).isPresent();
+    }
+
+    /**
+     * The first piece, going down from the root, that has more than one child.
+     */
+    private static StagedDungeonPieceSpec hub(List<StagedDungeonPieceSpec> pieces, Map<StagedDungeonPieceSpec, PieceNode> nodes) {
+        StagedDungeonPieceSpec hub = pieces.getFirst();
+        while (true) {
+            StagedDungeonPieceSpec onlyChild = null;
+            int children = 0;
+            for (StagedDungeonPieceSpec piece : pieces) {
+                if (nodes.get(piece).parent() == hub) {
+                    onlyChild = piece;
+                    children++;
+                }
+            }
+            if (children != 1) {
+                return hub;
+            }
+            hub = onlyChild;
+        }
+    }
+
+    /**
+     * The child of {@code hub} whose subtree holds {@code piece}, or null for the hub and the pieces above it.
+     */
+    private static StagedDungeonPieceSpec branch(
+            StagedDungeonPieceSpec piece,
+            StagedDungeonPieceSpec hub,
+            Map<StagedDungeonPieceSpec, PieceNode> nodes
+    ) {
+        StagedDungeonPieceSpec current = piece;
+        while (current != null) {
+            StagedDungeonPieceSpec parent = nodes.get(current).parent();
+            if (parent == hub) {
+                return current;
+            }
+            current = parent;
+        }
+        return null;
     }
 
     private static long horizontalDistanceSqr(BlockPos first, BlockPos second) {
@@ -229,7 +296,7 @@ public final class StagedDungeonLayoutCompiler {
             StructureTemplateManager templateManager,
             RandomSource random,
             List<StagedDungeonPieceSpec> pieces,
-            Map<StagedDungeonPieceSpec, Integer> depths,
+            Map<StagedDungeonPieceSpec, PieceNode> nodes,
             BoxOccupancy occupancy,
             AllowedBounds allowedBounds
     ) {
@@ -237,7 +304,7 @@ public final class StagedDungeonLayoutCompiler {
                 Holder<StructureTemplatePool> pool,
                 UnaryOperator<List<RoomSocket>> socketOrder
         ) {
-            List<StructurePoolElement> rooms = pool.value().getShuffledTemplates(random);
+            List<StructurePoolElement> rooms = distinct(pool.value().getShuffledTemplates(random));
             for (int extensions = 0; ; extensions++) {
                 Optional<StagedDungeonPieceSpec> room = attachToFirstSocket(
                         socketOrder.apply(sockets(PROGRESSION_SOCKET_TARGETS)), socket -> rooms, false);
@@ -252,7 +319,7 @@ public final class StagedDungeonLayoutCompiler {
 
         private List<StructurePoolElement> socketPoolTemplates(RoomSocket socket) {
             return pools.get(PoolAliasLookup.EMPTY.lookup(socket.jigsaw().pool()))
-                    .map(pool -> pool.value().getShuffledTemplates(random))
+                    .map(pool -> distinct(pool.value().getShuffledTemplates(random)))
                     .orElse(List.of());
         }
 
@@ -276,7 +343,7 @@ public final class StagedDungeonLayoutCompiler {
                             info.state(),
                             info.nbt()
                     ));
-                    sockets.add(new RoomSocket(piece, placed, depths.getOrDefault(piece, 0)));
+                    sockets.add(new RoomSocket(piece, placed, nodes.get(piece).depth()));
                 }
             }
             Util.shuffle(sockets, random);
@@ -323,7 +390,7 @@ public final class StagedDungeonLayoutCompiler {
                             StagedDungeonPieceSpec piece = new StagedDungeonPieceSpec(candidate, placement.position(), rotation,
                                     placement.boundingBox(), placement.groundLevelDelta());
                             pieces.add(piece);
-                            depths.put(piece, socket.depth() + 1);
+                            nodes.put(piece, new PieceNode(parent, socket.depth() + 1));
                             occupancy.add(placement.boundingBox());
                             return Optional.of(piece);
                         }
@@ -356,7 +423,7 @@ public final class StagedDungeonLayoutCompiler {
             StructureTemplateManager templateManager,
             RandomSource random,
             List<StagedDungeonPieceSpec> pieces,
-            Map<StagedDungeonPieceSpec, Integer> depths,
+            Map<StagedDungeonPieceSpec, PieceNode> nodes,
             BoxOccupancy occupancy,
             SequencedPriorityIterator<PendingPiece> queue,
             StagedDungeonPieceSpec parent,
@@ -394,6 +461,8 @@ public final class StagedDungeonLayoutCompiler {
                 candidates.addAll(poolHolder.get().value().getShuffledTemplates(random));
             }
             candidates.addAll(fallback.value().getShuffledTemplates(random));
+            // Pools list a template once per weight; trying it again after it failed changes nothing.
+            distinct(candidates);
             candidates.sort(StagedDungeonLayoutCompiler::compareVerticalPreference);
 
             int placementPriority = sourceJigsaw.placementPriority();
@@ -408,7 +477,7 @@ public final class StagedDungeonLayoutCompiler {
                 }
                 sawCandidate = true;
                 DungeonGenerationProfiler.recordGraphCandidateElement();
-                String candidateTemplate = candidateTemplate(candidate);
+                String candidateTemplate = DungeonGenerationProfiler.isActive() ? candidateTemplate(candidate) : null;
                 DungeonGenerationProfiler.recordGraphCandidateTemplate(candidateTemplate);
 
                 for (Rotation rotation : Rotation.getShuffled(random)) {
@@ -462,7 +531,7 @@ public final class StagedDungeonLayoutCompiler {
                                 placement.groundLevelDelta()
                         );
                         pieces.add(piece);
-                        depths.put(piece, depth + 1);
+                        nodes.put(piece, new PieceNode(parent, depth + 1));
                         occupancy.add(placement.boundingBox());
                         DungeonGenerationProfiler.recordGraphAcceptedPiece();
                         DungeonGenerationProfiler.recordGraphCandidateTemplateAccepted(candidateTemplate);
@@ -514,6 +583,29 @@ public final class StagedDungeonLayoutCompiler {
     private static boolean isTrapTemplate(Identifier template) {
         return template.getNamespace().equals(ProceduralDungeon.MOD_ID)
                 && template.getPath().startsWith(TRAP_TEMPLATE_PREFIX);
+    }
+
+    /**
+     * Removes every repeat of an element in place, keeping its first position: a weighted shuffle lists heavier
+     * templates earlier, so the first occurrences keep the pool's preference without retrying a template.
+     */
+    private static List<StructurePoolElement> distinct(List<StructurePoolElement> elements) {
+        int kept = 0;
+        for (int i = 0; i < elements.size(); i++) {
+            StructurePoolElement element = elements.get(i);
+            boolean seen = false;
+            for (int previous = 0; previous < kept; previous++) {
+                if (elements.get(previous) == element) {
+                    seen = true;
+                    break;
+                }
+            }
+            if (!seen) {
+                elements.set(kept++, element);
+            }
+        }
+        elements.subList(kept, elements.size()).clear();
+        return elements;
     }
 
     private static String candidateTemplate(StructurePoolElement element) {
@@ -591,6 +683,11 @@ public final class StagedDungeonLayoutCompiler {
     }
 
     private record PendingPiece(StagedDungeonPieceSpec piece, int depth) {}
+
+    /**
+     * The piece a piece was attached to (null for the root) and its jigsaw depth.
+     */
+    private record PieceNode(StagedDungeonPieceSpec parent, int depth) {}
 
     private record RoomSocket(StagedDungeonPieceSpec parent, StructureTemplate.JigsawBlockInfo jigsaw, int depth) {
         private BlockPos attachmentPos() {

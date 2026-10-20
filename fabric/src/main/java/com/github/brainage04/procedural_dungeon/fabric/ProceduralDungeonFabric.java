@@ -37,7 +37,7 @@ public final class ProceduralDungeonFabric implements ModInitializer {
                 Registry.register(BuiltInRegistries.STRUCTURE_POOL_ELEMENT, ProceduralDungeon.of(name), type)));
         ModStructureTypes.registerAll(
                 (name, type) -> ModStructureTypes.setStagedDungeon(Registry.register(BuiltInRegistries.STRUCTURE_TYPE, ProceduralDungeon.of(name), type)),
-                (name, type) -> ModStructureTypes.setStagedDungeonMarker(Registry.register(BuiltInRegistries.STRUCTURE_PIECE, ProceduralDungeon.of(name), type)));
+                (name, type) -> Registry.register(BuiltInRegistries.STRUCTURE_PIECE, ProceduralDungeon.of(name), type));
         Registry.register(BuiltInRegistries.TICKET_TYPE, ProceduralDungeon.of(DungeonChunkTickets.TICKET_NAME), DungeonChunkTickets.TICKET_TYPE);
         AttachmentType<DungeonChunkLedger.Data> placed = AttachmentRegistry.create(
                 ProceduralDungeon.of(DungeonChunkLedger.ATTACHMENT_NAME), builder -> builder.persistent(DungeonChunkLedger.CODEC));
