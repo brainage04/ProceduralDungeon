@@ -8,7 +8,7 @@ Every dungeon is built from jigsaw pieces in one of 20 themes and 5 difficulty t
 
 ### Finding dungeons
 
-Dungeons generate naturally in the Overworld, the Nether, and the End, and are built in the background over a few seconds so world generation stays smooth.
+Dungeons generate naturally in the Overworld, the Nether, and the End, and are built in the background, a few pieces per tick within a small time budget, so world generation stays smooth. Building survives restarts and crashes: a dungeon that was interrupted carries on where it stopped and never places a room twice.
 
 - **Overworld and End:** a ruined surface entrance marks the spot. A scaffolding column runs down its shaft into the dungeon's start room. In the End, dungeons only generate on solid ground on the outer islands, never on the central dragon island.
 - **Nether:** dungeons are buried in the most solid terrain between y=24 and y=104 and have no surface entrance.
@@ -43,7 +43,7 @@ The boss and miniboss are placeholders for now: a wither skeleton and a vindicat
 All commands need operator permission (level 2).
 
 - `/generatedungeon <theme> <tier> <depth>` - builds a dungeon at your position without a surface entrance. The theme is one of the [theme names](docs/GAMEPLAY.md#themes), such as `procedural_dungeon:cobblestone`; tier is 1-5 and jigsaw depth is 1-20.
-- `/generatedungeonstatus` - shows how many dungeons are still being built in the current dimension.
+- `/generatedungeonstatus` - shows how many dungeons are still being built in the current dimension, how many pieces remain, and how many builds failed.
 - `/dungeonlocks list|nearest|reveal` - finds locked chests; `/dungeonlocks doors …` finds locked boss and miniboss doors; `/dungeonlocks keys …` finds the chests that hold keys. `reveal` highlights matches for 30 seconds.
 
 Diagnostic and development commands are listed in [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md#diagnostic-commands).

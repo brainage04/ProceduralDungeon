@@ -1,6 +1,6 @@
 # Finding dungeons
 
-Dungeons generate naturally in the Overworld, the Nether, and the End, and are built in the background over a few seconds so world generation stays smooth.
+Dungeons generate naturally in the Overworld, the Nether, and the End, and are built in the background, a few pieces per tick within a small time budget, so world generation stays smooth. Building survives restarts and crashes: a dungeon that was interrupted carries on where it stopped and never places a room twice.
 
 - **Overworld and End:** a ruined surface entrance (ruined archway, sunken courtyard, or ritual descent) marks the spot. A scaffolding column runs down its shaft into the dungeon's start room. In the End, dungeons only generate on solid ground on the outer islands (the End highlands and midlands, like End cities), never on the central dragon island.
 - **Nether:** dungeons are buried in the most solid terrain between y=24 and y=104 and have no surface entrance.
