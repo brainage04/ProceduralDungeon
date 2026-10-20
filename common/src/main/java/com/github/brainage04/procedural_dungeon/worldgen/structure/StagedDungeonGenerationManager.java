@@ -186,6 +186,11 @@ public final class StagedDungeonGenerationManager {
         StagedDungeonJob job = new StagedDungeonJob(UUID.randomUUID(), startChunk, pieces, liquidSettings, lockPlan, tracked, retain, options);
         data.jobs().put(job.id, job);
         data.jobChanged(job);
+        if (options.persistent()) {
+            // The record reaches the disk before any piece does. Otherwise a crash between the first placed piece and
+            // the next autosave leaves a half-built dungeon that no job knows about, and nothing ever finishes it.
+            level.getDataStorage().scheduleSave().join();
+        }
         return EnqueueResult.accepted(job.id);
     }
 

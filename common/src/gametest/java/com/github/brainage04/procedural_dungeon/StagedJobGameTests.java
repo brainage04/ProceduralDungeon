@@ -31,6 +31,8 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtAccounter;
+import net.minecraft.nbt.NbtIo;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.RegistryOps;
@@ -53,12 +55,20 @@ import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pools.StructurePoolElement;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import net.minecraft.world.level.levelgen.structure.templatesystem.LiquidSettings;
+import net.minecraft.world.level.saveddata.SavedData;
+import net.minecraft.world.level.saveddata.SavedDataType;
+import net.minecraft.world.level.storage.LevelResource;
+import net.minecraft.world.level.storage.SavedDataStorage;
 import net.minecraft.world.phys.AABB;
 
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -143,7 +153,47 @@ public final class StagedJobGameTests {
                         StagedJobGameTests::onlyACleanStopResumesFromTheCursor),
                 new TestCase(
                         "a_new_session_restarts_the_tick_window",
-                        StagedJobGameTests::aNewSessionRestartsTheTickWindow));
+                        StagedJobGameTests::aNewSessionRestartsTheTickWindow),
+                new TestCase(
+                        "new_job_records_reach_the_disk_before_any_piece",
+                        StagedJobGameTests::newJobRecordsReachTheDiskBeforeAnyPiece));
+    }
+
+    /**
+     * A new job's record is on disk when {@code enqueue} returns, before the job places anything: a
+     * crash before the next autosave must not leave a half-built dungeon no job knows about.
+     */
+    public static void newJobRecordsReachTheDiskBeforeAnyPiece(GameTestHelper helper) {
+        ServerLevel level = helper.getLevel();
+        StagedDungeonPieceSpec piece = smallPiece(level, region(level, 64));
+        JobOptions callerDriven = new JobOptions(true, true, 0L, 1.0);
+        UUID id =
+                StagedDungeonGenerationManager.enqueue(
+                                level,
+                                layout(List.of(piece), DungeonLockPlan.EMPTY),
+                                LiquidSettings.IGNORE_WATERLOGGING,
+                                callerDriven)
+                        .id();
+        Path file =
+                StagedDungeonSaveData.TYPE
+                        .id()
+                        .withSuffix(".dat")
+                        .resolveAgainst(
+                                DimensionType.getStorageFolder(
+                                                level.dimension(),
+                                                level.getServer().getWorldPath(LevelResource.ROOT))
+                                        .resolve("data"));
+        String onDisk;
+        try {
+            onDisk = NbtIo.readCompressed(file, NbtAccounter.unlimitedHeap()).toString();
+        } catch (IOException exception) {
+            onDisk = "unreadable: " + exception;
+        }
+        StagedDungeonGenerationManager.forget(level, piece.boundingBox());
+        helper.assertTrue(
+                onDisk.contains(id.toString()),
+                "The job's record must be on disk once enqueue returns");
+        helper.succeed();
     }
 
     /** P13: placing pieces only moves the cursor; the layout is encoded when the level saves. */
@@ -851,26 +901,40 @@ public final class StagedJobGameTests {
     }
 
     /**
-     * P08: a level that never had a job gets no staged data. The GameTest datapack adds an empty
-     * dimension for this, since other tests build natural dungeons in all three vanilla ones.
+     * P08: a level without staged data does not get any from ticks or read paths. The GameTest
+     * world is shared and slice C's natural-start tests build in the End, so the test makes the End
+     * look fresh: it swaps the storage's cached entry for "no data" and restores it after.
      */
     public static void levelsWithoutJobsKeepNoStagedData(GameTestHelper helper) {
-        ServerLevel empty =
-                helper.getLevel()
-                        .getServer()
-                        .getLevel(
-                                ResourceKey.create(
-                                        Registries.DIMENSION, ProceduralDungeon.of("no_jobs")));
-        helper.assertTrue(
-                empty != null, "The GameTest datapack must add procedural_dungeon:no_jobs");
+        ServerLevel end = helper.getLevel().getServer().getLevel(Level.END);
+        Map<SavedDataType<?>, Optional<SavedData>> cache = savedDataCache(end);
+        Optional<SavedData> previous = cache.put(StagedDungeonSaveData.TYPE, Optional.empty());
         helper.runAfterDelay(
                 20,
                 () -> {
+                    Optional<SavedData> after = cache.get(StagedDungeonSaveData.TYPE);
+                    if (previous == null) {
+                        cache.remove(StagedDungeonSaveData.TYPE);
+                    } else {
+                        cache.put(StagedDungeonSaveData.TYPE, previous);
+                    }
                     helper.assertTrue(
-                            empty.getDataStorage().get(StagedDungeonSaveData.TYPE) == null,
+                            after != null && after.isEmpty(),
                             "A level without jobs must not get staged job data");
                     helper.succeed();
                 });
+    }
+
+    @SuppressWarnings("unchecked")
+    private static Map<SavedDataType<?>, Optional<SavedData>> savedDataCache(ServerLevel level) {
+        try {
+            Field field = SavedDataStorage.class.getDeclaredField("cache");
+            field.setAccessible(true);
+            return (Map<SavedDataType<?>, Optional<SavedData>>) field.get(level.getDataStorage());
+        } catch (ReflectiveOperationException exception) {
+            throw new AssertionError(
+                    "SavedDataStorage must keep its cache in a field named cache", exception);
+        }
     }
 
     /**

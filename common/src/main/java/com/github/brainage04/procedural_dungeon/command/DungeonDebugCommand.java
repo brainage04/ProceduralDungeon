@@ -24,14 +24,9 @@ import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.IdentifierArgument;
 import net.minecraft.commands.synchronization.SuggestionProviders;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtIo;
-import net.minecraft.nbt.NbtOps;
-import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.FileUtil;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.status.ChunkStatus;
@@ -41,7 +36,6 @@ import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.levelgen.structure.templatesystem.LiquidSettings;
 import net.minecraft.world.level.storage.LevelResource;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -261,7 +255,11 @@ public final class DungeonDebugCommand {
         return layout.get().pieces().size();
     }
 
-    /** Writes only this level's staged job record, so the record is ahead of the chunks on disk. */
+    /**
+     * Writes this level's saved data, including the staged job record, but not its chunks, so the
+     * record is ahead of the chunks on disk. It goes through the level's data storage, which orders
+     * the write after any autosave still in flight.
+     */
     private static int saveProgress(CommandSourceStack source) {
         ServerLevel level = source.getLevel();
         StagedDungeonSaveData data = level.getDataStorage().get(StagedDungeonSaveData.TYPE);
@@ -269,16 +267,8 @@ public final class DungeonDebugCommand {
             source.sendFailure(Component.literal("This level has no staged dungeon record."));
             return 0;
         }
-        CompoundTag tag = new CompoundTag();
-        tag.put(
-                "data",
-                StagedDungeonSaveData.TYPE
-                        .codec()
-                        .encodeStart(
-                                level.registryAccess().createSerializationContext(NbtOps.INSTANCE),
-                                data)
-                        .getOrThrow());
-        NbtUtils.addCurrentDataVersion(tag);
+        data.setDirty();
+        level.getDataStorage().scheduleSave().join();
         Path file =
                 StagedDungeonSaveData.TYPE
                         .id()
@@ -288,14 +278,6 @@ public final class DungeonDebugCommand {
                                                 level.dimension(),
                                                 level.getServer().getWorldPath(LevelResource.ROOT))
                                         .resolve("data"));
-        try {
-            FileUtil.createDirectoriesSafe(file.getParent());
-            NbtIo.writeCompressed(tag, file);
-        } catch (IOException exception) {
-            source.sendFailure(
-                    Component.literal("Could not write " + file + ": " + exception.getMessage()));
-            return 0;
-        }
         source.sendSuccess(() -> Component.literal("Wrote " + file + "."), true);
         return 1;
     }

@@ -1,0 +1,7 @@
+{
+  "environment": "procedural_dungeon:staged_new_job_records_reach_the_disk_before_any_piece",
+  "structure": "minecraftmodconventions:empty",
+  "max_ticks": 100,
+  "type": "minecraft:function",
+  "function": "procedural_dungeon:new_job_records_reach_the_disk_before_any_piece"
+}

@@ -23,12 +23,12 @@ These commands need operator permission (level 2). Use a disposable world: they 
 - `/dungeondebug cancel <job>` - stops a running build and releases its chunks; placed rooms stay.
 - `/dungeondebug releaseforced` - for worlds upgraded from PD 1.0.0: removes the forced chunk tickets old versions left behind inside current builds and built natural dungeons, and lists any other level-32 forced chunks (not released, since their owner is unknown). Vanilla `/forceload` chunks (level 31) are never touched.
 - `/dungeondebug build <theme> <tier> <depth>` - like `/generatedungeon`, but the build's record is kept after it completes, for `verify`.
-- `/dungeondebug saveprogress` / `savechunks` - write only the build records, or only the chunks, of the current dimension; used with `kill -9` to test crash recovery.
+- `/dungeondebug saveprogress` / `savechunks` - write only the dimension's saved data (build records included), or only its chunks; used with `kill -9` to test crash recovery.
 - `/dungeondebug verify` - checks every kept build: every placed (piece, chunk) part has its marker, no dungeon guardian or frame exists twice, and every planned lock is on a closed, locked door. Loads chunks synchronously; development only.
 
 ## Staged building and crash safety
 
-- A build stores its layout once and a cursor; its record is written with the level's normal saves.
+- A build stores its layout once and a cursor. A new build's record is written to disk before it places anything (so a crash cannot leave a half-built dungeon that no build knows about); after that it is written with the level's normal saves.
 - Each piece is pasted one chunk at a time; the chunk gets a `procedural_dungeon:placed` marker (a Fabric data attachment or NeoForge attachment) in the same step, so the chunk file holds the blocks and the marker together.
 - After a clean stop a build resumes from its cursor; after a crash it walks every piece again and skips every part whose marker is present, so looted chests, opened doors, killed guardians and player edits are never undone. Guardians and puzzle frames carry `procedural_dungeon.job/piece/marker` tags and are never spawned twice.
 - Builds load chunks with Procedural Dungeon's own ticket (load only, never saved, shared between builds); at most 4 builds per dimension hold chunks at once, each keeping about 16 chunks ahead of its cursor.

@@ -136,4 +136,12 @@ public final class StagedJobFabricGameTest {
     public void aNewSessionRestartsTheTickWindow(GameTestHelper helper) {
         StagedJobGameTests.aNewSessionRestartsTheTickWindow(helper);
     }
+
+    @GameTest(
+            maxTicks = 100,
+            environment =
+                    "procedural_dungeon:staged_new_job_records_reach_the_disk_before_any_piece")
+    public void newJobRecordsReachTheDiskBeforeAnyPiece(GameTestHelper helper) {
+        StagedJobGameTests.newJobRecordsReachTheDiskBeforeAnyPiece(helper);
+    }
 }
