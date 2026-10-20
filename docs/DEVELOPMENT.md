@@ -6,6 +6,8 @@
 
 Run both loaders' server GameTests with `./gradlew runAllGameTests`. Client GameTests are disabled because the mod has no client fixtures.
 
+`./gradlew :fabric:publishAllPublicationsToLocalRepository` publishes the Fabric JAR to `build/local-repo` for mods that compile against the [public API](API.md).
+
 ## Diagnostic commands
 
 These commands need operator permission (level 2). Use a disposable world: they place structures, change force-loaded chunks, reload datapacks, or write structure files.
