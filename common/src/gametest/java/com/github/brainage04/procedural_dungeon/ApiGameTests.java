@@ -166,8 +166,8 @@ public final class ApiGameTests {
                                                 + " build"))
                 .thenWaitUntil(
                         () -> {
-                            built[0].advance(ADVANCE_BUDGET_NANOS);
-                            helper.assertTrue(built[0].complete(), "advance must finish the build");
+                            advanceUntilComplete(
+                                    helper, level, built[0], "advance must finish the build");
                         })
                 .thenExecute(
                         () -> {
@@ -285,8 +285,8 @@ public final class ApiGameTests {
                         })
                 .thenWaitUntil(
                         () -> {
-                            handles[0].advance(ADVANCE_BUDGET_NANOS);
-                            helper.assertTrue(handles[0].complete(), "The build must complete");
+                            advanceUntilComplete(
+                                    helper, level, handles[0], "The build must complete");
                         })
                 .thenExecute(
                         () -> {
@@ -313,9 +313,8 @@ public final class ApiGameTests {
                         })
                 .thenWaitUntil(
                         () -> {
-                            handles[1].advance(ADVANCE_BUDGET_NANOS);
-                            helper.assertTrue(
-                                    handles[1].complete(), "The reset build must complete");
+                            advanceUntilComplete(
+                                    helper, level, handles[1], "The reset build must complete");
                         })
                 .thenExecute(
                         () -> {
@@ -346,6 +345,29 @@ public final class ApiGameTests {
                                     "forget must remove the guardians");
                         })
                 .thenSucceed();
+    }
+
+    /**
+     * One tick of a caller-driven build: advances it and fails (so the wait goes on) until it is
+     * complete, saying how far it got and whether it used its budget or waited for chunks.
+     */
+    private static void advanceUntilComplete(
+            GameTestHelper helper, ServerLevel level, DungeonHandle handle, String message) {
+        long spent = handle.advance(ADVANCE_BUDGET_NANOS);
+        helper.assertTrue(
+                handle.complete(),
+                "%s: %s, %d/%d pieces, %.1f ms of %.1f ms spent this tick, %d chunks held%s"
+                        .formatted(
+                                message,
+                                handle.state(),
+                                handle.placedPieces(),
+                                handle.totalPieces(),
+                                spent / 1_000_000.0,
+                                ADVANCE_BUDGET_NANOS / 1_000_000.0,
+                                StagedDungeonGenerationManager.heldChunks(level, handle.id()),
+                                handle.failure()
+                                        .map(failure -> ", failure: " + failure)
+                                        .orElse("")));
     }
 
     private static @Nullable Mob boss(ServerLevel level, BoundingBox bounds) {
