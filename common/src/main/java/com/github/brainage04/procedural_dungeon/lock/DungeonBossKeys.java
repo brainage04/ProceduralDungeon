@@ -27,19 +27,21 @@ import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.phys.Vec3;
 
 /**
- * Keeps exactly one valid Boss Key per boss door and replaces a destroyed one. The door's lock record holds the id of
- * its current key ({@link DungeonLockSaveData.BossKey}); the hooks below report the ways a key can leave the world, and
- * when the current key is among them the record draws a new id and the vault gets one new key. See the README.
+ * Keeps exactly one valid Boss Key per boss door and replaces a destroyed one. The door's lock
+ * record holds the id of its current key ({@link DungeonLockSaveData.BossKey}); the hooks below
+ * report the ways a key can leave the world, and when the current key is among them the record
+ * draws a new id and the vault gets one new key. See the README.
  */
 public final class DungeonBossKeys {
     /**
-     * How long a key taken out of a creative inventory slot may stay out of sight before it counts as deleted.
+     * How long a key taken out of a creative inventory slot may stay out of sight before it counts
+     * as deleted.
      */
     public static final int CREATIVE_GRACE_TICKS = 600;
-    /**
-     * How far from a boss door {@code /dungeon bosskey reissue} looks for it.
-     */
+
+    /** How far from a boss door {@code /dungeon bosskey reissue} looks for it. */
     public static final int REISSUE_RANGE = 256;
+
     private static final double NOTICE_RANGE = 64.0;
 
     private static final Map<UUID, PendingCreativeLoss> PENDING_CREATIVE = new HashMap<>();
@@ -47,9 +49,9 @@ public final class DungeonBossKeys {
     private DungeonBossKeys() {}
 
     /**
-     * An item entity is leaving the world. Destroying reasons (damage, the void, despawning, {@code /kill}) destroy a
-     * key still in its stack; pickup, hoppers and merging empty the stack first, and unloading or changing dimension do
-     * not destroy.
+     * An item entity is leaving the world. Destroying reasons (damage, the void, despawning, {@code
+     * /kill}) destroy a key still in its stack; pickup, hoppers and merging empty the stack first,
+     * and unloading or changing dimension do not destroy.
      */
     public static void onItemEntityRemoved(ItemEntity entity, Entity.RemovalReason reason) {
         if (!reason.shouldDestroy() || !(entity.level() instanceof ServerLevel level)) {
@@ -62,19 +64,19 @@ public final class DungeonBossKeys {
     }
 
     /**
-     * Snapshot of the bound key ids in a container, for comparing before and after a deletion such as {@code /clear}.
+     * Snapshot of the bound key ids in a container, for comparing before and after a deletion such
+     * as {@code /clear}.
      */
     public static Set<UUID> boundIds(Container container) {
         Set<UUID> ids = new HashSet<>();
         for (int slot = 0; slot < container.getContainerSize(); slot++) {
-            forEachBoundKey(container.getItem(slot), key -> DungeonKeyType.keyId(key).ifPresent(ids::add));
+            forEachBoundKey(
+                    container.getItem(slot), key -> DungeonKeyType.keyId(key).ifPresent(ids::add));
         }
         return ids;
     }
 
-    /**
-     * Keys whose ids were in {@code before} and are no longer in the container were deleted.
-     */
+    /** Keys whose ids were in {@code before} and are no longer in the container were deleted. */
     public static void deletedFrom(MinecraftServer server, Set<UUID> before, Container container) {
         if (before.isEmpty()) {
             return;
@@ -88,24 +90,37 @@ public final class DungeonBossKeys {
     }
 
     /**
-     * A creative player's inventory slot changed through the creative screen. A key that leaves a slot may be on the
-     * screen's cursor on its way to another slot, so it counts as deleted only if it neither comes back nor gets
-     * dropped within {@link #CREATIVE_GRACE_TICKS}.
+     * A creative player's inventory slot changed through the creative screen. A key that leaves a
+     * slot may be on the screen's cursor on its way to another slot, so it counts as deleted only
+     * if it neither comes back nor gets dropped within {@link #CREATIVE_GRACE_TICKS}.
      */
     public static void onCreativeSlot(ServerPlayer player, ItemStack previous, ItemStack next) {
         forEachBoundKey(next, key -> DungeonKeyType.keyId(key).ifPresent(PENDING_CREATIVE::remove));
         Set<UUID> kept = new HashSet<>();
         forEachBoundKey(next, key -> DungeonKeyType.keyId(key).ifPresent(kept::add));
-        forEachBoundKey(previous, key -> DungeonKeyType.keyId(key).ifPresent(id -> {
-            if (!kept.contains(id)) {
-                PENDING_CREATIVE.put(id, new PendingCreativeLoss(player.getUUID(), player.level().getServer().overworld().getGameTime() + CREATIVE_GRACE_TICKS));
-            }
-        }));
+        forEachBoundKey(
+                previous,
+                key ->
+                        DungeonKeyType.keyId(key)
+                                .ifPresent(
+                                        id -> {
+                                            if (!kept.contains(id)) {
+                                                PENDING_CREATIVE.put(
+                                                        id,
+                                                        new PendingCreativeLoss(
+                                                                player.getUUID(),
+                                                                player.level()
+                                                                                .getServer()
+                                                                                .overworld()
+                                                                                .getGameTime()
+                                                                        + CREATIVE_GRACE_TICKS));
+                                            }
+                                        }));
     }
 
     /**
-     * Settles creative removals whose grace period ended: a key not back in the player's inventory, ender chest, open
-     * container or cursor counts as deleted.
+     * Settles creative removals whose grace period ended: a key not back in the player's inventory,
+     * ender chest, open container or cursor counts as deleted.
      */
     public static void tick(MinecraftServer server) {
         if (PENDING_CREATIVE.isEmpty()) {
@@ -113,7 +128,9 @@ public final class DungeonBossKeys {
         }
         long now = server.overworld().getGameTime();
         List<UUID> lost = new ArrayList<>();
-        for (Iterator<Map.Entry<UUID, PendingCreativeLoss>> it = PENDING_CREATIVE.entrySet().iterator(); it.hasNext(); ) {
+        for (Iterator<Map.Entry<UUID, PendingCreativeLoss>> it =
+                        PENDING_CREATIVE.entrySet().iterator();
+                it.hasNext(); ) {
             Map.Entry<UUID, PendingCreativeLoss> entry = it.next();
             if (entry.getValue().deadline() > now) {
                 continue;
@@ -132,19 +149,23 @@ public final class DungeonBossKeys {
     }
 
     private static boolean holds(ServerPlayer player, UUID id) {
-        if (boundIds(player.getInventory()).contains(id) || boundIds(player.getEnderChestInventory()).contains(id)) {
+        if (boundIds(player.getInventory()).contains(id)
+                || boundIds(player.getEnderChestInventory()).contains(id)) {
             return true;
         }
         Set<UUID> open = new HashSet<>();
         for (Slot slot : player.containerMenu.slots) {
             forEachBoundKey(slot.getItem(), key -> DungeonKeyType.keyId(key).ifPresent(open::add));
         }
-        forEachBoundKey(player.containerMenu.getCarried(), key -> DungeonKeyType.keyId(key).ifPresent(open::add));
+        forEachBoundKey(
+                player.containerMenu.getCarried(),
+                key -> DungeonKeyType.keyId(key).ifPresent(open::add));
         return open.contains(id);
     }
 
     /**
-     * Every bound key in {@code stack} was destroyed, including keys inside shulker boxes and bundles.
+     * Every bound key in {@code stack} was destroyed, including keys inside shulker boxes and
+     * bundles.
      */
     public static void destroyed(MinecraftServer server, ItemStack stack) {
         List<ItemStack> keys = new ArrayList<>();
@@ -159,8 +180,8 @@ public final class DungeonBossKeys {
     }
 
     /**
-     * The key carrying {@code id} is gone. If it is a boss door's current key, the door's record draws a new id and
-     * the vault gets one new key; a retired id changes nothing.
+     * The key carrying {@code id} is gone. If it is a boss door's current key, the door's record
+     * draws a new id and the vault gets one new key; a retired id changes nothing.
      */
     private static void destroyedId(MinecraftServer server, UUID id) {
         for (ServerLevel level : server.getAllLevels()) {
@@ -172,44 +193,56 @@ public final class DungeonBossKeys {
 
     private static boolean destroyedIn(ServerLevel level, UUID id) {
         DungeonLockSaveData data = DungeonLockManager.existingData(level);
-        Optional<DungeonLockSaveData.BossKey> record = data == null ? Optional.empty() : data.bossKeyById(id);
+        Optional<DungeonLockSaveData.BossKey> record =
+                data == null ? Optional.empty() : data.bossKeyById(id);
         record.ifPresent(current -> reissue(level, data, current));
         return record.isPresent();
     }
 
     /**
-     * Operator remedy for a key lost where no hook could see it (a crash rollback, a corrupted file): reissues the key
-     * of the issued boss door nearest to {@code near}, within {@link #REISSUE_RANGE}. Returns the vault that got it.
+     * Operator remedy for a key lost where no hook could see it (a crash rollback, a corrupted
+     * file): reissues the key of the issued boss door nearest to {@code near}, within {@link
+     * #REISSUE_RANGE}. Returns the vault that got it.
      */
     public static Optional<BlockPos> reissueNear(ServerLevel level, BlockPos near) {
         DungeonLockSaveData data = DungeonLockManager.existingData(level);
         if (data == null) {
             return Optional.empty();
         }
-        Optional<DungeonLockSaveData.BossKey> record = data.bossKeys().stream()
-                .filter(candidate -> candidate.keyId().isPresent())
-                .filter(candidate -> BlockPos.of(candidate.door()).closerThan(near, REISSUE_RANGE))
-                .min(Comparator.comparingDouble(candidate -> BlockPos.of(candidate.door()).distSqr(near)));
+        Optional<DungeonLockSaveData.BossKey> record =
+                data.bossKeys().stream()
+                        .filter(candidate -> candidate.keyId().isPresent())
+                        .filter(
+                                candidate ->
+                                        BlockPos.of(candidate.door())
+                                                .closerThan(near, REISSUE_RANGE))
+                        .min(
+                                Comparator.comparingDouble(
+                                        candidate -> BlockPos.of(candidate.door()).distSqr(near)));
         record.ifPresent(current -> reissue(level, data, current));
         return record.map(current -> BlockPos.of(current.vault()));
     }
 
-    private static void reissue(ServerLevel level, DungeonLockSaveData data, DungeonLockSaveData.BossKey record) {
+    private static void reissue(
+            ServerLevel level, DungeonLockSaveData data, DungeonLockSaveData.BossKey record) {
         UUID id = data.issueBossKey(record.door(), record.vault());
         BlockPos vault = BlockPos.of(record.vault());
         deliver(level, vault, DungeonKeyType.BOSS.createStack(id, level.dimension()));
         BlockPos door = BlockPos.of(record.door());
-        Component notice = Component.literal("The Boss Key was destroyed. A new one waits in the boss key vault.");
+        Component notice =
+                Component.literal(
+                        "The Boss Key was destroyed. A new one waits in the boss key vault.");
         for (ServerPlayer player : level.players()) {
-            if (player.blockPosition().closerThan(door, NOTICE_RANGE) || player.blockPosition().closerThan(vault, NOTICE_RANGE)) {
+            if (player.blockPosition().closerThan(door, NOTICE_RANGE)
+                    || player.blockPosition().closerThan(vault, NOTICE_RANGE)) {
                 player.sendSystemMessage(notice);
             }
         }
     }
 
     /**
-     * Puts {@code key} into the container at {@code pos}, or drops it there with no despawn timer when the container
-     * is gone or full.
+     * Puts {@code key} into the container at {@code pos}, or drops it there with no despawn timer
+     * when the container is gone or full.
      */
     static void deliver(ServerLevel level, BlockPos pos, ItemStack key) {
         if (level.getBlockEntity(pos) instanceof Container container) {

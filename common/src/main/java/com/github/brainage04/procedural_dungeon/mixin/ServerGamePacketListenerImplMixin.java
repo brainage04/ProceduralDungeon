@@ -12,25 +12,31 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 /**
- * Creative players can delete a Boss Key from the creative screen; the slot updates it sends are where that shows.
+ * Creative players can delete a Boss Key from the creative screen; the slot updates it sends are
+ * where that shows.
  */
 @Mixin(ServerGamePacketListenerImpl.class)
 public class ServerGamePacketListenerImplMixin {
-    @Shadow
-    public ServerPlayer player;
+    @Shadow public ServerPlayer player;
 
     @Inject(
             method = "handleSetCreativeModeSlot",
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/network/protocol/PacketUtils;ensureRunningOnSameThread(Lnet/minecraft/network/protocol/Packet;Lnet/minecraft/network/PacketListener;Lnet/minecraft/server/level/ServerLevel;)V", shift = At.Shift.AFTER)
-    )
-    private void proceduralDungeon$watchCreativeKeys(ServerboundSetCreativeModeSlotPacket packet, CallbackInfo ci) {
+            at =
+                    @At(
+                            value = "INVOKE",
+                            target =
+                                    "Lnet/minecraft/network/protocol/PacketUtils;ensureRunningOnSameThread(Lnet/minecraft/network/protocol/Packet;Lnet/minecraft/network/PacketListener;Lnet/minecraft/server/level/ServerLevel;)V",
+                            shift = At.Shift.AFTER))
+    private void proceduralDungeon$watchCreativeKeys(
+            ServerboundSetCreativeModeSlotPacket packet, CallbackInfo ci) {
         if (!this.player.hasInfiniteMaterials()) {
             return;
         }
         int slot = packet.slotNum();
-        ItemStack previous = slot >= 1 && slot < this.player.inventoryMenu.slots.size()
-                ? this.player.inventoryMenu.getSlot(slot).getItem().copy()
-                : ItemStack.EMPTY;
+        ItemStack previous =
+                slot >= 1 && slot < this.player.inventoryMenu.slots.size()
+                        ? this.player.inventoryMenu.getSlot(slot).getItem().copy()
+                        : ItemStack.EMPTY;
         DungeonBossKeys.onCreativeSlot(this.player, previous, packet.itemStack());
     }
 }

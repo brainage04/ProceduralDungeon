@@ -17,30 +17,38 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-/**
- * {@code /clear} deletes items from a player's inventory; a Boss Key it deletes is destroyed.
- */
+/** {@code /clear} deletes items from a player's inventory; a Boss Key it deletes is destroyed. */
 @Mixin(Inventory.class)
 public class BossKeyInventoryMixin {
-    @Shadow
-    @Final
-    public Player player;
+    @Shadow @Final public Player player;
 
-    @Unique
-    private Set<UUID> proceduralDungeon$keysBeforeClear = Set.of();
+    @Unique private Set<UUID> proceduralDungeon$keysBeforeClear = Set.of();
 
     @Inject(method = "clearOrCountMatchingItems", at = @At("HEAD"))
-    private void proceduralDungeon$noteKeys(Predicate<ItemStack> predicate, int maxCount, Container craftSlots, CallbackInfoReturnable<Integer> cir) {
+    private void proceduralDungeon$noteKeys(
+            Predicate<ItemStack> predicate,
+            int maxCount,
+            Container craftSlots,
+            CallbackInfoReturnable<Integer> cir) {
         // A max count of 0 only counts.
-        this.proceduralDungeon$keysBeforeClear = maxCount != 0 && this.player.level() instanceof ServerLevel
-                ? DungeonBossKeys.boundIds((Inventory) (Object) this)
-                : Set.of();
+        this.proceduralDungeon$keysBeforeClear =
+                maxCount != 0 && this.player.level() instanceof ServerLevel
+                        ? DungeonBossKeys.boundIds((Inventory) (Object) this)
+                        : Set.of();
     }
 
     @Inject(method = "clearOrCountMatchingItems", at = @At("RETURN"))
-    private void proceduralDungeon$reissueClearedKeys(Predicate<ItemStack> predicate, int maxCount, Container craftSlots, CallbackInfoReturnable<Integer> cir) {
-        if (!this.proceduralDungeon$keysBeforeClear.isEmpty() && this.player.level() instanceof ServerLevel level) {
-            DungeonBossKeys.deletedFrom(level.getServer(), this.proceduralDungeon$keysBeforeClear, (Inventory) (Object) this);
+    private void proceduralDungeon$reissueClearedKeys(
+            Predicate<ItemStack> predicate,
+            int maxCount,
+            Container craftSlots,
+            CallbackInfoReturnable<Integer> cir) {
+        if (!this.proceduralDungeon$keysBeforeClear.isEmpty()
+                && this.player.level() instanceof ServerLevel level) {
+            DungeonBossKeys.deletedFrom(
+                    level.getServer(),
+                    this.proceduralDungeon$keysBeforeClear,
+                    (Inventory) (Object) this);
         }
         this.proceduralDungeon$keysBeforeClear = Set.of();
     }
