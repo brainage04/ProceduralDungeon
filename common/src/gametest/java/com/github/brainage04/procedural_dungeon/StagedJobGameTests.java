@@ -27,6 +27,7 @@ import com.github.brainage04.procedural_dungeon.worldgen.structure.VariantSingle
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.nbt.CompoundTag;
@@ -35,6 +36,7 @@ import net.minecraft.nbt.NbtAccounter;
 import net.minecraft.nbt.NbtIo;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
@@ -60,6 +62,8 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pools.StructurePoolElement;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import net.minecraft.world.level.levelgen.structure.templatesystem.LiquidSettings;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraft.world.level.saveddata.SavedDataType;
 import net.minecraft.world.level.storage.LevelResource;
@@ -77,6 +81,11 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -156,7 +165,65 @@ public final class StagedJobGameTests {
                         StagedJobGameTests::aNewSessionRestartsTheTickWindow),
                 new TestCase(
                         "new_job_records_reach_the_disk_before_any_piece",
-                        StagedJobGameTests::newJobRecordsReachTheDiskBeforeAnyPiece));
+                        StagedJobGameTests::newJobRecordsReachTheDiskBeforeAnyPiece),
+                new TestCase(
+                        "template_block_lookups_are_thread_safe",
+                        StagedJobGameTests::templateBlockLookupsAreThreadSafe));
+    }
+
+    /**
+     * Layouts compile on worldgen workers while the server thread places the same templates, and
+     * both look blocks up by type in the template's palette. Fresh copies of a dungeon template are
+     * queried by several threads at once; none may throw.
+     */
+    public static void templateBlockLookupsAreThreadSafe(GameTestHelper helper) {
+        ServerLevel level = helper.getLevel();
+        StagedDungeonPieceSpec piece = smallPiece(level, region(level, 64));
+        Identifier id = ((VariantSinglePoolElement) piece.element()).templateLocation();
+        CompoundTag saved = level.getStructureManager().getOrCreate(id).save(new CompoundTag());
+        List<Block> types = BuiltInRegistries.BLOCK.stream().limit(128).toList();
+        StructurePlaceSettings settings = new StructurePlaceSettings();
+        int threads = 8;
+        ExecutorService pool = Executors.newFixedThreadPool(threads);
+        String failure = null;
+        try {
+            for (int round = 0; round < 200 && failure == null; round++) {
+                StructureTemplate template = new StructureTemplate();
+                template.load(level.registryAccess().lookupOrThrow(Registries.BLOCK), saved);
+                CountDownLatch start = new CountDownLatch(1);
+                List<Future<?>> lookups = new ArrayList<>();
+                for (int thread = 0; thread < threads; thread++) {
+                    int offset = thread * types.size() / threads;
+                    lookups.add(
+                            pool.submit(
+                                    () -> {
+                                        start.await();
+                                        for (int i = 0; i < types.size(); i++) {
+                                            template.filterBlocks(
+                                                    BlockPos.ZERO,
+                                                    settings,
+                                                    types.get((offset + i) % types.size()));
+                                        }
+                                        return null;
+                                    }));
+                }
+                start.countDown();
+                for (Future<?> lookup : lookups) {
+                    try {
+                        lookup.get();
+                    } catch (ExecutionException exception) {
+                        failure = "round " + round + ": " + exception.getCause();
+                    } catch (InterruptedException exception) {
+                        Thread.currentThread().interrupt();
+                        failure = "interrupted";
+                    }
+                }
+            }
+        } finally {
+            pool.shutdownNow();
+        }
+        helper.assertTrue(failure == null, "Concurrent palette lookups must not throw: " + failure);
+        helper.succeed();
     }
 
     /**

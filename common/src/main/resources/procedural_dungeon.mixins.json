@@ -19,7 +19,8 @@
 		"ServerExplosionMixin",
 		"ServerGamePacketListenerImplMixin",
 		"ServerPlayerMixin",
-		"StructureCheckMixin"
+		"StructureCheckMixin",
+		"StructureTemplatePaletteMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

@@ -1,0 +1,7 @@
+{
+  "environment": "procedural_dungeon:staged_template_block_lookups_are_thread_safe",
+  "structure": "minecraftmodconventions:empty",
+  "max_ticks": 100,
+  "type": "minecraft:function",
+  "function": "procedural_dungeon:template_block_lookups_are_thread_safe"
+}

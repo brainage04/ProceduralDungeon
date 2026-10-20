@@ -34,5 +34,5 @@ These commands need operator permission (level 2). Use a disposable world: they 
 - Builds load chunks with Procedural Dungeon's own ticket (load only, never saved, shared between builds); at most 4 builds per dimension hold chunks at once, each keeping about 16 chunks ahead of its cursor.
 - A chunk where players spent more than a minute while the build waited for it is left alone, which protects player builds from a delayed build.
 - The time budget is half of what the last 20 ticks left of the tick-rate target, measured after Procedural Dungeon's own work, 2-20 ms, shared round-robin across dimensions and builds. API builds with a caller-driven budget are left to their caller.
-- `/generatedungeon` and API plans compile their layout on a worldgen worker, as natural generation does, so they do not stall the tick.
+- `/generatedungeon` and API plans compile their layout on a worldgen worker, as natural generation does, so they do not stall the tick. Because workers and the server thread read the same templates, a mixin makes each template palette's per-block cache a concurrent map (vanilla's `HashMap` threw `ConcurrentModificationException` and crashed the server).
 - `placeSynchronously` (benchmarks, `/testdungeonvariants`) generates chunks on the server thread and is for operators only; the playtest uses the staged path.

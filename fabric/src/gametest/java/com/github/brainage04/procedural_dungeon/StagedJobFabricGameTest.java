@@ -144,4 +144,11 @@ public final class StagedJobFabricGameTest {
     public void newJobRecordsReachTheDiskBeforeAnyPiece(GameTestHelper helper) {
         StagedJobGameTests.newJobRecordsReachTheDiskBeforeAnyPiece(helper);
     }
+
+    @GameTest(
+            maxTicks = 100,
+            environment = "procedural_dungeon:staged_template_block_lookups_are_thread_safe")
+    public void templateBlockLookupsAreThreadSafe(GameTestHelper helper) {
+        StagedJobGameTests.templateBlockLookupsAreThreadSafe(helper);
+    }
 }
