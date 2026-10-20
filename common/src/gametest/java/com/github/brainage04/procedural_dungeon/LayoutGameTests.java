@@ -5,6 +5,7 @@ import com.github.brainage04.procedural_dungeon.dungeon.DungeonSpecLoader;
 import com.github.brainage04.procedural_dungeon.dungeon.DungeonTheme;
 import com.github.brainage04.procedural_dungeon.dungeon.DungeonTier;
 import com.github.brainage04.procedural_dungeon.guardian.DungeonGuardian;
+import com.github.brainage04.procedural_dungeon.lock.DungeonKeyType;
 import com.github.brainage04.procedural_dungeon.lock.DungeonLockManager;
 import com.github.brainage04.procedural_dungeon.util.RegistryKeyUtils;
 import com.github.brainage04.procedural_dungeon.worldgen.structure.DungeonGenerationProfiler;
@@ -520,14 +521,11 @@ public final class LayoutGameTests {
                                                                     .getPath()
                                                                     .startsWith("boss_room/")),
                             "The boss room must be built with its two chests: " + label);
+                    // The vault is rolled from its tiered loot when placed, so its Boss Key can
+                    // carry the door's key id.
                     helper.assertTrue(
-                            chestLoot(level, vaultBox).stream()
-                                    .anyMatch(
-                                            loot ->
-                                                    loot.identifier()
-                                                            .getPath()
-                                                            .startsWith("boss_key_vault/")),
-                            "The vault must be built with the boss key chest: " + label);
+                            boundBossKeys(level, vaultBox) == 1,
+                            "The vault must be built holding one bound Boss Key: " + label);
                     BlockPos door =
                             BlockPos.betweenClosedStream(bossBox)
                                     .filter(pos -> level.getBlockState(pos).is(Blocks.IRON_DOOR))
@@ -816,5 +814,23 @@ public final class LayoutGameTests {
             }
         }
         return lootTables;
+    }
+
+    /** Boss Keys carrying a key id in the chests inside {@code box}. */
+    private static int boundBossKeys(ServerLevel level, BoundingBox box) {
+        int keys = 0;
+        for (BlockPos pos :
+                BlockPos.betweenClosed(
+                        box.minX(), box.minY(), box.minZ(), box.maxX(), box.maxY(), box.maxZ())) {
+            if (level.getBlockEntity(pos) instanceof ChestBlockEntity chest) {
+                for (int slot = 0; slot < chest.getContainerSize(); slot++) {
+                    if (DungeonKeyType.BOSS.matches(chest.getItem(slot))
+                            && DungeonKeyType.keyId(chest.getItem(slot)).isPresent()) {
+                        keys++;
+                    }
+                }
+            }
+        }
+        return keys;
     }
 }

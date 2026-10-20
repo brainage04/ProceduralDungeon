@@ -228,8 +228,12 @@ public final class ApiGameTests {
                             level.addFreshEntity(burnt);
                             burnt.kill(level);
                             helper.assertTrue(
-                                    RECORDER.keysDestroyed.contains(handle.id() + " boss"),
-                                    "Listeners must hear that the boss key was destroyed");
+                                    RECORDER.keysDestroyed.contains(
+                                            handle.id()
+                                                    + " "
+                                                    + DungeonKeyType.BOSS.getSerializedName()),
+                                    "Listeners must hear that the boss key was destroyed: "
+                                            + RECORDER.keysDestroyed);
 
                             ServerPlayer player = helper.makeMockServerPlayerInLevel();
                             try {
@@ -277,8 +281,11 @@ public final class ApiGameTests {
                 .thenExecute(
                         () -> {
                             StagedJobGameTests.releaseChunks(level, built[0].bounds());
+                            // A failed step above leaves the second build unset.
                             for (DungeonHandle handle : built) {
-                                ProceduralDungeonApi.forget(level, handle.bounds());
+                                if (handle != null) {
+                                    ProceduralDungeonApi.forget(level, handle.bounds());
+                                }
                             }
                         })
                 .thenSucceed();

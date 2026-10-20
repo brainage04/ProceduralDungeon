@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.LockSupport;
 import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -935,8 +936,10 @@ public final class DungeonGameTestSuite {
     public static void framePuzzleOpensWhenEveryArrowPointsUp(GameTestHelper helper) {
         ServerLevel level = helper.getLevel();
         PlacedPuzzle room = placePuzzle(helper, DungeonPuzzleRooms.Puzzle.FRAMES, Rotation.CLOCKWISE_90);
-        // Entities join a freshly loaded chunk a few ticks after it loads.
-        helper.runAfterDelay(20, () -> framesPlaced(helper, level, room));
+        whenTicking(helper, room, () -> {
+            // Entities join a freshly loaded chunk a few ticks after it loads.
+            helper.runAfterDelay(20, () -> framesPlaced(helper, level, room));
+        });
     }
 
     private static void framesPlaced(GameTestHelper helper, ServerLevel level, PlacedPuzzle room) {
@@ -968,20 +971,22 @@ public final class DungeonGameTestSuite {
     public static void bookshelfPuzzleOpensWhenEveryShelfEndsOnItsLastSlot(GameTestHelper helper) {
         ServerLevel level = helper.getLevel();
         PlacedPuzzle room = placePuzzle(helper, DungeonPuzzleRooms.Puzzle.BOOKSHELVES, Rotation.NONE);
-        List<ChiseledBookShelfBlockEntity> shelves = List.of(2, 5, 8).stream()
-                .map(x -> (ChiseledBookShelfBlockEntity) level.getBlockEntity(room.at(x, 3, 11)))
-                .toList();
-        shelves.forEach(shelf -> shelf.setItem(5, new ItemStack(Items.BOOK)));
-        shelves.get(1).removeItem(0, 1);
-        helper.runAfterDelay(10, () -> {
-            helper.assertTrue(!room.solved(), "A shelf last touched on another slot must keep the chest shut");
-            shelves.get(1).setItem(0, new ItemStack(Items.BOOK));
-            shelves.get(1).removeItem(5, 1);
-            shelves.get(1).setItem(5, new ItemStack(Items.BOOK));
+        whenTicking(helper, room, () -> {
+            List<ChiseledBookShelfBlockEntity> shelves = List.of(2, 5, 8).stream()
+                    .map(x -> (ChiseledBookShelfBlockEntity) level.getBlockEntity(room.at(x, 3, 11)))
+                    .toList();
+            shelves.forEach(shelf -> shelf.setItem(5, new ItemStack(Items.BOOK)));
+            shelves.get(1).removeItem(0, 1);
             helper.runAfterDelay(10, () -> {
-                helper.assertTrue(room.solved(), "Every shelf ending on its last slot must open the chest");
-                room.release();
-                helper.succeed();
+                helper.assertTrue(!room.solved(), "A shelf last touched on another slot must keep the chest shut");
+                shelves.get(1).setItem(0, new ItemStack(Items.BOOK));
+                shelves.get(1).removeItem(5, 1);
+                shelves.get(1).setItem(5, new ItemStack(Items.BOOK));
+                helper.runAfterDelay(10, () -> {
+                    helper.assertTrue(room.solved(), "Every shelf ending on its last slot must open the chest");
+                    room.release();
+                    helper.succeed();
+                });
             });
         });
     }
@@ -992,16 +997,18 @@ public final class DungeonGameTestSuite {
     public static void targetPuzzleOpensWhenEveryBulbIsLit(GameTestHelper helper) {
         ServerLevel level = helper.getLevel();
         PlacedPuzzle room = placePuzzle(helper, DungeonPuzzleRooms.Puzzle.TARGETS, Rotation.NONE);
-        shootAt(level, room, 2);
-        shootAt(level, room, 5);
-        helper.runAfterDelay(30, () -> {
-            helper.assertTrue(level.getBlockState(room.at(2, 4, 11)).getValue(CopperBulbBlock.LIT), "A hit target must light its bulb");
-            helper.assertTrue(!room.solved(), "Two lit bulbs must not open the chest");
-            shootAt(level, room, 8);
+        whenTicking(helper, room, () -> {
+            shootAt(level, room, 2);
+            shootAt(level, room, 5);
             helper.runAfterDelay(30, () -> {
-                helper.assertTrue(room.solved(), "Three lit bulbs must open the chest");
-                room.release();
-                helper.succeed();
+                helper.assertTrue(level.getBlockState(room.at(2, 4, 11)).getValue(CopperBulbBlock.LIT), "A hit target must light its bulb");
+                helper.assertTrue(!room.solved(), "Two lit bulbs must not open the chest");
+                shootAt(level, room, 8);
+                helper.runAfterDelay(30, () -> {
+                    helper.assertTrue(room.solved(), "Three lit bulbs must open the chest");
+                    room.release();
+                    helper.succeed();
+                });
             });
         });
     }
@@ -1012,18 +1019,20 @@ public final class DungeonGameTestSuite {
     public static void chordPuzzleOpensOnlyForItsChord(GameTestHelper helper) {
         ServerLevel level = helper.getLevel();
         PlacedPuzzle room = placePuzzle(helper, DungeonPuzzleRooms.Puzzle.CHORD, Rotation.CLOCKWISE_180);
-        Player player = helper.makeMockPlayer(GameType.SURVIVAL);
-        for (int x = 3; x <= 7; x++) {
-            use(level, player, room.at(x, 3, 10));
-        }
-        helper.runAfterDelay(10, () -> {
-            helper.assertTrue(!room.solved(), "Every lever on must keep the chest shut");
-            use(level, player, room.at(4, 3, 10));
-            use(level, player, room.at(7, 3, 10));
+        whenTicking(helper, room, () -> {
+            Player player = helper.makeMockPlayer(GameType.SURVIVAL);
+            for (int x = 3; x <= 7; x++) {
+                use(level, player, room.at(x, 3, 10));
+            }
             helper.runAfterDelay(10, () -> {
-                helper.assertTrue(room.solved(), "The chord (first, third, fourth) must open the chest");
-                room.release();
-                helper.succeed();
+                helper.assertTrue(!room.solved(), "Every lever on must keep the chest shut");
+                use(level, player, room.at(4, 3, 10));
+                use(level, player, room.at(7, 3, 10));
+                helper.runAfterDelay(10, () -> {
+                    helper.assertTrue(room.solved(), "The chord (first, third, fourth) must open the chest");
+                    room.release();
+                    helper.succeed();
+                });
             });
         });
     }
@@ -1035,19 +1044,21 @@ public final class DungeonGameTestSuite {
     public static void sluicePuzzleOpensWhenTheStreamReachesTheTorch(GameTestHelper helper) {
         ServerLevel level = helper.getLevel();
         PlacedPuzzle room = placePuzzle(helper, DungeonPuzzleRooms.Puzzle.SLUICE, Rotation.NONE);
-        Player player = helper.makeMockPlayer(GameType.SURVIVAL);
-        use(level, player, room.at(4, 4, 4));
-        use(level, player, room.at(4, 3, 9));
-        use(level, player, room.at(5, 3, 7));
-        helper.runAfterDelay(120, () -> {
-            helper.assertTrue(level.getBlockState(room.at(2, 2, 11)).is(Blocks.REDSTONE_TORCH), "An open drain must divert the stream from the torch");
-            helper.assertTrue(!room.solved(), "The torch standing must keep the chest shut");
+        whenTicking(helper, room, () -> {
+            Player player = helper.makeMockPlayer(GameType.SURVIVAL);
+            use(level, player, room.at(4, 4, 4));
+            use(level, player, room.at(4, 3, 9));
             use(level, player, room.at(5, 3, 7));
             helper.runAfterDelay(120, () -> {
-                helper.assertTrue(!level.getBlockState(room.at(2, 2, 11)).is(Blocks.REDSTONE_TORCH), "The stream must wash the torch away");
-                helper.assertTrue(room.solved(), "Washing the torch away must open the chest");
-                room.release();
-                helper.succeed();
+                helper.assertTrue(level.getBlockState(room.at(2, 2, 11)).is(Blocks.REDSTONE_TORCH), "An open drain must divert the stream from the torch");
+                helper.assertTrue(!room.solved(), "The torch standing must keep the chest shut");
+                use(level, player, room.at(5, 3, 7));
+                helper.runAfterDelay(120, () -> {
+                    helper.assertTrue(!level.getBlockState(room.at(2, 2, 11)).is(Blocks.REDSTONE_TORCH), "The stream must wash the torch away");
+                    helper.assertTrue(room.solved(), "Washing the torch away must open the chest");
+                    room.release();
+                    helper.succeed();
+                });
             });
         });
     }
@@ -1058,17 +1069,19 @@ public final class DungeonGameTestSuite {
     public static void crafterPuzzleOpensWhenTheDiscPlays(GameTestHelper helper) {
         ServerLevel level = helper.getLevel();
         PlacedPuzzle room = placePuzzle(helper, DungeonPuzzleRooms.Puzzle.CRAFTER, Rotation.NONE);
-        CrafterBlockEntity crafter = (CrafterBlockEntity) level.getBlockEntity(room.at(5, 3, 11));
-        for (int slot = 0; slot < 9; slot++) {
-            crafter.setItem(slot, new ItemStack(Items.DISC_FRAGMENT_5));
-        }
-        use(level, helper.makeMockPlayer(GameType.SURVIVAL), room.at(5, 3, 10));
-        helper.runAfterDelay(20, () -> {
-            JukeboxBlockEntity jukebox = (JukeboxBlockEntity) level.getBlockEntity(room.at(5, 3, 12));
-            helper.assertTrue(jukebox.getTheItem().is(Items.MUSIC_DISC_5), "The crafted disc must land in the jukebox");
-            helper.assertTrue(room.solved(), "A playing disc must open the chest");
-            room.release();
-            helper.succeed();
+        whenTicking(helper, room, () -> {
+            CrafterBlockEntity crafter = (CrafterBlockEntity) level.getBlockEntity(room.at(5, 3, 11));
+            for (int slot = 0; slot < 9; slot++) {
+                crafter.setItem(slot, new ItemStack(Items.DISC_FRAGMENT_5));
+            }
+            use(level, helper.makeMockPlayer(GameType.SURVIVAL), room.at(5, 3, 10));
+            helper.runAfterDelay(20, () -> {
+                JukeboxBlockEntity jukebox = (JukeboxBlockEntity) level.getBlockEntity(room.at(5, 3, 12));
+                helper.assertTrue(jukebox.getTheItem().is(Items.MUSIC_DISC_5), "The crafted disc must land in the jukebox");
+                helper.assertTrue(room.solved(), "A playing disc must open the chest");
+                room.release();
+                helper.succeed();
+            });
         });
     }
 
@@ -1091,9 +1104,38 @@ public final class DungeonGameTestSuite {
         BlockPos origin = new BlockPos(PUZZLE_RUN_X + 64 * (slot % 16), 100, 12288 + 64 * (slot / 16));
         BoundingBox box = element.getBoundingBox(level.getStructureManager(), origin, rotation);
         forceChunks(level, box, true);
+        // A chunk only ticks blocks and entities once its eight neighbours are loaded too. Load them now rather than
+        // leave them to asynchronous worldgen, which a sprinting GameTest server can outrun by the whole test.
+        for (int x = (box.minX() >> 4) - 1; x <= (box.maxX() >> 4) + 1; x++) {
+            for (int z = (box.minZ() >> 4) - 1; z <= (box.maxZ() >> 4) + 1; z++) {
+                level.getChunk(x, z);
+            }
+        }
         element.place(level.getStructureManager(), level, level.structureManager(), level.getChunkSource().getGenerator(),
                 origin, origin, rotation, box, RandomSource.create(0), LiquidSettings.IGNORE_WATERLOGGING, false);
         return new PlacedPuzzle(level, puzzle, origin, rotation, box);
+    }
+
+    /**
+     * Runs {@code then} once every chunk of the room ticks blocks and entities. Puzzles answer through scheduled
+     * redstone, fluid and entity ticks; on a fresh chunk those wait until the chunk is promoted to ticking, and a
+     * sprinting GameTest server would spend the test's tick window before that. Each waiting tick is padded to a real
+     * server's 50 ms.
+     */
+    private static void whenTicking(GameTestHelper helper, PlacedPuzzle room, Runnable then) {
+        ServerLevel level = room.level();
+        BoundingBox box = room.box();
+        for (int x = box.minX() >> 4; x <= box.maxX() >> 4; x++) {
+            for (int z = box.minZ() >> 4; z <= box.maxZ() >> 4; z++) {
+                if (!level.shouldTickBlocksAt(ChunkPos.pack(x, z))
+                        || !level.isPositionEntityTicking(new BlockPos(x << 4, box.minY(), z << 4))) {
+                    LockSupport.parkNanos(50_000_000L);
+                    helper.runAfterDelay(1, () -> whenTicking(helper, room, then));
+                    return;
+                }
+            }
+        }
+        then.run();
     }
 
     private static void forceChunks(ServerLevel level, BoundingBox box, boolean forced) {
