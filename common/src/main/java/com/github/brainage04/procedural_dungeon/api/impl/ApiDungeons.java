@@ -10,8 +10,8 @@ import com.github.brainage04.procedural_dungeon.lock.DungeonLockManager;
 import com.github.brainage04.procedural_dungeon.worldgen.structure.StagedDungeonGenerationManager;
 import com.github.brainage04.procedural_dungeon.worldgen.structure.StagedDungeonGenerationManager.JobOptions;
 import com.github.brainage04.procedural_dungeon.worldgen.structure.StagedDungeonGenerationManager.JobView;
-import com.github.brainage04.procedural_dungeon.worldgen.structure.StagedDungeonLayout;
 import com.github.brainage04.procedural_dungeon.worldgen.structure.StagedDungeonGenerationManager.StagedJobListener;
+import com.github.brainage04.procedural_dungeon.worldgen.structure.StagedDungeonLayout;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -19,6 +19,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.templatesystem.LiquidSettings;
 import net.minecraft.world.phys.AABB;
+
 import org.jspecify.annotations.Nullable;
 
 import java.util.List;

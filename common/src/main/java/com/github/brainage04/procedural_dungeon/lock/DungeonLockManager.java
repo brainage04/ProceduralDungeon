@@ -2,6 +2,8 @@ package com.github.brainage04.procedural_dungeon.lock;
 
 import com.github.brainage04.procedural_dungeon.api.impl.DungeonEvents;
 import com.github.brainage04.procedural_dungeon.worldgen.structure.DungeonPuzzleRooms;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
@@ -144,6 +146,20 @@ public final class DungeonLockManager {
 
     public static boolean isExplosionProtected(ServerLevel level, BlockPos pos) {
         return data(level).isExplosionProtected(pos.asLong());
+    }
+
+    /**
+     * Drops the lock records inside {@code box}: locked chests and doors. (PdLockB's version also drops puzzle chests,
+     * key sources and room records; take that one when both branches merge.)
+     */
+    public static void forget(ServerLevel level, BoundingBox box) {
+        DungeonLockSaveData data = data(level);
+        List<Long> inside = new ArrayList<>();
+        data.getLockedChests().stream().filter(pos -> box.isInside(BlockPos.of(pos))).forEach(inside::add);
+        for (DungeonKeyType key : DungeonKeyType.values()) {
+            data.getLockedDoors(key).stream().filter(pos -> box.isInside(BlockPos.of(pos))).forEach(inside::add);
+        }
+        inside.forEach(data::unlock);
     }
 
     private static DungeonLockSaveData data(ServerLevel level) {
