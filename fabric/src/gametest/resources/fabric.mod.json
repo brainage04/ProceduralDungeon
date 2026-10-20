@@ -7,7 +7,8 @@
 	"environment": "*",
 	"entrypoints": {
 		"fabric-gametest": [
-			"com.github.brainage04.procedural_dungeon.ProceduralDungeonGameTest"
+			"com.github.brainage04.procedural_dungeon.ProceduralDungeonGameTest",
+			"com.github.brainage04.procedural_dungeon.StagedJobFabricGameTest"
 		],
 		"main": [
 			"com.github.brainage04.procedural_dungeon.playtest.ProceduralDungeonPlaytest"

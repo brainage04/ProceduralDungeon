@@ -11,6 +11,12 @@ import com.github.brainage04.procedural_dungeon.worldgen.structure.ModStructureT
 import com.github.brainage04.procedural_dungeon.worldgen.structure.StagedDungeonStructure;
 import com.github.brainage04.procedural_dungeon.worldgen.structure.VariantSinglePoolElement;
 import com.github.brainage04.procedural_dungeon.worldgen.structure.StagedDungeonGenerationManager;
+import com.github.brainage04.procedural_dungeon.worldgen.structure.DungeonChunkLedger;
+import com.github.brainage04.procedural_dungeon.worldgen.structure.DungeonChunkTickets;
+import net.minecraft.server.level.TicketType;
+import net.minecraft.world.level.chunk.LevelChunk;
+import net.neoforged.neoforge.attachment.AttachmentType;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
 import net.neoforged.bus.api.IEventBus;
@@ -51,12 +57,36 @@ public final class ProceduralDungeonNeoForge {
             );
     private static final DeferredHolder<StructurePieceType, StructurePieceType> STAGED_DUNGEON_MARKER =
             PIECES.register("staged_dungeon_marker", () -> com.github.brainage04.procedural_dungeon.worldgen.structure.StagedDungeonMarkerPiece::new);
+    private static final DeferredRegister<TicketType> TICKET_TYPES = DeferredRegister.create(Registries.TICKET_TYPE, ProceduralDungeon.MOD_ID);
+    private static final DeferredRegister<AttachmentType<?>> ATTACHMENT_TYPES = DeferredRegister.create(NeoForgeRegistries.Keys.ATTACHMENT_TYPES, ProceduralDungeon.MOD_ID);
+    private static final DeferredHolder<AttachmentType<?>, AttachmentType<DungeonChunkLedger.Data>> PLACED =
+            ATTACHMENT_TYPES.register(DungeonChunkLedger.ATTACHMENT_NAME, () -> AttachmentType.builder(() -> DungeonChunkLedger.Data.EMPTY)
+                    .serialize(DungeonChunkLedger.MAP_CODEC, data -> !data.isEmpty())
+                    .build());
 
     public ProceduralDungeonNeoForge(IEventBus modBus) {
         PROCESSORS.register(modBus);
         POOL_ELEMENTS.register(modBus);
         STRUCTURES.register(modBus);
         PIECES.register(modBus);
+        TICKET_TYPES.register(DungeonChunkTickets.TICKET_NAME, () -> DungeonChunkTickets.TICKET_TYPE);
+        TICKET_TYPES.register(modBus);
+        ATTACHMENT_TYPES.register(modBus);
+        DungeonChunkLedger.setBackend(new DungeonChunkLedger.Backend() {
+            @Override
+            public DungeonChunkLedger.Data get(LevelChunk chunk) {
+                return chunk.getExistingDataOrNull(PLACED.get());
+            }
+
+            @Override
+            public void set(LevelChunk chunk, DungeonChunkLedger.Data data) {
+                if (data == null) {
+                    chunk.removeData(PLACED.get());
+                } else {
+                    chunk.setData(PLACED.get(), data);
+                }
+            }
+        });
         ModStructureProcessorTypes.registerAll((name, codec) -> PROCESSORS.register(name, () -> codec));
         modBus.addListener((FMLCommonSetupEvent event) -> event.enqueueWork(() -> {
             ModStructurePoolElementTypes.setVariantSinglePoolElement(VARIANT_SINGLE_POOL_ELEMENT.get());
@@ -104,11 +134,13 @@ public final class ProceduralDungeonNeoForge {
 
     @SubscribeEvent
     public static void serverStarted(ServerStartedEvent event) {
+        StagedDungeonGenerationManager.resetSession();
         StructureGalleryCommand.initializeAutobuild(event.getServer());
     }
 
     @SubscribeEvent
     public static void serverStopping(ServerStoppingEvent event) {
         DungeonLocksCommand.clearRevealMarkers();
+        StagedDungeonGenerationManager.serverStopping(event.getServer());
     }
 }

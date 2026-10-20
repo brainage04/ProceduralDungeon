@@ -70,11 +70,13 @@ public enum DungeonGuardian {
 
     /**
      * Spawns the guardian standing on {@code pos}, facing the room entrance (template north).
+     *
+     * @return the spawned guardian, or empty if its entity type could not be created
      */
-    public void spawn(ServerLevelAccessor level, BlockPos pos, Rotation rotation, int tierNumber) {
+    public Optional<Mob> spawn(ServerLevelAccessor level, BlockPos pos, Rotation rotation, int tierNumber) {
         Mob mob = type.create(level.getLevel(), EntitySpawnReason.STRUCTURE);
         if (mob == null) {
-            return;
+            return Optional.empty();
         }
 
         DungeonTier tier = DungeonTier.values()[Math.clamp(tierNumber, 1, DungeonTier.values().length) - 1];
@@ -100,6 +102,7 @@ public enum DungeonGuardian {
         mob.setPersistenceRequired();
         mob.addTag(TAG);
         level.addFreshEntityWithPassengers(mob);
+        return Optional.of(mob);
     }
 
     private static void equip(Mob mob, EquipmentSlot slot, Item item) {

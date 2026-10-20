@@ -56,19 +56,24 @@ public class GenerateDungeonCommand {
             return 0;
         }
 
-        StagedDungeonGenerationManager.enqueue(
+        StagedDungeonGenerationManager.EnqueueResult result = StagedDungeonGenerationManager.enqueue(
                 source.getLevel(),
                 chunkPos,
                 layout.get().pieces(),
                 LiquidSettings.IGNORE_WATERLOGGING,
                 layout.get().lockPlan()
         );
+        if (!result.accepted()) {
+            source.sendFailure(Component.literal("Dungeon not scheduled: " + result.rejection()));
+            return 0;
+        }
 
         DungeonLockPlan lockPlan = layout.get().lockPlan();
         source.sendSuccess(() -> Component.literal(
-                "Scheduled %s at %d %d %d with %d pieces, %d boss door(s), %d miniboss door(s), %d locked chest(s), and %d key chest(s)."
+                "Scheduled %s (job %s) at %d %d %d with %d pieces, %d boss door(s), %d miniboss door(s), %d locked chest(s), and %d key chest(s)."
                         .formatted(
                                 key,
+                                result.id(),
                                 pos.getX(),
                                 pos.getY(),
                                 pos.getZ(),
@@ -142,13 +147,13 @@ public class GenerateDungeonCommand {
     private static int status(CommandSourceStack source) {
         StagedDungeonGenerationManager.Status status = StagedDungeonGenerationManager.status(source.getLevel());
         source.sendSuccess(() -> Component.literal(
-                "Staged dungeon jobs: %d, pending pieces: %d."
-                        .formatted(status.jobs(), status.pendingPieces())
+                "Staged dungeon jobs: %d, pending pieces: %d, failed jobs: %d."
+                        .formatted(status.jobs(), status.pendingPieces(), status.failedJobs())
         ), true);
         return status.pendingPieces();
     }
 
-    private static DungeonTheme getTheme(Identifier id) {
+    static DungeonTheme getTheme(Identifier id) {
         for (DungeonTheme theme : DungeonTheme.values()) {
             if (theme.getId().equals(id)
                     || theme.getSerializedName().equals(id.getPath())
@@ -160,7 +165,7 @@ public class GenerateDungeonCommand {
         return null;
     }
 
-    private static DungeonTier getTier(int tierNumber) {
+    static DungeonTier getTier(int tierNumber) {
         for (DungeonTier tier : DungeonTier.values()) {
             if (tier.tier == tierNumber) {
                 return tier;

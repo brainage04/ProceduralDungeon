@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
@@ -19,6 +20,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.util.ProblemReporter;
 import net.minecraft.util.Util;
 import net.minecraft.util.RandomSource;
@@ -290,7 +292,8 @@ public class VariantSinglePoolElement extends StructurePoolElement {
     /**
      * Spawns the guardian of every {@link DungeonGuardian} data marker and hangs the frames of puzzle rooms. Markers are
      * read straight from the template: the placement processors drop structure blocks, so they never reach
-     * {@link #handleDataMarker}.
+     * {@link #handleDataMarker}. Inside a staged job, each spawn is tagged with the job, piece and marker index and is
+     * skipped when that entity already exists.
      */
     private void placeGuardians(
             StructureTemplateManager structureTemplateManager,
@@ -301,18 +304,34 @@ public class VariantSinglePoolElement extends StructurePoolElement {
     ) {
         StructureTemplate template = structureTemplateManager.getOrCreate(delegate.getTemplateLocation());
         StructurePlaceSettings settings = new StructurePlaceSettings().setRotation(rotation);
-        for (StructureTemplate.StructureBlockInfo marker : getDataMarkerBlocks(structureTemplateManager, template, pos, rotation)) {
+        StagedPlacementContext context = StagedPlacementContext.current();
+        List<StructureTemplate.StructureBlockInfo> markers = getDataMarkerBlocks(structureTemplateManager, template, pos, rotation);
+        for (int index = 0; index < markers.size(); index++) {
+            StructureTemplate.StructureBlockInfo marker = markers.get(index);
             BlockPos markerPos = StructureTemplate.calculateRelativePosition(settings, marker.pos()).offset(pos);
             if (marker.nbt() == null || !box.isInside(markerPos)) {
                 continue;
             }
             String metadata = marker.nbt().getStringOr("metadata", "");
-            if (metadata.startsWith(DungeonPuzzleRooms.FRAME_MARKER) && world instanceof ServerLevel level) {
-                DungeonPuzzleRooms.hangFrame(level, markerPos, rotation, metadata);
+            boolean frame = metadata.startsWith(DungeonPuzzleRooms.FRAME_MARKER);
+            if (!frame && DungeonGuardian.fromMarker(metadata).isEmpty()) {
                 continue;
             }
-            DungeonGuardian.fromMarker(metadata)
-                    .ifPresent(guardian -> guardian.spawn(world, markerPos, rotation, spawnerTier));
+            if (context != null && world.getLevel() instanceof ServerLevel level && context.spawned(level, index)) {
+                continue;
+            }
+            Optional<? extends Entity> spawned;
+            if (frame) {
+                spawned = world instanceof ServerLevel level
+                        ? Optional.of(DungeonPuzzleRooms.hangFrame(level, markerPos, rotation, metadata))
+                        : Optional.empty();
+            } else {
+                spawned = DungeonGuardian.fromMarker(metadata).orElseThrow().spawn(world, markerPos, rotation, spawnerTier);
+            }
+            if (context != null) {
+                int markerIndex = index;
+                spawned.ifPresent(entity -> context.tag(entity, markerIndex));
+            }
         }
     }
 
@@ -370,6 +389,11 @@ public class VariantSinglePoolElement extends StructurePoolElement {
         return delegate.getDataMarkers(structureTemplateManager, pos, rotation, false);
     }
 
+    /**
+     * Runs the processors over the template. Unless a processor evaluates the entire piece (vanilla's
+     * {@link StructureProcessor#evaluatesEntirePieceState()}), blocks outside {@code settings}' box are dropped first, so
+     * a piece placed one chunk at a time processes each block once instead of once per chunk.
+     */
     private static List<StructureTemplate.StructureBlockInfo> processBlockInfos(
             WorldGenLevel world,
             BlockPos pos,
@@ -379,10 +403,15 @@ public class VariantSinglePoolElement extends StructurePoolElement {
             int spawnerTier
     ) {
         List<StructureProcessor> processors = settings.getProcessors();
+        BoundingBox clip = settings.getBoundingBox();
+        boolean perBlock = clip != null && processors.stream().noneMatch(StructureProcessor::evaluatesEntirePieceState);
         ArrayList<StructureTemplate.StructureBlockInfo> originalBlocks = new ArrayList<>(blocks.size());
         List<StructureTemplate.StructureBlockInfo> processedBlocks = new ArrayList<>(blocks.size());
         for (StructureTemplate.StructureBlockInfo original : blocks) {
             BlockPos transformedPos = StructureTemplate.calculateRelativePosition(settings, original.pos()).offset(pos);
+            if (perBlock && !clip.isInside(transformedPos)) {
+                continue;
+            }
             CompoundTag nbt = original.nbt() == null ? null : original.nbt().copy();
             if (FusedDungeonProcessor.isSpawnerMarker(original.state(), nbt)) {
                 nbt.putInt(FusedDungeonProcessor.SPAWNER_TIER_TAG, spawnerTier);

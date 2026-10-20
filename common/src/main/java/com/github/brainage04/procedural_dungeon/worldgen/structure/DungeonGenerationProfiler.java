@@ -40,6 +40,16 @@ public final class DungeonGenerationProfiler {
         return run == null ? Snapshot.EMPTY : run.snapshot();
     }
 
+    /**
+     * Counts one staged piece spec encoded (job SavedData or a natural start's marker piece).
+     */
+    public static void recordPieceEncode() {
+        Run run = CURRENT.get();
+        if (run != null) {
+            run.pieceEncodes++;
+        }
+    }
+
     public static void recordLayoutStubSetup(long nanos) {
         Run run = CURRENT.get();
         if (run != null) {
@@ -298,6 +308,7 @@ public final class DungeonGenerationProfiler {
         private long boundingBoxLookupNanos;
         private long piecePlacementNanos;
         private long maxPiecePlacementNanos;
+        private int pieceEncodes;
         private final Map<String, ProcessorTiming.Mutable> processorTimings = new LinkedHashMap<>();
         private final Map<String, PieceCount.Mutable> pieceCounts = new LinkedHashMap<>();
         private final Map<String, GraphCandidateCount.Mutable> graphCandidateCounts = new LinkedHashMap<>();
@@ -333,6 +344,7 @@ public final class DungeonGenerationProfiler {
                     boundingBoxLookupNanos,
                     piecePlacementNanos,
                     maxPiecePlacementNanos,
+                    pieceEncodes,
                     processorTimings.values().stream()
                             .map(ProcessorTiming.Mutable::snapshot)
                             .toList(),
@@ -376,6 +388,7 @@ public final class DungeonGenerationProfiler {
             long boundingBoxLookupNanos,
             long piecePlacementNanos,
             long maxPiecePlacementNanos,
+            int pieceEncodes,
             List<ProcessorTiming> processorTimings,
             List<PieceCount> pieceCounts,
             List<GraphCandidateCount> graphCandidateCounts
@@ -383,7 +396,7 @@ public final class DungeonGenerationProfiler {
         public static final Snapshot EMPTY = new Snapshot(
                 0, 0, 0, 0, 0, 0, 0, 0,
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                 List.of(),
                 List.of(),
                 List.of()

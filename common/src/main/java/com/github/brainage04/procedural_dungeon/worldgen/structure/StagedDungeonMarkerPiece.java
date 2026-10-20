@@ -1,11 +1,10 @@
 package com.github.brainage04.procedural_dungeon.worldgen.structure;
 
 import com.github.brainage04.procedural_dungeon.lock.DungeonLockPlan;
-import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureManager;
@@ -43,15 +42,8 @@ public class StagedDungeonMarkerPiece extends StructurePiece {
         this.liquidSettings = tag.read("liquid_settings", LiquidSettings.CODEC).orElse(LiquidSettings.IGNORE_WATERLOGGING);
         this.lockPlan = tag.read("lock_plan", DungeonLockPlan.CODEC).orElse(DungeonLockPlan.EMPTY);
 
-        var ops = StagedDungeonPieceSpec.ops(context.registryAccess());
-        ListTag pieceTags = tag.getListOrEmpty("pieces");
-        List<StagedDungeonPieceSpec> loadedPieces = new ArrayList<>(pieceTags.size());
-        pieceTags.forEach(pieceTag -> {
-            if (pieceTag instanceof CompoundTag pieceCompound) {
-                loadedPieces.add(StagedDungeonPieceSpec.load(ops, pieceCompound));
-            }
-        });
-        this.pieces = List.copyOf(loadedPieces);
+        var ops = context.registryAccess().createSerializationContext(NbtOps.INSTANCE);
+        this.pieces = tag.read("pieces", StagedDungeonPieceSpec.CODEC.listOf(), ops).orElse(List.of());
     }
 
     @Override
@@ -61,12 +53,8 @@ public class StagedDungeonMarkerPiece extends StructurePiece {
         tag.store("liquid_settings", LiquidSettings.CODEC, liquidSettings);
         tag.store("lock_plan", DungeonLockPlan.CODEC, lockPlan);
 
-        var ops = StagedDungeonPieceSpec.ops(context.registryAccess());
-        ListTag pieceTags = new ListTag();
-        for (StagedDungeonPieceSpec piece : pieces) {
-            pieceTags.add(piece.save(ops));
-        }
-        tag.put("pieces", pieceTags);
+        var ops = context.registryAccess().createSerializationContext(NbtOps.INSTANCE);
+        tag.store("pieces", StagedDungeonPieceSpec.CODEC.listOf(), ops, pieces);
     }
 
     @Override

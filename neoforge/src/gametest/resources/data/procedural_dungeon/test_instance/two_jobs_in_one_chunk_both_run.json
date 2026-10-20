@@ -1,0 +1,7 @@
+{
+  "environment": "minecraft:default",
+  "structure": "minecraftmodconventions:empty",
+  "max_ticks": 300,
+  "type": "minecraft:function",
+  "function": "procedural_dungeon:two_jobs_in_one_chunk_both_run"
+}

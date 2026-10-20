@@ -1,0 +1,7 @@
+{
+  "environment": "minecraft:default",
+  "structure": "minecraftmodconventions:empty",
+  "max_ticks": 300,
+  "type": "minecraft:function",
+  "function": "procedural_dungeon:a_piece_places_the_chunks_that_are_loaded"
+}

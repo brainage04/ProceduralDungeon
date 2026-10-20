@@ -1,0 +1,7 @@
+{
+  "environment": "minecraft:default",
+  "structure": "minecraftmodconventions:empty",
+  "max_ticks": 300,
+  "type": "minecraft:function",
+  "function": "procedural_dungeon:delayed_jobs_leave_player_builds_alone"
+}
