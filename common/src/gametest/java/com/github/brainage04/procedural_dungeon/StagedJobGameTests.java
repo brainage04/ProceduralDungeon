@@ -1420,13 +1420,13 @@ public final class StagedJobGameTests {
     }
 
     /**
-     * Gives asynchronous entity loading wall-clock time. GameTest servers do not wait between
-     * ticks, and parts that spawn entities (or come from elements other than PD's) wait for their
-     * chunks' entities, which are read on an I/O thread; without pacing, a busy machine can spend a
-     * test's whole tick budget in well under a second.
+     * Gives asynchronous entity loading wall-clock time by padding the tick to a real server's 50
+     * ms. GameTest servers do not wait between ticks, and parts that spawn entities (or come from
+     * elements other than PD's) wait for their chunks' entities, which are read on an I/O thread;
+     * without pacing, a busy machine can spend a test's whole tick budget in about a second.
      */
     private static void pace() {
-        LockSupport.parkNanos(5_000_000L);
+        LockSupport.parkNanos(50_000_000L);
     }
 
     private static void releaseChunks(ServerLevel level, BoundingBox box) {
