@@ -31,6 +31,7 @@ import net.neoforged.neoforge.event.server.ServerStartedEvent;
 import net.neoforged.neoforge.event.server.ServerStoppingEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
+import net.neoforged.neoforge.event.level.ChunkEvent;
 import net.neoforged.neoforge.event.level.block.BreakBlockEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -112,6 +113,13 @@ public final class ProceduralDungeonNeoForge {
                 event.setCancellationResult(result);
                 event.setCanceled(true);
             }
+        }
+    }
+
+    @SubscribeEvent
+    public static void chunkLoad(ChunkEvent.Load event) {
+        if (event.getLevel() instanceof ServerLevel level) {
+            DungeonLockManager.onChunkLoad(level, event.getChunk());
         }
     }
 

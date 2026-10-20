@@ -1,13 +1,18 @@
 package com.github.brainage04.procedural_dungeon.lock;
 
 import com.github.brainage04.procedural_dungeon.guardian.DungeonGuardian;
+import com.github.brainage04.procedural_dungeon.worldgen.structure.DungeonChunkLedger;
 import com.github.brainage04.procedural_dungeon.worldgen.structure.DungeonPuzzleRooms;
+import it.unimi.dsi.fastutil.longs.LongSet;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Predicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
@@ -25,11 +30,17 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.ChestType;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
+import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.storage.loot.LootTable;
 
 public final class DungeonLockManager {
     private static final AtomicLong PLAN_ENTRIES_VISITED = new AtomicLong();
+    /**
+     * Ledger key marking a chunk whose ledger holds its lock state (no block position packs to it: its x lies far
+     * outside any world border).
+     */
+    private static final long LEDGER_MANAGED = Long.MIN_VALUE;
     private static boolean initialized;
 
     private DungeonLockManager() {}
@@ -56,6 +67,7 @@ public final class DungeonLockManager {
                 return InteractionResult.FAIL;
             }
             unlock(level, data, lockPos);
+            flushToLedger(level, data);
             displayMessage(player, "The mechanism releases the chest.");
             return InteractionResult.PASS;
         }
@@ -80,6 +92,7 @@ public final class DungeonLockManager {
         }
 
         unlock(level, data, lockPos);
+        flushToLedger(level, data);
         displayMessage(player, "Unlocked with a %s.".formatted(key.displayName()));
         if (door) {
             openDoor(level, lockPos);
@@ -158,6 +171,7 @@ public final class DungeonLockManager {
                 case DungeonLockPlan.GuardedRoom room -> applyRoom(level, data, room, pieceBox);
             }
         });
+        flushToLedger(level, data);
     }
 
     private static void applyKeySource(ServerLevel level, DungeonLockSaveData data, DungeonLockPlan plan,
@@ -244,7 +258,9 @@ public final class DungeonLockManager {
      * Holds a puzzle room's reward chest shut until {@link DungeonPuzzleRooms#isSolved} reports its mechanism solved.
      */
     public static void lockPuzzleChest(ServerLevel level, BlockPos pos) {
-        data(level).addPuzzleChest(pos.asLong());
+        DungeonLockSaveData data = data(level);
+        data.addPuzzleChest(pos.asLong());
+        flushToLedger(level, data);
     }
 
     /**
@@ -261,6 +277,7 @@ public final class DungeonLockManager {
         DungeonLockSaveData data = existingData(level);
         if (data != null) {
             data.endEncounter(DungeonGuardian.home(guardian).orElse(guardian.blockPosition()));
+            flushToLedger(level, data);
         }
     }
 
@@ -272,6 +289,7 @@ public final class DungeonLockManager {
         DungeonLockSaveData data = existingData(level);
         if (data != null) {
             data.forget(box);
+            flushToLedger(level, data);
         }
     }
 
@@ -304,8 +322,59 @@ public final class DungeonLockManager {
             }
             // The key chest was broken or replaced; whatever stands there now is not protected.
             data.removeKeySource(pos.asLong());
+            flushToLedger(level, data);
         }
         return data.hasRooms() && data.isProtectedFrom(pos, null);
+    }
+
+    /**
+     * Copies the lock state of every changed position into its chunk's ledger entry, so the chunk file carries its own
+     * locks and saves them together with its blocks. Chunks hold their own positions in the same server-thread step as
+     * the change; {@link #forget} may load the chunks of a box it clears.
+     */
+    private static void flushToLedger(ServerLevel level, DungeonLockSaveData data) {
+        LongSet changed = data.drainChangedPositions();
+        for (long pos : changed) {
+            BlockPos block = BlockPos.of(pos);
+            LevelChunk chunk = level.getChunk(block.getX() >> 4, block.getZ() >> 4);
+            CompoundTag entry = data.ledgerEntry(pos);
+            if (entry == null) {
+                DungeonChunkLedger.removeLockEntry(chunk, pos);
+            } else {
+                DungeonChunkLedger.putLockEntry(chunk, pos, entry);
+            }
+            if (!DungeonChunkLedger.lockEntries(chunk).containsKey(LEDGER_MANAGED)) {
+                DungeonChunkLedger.putLockEntry(chunk, LEDGER_MANAGED, new CompoundTag());
+            }
+        }
+    }
+
+    /**
+     * A chunk loaded. Its ledger is the record saved together with its blocks, so it decides the lock state of its
+     * positions: a door unlocked before the chunk was saved stays unlocked even if the level's lock index was saved
+     * earlier, and a door whose chunk came back locked is locked again. A chunk from before the ledger held locks gets
+     * its entries copied in from the index.
+     */
+    public static void onChunkLoad(ServerLevel level, LevelChunk chunk) {
+        Map<Long, CompoundTag> entries = DungeonChunkLedger.lockEntries(chunk);
+        long chunkKey = chunk.getPos().pack();
+        DungeonLockSaveData data = existingData(level);
+        if (entries.containsKey(LEDGER_MANAGED)) {
+            if (data == null && entries.size() == 1) {
+                return;
+            }
+            Map<Long, CompoundTag> positions = new HashMap<>(entries);
+            positions.remove(LEDGER_MANAGED);
+            (data == null ? data(level) : data).replaceChunk(chunkKey, positions);
+        } else if (data != null && data.hasPositionsIn(chunkKey)) {
+            for (long pos : data.positionsIn(chunkKey)) {
+                CompoundTag entry = data.ledgerEntry(pos);
+                if (entry != null) {
+                    DungeonChunkLedger.putLockEntry(chunk, pos, entry);
+                }
+            }
+            DungeonChunkLedger.putLockEntry(chunk, LEDGER_MANAGED, new CompoundTag());
+        }
     }
 
     /**

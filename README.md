@@ -28,6 +28,7 @@ Keys are used up when they open a lock. Locked chests and doors cannot be broken
 - **Puzzle rooms** with a locked chest are protected the same way until the solved chest is first opened, so the mechanism and its walls cannot be mined. Pistons and water inside the room still work.
 - **Boss and miniboss loot waits for the guardian.** The reward chests in a guarded room stay locked until that room's guardian dies (or is otherwise removed from the world, such as on Peaceful).
 - **Double chests:** a chest placed next to a locked chest does not open the locked half.
+- **Crash safety:** each lock is saved inside the chunk that holds it, together with the blocks, so after a crash a door or chest is locked exactly when its saved chunk says so; the level-wide lock list is rebuilt from the chunks as they load.
 
 ### The Boss Key
 

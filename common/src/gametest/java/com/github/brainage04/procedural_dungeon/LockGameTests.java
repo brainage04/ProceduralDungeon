@@ -9,6 +9,7 @@ import com.github.brainage04.procedural_dungeon.lock.DungeonLockManager;
 import com.github.brainage04.procedural_dungeon.lock.DungeonLockPlan;
 import com.github.brainage04.procedural_dungeon.lock.DungeonLockSaveData;
 import com.github.brainage04.procedural_dungeon.util.RegistryKeyUtils;
+import com.github.brainage04.procedural_dungeon.worldgen.structure.DungeonChunkLedger;
 import com.github.brainage04.procedural_dungeon.worldgen.structure.DungeonProgressionRooms;
 import com.github.brainage04.procedural_dungeon.worldgen.structure.DungeonPuzzleRooms;
 import com.github.brainage04.procedural_dungeon.worldgen.structure.StagedDungeonGenerationManager;
@@ -28,6 +29,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.gametest.framework.GameTestHelper;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ServerboundSetCreativeModeSlotPacket;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
@@ -54,6 +56,8 @@ import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.entity.HopperBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.ChestType;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
+import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pools.StructurePoolElement;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
@@ -108,7 +112,9 @@ public final class LockGameTests {
                 new DungeonGameTestSuite.TestCase("cleared_and_creative_deleted_boss_keys_are_reissued",
                         LockGameTests::clearedAndCreativeDeletedBossKeysAreReissued),
                 new DungeonGameTestSuite.TestCase("operators_can_reissue_a_lost_boss_key",
-                        LockGameTests::operatorsCanReissueALostBossKey)
+                        LockGameTests::operatorsCanReissueALostBossKey),
+                new DungeonGameTestSuite.TestCase("door_locks_follow_their_chunk_not_the_lock_index",
+                        LockGameTests::doorLocksFollowTheirChunkNotTheLockIndex)
         );
     }
 
@@ -559,6 +565,53 @@ public final class LockGameTests {
         } finally {
             remove(player);
             boss.release();
+        }
+        helper.succeed();
+    }
+
+    /**
+     * P04: a door's lock is saved with its chunk. If the level's lock index was saved before an unlock and the chunk
+     * after it (a crash between the two), the reloaded chunk keeps the door unlocked; if the chunk is the older one,
+     * its door comes back locked.
+     */
+    public static void doorLocksFollowTheirChunkNotTheLockIndex(GameTestHelper helper) {
+        ServerLevel level = helper.getLevel();
+        BlockPos lower = nextOrigin(100);
+        BlockPos upper = lower.above();
+        BoundingBox box = new BoundingBox(lower);
+        forceChunks(level, box, true);
+        try {
+            level.setBlock(lower.below(), Blocks.STONE.defaultBlockState(), 3);
+            level.setBlock(lower, Blocks.IRON_DOOR.defaultBlockState().setValue(DoorBlock.HALF, DoubleBlockHalf.LOWER), 3);
+            level.setBlock(upper, Blocks.IRON_DOOR.defaultBlockState().setValue(DoorBlock.HALF, DoubleBlockHalf.UPPER), 3);
+            DungeonLockManager.applyPlanForPiece(level,
+                    plan(List.of(), List.of(), List.of(new DungeonLockPlan.Door(lower.asLong(), Optional.of(DungeonKeyType.BOSS)))), box);
+            var codec = DungeonLockSaveData.TYPE.codec();
+            var indexBeforeUnlock = codec.encodeStart(JsonOps.INSTANCE, level.getDataStorage().get(DungeonLockSaveData.TYPE)).getOrThrow();
+
+            Player player = helper.makeMockPlayer(GameType.SURVIVAL);
+            player.getInventory().add(DungeonKeyType.BOSS.createStack());
+            DungeonLockManager.useBlock(player, level, lower);
+            helper.assertTrue(level.getBlockState(lower).getValue(DoorBlock.OPEN), "The key must open the door");
+
+            // The index on disk predates the unlock; the chunk does not.
+            level.getDataStorage().set(DungeonLockSaveData.TYPE, codec.parse(JsonOps.INSTANCE, indexBeforeUnlock).getOrThrow());
+            LevelChunk chunk = level.getChunk(lower.getX() >> 4, lower.getZ() >> 4);
+            DungeonLockManager.onChunkLoad(level, chunk);
+            helper.assertTrue(!DungeonLockManager.isDoorLocked(level, lower) && !DungeonLockManager.isDoorLocked(level, upper),
+                    "A door unlocked in its saved chunk must not lock again from an older lock index");
+
+            // Now the chunk is the older one: it still holds the locked, shut door.
+            CompoundTag locked = new CompoundTag();
+            locked.putString("door", DungeonKeyType.BOSS.getSerializedName());
+            DungeonChunkLedger.putLockEntry(chunk, lower.asLong(), locked);
+            DungeonChunkLedger.putLockEntry(chunk, upper.asLong(), locked);
+            DungeonLockManager.onChunkLoad(level, chunk);
+            helper.assertTrue(DungeonLockManager.isDoorLocked(level, lower) && DungeonLockManager.isDoorLocked(level, upper),
+                    "A door saved locked in its chunk must be locked after the chunk loads");
+        } finally {
+            DungeonLockManager.forget(level, box.inflatedBy(1));
+            forceChunks(level, box, false);
         }
         helper.succeed();
     }

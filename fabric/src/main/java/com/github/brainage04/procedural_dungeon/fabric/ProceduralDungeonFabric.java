@@ -17,6 +17,7 @@ import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentTarget;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerChunkEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
@@ -51,6 +52,7 @@ public final class ProceduralDungeonFabric implements ModInitializer {
         });
         ProceduralDungeon.initialize();
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> ModCommands.register(dispatcher));
+        ServerChunkEvents.CHUNK_LOAD.register((level, chunk, generated) -> DungeonLockManager.onChunkLoad(level, chunk));
         UseBlockCallback.EVENT.register((player, world, hand, hitResult) -> world instanceof ServerLevel level
                 ? DungeonLockManager.useBlock(player, level, hitResult.getBlockPos())
                 : net.minecraft.world.InteractionResult.PASS);

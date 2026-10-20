@@ -9,12 +9,14 @@ import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import it.unimi.dsi.fastutil.longs.LongSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.LongConsumer;
 import java.util.function.LongPredicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.UUIDUtil;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.datafix.DataFixTypes;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
@@ -22,11 +24,20 @@ import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraft.world.level.saveddata.SavedDataType;
 
 /**
- * Lock state of one level. Format versions: 0 (no {@code format_version} field) held only chests, doors, key sources
+ * Lock state of one level. Per-position state (locked chests and doors, key sources, puzzle and encounter chests) is
+ * an index of the chunks' own ledger entries ({@code DungeonChunkLedger}), which are saved with the blocks and win on
+ * chunk load; rooms, finished encounters and boss-key records live only here.
+ *
+ * <p>Format versions: 0 (no {@code format_version} field) held only chests, doors, key sources
  * and puzzle chests; 1 adds protected rooms, encounter chests and boss-key records. Version 0 data loads unchanged.
  */
 public class DungeonLockSaveData extends SavedData {
     public static final int FORMAT_VERSION = 1;
+    private static final String LEDGER_RUSTED = "rusted_chest";
+    private static final String LEDGER_DOOR = "door";
+    private static final String LEDGER_KEY_SOURCE = "key_source";
+    private static final String LEDGER_PUZZLE = "puzzle_chest";
+    private static final String LEDGER_ENCOUNTER = "encounter_chest";
 
     private static final Codec<LockedDoor> LOCKED_DOOR_CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Codec.LONG.fieldOf("pos").forGetter(LockedDoor::pos),
@@ -83,6 +94,10 @@ public class DungeonLockSaveData extends SavedData {
     private final LongSet completedRooms = new LongOpenHashSet();
     private final LongSet encounterChests = new LongOpenHashSet();
     private final Long2ObjectMap<BossKey> bossKeys = new Long2ObjectOpenHashMap<>();
+    // Derived: positions with any lock state, by chunk, for reconciling a chunk with its ledger entries on load.
+    private final Long2ObjectMap<LongSet> positionsByChunk = new Long2ObjectOpenHashMap<>();
+    // Positions changed since the lock manager last copied them into their chunks' ledgers.
+    private final LongSet changedPositions = new LongOpenHashSet();
     // Derived: rooms by every chunk their box touches, so per-block checks stay a hash lookup.
     private final Long2ObjectMap<List<Room>> roomsByChunk = new Long2ObjectOpenHashMap<>();
 
@@ -107,6 +122,9 @@ public class DungeonLockSaveData extends SavedData {
         this.completedRooms.addAll(completedRooms);
         this.encounterChests.addAll(encounterChests);
         bossKeys.forEach(record -> this.bossKeys.put(record.door(), record));
+        for (LongSet set : List.of(this.lockedChests, this.lockedDoors.keySet(), this.keySourceChests, this.puzzleChests, this.encounterChests)) {
+            set.forEach((long pos) -> index(pos));
+        }
         if (formatVersion < FORMAT_VERSION) {
             setDirty();
         }
@@ -123,7 +141,7 @@ public class DungeonLockSaveData extends SavedData {
 
     public void addPuzzleChest(long pos) {
         if (puzzleChests.add(pos)) {
-            setDirty();
+            touched(pos);
         }
     }
 
@@ -136,7 +154,7 @@ public class DungeonLockSaveData extends SavedData {
 
     public void addEncounterChest(long pos) {
         if (encounterChests.add(pos)) {
-            setDirty();
+            touched(pos);
         }
     }
 
@@ -190,25 +208,25 @@ public class DungeonLockSaveData extends SavedData {
 
     public void addLockedChest(long pos) {
         if (lockedChests.add(pos)) {
-            setDirty();
+            touched(pos);
         }
     }
 
     public void addLockedDoor(long pos, DungeonKeyType key) {
         if (lockedDoors.put(pos, key) != key) {
-            setDirty();
+            touched(pos);
         }
     }
 
     public void addKeySourceChest(long pos) {
         if (keySourceChests.add(pos)) {
-            setDirty();
+            touched(pos);
         }
     }
 
     public void removeKeySource(long pos) {
         if (keySourceChests.remove(pos)) {
-            setDirty();
+            touched(pos);
         }
     }
 
@@ -220,8 +238,112 @@ public class DungeonLockSaveData extends SavedData {
         boolean changed = lockedChests.remove(pos) | lockedDoors.remove(pos) != null | puzzleChests.remove(pos)
                 | encounterChests.remove(pos) | keySourceChests.remove(pos) | bossKeys.remove(pos) != null;
         if (changed) {
+            touched(pos);
+            pruneRooms();
+        }
+    }
+
+    // ---- Chunk ledger entries
+
+    /**
+     * The lock state at {@code pos} as a chunk ledger entry, or {@code null} when nothing is locked or kept there.
+     */
+    public CompoundTag ledgerEntry(long pos) {
+        if (!hasPosition(pos)) {
+            return null;
+        }
+        CompoundTag entry = new CompoundTag();
+        if (lockedChests.contains(pos)) {
+            entry.putBoolean(LEDGER_RUSTED, true);
+        }
+        DungeonKeyType door = lockedDoors.get(pos);
+        if (door != null) {
+            entry.store(LEDGER_DOOR, DungeonKeyType.CODEC, door);
+        }
+        if (keySourceChests.contains(pos)) {
+            entry.putBoolean(LEDGER_KEY_SOURCE, true);
+        }
+        if (puzzleChests.contains(pos)) {
+            entry.putBoolean(LEDGER_PUZZLE, true);
+        }
+        if (encounterChests.contains(pos)) {
+            entry.putBoolean(LEDGER_ENCOUNTER, true);
+        }
+        return entry;
+    }
+
+    /**
+     * Replaces this index's lock state for every position in {@code chunk} with the chunk's own ledger entries, which
+     * were saved together with the chunk's blocks. Rooms whose last lock is gone stop being protected.
+     */
+    public void replaceChunk(long chunk, Map<Long, CompoundTag> entries) {
+        LongSet stale = positionsByChunk.get(chunk);
+        LongOpenHashSet affected = stale == null ? new LongOpenHashSet() : new LongOpenHashSet(stale);
+        entries.keySet().forEach(affected::add);
+        boolean changed = false;
+        for (long pos : affected) {
+            CompoundTag entry = entries.get(pos);
+            boolean rusted = entry != null && entry.getBooleanOr(LEDGER_RUSTED, false);
+            Optional<DungeonKeyType> door = entry == null ? Optional.empty() : entry.read(LEDGER_DOOR, DungeonKeyType.CODEC);
+            boolean keySource = entry != null && entry.getBooleanOr(LEDGER_KEY_SOURCE, false);
+            boolean puzzle = entry != null && entry.getBooleanOr(LEDGER_PUZZLE, false);
+            boolean encounter = entry != null && entry.getBooleanOr(LEDGER_ENCOUNTER, false);
+            changed |= set(lockedChests, pos, rusted) | set(keySourceChests, pos, keySource) | set(puzzleChests, pos, puzzle)
+                    | set(encounterChests, pos, encounter);
+            DungeonKeyType previous = door.isPresent() ? lockedDoors.put(pos, door.get()) : lockedDoors.remove(pos);
+            changed |= previous != door.orElse(null);
+            index(pos);
+        }
+        if (changed) {
             setDirty();
             pruneRooms();
+        }
+    }
+
+    public boolean hasPositionsIn(long chunk) {
+        LongSet positions = positionsByChunk.get(chunk);
+        return positions != null && !positions.isEmpty();
+    }
+
+    public LongSet positionsIn(long chunk) {
+        LongSet positions = positionsByChunk.get(chunk);
+        return positions == null ? new LongOpenHashSet() : new LongOpenHashSet(positions);
+    }
+
+    /**
+     * The positions changed since the last call, for copying into their chunks' ledgers.
+     */
+    public LongSet drainChangedPositions() {
+        LongSet drained = new LongOpenHashSet(changedPositions);
+        changedPositions.clear();
+        return drained;
+    }
+
+    private static boolean set(LongSet set, long pos, boolean present) {
+        return present ? set.add(pos) : set.remove(pos);
+    }
+
+    private boolean hasPosition(long pos) {
+        return lockedChests.contains(pos) || lockedDoors.containsKey(pos) || keySourceChests.contains(pos)
+                || puzzleChests.contains(pos) || encounterChests.contains(pos);
+    }
+
+    private void touched(long pos) {
+        changedPositions.add(pos);
+        index(pos);
+        setDirty();
+    }
+
+    private void index(long pos) {
+        BlockPos block = BlockPos.of(pos);
+        long chunk = ChunkPos.pack(block.getX() >> 4, block.getZ() >> 4);
+        if (hasPosition(pos)) {
+            positionsByChunk.computeIfAbsent(chunk, ignored -> new LongOpenHashSet()).add(pos);
+        } else {
+            LongSet positions = positionsByChunk.get(chunk);
+            if (positions != null && positions.remove(pos) && positions.isEmpty()) {
+                positionsByChunk.remove(chunk);
+            }
         }
     }
 
@@ -265,7 +387,11 @@ public class DungeonLockSaveData extends SavedData {
                 long key = roomKey(room.box());
                 putRoom(new Room(room.box(), room.door(), room.puzzleChest(), room.rewardChests(), false));
                 completedRooms.add(key);
-                room.rewardChests().forEach(encounterChests::remove);
+                room.rewardChests().forEach(chest -> {
+                    if (encounterChests.remove(chest)) {
+                        touched(chest);
+                    }
+                });
                 setDirty();
                 pruneRooms();
                 return room.rewardChests();
@@ -389,6 +515,14 @@ public class DungeonLockSaveData extends SavedData {
      */
     public void forget(BoundingBox box) {
         LongPredicate inside = pos -> box.isInside(BlockPos.of(pos));
+        LongOpenHashSet removed = new LongOpenHashSet();
+        for (LongSet positions : positionsByChunk.values()) {
+            positions.forEach((long pos) -> {
+                if (inside.test(pos)) {
+                    removed.add(pos);
+                }
+            });
+        }
         boolean changed = lockedChests.removeIf(inside)
                 | lockedDoors.keySet().removeIf(inside)
                 | keySourceChests.removeIf(inside)
@@ -396,6 +530,7 @@ public class DungeonLockSaveData extends SavedData {
                 | encounterChests.removeIf(inside)
                 | bossKeys.keySet().removeIf(inside)
                 | completedRooms.removeIf(inside);
+        removed.forEach((long pos) -> touched(pos));
         List<Room> dropped = rooms.values().stream().filter(room -> box.intersects(room.box())).toList();
         dropped.forEach(this::removeRoom);
         if (changed || !dropped.isEmpty()) {

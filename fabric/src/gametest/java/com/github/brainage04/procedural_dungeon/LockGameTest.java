@@ -74,4 +74,9 @@ public final class LockGameTest {
     public void operatorsCanReissueALostBossKey(GameTestHelper helper) {
         LockGameTests.operatorsCanReissueALostBossKey(helper);
     }
+
+    @GameTest(maxTicks = 100)
+    public void doorLocksFollowTheirChunkNotTheLockIndex(GameTestHelper helper) {
+        LockGameTests.doorLocksFollowTheirChunkNotTheLockIndex(helper);
+    }
 }
